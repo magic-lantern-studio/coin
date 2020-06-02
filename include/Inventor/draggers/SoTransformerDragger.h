@@ -243,6 +243,9 @@ protected:
   virtual SbBool setUpConnections(SbBool onoff, SbBool doitalways = FALSE);
   virtual void setDefaultOnNonWritingFields(void);
 
+  // Added to support Magic Lantern.
+  void setSwitchValue(SoNode *node, const int which);
+
   static void startCB(void * f, SoDragger * d);
   static void motionCB(void * f, SoDragger * d);
   static void finishCB(void * f, SoDragger * d);

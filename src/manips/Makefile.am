@@ -14,6 +14,7 @@ RegularSources = \
 	SoTrackballManip.cpp \
 	SoTransformBoxManip.cpp \
 	SoTransformerManip.cpp \
+	SoTransformer2Manip.cpp \
 	commoncode.cpp
 LinkHackSources = \
 	all-manips-cpp.cpp

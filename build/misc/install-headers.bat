@@ -197,6 +197,7 @@ copy /Y ..\%msvc%\..\..\include\Inventor\draggers\SoTabPlaneDragger.h %COINDIR%\
 copy /Y ..\%msvc%\..\..\include\Inventor\draggers\SoTrackballDragger.h %COINDIR%\include\Inventor\draggers\SoTrackballDragger.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\draggers\SoTransformBoxDragger.h %COINDIR%\include\Inventor\draggers\SoTransformBoxDragger.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\draggers\SoTransformerDragger.h %COINDIR%\include\Inventor\draggers\SoTransformerDragger.h >nul:
+copy /Y ..\%msvc%\..\..\include\Inventor\draggers\SoTransformer2Dragger.h %COINDIR%\include\Inventor\draggers\SoTransformer2Dragger.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\draggers\SoTranslate1Dragger.h %COINDIR%\include\Inventor\draggers\SoTranslate1Dragger.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\draggers\SoTranslate2Dragger.h %COINDIR%\include\Inventor\draggers\SoTranslate2Dragger.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\elements\SoSubElement.h %COINDIR%\include\Inventor\elements\SoSubElement.h >nul:
@@ -506,6 +507,7 @@ copy /Y ..\%msvc%\..\..\include\Inventor\manips\SoTabBoxManip.h %COINDIR%\includ
 copy /Y ..\%msvc%\..\..\include\Inventor\manips\SoTrackballManip.h %COINDIR%\include\Inventor\manips\SoTrackballManip.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\manips\SoTransformBoxManip.h %COINDIR%\include\Inventor\manips\SoTransformBoxManip.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\manips\SoTransformerManip.h %COINDIR%\include\Inventor\manips\SoTransformerManip.h >nul:
+copy /Y ..\%msvc%\..\..\include\Inventor\manips\SoTransformer2Manip.h %COINDIR%\include\Inventor\manips\SoTransformer2Manip.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\misc\CoinResources.h %COINDIR%\include\Inventor\misc\CoinResources.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\misc\SoAuditorList.h %COINDIR%\include\Inventor\misc\SoAuditorList.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\misc\SoBase.h %COINDIR%\include\Inventor\misc\SoBase.h >nul:

@@ -20,6 +20,7 @@ PublicHeaders = \
 	SoTrackballDragger.h \
 	SoTransformBoxDragger.h \
 	SoTransformerDragger.h \
+	SoTransformer2Dragger.h \
 	SoTranslate1Dragger.h \
 	SoTranslate2Dragger.h
 PrivateHeaders =

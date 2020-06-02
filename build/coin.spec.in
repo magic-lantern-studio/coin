@@ -185,6 +185,7 @@ make doxygen-doc
 @includedir@/Inventor/draggers/SoTrackballDragger.h
 @includedir@/Inventor/draggers/SoTransformBoxDragger.h
 @includedir@/Inventor/draggers/SoTransformerDragger.h
+@includedir@/Inventor/draggers/SoTransformer2Dragger.h
 @includedir@/Inventor/draggers/SoTranslate1Dragger.h
 @includedir@/Inventor/draggers/SoTranslate2Dragger.h
 @includedir@/Inventor/elements/SoAccumulatedElement.h
@@ -427,6 +428,7 @@ make doxygen-doc
 @includedir@/Inventor/manips/SoTransformBoxManip.h
 @includedir@/Inventor/manips/SoTransformManip.h
 @includedir@/Inventor/manips/SoTransformerManip.h
+@includedir@/Inventor/manips/SoTransformer2Manip.h
 @includedir@/Inventor/misc/SoAuditorList.h
 @includedir@/Inventor/misc/SoBase.h
 @includedir@/Inventor/misc/SoBasic.h

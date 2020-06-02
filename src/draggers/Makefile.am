@@ -22,6 +22,7 @@ RegularSources = \
 	SoTrackballDragger.cpp \
 	SoTransformBoxDragger.cpp \
 	SoTransformerDragger.cpp \
+	SoTransformer2Dragger.cpp \
 	SoTranslate1Dragger.cpp \
 	SoTranslate2Dragger.cpp
 LinkHackSources = \

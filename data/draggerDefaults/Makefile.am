@@ -24,6 +24,7 @@ BUILT_SOURCES = \
 	rotateSphericalDragger.h \
 	rotateDiscDragger.h \
 	transformerDragger.h \
+	transformer2Dragger.h \
 	transformBoxDragger.h
 
 DISTCLEANFILES = \
@@ -57,6 +58,7 @@ dist_draggerdefdata_DATA = \
 	rotateSphericalDragger.iv \
 	rotateDiscDragger.iv \
 	transformerDragger.iv \
+	transformer2Dragger.iv \
 	transformBoxDragger.iv
 
 EXTRA_DIST = \
@@ -134,6 +136,9 @@ rotateDiscDragger.h: $(srcdir)/rotateDiscDragger.iv iv2h.sh
 
 transformerDragger.h: $(srcdir)/transformerDragger.iv iv2h.sh
 	if ./iv2h.sh $(srcdir)/transformerDragger.iv > $@; then :; else rm -f $@; exit 1; fi
+
+transformer2Dragger.h: $(srcdir)/transformer2Dragger.iv iv2h.sh
+	if ./iv2h.sh $(srcdir)/transformer2Dragger.iv > $@; then :; else rm -f $@; exit 1; fi
 
 transformBoxDragger.h: $(srcdir)/transformBoxDragger.iv iv2h.sh
 	if ./iv2h.sh $(srcdir)/transformBoxDragger.iv > $@; then :; else rm -f $@; exit 1; fi
