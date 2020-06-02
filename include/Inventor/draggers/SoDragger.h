@@ -176,6 +176,9 @@ protected:
   // possible to construct draggers which can handle Motion3 events.
   void updateDraggerCache(const SoPath * path);
 
+  // Added to support Magic Lantern SoTransformer2Dragger.
+  void invalidateWorldConversionMatrices();
+
   virtual const SoPickedPoint* getPickedPointForStart(SoHandleEventAction* action);
 
 private:

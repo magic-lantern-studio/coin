@@ -11,7 +11,8 @@ PublicHeaders = \
 	SoTabBoxManip.h \
 	SoTrackballManip.h \
 	SoTransformBoxManip.h \
-	SoTransformerManip.h
+	SoTransformerManip.h \
+	SoTransformer2Manip.h
 PrivateHeaders =
 ObsoleteHeaders =
 

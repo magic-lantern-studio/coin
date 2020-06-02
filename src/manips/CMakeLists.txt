@@ -12,6 +12,7 @@ set(COIN_MANIPS_FILES
 	SoTrackballManip.cpp
 	SoTransformBoxManip.cpp
 	SoTransformerManip.cpp
+	SoTransformer2Manip.cpp
 	commoncode.cpp
 )
 

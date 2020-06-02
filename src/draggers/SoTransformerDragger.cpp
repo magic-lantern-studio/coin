@@ -2013,6 +2013,13 @@ SoTransformerDragger::setSwitchValue(const char *str, const int which)
   SoInteractionKit::setSwitchValue(sw, which);
 }
 
+void
+SoTransformerDragger::setSwitchValue(SoNode *node, const int which)
+{
+  SoSwitch *sw = (SoSwitch *)node;
+  SoInteractionKit::setSwitchValue(sw, which);
+}
+
 SbBool
 SoTransformerDragger::setDynamicTranslatorSwitches(const SoEvent *event)
 {
