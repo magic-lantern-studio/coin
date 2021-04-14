@@ -1,6 +1,6 @@
 /*
   This utility is just a hack to extract a monospaced bitmap font from an
-  image file and outputing it as C code.
+  image file and outputting it as C code.
 
   Windows building:
     coin-config --build extractfont extractfont.cpp -lsimage1
@@ -103,7 +103,7 @@ main(int argc, char ** argv)
   fprintf(stderr, "comp:   %d\n", components);
   fflush(stderr);
 
-#define TRESHOLD 20
+#define THRESHOLD 20
 
   if ( output_c ) {
     // printf("static uint32_t font_data[][%d] = {\n", charheight);
@@ -136,7 +136,7 @@ main(int argc, char ** argv)
           } else {
             for ( i = 0; i < components; i++ ) {
               if ( (components == 2 && i == 1) || (components == 4 && i == 3) ) {
-              } else if ( data[offset+i] > TRESHOLD ) {
+              } else if ( data[offset+i] > THRESHOLD ) {
                 // dark/light scan, assuming no alpha
                 hit = TRUE;
               }
@@ -172,7 +172,7 @@ main(int argc, char ** argv)
           } else {
             for ( i = 0; i < components; i++ ) {
               if ( (components == 2 && i == 1) || (components == 4 && i == 3) ) {
-              } else if ( data[offset+i] > TRESHOLD ) {
+              } else if ( data[offset+i] > THRESHOLD ) {
                 // dark/light scan, assuming no alpha
                 hit = TRUE;
               }

@@ -34,7 +34,7 @@
   \class SoGLLazyElement Inventor/elements/SoGLLazyElement.h
   \brief The SoGLLazyElement class is meant to optimize GL rendering.
 
-  \ingroup elements
+  \ingroup coin_elements
 
   This is just a wrap-around implementation for compatibility. It should
   (hopefully) work in the same way as the Inventor class though.
@@ -67,10 +67,10 @@
 #include <Inventor/misc/SoState.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/C/tidbits.h>
-#include "../../rendering/SoVBO.h"
+#include "rendering/SoVBO.h"
 #include <coindefs.h> // COIN_OBSOLETED
 
-#include "../../shaders/SoGLShaderProgram.h"
+#include "shaders/SoGLShaderProgram.h"
 
 // *************************************************************************
 

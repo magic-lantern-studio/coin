@@ -261,7 +261,11 @@ if(NOT COIN_BUILD_MAC_FRAMEWORK)
   target_include_directories(${PROJECT_NAME} INTERFACE $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 endif()
 
-set_target_properties(${PROJECT_NAME} PROPERTIES VERSION ${PROJECT_VERSION} SOVERSION ${COIN_SO_VERSION})
+if(WIN32 AND NOT MINGW)
+  set_target_properties(${PROJECT_NAME} PROPERTIES VERSION ${PROJECT_VERSION} SOVERSION ${COIN_SO_VERSION})
+else()
+  set_target_properties(${PROJECT_NAME} PROPERTIES VERSION "${COIN_SO_VERSION}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}" SOVERSION ${COIN_SO_VERSION})
+endif()
 
 # Setting up a framework means adding all the files and links under a framework
 # directory. A single install command then moves the entire contents of the
@@ -274,26 +278,15 @@ set_target_properties(${PROJECT_NAME} PROPERTIES VERSION ${PROJECT_VERSION} SOVE
 # All non standard links must be created manually.
 if(COIN_BUILD_MAC_FRAMEWORK)
 
-# determine which subdirectory this file (header, resource) should be installed into.
-function(set_macosx_properties _removable_prefixes _install_prefix _source_files)
-  foreach(_file ${_source_files})
-    get_filename_component(_loc "${_file}" DIRECTORY)
-    foreach(_prefix ${_removable_prefixes})
-      string(REPLACE "${_prefix}" "" _loc "${_loc}")
-    endforeach()
-    set_source_files_properties(${_file} PROPERTIES MACOSX_PACKAGE_LOCATION ${_install_prefix}${_loc})
-  endforeach()
-endfunction()
-
 # ############################################################################
 # Add framework headers
 # ############################################################################
-  set_macosx_properties("${CMAKE_SOURCE_DIR}/include/Inventor;${CMAKE_BINARY_DIR}/include/Inventor"  "Headers" "${COMMON_HDRS}")
+  coin_set_macosx_properties("${CMAKE_SOURCE_DIR}/include/Inventor;${CMAKE_BINARY_DIR}/include/Inventor" "Headers" "${COMMON_HDRS}")
 
 # ############################################################################
 # Add framework data files
 # ############################################################################
-  set_macosx_properties("${CMAKE_SOURCE_DIR}/data;${CMAKE_BINARY_DIR}/data" "Resources" "${COMMON_RESOURCES}")
+  coin_set_macosx_properties("${CMAKE_SOURCE_DIR}/data;${CMAKE_BINARY_DIR}/data" "Resources" "${COMMON_RESOURCES}")
 
 # ############################################################################
 # Add framework documentation files
@@ -360,19 +353,30 @@ else()
 # Install target
 # ############################################################################
 
-  install(TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME}
-    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT runtime
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT runtime NAMELINK_SKIP
-    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT development
-    #PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR} COMPONENT development
-    #PRIVATE_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR} COMPONENT development
-    RESOURCE DESTINATION ${CMAKE_INSTALL_DATADIR} COMPONENT development
-  )
-
-  if(COIN_BUILD_SHARED_LIBS)
-    install(TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME} LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT development NAMELINK_ONLY)
-    if(MSVC)
-      install(FILES $<TARGET_PDB_FILE:${PROJECT_NAME}> DESTINATION ${CMAKE_INSTALL_BINDIR} CONFIGURATIONS Debug RelWithDebInfo COMPONENT debug)
+  if(NOT CMAKE_VERSION VERSION_LESS 3.12)
+    install(TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME}
+      RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT runtime
+      LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT runtime NAMELINK_COMPONENT development
+      ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT development
+      RESOURCE DESTINATION ${CMAKE_INSTALL_DATADIR} COMPONENT development
+    )
+    if(COIN_BUILD_SHARED_LIBS)
+      if(MSVC)
+        install(FILES $<TARGET_PDB_FILE:${PROJECT_NAME}> DESTINATION ${CMAKE_INSTALL_BINDIR} CONFIGURATIONS Debug RelWithDebInfo COMPONENT debug)
+      endif()
+    endif()
+  else()
+    install(TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME}
+      RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT runtime
+      LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT runtime NAMELINK_SKIP
+      ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT development
+      RESOURCE DESTINATION ${CMAKE_INSTALL_DATADIR} COMPONENT development
+    )
+    if(COIN_BUILD_SHARED_LIBS)
+      install(TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME} LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT development NAMELINK_ONLY)
+      if(MSVC)
+        install(FILES $<TARGET_PDB_FILE:${PROJECT_NAME}> DESTINATION ${CMAKE_INSTALL_BINDIR} CONFIGURATIONS Debug RelWithDebInfo COMPONENT debug)
+      endif()
     endif()
   endif()
 endif()
@@ -388,9 +392,11 @@ else()
   set(COIN_CONFIG_PACKAGE_LOCATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}-${PROJECT_VERSION})
   string(TOLOWER ${PROJECT_NAME} COIN_CONFIG_PACKAGE_BASENAME)
   if(UNIX OR MINGW)
-    configure_file(${CMAKE_SOURCE_DIR}/${PROJECT_NAME}.pc.cmake.in ${CMAKE_BINARY_DIR}/${PROJECT_NAME}.pc @ONLY)
-    install(FILES ${CMAKE_BINARY_DIR}/${PROJECT_NAME}.pc DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig)
-    install(FILES ${CMAKE_SOURCE_DIR}/bin/coin-config DESTINATION ${CMAKE_INSTALL_BINDIR})
+    configure_file("${CMAKE_SOURCE_DIR}/${PROJECT_NAME}.pc.cmake.in" "${CMAKE_BINARY_DIR}/${PROJECT_NAME}.pc" @ONLY)
+    install(FILES "${CMAKE_BINARY_DIR}/${PROJECT_NAME}.pc" DESTINATION "${CMAKE_INSTALL_LIBDIR}/pkgconfig")
+    install(PROGRAMS "${CMAKE_SOURCE_DIR}/bin/coin-config" DESTINATION ${CMAKE_INSTALL_BINDIR})
+    configure_file("${CMAKE_SOURCE_DIR}/coin.cfg.cmake.in" "${CMAKE_BINARY_DIR}/${PROJECT_NAME_LOWER}-default.cfg" @ONLY)
+    install(FILES "${CMAKE_BINARY_DIR}/${PROJECT_NAME_LOWER}-default.cfg" DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/Coin/conf)
   endif()
 endif()
 

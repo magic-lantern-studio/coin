@@ -34,7 +34,7 @@
   \class SoSeparator SoSeparator.h Inventor/nodes/SoSeparator.h
   \brief The SoSeparator class is a state-preserving group node.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   Subgraphs parented by SoSeparator nodes will not affect the state,
   as they push and pop the traversal state before and after traversal
@@ -215,9 +215,9 @@ int SoSeparator::numrendercaches = 2;
         avoid spending too much of the on-board graphics card's memory
         resources.</li>
 
-    <li>For shapes with between 100 and 1000 shapes, display list
-        caching will be turned on if our heuristics decides that the
-        geometry can be considered static.</li>
+    <li>For shapes with more than 100 but less than 1000 triangles,
+        display list caching will be turned on if our heuristics decides
+        that the geometry can be considered static.</li>
 
   </ul>
 
@@ -225,7 +225,7 @@ int SoSeparator::numrendercaches = 2;
   rendering (as when rendering from one X11-based system to another).
 
   Disabling the display list caching takes precedence over enabling, so
-  if you have an SoSeparator with a shape with more than 1000
+  if you have a SoSeparator containing a shape with more than 1000
   triangles and a shape with fewer than 100 triangles, caching will be
   disabled for the SoSeparator.
 
@@ -442,7 +442,7 @@ SoSeparator::commonConstructor(void)
   PRIVATE(this)->bboxcache_usecount = 0;
   PRIVATE(this)->bboxcache_destroycount = 0;
 
-  // This environment variable used for local stability / robustness /
+  // This environment variable is used for local stability / robustness /
   // correctness testing of the render caching. If set >= 1,
   // renderCaching will be set to "ON" with a probability of 0.5 for
   // every SoSeparator instantiated.
@@ -645,7 +645,7 @@ SoSeparator::GLRender(SoGLRenderAction * action)
   Inventor (and thereby also TGS') we have chosen to follow their
   implementation in this respect.
 
-  SoSeparator::GLRenderBelowPath() do not traverse its children using
+  SoSeparator::GLRenderBelowPath() does not traverse its children using
   SoChildList::traverse(), but calls GLRenderBelowPath() directly
   for all its children.
 */

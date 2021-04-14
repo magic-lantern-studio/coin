@@ -34,7 +34,7 @@
   \class SoTextureCoordinateCube include/Inventor/nodes/SoTextureCoordinateCube.h
   \brief The SoTextureCoordinateCube class generates cube mapped texture coordinates for shapes.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   The cube used for reference when mapping is the bounding box for the shape.
 
@@ -110,7 +110,7 @@ public:
   SoTextureCoordinateCubeP(SoTextureCoordinateCube * texturenode)
     : master(texturenode) { }
 
-  SbVec4f calculateTextureCoordinate(SbVec3f point, SbVec3f n);
+  SbVec4f calculateTextureCoordinate(const SbVec3f & point, const SbVec3f & n);
 
   so_texcoordcube_data * so_texcoord_get_data() {
     so_texcoordcube_data * data = NULL;
@@ -223,7 +223,7 @@ textureCoordinateCubeCallback(void * userdata,
 }
 
 SbVec4f
-SoTextureCoordinateCubeP::calculateTextureCoordinate(SbVec3f point, SbVec3f n)
+SoTextureCoordinateCubeP::calculateTextureCoordinate(const SbVec3f & point, const SbVec3f & n)
 {
 
   so_texcoordcube_data * data = this->so_texcoord_get_data();

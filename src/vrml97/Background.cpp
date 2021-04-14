@@ -40,7 +40,7 @@
   \class SoVRMLBackground SoVRMLBackground.h Inventor/VRMLnodes/SoVRMLBackground.h
   \brief The SoVRMLBackground class is used for specifying a viewer panorama.
 
-  \ingroup VRMLnodes
+  \ingroup coin_VRMLnodes
 
   \WEB3DCOPYRIGHT
 
@@ -563,8 +563,7 @@ SoVRMLBackground::GLRender(SoGLRenderAction * action)
 void
 SoVRMLBackgroundP::buildGeometry(void)
 {
-
-  float sphereradius = 1.5;
+  double sphereradius = 1.5;
   SbList <float> angles;
   const int slices = 30; // Number of slices, i.e. vertical resolution of the spheres.
   
@@ -689,7 +688,7 @@ SoVRMLBackgroundP::buildGeometry(void)
 
   if ((PUBLIC(this)->groundAngle.getNum() > 0) || (PUBLIC(this)->groundColor.getNum() > 0)) {
 
-    sphereradius = sphereradius * 0.9f;
+    sphereradius = sphereradius * 0.9;
     angles.truncate(0);
     angles.append(0);
     float angle = 0;
@@ -712,7 +711,7 @@ SoVRMLBackgroundP::buildGeometry(void)
         } 
         angles.append(angle);
       }
-      if (angles.getLength() < 3) // A 'sphere' must have atleast 3 faces
+      if (angles.getLength() < 3) // A 'sphere' must have at least 3 faces
         angles.append(angle);
 
     }

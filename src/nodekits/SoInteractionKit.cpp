@@ -40,7 +40,7 @@
   \class SoInteractionKit SoInteractionKit.h Inventor/nodekits/SoInteractionKit.h
   \brief The SoInteractionKit class is a base class for draggers.
 
-  \ingroup nodekits
+  \ingroup coin_nodekits
 
   This nodekit class makes it possible to set surrogate paths for
   parts. Instead of creating new geometry for the dragger, it is
@@ -246,7 +246,7 @@ SoInteractionKit::SoInteractionKit(void)
   PRIVATE(this)->fieldsensor = new SoFieldSensor(SoInteractionKit::fieldSensorCB, PRIVATE(this));
   PRIVATE(this)->fieldsensor->setPriority(0);
 
-  this->setUpConnections(TRUE, TRUE);
+  SoInteractionKit::setUpConnections(TRUE, TRUE);
 }
 
 /*!
@@ -494,7 +494,7 @@ SoInteractionKit::readDefaultParts(const char * fileName,
   }
 
   if (!root && defaultBuffer) {
-    input.setBuffer((void *)defaultBuffer, defBufSize);
+    input.setBuffer(defaultBuffer, defBufSize);
     root = (SoNode *)SoDB::readAll(&input);
   }
 
@@ -680,14 +680,14 @@ SoInteractionKit::setUpConnections(SbBool onoff, SbBool doitalways)
     return onoff;
 
   if (onoff) {
-    inherited::setUpConnections(onoff, FALSE);
+    (void)inherited::setUpConnections(onoff, FALSE);
     PRIVATE(this)->connectFields(TRUE);
     PRIVATE(this)->attachSensor(TRUE);
   }
   else {
     PRIVATE(this)->attachSensor(FALSE);
     PRIVATE(this)->connectFields(FALSE);
-    inherited::setUpConnections(onoff, FALSE);
+    (void)inherited::setUpConnections(onoff, FALSE);
   }
   return !(this->connectionsSetUp = onoff);
 }
@@ -696,7 +696,7 @@ SoInteractionKit::setUpConnections(SbBool onoff, SbBool doitalways)
 SbBool
 SoInteractionKit::setPart(const int partNum, SoNode * node)
 {
-  // Overriden to detect when part changes value. If a substitute path
+  // Overridden to detect when part changes value. If a substitute path
   // for that part exists, it must be cleared.
 
   PRIVATE(this)->removeSurrogatePath(this->getNodekitCatalog()->getName(partNum));

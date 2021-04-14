@@ -40,7 +40,7 @@
   \class SoSeparatorKit SoSeparatorKit.h Inventor/nodekits/SoSeparatorKit.h
   \brief The SoSeparatorKit class provides a typical set of nodes to influence a shape subgraph.
 
-  \ingroup nodekits
+  \ingroup coin_nodekits
 
   \NODEKIT_PRE_DIAGRAM
 
@@ -222,14 +222,14 @@ SoSeparatorKit::setUpConnections(SbBool onoff, SbBool doitalways)
     return onoff;
 
   if (onoff) {
-    inherited::setUpConnections(onoff, FALSE);
+    (void)inherited::setUpConnections(onoff, FALSE);
     PRIVATE(this)->connectFields(TRUE);
     PRIVATE(this)->attachSensor(TRUE);
   }
   else {
     PRIVATE(this)->attachSensor(FALSE);
     PRIVATE(this)->connectFields(FALSE);
-    inherited::setUpConnections(onoff, FALSE);
+    (void)inherited::setUpConnections(onoff, FALSE);
   }
   return !(this->connectionsSetUp = onoff);
 }

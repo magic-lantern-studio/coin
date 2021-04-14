@@ -34,7 +34,7 @@
   \class SoExtSelection SoExtSelection.h Inventor/nodes/SoExtSelection.h
   \brief The SoExtSelection class can be used for extended selection functionality.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   This class enables you to select geometry by specifying a lasso (a
   polygon) or a rectangle on screen. When objects are selected, you'll
@@ -75,7 +75,6 @@
 
 // *************************************************************************
 
-/*! \file SoExtSelection.h */
 #include <Inventor/nodes/SoExtSelection.h>
 
 #include <cfloat>
@@ -1158,7 +1157,7 @@ SoExtSelection::draw(SoGLRenderAction *action)
           -1, 1);
 
 
-  // Because Mesa 3.4.2 cant properly push & pop GL_CURRENT_BIT, we have to
+  // Because Mesa 3.4.2 can't properly push & pop GL_CURRENT_BIT, we have to
   // save the current color for later.
   GLfloat currentColor[4];
   glGetFloatv(GL_CURRENT_COLOR,currentColor);
@@ -1815,7 +1814,7 @@ SoExtSelectionP::triangleCB(void * userData,
 
       thisp->addTriangleToOffscreenBuffer(action, v1, v2, v3, thisp->offscreencolorcounteroverflow);
 
-    } else if (thisp->triangleFilterCB && thisp->primcbdata.allshapes) {
+    } else if (thisp->triangleFilterCB) {
 
       // Present accepted triangle to 'user' through a callback.
       if(thisp->triangleFilterCB(thisp->triangleFilterCBData,
@@ -2016,7 +2015,7 @@ SoExtSelectionP::lineSegmentCB(void *userData,
 
       thisp->addLineToOffscreenBuffer(action, v1, v2, thisp->offscreencolorcounteroverflow);
 
-    } else if (thisp->lineFilterCB && thisp->primcbdata.allshapes) {
+    } else if (thisp->lineFilterCB) {
 
       if (thisp->lineFilterCB(thisp->lineFilterCBData,
                               action, v1, v2)) {
@@ -2168,7 +2167,7 @@ SoExtSelectionP::pointCB(void *userData,
 
       thisp->addPointToOffscreenBuffer(action, v, thisp->offscreencolorcounteroverflow);
 
-    } else if (thisp->pointFilterCB && thisp->primcbdata.allshapes) {
+    } else if (thisp->pointFilterCB) {
 
       if (thisp->pointFilterCB(thisp->pointFilterCBData, action, v)) {
         // select shape
@@ -2375,7 +2374,7 @@ SoExtSelectionP::offscreenRenderCallback(void * userdata, SoAction * action)
     FIXME: A nice feature could be an option to 'zoom' in on the
     selected area to increase pixel detail in the offscreen
     buffer. This could increase the hitrate to the offscreen-scanner
-    when searching for realy small visible entities. Note that you
+    when searching for really small visible entities. Note that you
     must also deform the stencil polygon accordingly (which can be
     abit tricky i believe). (handegar)
   */
@@ -2393,7 +2392,7 @@ SoExtSelectionP::offscreenRenderCallback(void * userdata, SoAction * action)
     20020802 mortene.
   */
 
-  // Because Mesa 3.4.2 cant properly push & pop GL_CURRENT_BIT, we have to
+  // Because Mesa 3.4.2 can't properly push & pop GL_CURRENT_BIT, we have to
   // save the current color for later.
   GLfloat currentColor[4];
   glGetFloatv(GL_CURRENT_COLOR,currentColor);

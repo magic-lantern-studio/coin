@@ -34,7 +34,7 @@
   \class SoBaseList SoBaseList.h Inventor/lists/SoBaseList.h
   \brief The SoBaseList class is a container for pointers to SoBase derived objects.
 
-  \ingroup general
+  \ingroup coin_general
 
   The additional capability of the SoBaseList class over its parent
   class, SbPList, is to automatically handle referencing and
@@ -106,7 +106,7 @@ void
 SoBaseList::append(SoBase * ptr)
 {
   if (this->referencing && ptr) ptr->ref();
-  SbPList::append((void *)ptr);
+  SbPList::append(ptr);
 }
 
 /*!
@@ -122,7 +122,7 @@ void
 SoBaseList::insert(SoBase * ptr, const int addbefore)
 {
   if (this->referencing && ptr) ptr->ref();
-  SbPList::insert((void *)ptr, addbefore);
+  SbPList::insert(ptr, addbefore);
 }
 
 /*!

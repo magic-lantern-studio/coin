@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.0)
 
 set(COIN_MAJOR_VERSION 4)
 set(COIN_MINOR_VERSION 0)
-set(COIN_MICRO_VERSION 0)
+set(COIN_MICRO_VERSION 1)
 set(COIN_BETA_VERSION)
 set(COIN_VERSION ${COIN_MAJOR_VERSION}.${COIN_MINOR_VERSION}.${COIN_MICRO_VERSION}${COIN_BETA_VERSION})
 
@@ -195,6 +195,11 @@ if(COIN_BUILD_MAC_X11)
     list(APPEND COIN_TARGET_LINK_LIBRARIES ${X11_LIBRARIES} ${X11_GL_LIB} ${X11_GLU_LIB})
   endif()
 else()
+  if(UNIX AND NOT APPLE)
+    find_package(X11 REQUIRED)
+    list(APPEND COIN_TARGET_INCLUDE_DIRECTORIES ${X11_INCLUDE_DIR})
+    list(APPEND COIN_TARGET_LINK_LIBRARIES ${X11_LIBRARIES})
+  endif()
   find_package(OpenGL REQUIRED)
   if(OPENGL_FOUND)
     set(HAVE_OPENGL 1)
@@ -397,16 +402,16 @@ foreach (_config ${CMAKE_CONFIGURATION_TYPES})
 endforeach()
 
 # Checks for existence of specified types and set variable to the first type found
-find_int_type_with_size(COIN_INT8_T 1 "int8_t" "char")
-find_int_type_with_size(COIN_UINT8_T 1 "uint8_t" "u_int8_t" "unsigned char")
-find_int_type_with_size(COIN_INT16_T 2 "int16_t" "short" "int")
-find_int_type_with_size(COIN_UINT16_T 2 "uint16_t" "u_int16_t" "unsigned short" "unsigned int")
-find_int_type_with_size(COIN_INT32_T 4 "int32_t" "int" "long")
-find_int_type_with_size(COIN_UINT32_T 4 "uint32_t" "u_int32_t" "unsigned int" "unsigned long")
-find_int_type_with_size(COIN_INT64_T 8 "int64_t" "long" "int" "long long" "__int64")
-find_int_type_with_size(COIN_UINT64_T 8 "uint64_t" "u_int64_t" "unsigned long" "unsigned int" "unsigned long long" "unsigned __int64")
-find_int_type_with_size(COIN_INTPTR_T ${CMAKE_SIZEOF_VOID_P} "intptr_t" "int" "long" "long long" "__int64")
-find_int_type_with_size(COIN_UINTPTR_T ${CMAKE_SIZEOF_VOID_P} "uintptr_t" "u_intptr_t" "_W64 unsigned int" "unsigned int" "unsigned long" "u_int64_t" "unsigned long long" "unsigned __int64")
+coin_find_int_type_with_size(COIN_INT8_T 1 "int8_t" "char")
+coin_find_int_type_with_size(COIN_UINT8_T 1 "uint8_t" "u_int8_t" "unsigned char")
+coin_find_int_type_with_size(COIN_INT16_T 2 "int16_t" "short" "int")
+coin_find_int_type_with_size(COIN_UINT16_T 2 "uint16_t" "u_int16_t" "unsigned short" "unsigned int")
+coin_find_int_type_with_size(COIN_INT32_T 4 "int32_t" "int" "long")
+coin_find_int_type_with_size(COIN_UINT32_T 4 "uint32_t" "u_int32_t" "unsigned int" "unsigned long")
+coin_find_int_type_with_size(COIN_INT64_T 8 "int64_t" "long" "int" "long long" "__int64")
+coin_find_int_type_with_size(COIN_UINT64_T 8 "uint64_t" "u_int64_t" "unsigned long" "unsigned int" "unsigned long long" "unsigned __int64")
+coin_find_int_type_with_size(COIN_INTPTR_T ${CMAKE_SIZEOF_VOID_P} "intptr_t" "int" "long" "long long" "__int64")
+coin_find_int_type_with_size(COIN_UINTPTR_T ${CMAKE_SIZEOF_VOID_P} "uintptr_t" "u_intptr_t" "_W64 unsigned int" "unsigned int" "unsigned long" "u_int64_t" "unsigned long long" "unsigned __int64")
 
 if(MSVC)
   option(COIN_BUILD_MSVC_STATIC_RUNTIME "Build against the static Microsoft Visual C runtime library." OFF)
@@ -423,7 +428,7 @@ if(MSVC)
   # Enable C++ exception handling (for code that uses boost in SbByteBuffer)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /EHsc")
 
-  coin_msvc_link_type_crt(${COIN_BUILD_MSVC_STATIC_RUNTIME})
+  coin_msvc_link_static_crt(${COIN_BUILD_MSVC_STATIC_RUNTIME})
   add_definitions(-D_CRT_NONSTDC_NO_DEPRECATE -D_CRT_SECURE_NO_DEPRECATE -D_CRT_SECURE_NO_WARNINGS -D_USE_MATH_DEFINES)
 else()
   if(APPLE)
@@ -452,10 +457,14 @@ if(WIN32)
     set(COIN_DEFAULT_POSTFIX ${COIN_DEFAULT_STATIC_POSTFIX})
     set(COIN_LIBRARY_SUFFIX ${CMAKE_STATIC_LIBRARY_SUFFIX})
   endif()
-  set(CMAKE_RELEASE_POSTFIX ${COIN_DEFAULT_POSTFIX})
-  set(CMAKE_MINSIZEREL_POSTFIX ${COIN_DEFAULT_POSTFIX})
-  set(CMAKE_RELWITHDEBINFO_POSTFIX ${COIN_DEFAULT_POSTFIX})
-  set(CMAKE_DEBUG_POSTFIX ${COIN_DEFAULT_POSTFIX}d)
+  set(CMAKE_RELEASE_POSTFIX "${COIN_DEFAULT_POSTFIX}"
+    CACHE STRING "Default filename postfix for libraries under configuration Release")
+  set(CMAKE_MINSIZEREL_POSTFIX "${COIN_DEFAULT_POSTFIX}"
+    CACHE STRING "Default filename postfix for libraries under configuration MinSizeRel")
+  set(CMAKE_RELWITHDEBINFO_POSTFIX "${COIN_DEFAULT_POSTFIX}"
+    CACHE STRING "Default filename postfix for libraries under configuration RelWithDebInfo")
+  set(CMAKE_DEBUG_POSTFIX "${COIN_DEFAULT_POSTFIX}d"
+    CACHE STRING "Default filename postfix for libraries under configuration Debug")
 
   set(COIN_RELEASE_SYSTEM_LIBRARY_NAME Coin${CMAKE_RELEASE_POSTFIX}${COIN_LIBRARY_SUFFIX})
   set(COIN_DEBUG_SYSTEM_LIBRARY_NAME Coin${CMAKE_DEBUG_POSTFIX}${COIN_LIBRARY_SUFFIX})
@@ -658,6 +667,8 @@ check_symbol_exists(strncasecmp string.h HAVE_STRNCASECMP)
 check_symbol_exists(memmove string.h HAVE_MEMMOVE)
 check_symbol_exists(bcopy strings.h HAVE_BCOPY)
 check_symbol_exists(fstat "sys/stat.h;sys/types.h" HAVE_FSTAT)
+check_symbol_exists(localtime_s time.h HAVE_LOCALTIME_S)
+check_symbol_exists(localtime_r time.h HAVE_LOCALTIME_R)
 if(NOT HAVE_FSTAT)
   check_symbol_exists(_fstat "sys/stat.h;sys/types.h" HAVE__FSTAT)
 endif()
@@ -721,7 +732,7 @@ endif()
 
 check_type_size("((struct timeval*)0)->tv_sec" TIMEVAL_TV_SEC)
 if(HAVE_TIMEVAL_TV_SEC)
-  find_int_type_with_size(SIM_TIMEVAL_TV_SEC_T ${TIMEVAL_TV_SEC} "time_t" "long")
+  coin_find_int_type_with_size(SIM_TIMEVAL_TV_SEC_T ${TIMEVAL_TV_SEC} "time_t" "long")
   if(NOT SIM_TIMEVAL_TV_SEC_T)
     message(FATAL_ERROR "TIMEVAL_TV_SEC: Neither of checked types (time_t, long) were of requested size ${TIMEVAL_TV_SEC}")
   endif()
@@ -729,7 +740,7 @@ endif()
 
 check_type_size("((struct timeval*)0)->tv_usec" TIMEVAL_TV_USEC)
 if(HAVE_TIMEVAL_TV_USEC)
-  find_int_type_with_size(SIM_TIMEVAL_TV_USEC_T ${TIMEVAL_TV_USEC} "suseconds_t" "long")
+  coin_find_int_type_with_size(SIM_TIMEVAL_TV_USEC_T ${TIMEVAL_TV_USEC} "suseconds_t" "long")
   if(NOT SIM_TIMEVAL_TV_USEC_T)
     message(FATAL_ERROR "TIMEVAL_TV_USEC: Neither of checked types (suseconds_t, long) were of requested size ${TIMEVAL_TV_USEC}")
   endif()
@@ -740,20 +751,16 @@ if(HAVE_WINDLL_RUNTIME_BINDING OR HAVE_DYLD_RUNTIME_BINDING OR HAVE_DLD_LIB OR H
   set(HAVE_DYNAMIC_LINKING 1)
 endif()
 
-set(HASH_QUOTING_SRC_FILE "
-  #include <string.h>
+check_cxx_source_compiles("
   #define TEST_QUOTE(str) #str
-  int main(void) { return strcmp(\"sim\", TEST_QUOTE(sim)); }
-")
-check_c_source_runs("${HASH_QUOTING_SRC_FILE}" HAVE_HASH_QUOTING)
+  int main(void) { char xx[] = TEST_QUOTE(str) \"xxx\"; return 0; }
+" HAVE_HASH_QUOTING)
 
 if(NOT HAVE_HASH_QUOTING)
-  set(APOSTROPHES_QUOTING_SRC_FILE "
-    #include <string.h>
+  check_cxx_source_compiles("
     #define TEST_QUOTE(str) \"str\"
-    int main(void) { return strcmp(\"sim\", TEST_QUOTE(sim)); }
-  ")
-  check_c_source_runs("${APOSTROPHES_QUOTING_SRC_FILE}" HAVE_APOSTROPHES_QUOTING)
+    int main(void) { char xx[] = (TEST_QUOTE(\"str\") \"xxx\"; return 0; }
+  " HAVE_APOSTROPHES_QUOTING)
 endif()
 
 if(HAVE_3DS_IMPORT_CAPABILITIES)

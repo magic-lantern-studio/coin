@@ -30,29 +30,27 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-/*! \file SbBasic.h */
-/*!
-  \typedef int SbBool
-  \brief SbBool is a compiler portable boolean type.
-
-  \ingroup base
-
-  SbBool is meant to be a "compiler portable" way of defining a
-  boolean type, since there are older compilers out there which don't
-  support the ISO-standard C++ \c bool keyword.
-
-  SbBool is not really a class, just a \c typedef.
-*/
+/// * !
+//  \typedef int SbBool
+//  \brief SbBool is a compiler portable boolean type.
+//
+//  \ingroup coin_base
+//
+//  SbBool is meant to be a "compiler portable" way of defining a
+//  boolean type, since there are older compilers out there which don't
+//  support the ISO-standard C++ \c bool keyword.
+//
+//  SbBool is not really a class, just a \c typedef.
+// * / 
 
 
 /* *********************************************************************** */
 
-/*! \file SoDB.h */
 /*!
   \class SoDB SoDB.h Inventor/SoDB.h
   \brief The SoDB class keeps track of internal global data.
 
-  \ingroup general
+  \ingroup coin_general
 
   This class collects various methods for initializing, setting and
   accessing common global data from the Coin library.
@@ -64,7 +62,6 @@
   any of the other Coin classes.
 */
 
-/*! \file SoDB.h */
 #include <Inventor/SoDB.h>
 
 #ifdef HAVE_CONFIG_H
@@ -1677,7 +1674,7 @@ SoDB::removeRoute(SoNode * fromnode, const char * eventout,
     else to->disconnect(output);
   }
 #if COIN_DEBUG
-  else { // some error occured
+  else { // some error occurred
     SoDebugError::postWarning("SoDB::removeRoute",
                               "Unable to remove route: %s.%s TO %s.%s",
                               fromnodename.getString(), eventout,
@@ -1730,7 +1727,7 @@ BOOST_AUTO_TEST_CASE(readChildList)
   static const char scene[] = "#VRML V2.0 utf8\n"
                               "DEF TestGroup Group { children [Group{}, Group{}, Group{}] }";
   SoInput in;
-  in.setBuffer((void *) scene, strlen(scene));
+  in.setBuffer(scene, strlen(scene));
   SoSeparator * root = SoDB::readAll(&in);
   BOOST_REQUIRE(root);
   root->ref();
@@ -1752,7 +1749,7 @@ BOOST_AUTO_TEST_CASE(readEmptyChildList)
   static const char scene[] = "#VRML V2.0 utf8\n"
                               "DEF TestGroup Group { children }";
   SoInput in;
-  in.setBuffer((void *) scene, strlen(scene));
+  in.setBuffer(scene, strlen(scene));
   SoSeparator * root = SoDB::readAll(&in);
   if (root) {
     SoGroup * group = (SoGroup *) SoNode::getByName("TestGroup");
@@ -1774,7 +1771,7 @@ BOOST_AUTO_TEST_CASE(readNullChildList)
                               "PROTO Object [ field MFNode testChildren NULL ] { }\n"
                               "DEF TestObject Object { }";
   SoInput in;
-  in.setBuffer((void *) scene, strlen(scene));
+  in.setBuffer(scene, strlen(scene));
   SoSeparator * root = SoDB::readAll(&in);
   if (root) {
     SoNode * object = (SoNode *) SoNode::getByName("TestObject");
@@ -1796,7 +1793,7 @@ BOOST_AUTO_TEST_CASE(readInvalidChildList)
   static const char scene[] = "#VRML V2.0 utf8\n"
                               "Group { children[0] }";
   SoInput in;
-  in.setBuffer((void *) scene, strlen(scene));
+  in.setBuffer(scene, strlen(scene));
   SoSeparator * root = SoDB::readAll(&in);
   BOOST_CHECK_MESSAGE(root == NULL, "Expected the import to fail");
 
@@ -1813,7 +1810,7 @@ BOOST_AUTO_TEST_CASE(testAlternateRepNull)
   static const char scene[] = "#Inventor V2.1 ascii\n"
                               "ExtensionNode { fields [ SFNode alternateRep ] }";
   SoInput in;
-  in.setBuffer((void *) scene, strlen(scene));
+  in.setBuffer(scene, strlen(scene));
   SoSeparator * root = SoDB::readAll(&in);
   BOOST_CHECK_MESSAGE(root, "Import should succeed");
   root->ref();

@@ -34,7 +34,7 @@
   \class SoQuadMesh SoQuadMesh.h Inventor/nodes/SoQuadMesh.h
   \brief The SoQuadMesh class is used to render and optimize a quadrilateral mesh.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   This node uses the coordinates in order, either from the state or
   from the SoQuadMesh::vertexProperty node, to construct a
@@ -140,7 +140,7 @@
   There is a work around solution for the above mentioned problem that
   can be applied with Coin: by setting the global environment variable
   \c COIN_QUADMESH_PRECISE_LIGHTING to "1", the quads will be broken
-  up in triangles before rendered, and shading will likely look much
+  up into triangles before rendered, and shading will likely look much
   better. Be aware that this technique causes rendering of the
   SoQuadMesh to slow down by an approximate factor of 6.
 

@@ -40,7 +40,7 @@
   \class SoVRMLSphereSensor SoVRMLSphereSensor.h Inventor/VRMLnodes/SoVRMLSphereSensor
   \brief The SoVRMLSphereSensor class maps pointer motion into rotations on a sphere.
 
-  \ingroup VRMLnodes
+  \ingroup coin_VRMLnodes
 
   \WEB3DCOPYRIGHT
 
@@ -134,7 +134,7 @@
 /*!
   \var SoSFRotation SoVRMLSphereSensor::rotation_changed
 
-  An eventOut that is updated during interaction. Holds the differense
+  An eventOut that is updated during interaction. Holds the difference
   between the current rotation and the sensor rotation value.
 
 */

@@ -34,7 +34,7 @@
   \class SoScrollingGraphKit SoScrollingGraphKit.h Inventor/annex/Profiler/nodekits/SoScrollingGraphKit.h
   \brief The SoScrollingGraphKit element class is yet to be documented.
 
-  \ingroup profiler
+  \ingroup coin_profiler
 */
 
 #ifdef HAVE_CONFIG_H
@@ -461,7 +461,7 @@ SoScrollingGraphKitP::generateStackedBarsChart(void)
     int idx = 0;
     float maxypos = 0.0f, maxprevypos = 0.0f;
     while (datum) {
-      /*const int numvalues = */datum->datum.getLength();
+      /*const int numvalues = datum->datum.getLength();*/
 
       float value = 0.0f, prev = 0.0f;
 #if LINEUP

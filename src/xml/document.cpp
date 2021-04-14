@@ -59,7 +59,7 @@
 // #define DEV_DEBUG 1
 
 /*!
-  \page xmlparsing XML Parsing with Coin
+  \page coin_xml_parsing XML Parsing with Coin
 
   For Coin 3.0, we added an XML parser to Coin.  This document describes
   how it can be used for generic purposes.
@@ -111,7 +111,7 @@
   This type is an opaque container object type for an XML document structure,
   and also the interface for configuring the parsing and writing code.
 
-  \ingroup XML
+  \ingroup coin_XML
 */
 
 struct cc_xml_doc {
@@ -336,7 +336,7 @@ cc_xml_doc_delete_parser_x(cc_xml_doc * doc)
 
   Creates a new cc_xml_doc object that is totally blank.
 
-  \ingroup XML
+  \ingroup coin_XML
   \relates cc_xml_doc
 */
 
@@ -361,7 +361,7 @@ cc_xml_doc_new(void)
 
   Frees up a cc_xml_doc object and all its resources.
 
-  \ingroup XML
+  \ingroup coin_XML
   \relates cc_xml_doc
 */
 
@@ -389,7 +389,7 @@ cc_xml_doc_delete_x(cc_xml_doc * doc)
   Elements can only be discarded as they are popped - on push they will be
   kept regardless of what the filter callback returns.
 
-  \ingroup XML
+  \ingroup coin_XML
   \relates cc_xml_doc
 */
 
@@ -405,7 +405,7 @@ cc_xml_doc_set_filter_cb_x(cc_xml_doc * doc, cc_xml_filter_cb * cb, void * userd
 
   Returns the set filter callback in the \a cb arg and \a userdata arg.
 
-  \ingroup XML
+  \ingroup coin_XML
   \relates cc_xml_doc
 */
 
@@ -691,7 +691,7 @@ SbBool
 cc_xml_doc_write_to_buffer(const cc_xml_doc * doc, char *& buffer, size_t & bytes)
 {
   assert(doc);
-  bytes = static_cast<int>(cc_xml_doc_calculate_size(doc));
+  bytes = cc_xml_doc_calculate_size(doc);
   buffer = new char [ bytes + 1 ];
 
   size_t bytesleft = bytes;
@@ -699,21 +699,20 @@ cc_xml_doc_write_to_buffer(const cc_xml_doc * doc, char *& buffer, size_t & byte
 
 // macro to advance buffer pointer and decrement bytesleft count
 #define ADVANCE_NUM_BYTES(len)          \
-  do { const int length = (len);        \
+  do { const size_t length = (len);        \
        hereptr += length;               \
        bytesleft -= length; } while (0)
 
 // macro to copy in a string literal and advance pointers
 #define ADVANCE_STRING_LITERAL(str)                \
-  do { static const char strobj[] = str;           \
-       const int strlength = (sizeof(strobj) - 1); \
-       strncpy(hereptr, strobj, strlength);        \
+  do { const size_t strlength = (sizeof(str) - 1); \
+       strcpy(hereptr, str);        \
        ADVANCE_NUM_BYTES(strlength); } while (0)
 
 // macro to copy in a runtime string and advance pointers
 #define ADVANCE_STRING(str)                      \
-  do { const int strlength = strlen(str);        \
-       strncpy(hereptr, str, strlength);         \
+  do { const size_t strlength = strlen(str);        \
+       strcpy(hereptr, str);         \
        ADVANCE_NUM_BYTES(strlength); } while (0)
 
   // duplicate block, see cc_xml_doc_calculate_size()
@@ -806,7 +805,7 @@ cc_xml_doc_calculate_size(const cc_xml_doc * doc)
 
 // macro to increment bytecount for string literal
 #define ADVANCE_STRING_LITERAL(str) \
-  do { static const char strobj[] = str; bytes += (sizeof(strobj) - 1); } while (0)
+  do { bytes += (sizeof(str) - 1); } while (0)
 
 // macro to increment bytecount for runtime string
 #define ADVANCE_STRING(str) \

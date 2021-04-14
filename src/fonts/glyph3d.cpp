@@ -61,10 +61,10 @@ static void glyph3d_calcboundingbox(cc_glyph3d * g);
 
 struct cc_glyph3d {
   struct cc_glyph c; /* "c" for "common" glyph data (2d & 3d). */
-
-  float width; /* FIXME: is this one really in use? 20060109 mortene. */
-  float bbox[4];
   struct cc_font_vector_glyph * vectorglyph;
+
+  float bbox[4];
+  float width; /* FIXME: is this one really in use? 20060109 mortene. */
   SbBool didallocvectorglyph;
 };
 
@@ -145,7 +145,7 @@ cc_glyph3d_ref(uint32_t character, const cc_font_specification * spec)
   cc_string * fonttoload;
   cc_list * glyphlist = NULL;
 
-  /* Beacuse this function is the entry point for glyph3d, the mutex
+  /* because this function is the entry point for glyph3d, the mutex
      is initialized here. */
   if (glyph3d_fonthash_lock == NULL) 
     cc_glyph3d_initialize();

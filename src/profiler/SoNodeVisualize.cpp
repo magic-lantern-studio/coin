@@ -34,7 +34,7 @@
   \class SoNodeVisualize Inventor/annex/Profiler/nodekits/SoNodeVisualize.h
   \brief The SoNodeVisualize class is yet to be documented.
 
-  \ingroup elements
+  \ingroup coin_elements
 
   FIXME: write doc.
 */
@@ -257,7 +257,7 @@ SoNodeVisualize::visualize(SoNode * node) {
   this->node=node;
   if (node!=NULL) {
     SoType type = node->getTypeId();
-    //FIXME: Exhange all the named textures, with images
+    //FIXME: Exchange all the named textures, with images
     //FIXME: Make the images better fitting for its shape
     //FIXME: Check if cubes are better options for some of the nodetypes
     //FIXME: Make smaller textures
@@ -468,7 +468,7 @@ SoNodeVisualize::traverse(SoProfilerStats * stats)
   if ((parent != NULL) && (this->node != NULL)) {
     const unsigned long CRITICAL = 10;
 
-    /*SoNode * parent = */this->parent->node;
+    //SoNode * parent = this->parent->node;
     // FIXME: larsa
     unsigned long msec = 0; // stats->getTotalProfilingTime(parent, this->node).getMsecValue();
     msec = SbMax<unsigned long>(CRITICAL, msec);
@@ -657,11 +657,11 @@ SoNodeVisualize::handleEvent(SoHandleEventAction * action)
   if (!pp) { return; }
 
   SoFullPath * path = static_cast<SoFullPath*>(pp->getPath());
-  SoShape* shape = static_cast<SoShape*>(this->getAnyPart("shape",TRUE));
+  SoShape* shapenode = static_cast<SoShape*>(this->getAnyPart("shape",TRUE));
 
   //REVIEW: BFG - Not sure what I'm doing here, the getDetail is
   //from an example source
-  if (path->containsNode(shape) && pp->getDetail(shape) == NULL) {
+  if (path->containsNode(shapenode) && pp->getDetail(shapenode) == NULL) {
     SbVec3f point = pp->getPoint();
     this->clicked();
   }

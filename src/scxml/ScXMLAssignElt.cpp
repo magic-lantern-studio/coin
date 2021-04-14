@@ -66,7 +66,7 @@
   which means the event targets can read them out based on logical names
   instead of SCXML data model addresses.
 
-  \ingroup scxml
+  \ingroup coin_scxml
   \sa ScXMLDataModelElt, ScXMLDataElt, ScXMLSendElt
 */
 
@@ -293,7 +293,7 @@ ScXMLAssignElt::execute(ScXMLStateMachine * statemachine) const
     }
     //printf("result: '%s'\n", strval.getString());
     SbString loc;
-    if (this->getDataIDAttribute() && strlen(this->getDataIDAttribute()) > 0) {
+    if (this->getDataIDAttribute() && this->getDataIDAttribute()[0] != '\0') {
       loc.sprintf("_data.%s", this->getDataIDAttribute());
     } else {
       loc = this->getLocationAttribute();

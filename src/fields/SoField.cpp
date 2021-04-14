@@ -34,7 +34,7 @@
   \class SoField SoField.h Inventor/fields/SoField.h
   \brief The SoField class is the top-level abstract base class for fields.
 
-  \ingroup fields
+  \ingroup coin_fields
 
   Fields is the mechanism used throughout Coin for encapsulating basic
   data types to detect changes made to them, and to provide
@@ -1403,7 +1403,7 @@ SoField::get(SbString & valuestring)
   valuestring = static_cast<char *>(buffer) + offset;
 
   // dealloc tmp memory buffer
-  if (bufferptr) { free(bufferptr); }
+  free(bufferptr);
 
   CC_MUTEX_LOCK(sofield_mutex);
   size_t isok = SoFieldP::getReallocHash()->erase(bufferptr ? bufferptr : initbuffer);

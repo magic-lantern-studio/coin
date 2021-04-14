@@ -34,7 +34,7 @@
   \class SoOverrideElement Inventor/elements/SoOverrideElement.h
   \brief The SoOverrideElement maintains a list of overridable elements and a list over which elements should be overridden.
 
-  \ingroup elements
+  \ingroup coin_elements
 
   Only certain elements can be overridden.
 
@@ -45,7 +45,7 @@
   transparency of the full scene graph, or parts of the scene
   graph.
 
-  In the original SGI Inventor, this is nigh impossible, as the API
+  In the original SGI Inventor, this is nearly impossible, as the API
   was designed to only make it possible to override all or none of the
   fields of a node. So calling SoNode::setOverride() on an SoMaterial
   node will cause all material settings of that node to override all
@@ -97,7 +97,7 @@
     (void)coin_setenv("COIN_SEPARATE_DIFFUSE_TRANSPARENCY_OVERRIDE", "1", TRUE);
 
     SoInput * in = new SoInput;
-    in->setBuffer((void *)scene, strlen(scene));
+    in->setBuffer(scene, strlen(scene));
     SoSeparator * root = SoDB::readAll(in);
     assert(root);
     delete in;

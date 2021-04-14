@@ -40,7 +40,7 @@
   \class SoTrackballDragger SoTrackballDragger.h Inventor/draggers/SoTrackballDragger.h
   \brief The SoTrackballDragger provides the end-user with rotation and scaling interaction possibilities.
 
-  \ingroup draggers
+  \ingroup coin_draggers
 
   \DRAGGER_DEFAULT_SCREENSHOT
 
@@ -580,8 +580,6 @@ SoTrackballDragger::dragStart(void)
       PRIVATE(this)->sphereProj->setWorkingSpace(wk2ws);
       switch (this->getFrontOnProjector()) {
       case FRONT:
-        PRIVATE(this)->sphereProj->setFront(TRUE);
-        break;
       case BACK:
         PRIVATE(this)->sphereProj->setFront(TRUE);
         break;

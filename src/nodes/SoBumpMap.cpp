@@ -34,7 +34,7 @@
   \class SoBumpMap SoBumpMap.h Inventor/nodes/SoBumpMap.h
   \brief The SoBumpMap class is used to map a bump map onto subsequent shapes.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   SoBumpMap has support for two types of maps. If the image is a three
   component (RGB) image, it will be treated as a normal map, where the
@@ -170,7 +170,7 @@ public:
   int isgrayscale; // -1 = unknown, 0 = no, 1 = yes
 
   void testGrayscale(const unsigned char * srcptr,
-                     const SbVec2s size,
+                     const SbVec2s & size,
                      const int nc)
   {
     // check if we have a cached value

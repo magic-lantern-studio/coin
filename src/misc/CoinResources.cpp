@@ -61,7 +61,7 @@
   configured in the flags parameter when the resource is set.  You can in
   other words also register built-in-only resources.
 
-  \ingroup internal
+  \ingroup coin_internal
 */
 
 #include <cassert>
@@ -127,7 +127,7 @@ namespace CoinResources { namespace {
       ResourceMap::iterator it = resourcemap->begin();
       while (it != resourcemap->end()) {
         delete it->second;
-        it++;
+        ++it;
       }
       delete resourcemap;
       resourcemap = NULL;

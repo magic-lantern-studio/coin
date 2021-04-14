@@ -40,7 +40,7 @@
   \class SoVRMLProximitySensor SoVRMLProximitySensor.h Inventor/VRMLnodes/SoVRMLProximitySensor.h
   \brief The SoVRMLProximitySensor class is used to generate events when the viewer enters or exits a region.
 
-  \ingroup VRMLnodes
+  \ingroup coin_VRMLnodes
 
   \WEB3DCOPYRIGHT
 
@@ -307,7 +307,7 @@ SoVRMLProximitySensor::doAction(SoAction * action)
       this->position_changed = viewer;
     }
   }
-  else if (!inside && wasactive) {
+  else if (wasactive) {
     this->isActive = FALSE;
     this->exitTime = currtime;
   }  

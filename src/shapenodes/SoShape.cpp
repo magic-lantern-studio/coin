@@ -34,7 +34,7 @@
   \class SoShape SoShape.h Inventor/nodes/SoShape.h
   \brief The SoShape class is the superclass for geometry shapes.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   The node types which have actual geometry to render inherit this
   class. For convenience, the SoShape class contains various common
@@ -1460,8 +1460,7 @@ SoShape::getBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
     box = PRIVATE(this)->bboxcache->getProjectedBox();
     // we know center will be set, so just fetch it from the cache
     center = PRIVATE(this)->bboxcache->getCenter();
-  }
-  if (isvalid) {
+
     return;
   }
 

@@ -40,7 +40,7 @@
   \class SoBaseKit SoBaseKit.h Inventor/nodekits/SoBaseKit.h
   \brief The SoBaseKit class is the top level superclass for nodekits.
 
-  \ingroup nodekits
+  \ingroup coin_nodekits
 
   Node kits are collections of nodes and other node kits (from here on
   node kits which are part of some other node kit, will only be referred
@@ -667,6 +667,7 @@ SoBaseKit::SoBaseKit(void)
 SoBaseKit::~SoBaseKit()
 {
   delete this->children;
+  delete PRIVATE(this)->writedata;
   delete PRIVATE(this);
 }
 
@@ -908,7 +909,7 @@ SoBaseKit::set(const char * namevaluepairliststring)
         node = list->getChild(listIdx);
       }
     }
-    memInput.setBuffer((void *)start, stringlen - (start-namevaluepairliststring));
+    memInput.setBuffer(start, stringlen - (start-namevaluepairliststring));
     SbBool dummy;
     if (!node->getFieldData()->read(&memInput, node, TRUE, dummy)) {
 #if COIN_DEBUG
@@ -973,7 +974,7 @@ SoBaseKit::set(const char * partnamestring, const char * parameterstring)
     if (node) {
       SoInput memInput;
       SbBool dummy;
-      memInput.setBuffer((void *)parameterstring, strlen(parameterstring));
+      memInput.setBuffer(parameterstring, strlen(parameterstring));
       const SoFieldData * fielddata = node->getFieldData();
       return fielddata->read(&memInput, node, TRUE, dummy);
     }
@@ -1577,7 +1578,7 @@ SoBaseKit::copyContents(const SoFieldContainer * fromfc,
   const SoBaseKit * srckit = (const SoBaseKit*) fromfc;
 
   // convenient reference
-  /*const SbList <SoSFNode*> & srcfields =*/ srckit->getCatalogInstances();
+  /*const SbList <SoSFNode*> & srcfields = srckit->getCatalogInstances();*/
 
   const int n = PRIVATE(this)->instancelist.getLength();
 

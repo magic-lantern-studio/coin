@@ -39,7 +39,7 @@
   \class SoPrimitiveVertexCache SoPrimitiveVertexCache.h Inventor/caches/SoPrimitiveVertexCache.h
   \brief This cache contains an organized version of the geometry in vertex array form.
 
-  \ingroup caches
+  \ingroup coin_caches
 
   \since Coin 3.0
 */
@@ -105,6 +105,25 @@ public:
       rgbavbo(NULL),
       tangentvbo(NULL)
   { }
+  ~SoPrimitiveVertexCacheP()
+  {
+    delete triangleindexer;
+    delete lineindexer;
+    delete pointindexer;
+    delete vertexvbo;
+    delete normalvbo;
+    delete texcoord0vbo;
+    delete rgbavbo;
+    delete tangentvbo;
+
+    for (int i = 0; i < multitexvbo.getLength(); i++) {
+      delete multitexvbo[i];
+    }
+    if (lastenabled >= 1) {
+      delete[] multitexcoords;
+    }
+    delete[] deptharray;
+  }
 
   class Vertex {
   public:
@@ -304,22 +323,6 @@ SoPrimitiveVertexCache::~SoPrimitiveVertexCache()
 
   }
 #endif // debug
-
-  delete PRIVATE(this)->triangleindexer;
-  delete PRIVATE(this)->lineindexer;
-  delete PRIVATE(this)->pointindexer;
-  delete PRIVATE(this)->vertexvbo;
-  delete PRIVATE(this)->normalvbo;
-  delete PRIVATE(this)->texcoord0vbo;
-  delete PRIVATE(this)->rgbavbo;
-
-  for (int i = 0; i < PRIVATE(this)->multitexvbo.getLength(); i++) {
-    delete PRIVATE(this)->multitexvbo[i];
-  }
-  if (PRIVATE(this)->lastenabled >= 1) {
-    delete[] PRIVATE(this)->multitexcoords;
-  }
-  delete [] PRIVATE(this)->deptharray;
 }
 
 SbBool 

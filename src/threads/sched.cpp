@@ -30,21 +30,18 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-/*! \file Inventor/C/threads/common.h */
-
 /*!
   \struct cc_sched common.h Inventor/C/threads/common.h
-  \ingroup threads
+  \ingroup coin_threads
   \brief The structure for the thread scheduler.
 */
 
 /*!
   \typedef struct cc_sched cc_sched
-  \ingroup threads
+  \ingroup coin_threads
   \brief The type definition for the thread scheduler structure.
 */
 
-/*! \file sched.h */
 #include <Inventor/C/threads/sched.h>
 
 #include <cassert>
@@ -164,7 +161,7 @@ sched_worker_entry_point(void * userdata)
     cc_mutex_unlock(sched->mutex);
     item->workfunc(item->closure);
     cc_mutex_lock(sched->mutex);
-    cc_memalloc_deallocate(sched->itemalloc, (void *)item);
+    cc_memalloc_deallocate(sched->itemalloc, item);
     if (sched->numallowed > 0) sched->numallowed--;
   }
   cc_mutex_unlock(sched->mutex);
@@ -266,8 +263,8 @@ cc_sched_schedule(cc_sched * sched,
   if (item->schedid == 0) {
     item->schedid = sched->schedid_counter++;
   }
-  cc_heap_add(sched->itemheap, (void *)item);
-  cc_dict_put(sched->schedid_dict, item->schedid, (void *)item);
+  cc_heap_add(sched->itemheap, item);
+  cc_dict_put(sched->schedid_dict, item->schedid, item);
   if (cc_dict_get_num_elements(sched->schedid_dict) == 1) {
     sched_try_trigger(sched);
   }

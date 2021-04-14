@@ -36,7 +36,6 @@
   Coin portable.
 */
 
-/*! \file tidbits.h */
 #include <Inventor/C/tidbits.h>
 
 #ifdef HAVE_CONFIG_H
@@ -1151,7 +1150,7 @@ coin_atexit_cleanup(void)
     }
     data->func();
     free(data->name);
-    free((void*)data);
+    free(data);
   }
 
   /* Close stdin/stdout/stderr if any of them have been opened */
@@ -1603,14 +1602,14 @@ coin_getcwd(cc_string * str)
 
   while ((cwd == NULL) && (errno == ERANGE)) {
     bufsize *= 2;
-    if (dynbuf != NULL) { free(dynbuf); }
+    free(dynbuf);
     dynbuf = (char *)malloc(bufsize);
     cwd = getcwd_wrapper(dynbuf, bufsize);
   }
   if (cwd == NULL) { cc_string_set_text(str, strerror(errno)); }
   else { cc_string_set_text(str, cwd); }
 
-  if (dynbuf != NULL) { free(dynbuf); }
+  free(dynbuf);
   return cwd ? TRUE : FALSE;
 }
 

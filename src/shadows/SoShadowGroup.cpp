@@ -34,7 +34,7 @@
   \class SoShadowGroup SoShadowGroup.h FXViz/nodes/SoShadowGroup.h
   \brief The SoShadowGroup node is a group node used for shadow rendering.
 
-  \ingroup fxviz
+  \ingroup coin_fxviz
 
   Children of this node can receive shadows, and cast shadows on other children.
   Use the SoShadowStyle node to control shadow casters and shadow receivers.
@@ -340,6 +340,7 @@
 #include "glue/glp.h"
 #include "misc/SoShaderGenerator.h"
 #include "caches/SoShaderProgramCache.h"
+#include "rendering/SoGL.h"
 
 // *************************************************************************
 
@@ -371,8 +372,13 @@ public:
     GLenum format = GL_RGBA;
     GLenum type = GL_FLOAT;
 
-    while (!coin_glglue_is_texture_size_legal(glue, maxsize, maxsize, 0, internalformat, format, type, TRUE)) {
+    while (!coin_glglue_is_texture_size_legal(glue, maxsize, maxsize, 0, internalformat, format, type, TRUE) && (maxsize != 0)) {
       maxsize >>= 1;
+    }
+    if (maxsize == 0) { // Can happen on CentOS 7 in VirtualBox
+      glGetIntegerv(GL_MAX_RENDERBUFFER_SIZE, &maxsize);
+      glGetIntegerv(GL_MAX_TEXTURE_SIZE, &maxtexsize);
+      if (maxtexsize < maxsize) maxsize = maxtexsize;
     }
     const int TEXSIZE = coin_geq_power_of_two((int) (sg->precision.getValue() * SbMin(maxsize, maxtexsize)));
 
@@ -515,23 +521,15 @@ public:
   }
 
   int dumpBitmap(const char * filename) const {
-    int width;
-    int height;
-    int comp;
-
     GLint vp[4];
     glGetIntegerv(GL_VIEWPORT, vp);
-    width = vp[2];
-    height = vp[3];
-    comp = 1;
+    int width = vp[2];
+    int height = vp[3];
+    int comp = 1;
 
     unsigned char * bytes = new unsigned char[width*height*comp];
     glFlush();
     glReadPixels(0,0, width, height, GL_RED, GL_UNSIGNED_BYTE, bytes);
-
-    int x, y, c;
-    unsigned char * tmpbuf;
-    unsigned char buf[500];
 
     FILE * fp = fopen(filename, "wb");
     if (!fp) {
@@ -550,13 +548,15 @@ public:
     write_short(fp, (unsigned short) height);
     write_short(fp, (unsigned short) comp);
 
+    unsigned char buf[500];
     memset(buf, 0, 500);
     buf[7] = 255; /* set maximum pixel value to 255 */
     strcpy((char *)buf+8, "https://github.com/coin3d/");
     fwrite(buf, 1, 500, fp);
 
-    tmpbuf = (unsigned char *) malloc(width);
+    unsigned char * tmpbuf = new unsigned char[width];
 
+    int x, y, c;
     for (c = 0; c < comp; c++) {
       for (y = 0; y < height; y++) {
         for (x = 0; x < width; x++) {
@@ -565,11 +565,11 @@ public:
         fwrite(tmpbuf, 1, width, fp);
       }
     }
-    free(tmpbuf);
+    delete [] tmpbuf;
     fclose(fp);
-    delete[] bytes;
+    delete [] bytes;
     return 1;
-  }
+  }	
   SbBox3f toCameraSpace(const SbXfBox3f & worldbox) const;
   static void shadowmap_glcallback(void * closure, SoAction * action);
   static void shadowmap_post_glcallback(void * closure, SoAction * action);
@@ -956,9 +956,10 @@ SoShadowGroupP::updateShadowLights(SoGLRenderAction * action)
     float gaussstandarddeviation = 0.6f;
 
     // just hardcode some values for now
-    if (smoothing > 0.9) gaussmatrixsize = 7;
-    else if (smoothing > 0.5) gaussmatrixsize = 5;
-    else if (smoothing > 0.01) gaussmatrixsize = 3;
+    // FIXME: reactivate when properly implemented
+    //if (smoothing > 0.9) gaussmatrixsize = 7;
+    //else if (smoothing > 0.5) gaussmatrixsize = 5;
+    //else if (smoothing > 0.01) gaussmatrixsize = 3;
 
     const cc_glglue * glue = cc_glglue_instance(SoGLCacheContextElement::get(state));
 
@@ -1406,6 +1407,7 @@ SoShadowGroupP::setVertexShader(SoState * state)
   int i;
   SoShaderGenerator & gen = this->vertexgenerator;
   gen.reset(FALSE);
+  gen.setVersion("#version 120");
 
   SbBool storedinvalid = SoCacheElement::setInvalid(FALSE);
 
@@ -1585,6 +1587,7 @@ SoShadowGroupP::setFragmentShader(SoState * state)
 
   SoShaderGenerator & gen = this->fragmentgenerator;
   gen.reset(FALSE);
+  gen.setVersion("#version 120");
 
   SbBool perpixelspot = FALSE;
   SbBool perpixelother = FALSE;
@@ -1837,13 +1840,11 @@ SoShadowGroupP::setFragmentShader(SoState * state)
     break;
   case SoEnvironmentElement::FOG:
     gen.addMainStatement("float fog = exp(-gl_Fog.density * gl_FogFragCoord);\n");
-    gen.setVersion("#version 110");
     break;
   case SoEnvironmentElement::SMOKE:
     gen.addMainStatement("float fogfrag =  gl_FogFragCoord;");
     gen.addMainStatement("float fogdens =  gl_Fog.density;");
     gen.addMainStatement("float fog = exp(-fogdens * fogdens * fogfrag * fogfrag);\n");
-    gen.setVersion("#version 110");
     break;
   }
   if (fogType != SoEnvironmentElement::NONE) {
@@ -2017,6 +2018,7 @@ SoShadowLightCache::createVSMProgram(void)
   SoShaderGenerator & fgen = this->vsm_fragment_generator;
 
   vgen.reset(FALSE);
+  vgen.setVersion("#version 120");
 
   SbBool dirlight = this->light->isOfType(SoDirectionalLight::getClassTypeId());
 
@@ -2028,6 +2030,7 @@ SoShadowLightCache::createVSMProgram(void)
   vshader->sourceType = SoShaderObject::GLSL_PROGRAM;
 
   fgen.reset(FALSE);
+  fgen.setVersion("#version 120");
 #ifdef DISTRIBUTE_FACTOR
   SbString str;
   str.sprintf("const float DISTRIBUTE_FACTOR = %.1f;\n", DISTRIBUTE_FACTOR);
@@ -2101,6 +2104,13 @@ SoShadowGroupP::shader_enable_cb(void * closure,
       if (enable) glEnable(GL_TEXTURE_2D);
       else glDisable(GL_TEXTURE_2D);
       cc_glglue_glActiveTexture(glue, GL_TEXTURE0);
+
+      GLenum glerror = sogl_glerror_debugging() ? glGetError() : GL_NO_ERROR;
+      while (glerror) {
+          SoDebugError::postWarning("SoShadowGroupP::shader_enable_cb",
+              "glError() = %d\n", glerror);
+          glerror = glGetError();
+      }
     }
   }
 }

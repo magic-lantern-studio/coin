@@ -34,7 +34,7 @@
   \class SoMarkerSet SoMarkerSet.h Inventor/nodes/SoMarkerSet.h
   \brief The SoMarkerSet class displays a set of 2D bitmap markers in 3D.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   This node uses the coordinates currently on the state (or in the
   vertexProperty field) in order. The numPoints field specifies the
@@ -138,10 +138,10 @@ SoMarkerSet::~SoMarkerSet()
 // ----------------------------------------------------------------------
 
 typedef struct {
+  unsigned char *data;
   int width;
   int height;
   int align;
-  unsigned char *data;
   SbBool deletedata;
 } so_marker;
 
@@ -157,7 +157,7 @@ free_marker_images(void)
     // markers have been added.. free marker->data
     for (int i = SoMarkerSet::NUM_MARKERS; i < markerlist->getLength(); i++) {
       so_marker * tmp = &(*markerlist)[i];
-      if (tmp->deletedata) delete tmp->data;
+      if (tmp->deletedata) delete[] tmp->data;
     }
   }
   delete markerlist;
@@ -199,7 +199,7 @@ SoMarkerSet::findMaterialBinding(SoState * const state) const
   return binding;
 }
 
-static char marker_char_bitmaps[] =
+static const char marker_char_bitmaps[] =
 {
   // CROSS_5_5
   "         "
@@ -1447,7 +1447,7 @@ SoMarkerSet::addMarker(int idx, const SbVec2s & size,
   temp->align = 1;
 
   int datasize = ((size[0] + 7) / 8) * size[1];
-  if (temp->deletedata) delete temp->data;
+  if (temp->deletedata) delete[] temp->data;
   temp->deletedata = TRUE;
   temp->data = new unsigned char[ datasize ];
   memcpy(temp->data,bytes,datasize);
@@ -1494,7 +1494,7 @@ SoMarkerSet::removeMarker(int idx)
   if (idx == NONE ||
       idx >= markerlist->getLength()) return FALSE;
   so_marker * tmp = &(*markerlist)[idx];
-  if (tmp->deletedata) delete tmp->data;
+  if (tmp->deletedata) delete[] tmp->data;
   markerlist->remove(idx);
   return TRUE;
 }

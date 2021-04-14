@@ -34,7 +34,7 @@
   \class SoTexture2 SoTexture2.h Inventor/nodes/SoTexture2.h
   \brief The SoTexture2 class is used to map a 2D texture onto subsequent geometry in the scene graph.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   Shape nodes within the scope of SoTexture2 nodes in the scene graph
   (i.e. below the same SoSeparator and to the right hand side of the
@@ -376,12 +376,11 @@
 
 class SoTexture2P {
 public:
-  int readstatus;
   SoGLImage * glimage;
-  SbBool glimagevalid;
   SoFieldSensor * filenamesensor;
-
   static SbMutex * mutex;
+  int readstatus;
+  SbBool glimagevalid;
 
   static void cleanup(void) {
     delete SoTexture2P::mutex;

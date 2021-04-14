@@ -37,7 +37,7 @@
   \brief implements the &lt;event&gt; SCXML element.
 
   \since Coin 3.1
-  \ingroup scxml
+  \ingroup coin_scxml
 */
 
 #include <cassert>
@@ -170,7 +170,7 @@ ScXMLEventElt::search(const char * attrname, const char * attrvalue) const
     return hit;
   }
   if (strcmp(attrname, "name") == 0) {
-    if (this->name && strcmp(attrvalue, this->name)) {
+    if (this->name && (strcmp(attrvalue, this->name) == 0)) {
       return this;
     }
   }

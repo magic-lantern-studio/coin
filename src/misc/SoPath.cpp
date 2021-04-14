@@ -34,7 +34,7 @@
   \class SoPath SoPath.h Inventor/SoPath.h
   \brief The SoPath class is a container class for traversal path descriptions.
 
-  \ingroup general
+  \ingroup coin_general
 
   SoPath objects contain a list of SoNode pointers and a list of child
   indices. Indices are necessary to disambiguate situations where a
@@ -265,7 +265,7 @@ SoPath::append(SoNode * const node)
   }
 #endif // COIN_DEBUG
 
-  const int idx = children->find((void *)node);
+  const int idx = children->find(node);
 #if COIN_DEBUG
   if (idx < 0) {
     SoDebugError::post("SoPath::append",
@@ -1093,7 +1093,7 @@ SoPath::getTypeId(void) const
 void *
 SoPath::createInstance(void)
 {
-  return (void *)new SoPath;
+  return new SoPath;
 }
 
 /*!

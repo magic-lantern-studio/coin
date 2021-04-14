@@ -30,16 +30,15 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-/*! \file ScXMLStateMachine.h */
-#include <Inventor/scxml/ScXMLStateMachine.h>
-
 /*!
   \class ScXMLStateMachine ScXMLStateMachine.h Inventor/scxml/ScXMLStateMachine.h
   \brief Manager for processing events and setting states in SCXML structures.
 
   \since Coin 3.0
-  \ingroup scxml
+  \ingroup coin_scxml
 */
+
+#include <Inventor/scxml/ScXMLStateMachine.h>
 
 #ifdef _MSC_VER
 #pragma warning(disable:4786) // symbol truncated
@@ -376,8 +375,8 @@ ScXMLStateMachine::processOneEvent(const ScXMLEvent * event)
   if (PRIVATE(this)->activestatelist.size() == 0) {
     if (PRIVATE(this)->initializer.get() == NULL) {
       PRIVATE(this)->initializer.reset(new ScXMLTransitionElt);
-      // FIXME
       if (PRIVATE(this)->description->getRoot()->getInitial()) {
+        // FIXME: implement proper action
       } else {
         PRIVATE(this)->initializer->setTargetAttribute(PRIVATE(this)->description->getRoot()->getInitialAttribute());
       }
@@ -934,7 +933,7 @@ ScXMLStateMachine::PImpl::enterState(ScXMLElt * object)
     const ScXMLElt * container = final->getContainer();
     assert(container);
     const char * id = container->getXMLAttribute("id");
-    if (!id || strlen(id) == 0) {
+    if (!id || id[0] == '\0') {
       if (container->isOfType(ScXMLDocument::getClassTypeId())) {
         // there is not ParentID to post a ParentID.done event in
         // this case. study SCXML state to see what to do?
