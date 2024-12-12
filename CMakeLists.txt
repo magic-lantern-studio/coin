@@ -103,6 +103,8 @@ cmake_dependent_option(COIN_BUILD_MAC_FRAMEWORK "Build framework instead of dyli
 cmake_dependent_option(COIN_BUILD_MAC_X11 "Build for X11 on Mac OS X when ON. Default is OFF." OFF "APPLE" OFF)
 cmake_dependent_option(COIN_BUILD_MAC_AGL "Build for AGL on Mac OS X when ON. Default is OFF." OFF "APPLE" OFF)
 
+option(MAGIC_LANTERN "Enable Magic Lantern features when ON, disable with OFF." OFF)
+
 check_include_file_cxx(thread HAVE_STD_THREAD)
 cmake_dependent_option(COIN_DEBUG_CHECK_THREAD "Enable thread check in several central Coin functions." OFF "HAVE_STD_THREAD" OFF)
 
@@ -134,6 +136,7 @@ report_prepare(
   ZLIB_RUNTIME_LINKING
   GLU_RUNTIME_LINKING
   SPIDERMONKEY_RUNTIME_LINKING
+  MAGIC_LANTERN
   HAVE_MULTIPLE_VERSION
   IF_APPLE
     COIN_BUILD_MAC_FRAMEWORK
@@ -906,6 +909,12 @@ endif()
 #                 DESCRIPTION "Enabled Features:"
 #                 VAR enabledFeaturesText)
 # message(STATUS "${enabledFeaturesText}")
+
+# ############################################################################
+# Magic Lantern section
+if (MAGIC_LANTERN)
+  add_compile_definitions(MAGICLANTERN)
+endif()
 
 # ############################################################################
 # New CPACK section, please see the README file inside cpack.d directory.

@@ -99,9 +99,13 @@ void CoinStaticObjectInDLL::deactivateMutex(void) { assert(FALSE); }
 // Coin library is loaded for the same process image -- and we'll
 // throw up the error message box.
 
-#if 1 // enable / disable the check -- provides a quick workaround in
+#ifndef MAGICLANTERN // enable / disable the check -- provides a quick workaround in
       // case someone runs into trouble with it.
 static CoinStaticObjectInDLL dllobject;
+#else
+// Magic Lantern disables the check because the player uses _execvp to fork another
+// player which initializes the SoDB again (the check uses a static handle to a mutex
+// which is not released by the parent process of the execed child.
 #endif // enable / disable
 
 // *************************************************************************
