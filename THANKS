@@ -6,7 +6,7 @@ Laurent Ach
 Mark B. Allan
 Gustavo Alvarez
 George Alverson
-Jahn Otto Næsgaard Andersen
+Jahn Otto NÃ¦sgaard Andersen
 Mark D Anderson
 Erik Antelman
 Amit Aronovitch
@@ -20,6 +20,7 @@ Alban Bergeret
 Tor Gunnar Berland
 Tony Bernardin
 Sigmund L Berntsen
+Riccardo Maria Bianchi
 David Binderman
 Wouter Bosma
 Yorick Bosman
@@ -31,6 +32,7 @@ Bert Bril
 Philip Bruvoll
 Oswald Buddenhagen
 Francesco Callari
+captain0xff
 Sylvain Carette
 Peter Cech
 Eunjun Choi
@@ -45,7 +47,7 @@ Bernard Cupic
 Larry D'Cunha
 David Daish
 Konstantinos Dalamagkidis
-Philippe Debanné
+Philippe DebannÃ©
 Klaas Dellschaft
 Gabriel Devenyi
 Colin Dunlop
@@ -53,10 +55,10 @@ Christopher Dyken
 Jean-Pierre Eckmann
 Marc Eilhard
 Volker Enderlein
-Pål-Robert Engnæs
+PÃ¥l-Robert EngnÃ¦s
 Andreas Erz
 Marco Esposito
-Sven-Kåre Evenseth
+Sven-KÃ¥re Evenseth
 Tamer Fahmy
 Nikolay Fedorov
 Andrew Fischer
@@ -74,10 +76,11 @@ Brad Grantham
 Adriaan de Groot
 John Kenneth Milli Grytten
 Philippe Guigue
-Rico Häuselmann
+Rico HÃ¤uselmann
 Yvon Halbwachs
 Nick Halper
 Daniel Hams
+Steve Hanslow
 James Hargrave
 Todd Harrington
 Denny He
@@ -86,10 +89,10 @@ Fernando Vega Higuera
 David Himes
 Heiko Hoffmann
 Loring Holden
-Øystein Hole
+Ã˜ystein Hole
 Falk Hueffner
 Nicolas Hubschwerlen
-Per Øyvind Hvidsten
+Per Ã˜yvind Hvidsten
 Lars Ivar Igesund
 Peter Ivanyi
 Gregor Jasny
@@ -113,40 +116,47 @@ Flo Ledermann
 Kusnadi Liem
 Frank Lindeman
 Nathan Litke
-Tarjei Kvamme Løset
+Tarjei Kvamme LÃ¸set
 Michael Mandel
 Clemens von Mann
-Gaëtan Marti
+Dmitry Marakasov
+GaÃ«tan Marti
 Roberto Martinez
+JoÃ£o Matos
+Chris Mayo
 Stefan Meinlschmidt
 Stewart Milberger
+Mark Millard
 Richard Mitton
 Thomas Moeller
 Marius Bugge Monsen
 Edward Moyse
 Maciej Mrozowski
 Nigel Murry
-Juha Mäkipelto
+Juha MÃ¤kipelto
+Kaz Nishimura
 Kevin Nolan
 Robert Derek Norris
 Peter O'Gorman
 Johannes Obermayr
 Ianna Osborne
-François Painchaud
+Jacob Oursland
+FranÃ§ois Painchaud
 Alexey Pavlov
 Jan Peciva, aka PCJohn
 Piotr Pietraszkiewicz
 Sebastian Pipping
 Konstantin Podsvirov
 Conrad Poelman
+Egor Puzanov
 Robert Radtke
 Stefan Rauch
 Petter Reinholdtsen
 Bernhard Reitinger
 Gerhard Reitmayr
-Sören Rex
+SÃ¶ren Rex
 Markus Rickert
-Jürgen Riegel
+JÃ¼rgen Riegel
 Felix Ritter
 Steve M. Robbins
 Eric Rose
@@ -159,11 +169,12 @@ Aleksandar B. Samardzic
 Eigil Samset
 Chris Scharver
 Nico Schmidt
-Florian Schröcker
+Arvin Schnell
+Florian SchrÃ¶cker
 Guenter Schwann
 Rolv Inge Seehuus
 Tor-Helge Skei
-Ingve Morten Skjældal
+Ingve Morten SkjÃ¦ldal
 Arne Sletteng
 Rob Smallshire
 Dan Smith
@@ -177,14 +188,15 @@ Kjartan Stefansson
 Dan Stewart
 Jochen Stier
 Christian Stussak
-Jens Jacob Støren
+Jens Jacob StÃ¸ren
 Joachim Tesch
+tetektoza
 Sveinung Thunes
 Kristofer Tingdahl
-Trond Arild Tjøstheim
+Trond Arild TjÃ¸stheim
 Vinh To
 Jostein Topland
-Morten Jæger Torkildsen
+Morten JÃ¦ger Torkildsen
 Rune Torkildsen
 Nicolas Trebst
 Lassi A Tuura
@@ -194,7 +206,7 @@ Parul Verma
 Gerard Vermeulen
 Christoph Vetter
 Morten Vold
-H. Väisänen
+H. VÃ¤isÃ¤nen
 Bernd Waibel
 Alan Walford
 Roy Walmsley

@@ -897,7 +897,7 @@ SoDB::createGlobalField(const SbName & name, SoType type)
 #if COIN_DEBUG
   if (!type.canCreateInstance()) {
     SoDebugError::postWarning("SoDB::createGlobalField",
-                              "Can't create instance of field type ``%s''.",
+                              "Can't create instance of field type \"%s\".",
                               type.getName().getString());
     return NULL;
   }
@@ -1094,8 +1094,8 @@ SoDB::addConverter(SoType from, SoType to, SoType converter)
   if (!nonexist) {
 #if COIN_DEBUG
     SoDebugError::postWarning("SoDB::addConverter",
-                              "Conversion from ``%s'' to ``%s'' is already "
-                              "handled by instances of ``%s''",
+                              "Conversion from \"%s\" to \"%s\" is already "
+                              "handled by instances of \"%s\"",
                               from.getName().getString(),
                               to.getName().getString(),
                               converter.getName().getString());
@@ -1699,7 +1699,6 @@ SoDB::removeRoute(SoNode * fromnode, const char * eventout,
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoRotationXYZ.h>
-#include <boost/detail/workaround.hpp>
 
 BOOST_AUTO_TEST_CASE(globalRealTimeField)
 {
@@ -1724,6 +1723,7 @@ readErrorHandler(const SoError * error, void * data)
 {
 }
 
+#ifdef HAVE_VRML97
 BOOST_AUTO_TEST_CASE(readChildList)
 {
   static const char scene[] = "#VRML V2.0 utf8\n"
@@ -1740,6 +1740,7 @@ BOOST_AUTO_TEST_CASE(readChildList)
   }
   root->unref();
 }
+#endif
 
 BOOST_AUTO_TEST_CASE(readEmptyChildList)
 {

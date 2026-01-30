@@ -890,36 +890,30 @@ SoDragger::getPartToLocalMatrix(const SbName & partname, SbMatrix & parttolocalm
   // ref, in case somebody is operating on a zero-ref instance to the
   // dragger.
   this->ref();
+  // we need to create a path from the root node, since
+  // SoSurroundScale nodes need the entire path to calculate the
+  // surround parameters correctly.
+  SoPath * pathtothis = this->createPathToThis();
+  assert(pathtothis);
+  pathtothis->ref();
+  SoPath * path = reclassify_cast<SoPath *>(this->createPathToAnyPart(partname, FALSE, FALSE, FALSE, pathtothis));
+  assert(path);
+  pathtothis->unref();
 
-  // Don't do this if the cache has never been updated.
-  // Modified for Magic Lantern and SoTransformer2Dragger.
-  if (PRIVATE(this)->draggercache)
-  {
-    // we need to create a path from the root node, since
-    // SoSurroundScale nodes need the entire path to calculate the
-    // surround parameters correctly.
-    SoPath * pathtothis = this->createPathToThis();
-    assert(pathtothis);
-    pathtothis->ref();
-    SoPath * path = reclassify_cast<SoPath *>(this->createPathToAnyPart(partname, FALSE, FALSE, FALSE, pathtothis));
-    assert(path);
-    pathtothis->unref();
+  path->ref();
+  SoGetMatrixAction action(PRIVATE(this)->viewport);
+  action.apply(path);
+  SbMatrix p2w = action.getMatrix();
+  SbMatrix w2p = action.getInverse();
+  path->unref();
 
-    path->ref();
-    SoGetMatrixAction action(PRIVATE(this)->viewport);
-    action.apply(path);
-    SbMatrix p2w = action.getMatrix();
-    SbMatrix w2p = action.getInverse();
-    path->unref();
+  // premultiply with matrix to/from this dragger to remove
+  // contributions before the dragger.
+  parttolocalmatrix = p2w;
+  parttolocalmatrix.multRight(this->getWorldToLocalMatrix());
 
-    // premultiply with matrix to/from this dragger to remove
-    // contributions before the dragger.
-    parttolocalmatrix = p2w;
-    parttolocalmatrix.multRight(this->getWorldToLocalMatrix());
-
-    localtopartmatrix = this->getLocalToWorldMatrix();
-    localtopartmatrix.multRight(w2p);
-  }
+  localtopartmatrix = this->getLocalToWorldMatrix();
+  localtopartmatrix.multRight(w2p);
 
   // we ref'ed at the beginning of the function
   this->unrefNoDelete();

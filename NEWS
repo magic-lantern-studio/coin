@@ -1,3 +1,53 @@
+New in Coin v4.0.7 (2026-01-18):
+* bugfixes:
+  - Fixed check for platform GL binding
+  - Fixed build issue with Boost 1.90
+  - Ensure cc_glglue_context_can_render_to_texture() always returns a value
+
+New in Coin v4.0.6 (2025-10-09):
+* bugfixes:
+  - Fixed SoShape::getScreenSize to handle empty bounding box case
+  - Fixed EGL and GLX handling on Wayland
+  - Applied Debian patch for fixing compatibility with 64-bit time_t
+
+New in Coin v4.0.5 (2025-08-04):
+* new:
+  - Added SDL3 example.
+* bugfixes:
+  - More robust EGL display initilization.
+  - Added a clipping offset dependent on bounding box size.
+  - Only use GLX on platforms with X11.
+
+New in Coin v4.0.4 (2025-06-24):
+* new:
+  - Added EGL support
+  - added support for building Coin as subdirectory
+  - introduced shaded hidden lines visual style
+* bugfixes:
+  - fixed calling deleteAll on invalid pointers in SoCallbackAction
+  - updated cmake_minimum_required command to support CMake >= 3.30
+  - fixed crash in SoVRMLBackground::GLRender due to unchecked pointer
+  - fixed regression due to removed cc_glglue initialization
+  - transfer ANSI encoded files to UTF-8
+  - fixed invalid access when removing callback
+  - fixed macro handling to avoid conflicts with Microsoft Win32 API headers
+  - fixed typos and weird string outputs
+  - fixed format string vulnerabilities
+  - minor optimization to avoid repeated calculation of identity rotation
+  - minor optimization to avoid needless matrix multiplications
+
+New in Coin v4.0.3 (2024-09-02):
+* new:
+  - set minimum standard needed to compile Coin to C++11
+  - added support for building modern styled documentation
+* bugfixes:
+  - fixed LTOcompilation ODR error
+  - fixed suspicious increment in SbProfilingData.cpp
+  - fixed SbTri3f intersect calculation
+  - improved auto clipping
+  - fixed orthographic autoclipping by allowing negative farDistance
+  - fixed rotating a VRMLBackground node with its ancestors' rotations
+
 New in Coin v4.0.2 (2023-12-03):
 * bugfixes:
   - ABI compatibility to version 4.0.0 was inadvertently changed and restored

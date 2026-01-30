@@ -54,8 +54,7 @@
 
 #include <TestSuiteUtils.h>
 
-#define BOOST_TEST_NO_LIB 1
-#include <boost/test/unit_test.hpp>
+#include "CoinTest.h"
 
 
 
@@ -280,7 +279,7 @@ namespace {
     char buf[1024];
 #ifdef USE_POSIX
     if (!getcwd(buf,sizeof(buf)))
-      return NULL;
+      return "";
 #endif //USE_POSIX
 #ifdef USE_WIN32
     GetCurrentDirectory(sizeof(buf),buf);

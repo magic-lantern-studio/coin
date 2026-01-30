@@ -1,5 +1,10 @@
 /*!
 \page coin_new_features New Features in Coin
+- \subpage coin407 "New Features in Coin v4.0.7"
+- \subpage coin406 "New Features in Coin v4.0.6"
+- \subpage coin405 "New Features in Coin v4.0.5"
+- \subpage coin404 "New Features in Coin v4.0.4"
+- \subpage coin403 "New Features in Coin v4.0.3"
 - \subpage coin402 "New Features in Coin v4.0.2"
 - \subpage coin401 "New Features in Coin v4.0.1"
 - \subpage coin400 "New Features in Coin v4.0.0"
@@ -18,12 +23,94 @@
 */ 
 
 /**
+\page coin407 New Features in Coin v4.0.7
+
+This is a bugfix release.
+
+Bug fixes:
+- Fixed check for platform GL binding.
+- Fixed build issue with Boost 1.90.
+- Ensure cc_glglue_context_can_render_to_texture() always returns a value.
+
+*/
+
+/**
+\page coin406 New Features in Coin v4.0.6
+
+This is a bugfix release.
+
+Bug fixes:
+- Fixed SoShape::getScreenSize to handle empty bounding box case.
+- Fixed EGL and GLX handling on Wayland.
+- Applied Debian patch for fixing compatibility with 64-bit time_t.
+
+*/
+
+/**
+\page coin405 New Features in Coin v4.0.5
+
+This is a bugfix release.
+
+This is a brief summary of the new features in Coin v4.0.5:
+- Added SDL3 example.
+
+Bug fixes:
+- More robust EGL display initilization.
+- Added a clipping offset dependent on bounding box size.
+- Only use GLX on platforms with X11.
+
+*/
+
+/**
+\page coin404 New Features in Coin v4.0.4
+
+This is a bugfix release.
+
+This is a brief summary of the new features in Coin v4.0.4:
+- Added EGL support.
+- Added support for building Coin as subdirectory.
+- Added shaded hidden lines visual style.
+
+Bug fixes:
+- Fixed calling deleteAll on invalid pointers in SoCallbackAction.
+- Updated cmake_minimum_required command to support CMake >= 3.30.
+- Fixed crash in SoVRMLBackground::GLRender due to unchecked pointer.
+- Fixed regression due to removed cc_glglue initialization.
+- Transferred ANSI encoded files to UTF-8.
+- Fixed invalid access when removing callback.
+- Fixed macro handling to avoid conflicts with Microsoft Win32 API headers.
+- Fixed typos and weird string outputs.
+- Fixed format string vulnerabilities.
+- Minor optimization to avoid repeated calculation of identity rotation.
+- Minor optimization to avoid needless matrix multiplications.
+
+*/
+
+/**
+\page coin403 New Features in Coin v4.0.3
+
+This is a bugfix release.
+
+This is a brief summary of the new features in Coin v4.0.3:
+- Added support for building modern styled documentation.
+- Set minimum C++ standard needed to compile Coin to C++11.
+
+Bug fixes:
+- Fixed LTOcompilation ODR error.
+- Fixed suspicious increment in SbProfilingData.cpp.
+- Fixed SbTri3f intersect calculation.
+- Improved auto clipping.
+- Fixed orthographic autoclipping by allowing negative farDistance.
+- Fixed rotating a VRMLBackground node with its ancestors' rotations.
+
+*/
+
+/**
 \page coin402 New Features in Coin v4.0.2
 
 This is a bugfix release.
 
-This is a brief summary of the new features in Coin v4.0.2:
-
+Bug fixes:
 - Restored ABI compatibility with version 4.0.0 that was inadvertently changed in v4.0.1.
 - Fixed numerous typos found by Codespell.
 

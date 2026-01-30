@@ -15,7 +15,7 @@
 # release version number info
 m4_define([COIN_MAJOR], [4])
 m4_define([COIN_MINOR], [0])
-m4_define([COIN_MICRO], [2])
+m4_define([COIN_MICRO], [7])
 m4_define([COIN_BETA], [])
 
 # This is probably a more correct setup, but will be harder to keep if
@@ -1406,16 +1406,6 @@ if $coin_can_do_runtime_linking; then
 fi
 
 # *******************************************************************
-# * Check for Boost headers (up to now only header only libraries are
-# * used in Coin.
-# *******************************************************************
-
-AX_BOOST_BASE([1.45.0], [
-  CPPFLAGS="$CPPFLAGS $BOOST_CPPFLAGS"
-  COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $BOOST_CPPFLAGS"
-], [])
-
-# *******************************************************************
 # * Set us up for using the simage library (if wanted, and if
 # * available).
 # *******************************************************************
@@ -2658,4 +2648,3 @@ fi
 SIM_AC_CONFIGURATION_SUMMARY
 
 echo ""
-

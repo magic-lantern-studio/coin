@@ -1,4 +1,4 @@
-version: 4.0.2-{branch}-ci-{build}
+version: 4.0.3-{branch}-ci-{build}
 
 branches:
   only:
@@ -15,7 +15,7 @@ matrix:
   fast_finish: true # set this flag to immediately finish build once one of the jobs fails.
 
 environment:
-  SUPERGLU_VERSION: 1.3.1
+  SUPERGLU_VERSION: 1.3.2
   GH_AUTH_TOKEN:
     secure: 850frgRGZcc4Cljd2P7Ej68no4/kkl4EMB+DjnX725wcKBRJuFk/kGRdJGyKXd2u
   matrix:
@@ -34,42 +34,36 @@ environment:
 # older compilers are supported in a separate appveyor project
 
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-      BOOST_VERSION: 1_69_0
       CMAKE_GENERATOR: 'Visual Studio 10 2010'
       CMAKE_ARCHITECTURE: Win32
       CMAKE_PLATFORM: x86
       COMPILER_ID: msvc10
 
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-      BOOST_VERSION: 1_69_0
       CMAKE_GENERATOR: 'Visual Studio 10 2010'
       CMAKE_ARCHITECTURE: x64
       CMAKE_PLATFORM: x64
       COMPILER_ID: msvc10
 
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-      BOOST_VERSION: 1_69_0
       CMAKE_GENERATOR: 'Visual Studio 14 2015'
       CMAKE_ARCHITECTURE: Win32
       CMAKE_PLATFORM: x86
       COMPILER_ID: msvc14
 
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-      BOOST_VERSION: 1_69_0
       CMAKE_GENERATOR: 'Visual Studio 14 2015'
       CMAKE_ARCHITECTURE: x64
       CMAKE_PLATFORM: x64
       COMPILER_ID: msvc14
 
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-      BOOST_VERSION: 1_69_0
       CMAKE_GENERATOR: 'Visual Studio 15 2017'
       CMAKE_ARCHITECTURE: Win32
       CMAKE_PLATFORM: x86
       COMPILER_ID: msvc15
 
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-      BOOST_VERSION: 1_69_0
       CMAKE_GENERATOR: 'Visual Studio 15 2017'
       CMAKE_ARCHITECTURE: x64
       CMAKE_PLATFORM: x64
@@ -78,28 +72,24 @@ environment:
 # newer compilers are supported in a separate appveyor project
 #
 #    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-#      BOOST_VERSION: 1_71_0
 #      CMAKE_GENERATOR: 'Visual Studio 16 2019'
 #      CMAKE_ARCHITECTURE: Win32
 #      CMAKE_PLATFORM: x86
 #      COMPILER_ID: msvc16
 #
 #    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-#      BOOST_VERSION: 1_71_0
 #      CMAKE_GENERATOR: 'Visual Studio 16 2019'
 #      CMAKE_ARCHITECTURE: x64
 #      CMAKE_PLATFORM: x64
 #      COMPILER_ID: msvc16
 #
 #    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
-#      BOOST_VERSION: 1_77_0
 #      CMAKE_GENERATOR: 'Visual Studio 17 2022'
 #      CMAKE_ARCHITECTURE: Win32
 #      CMAKE_PLATFORM: x86
 #      COMPILER_ID: msvc17
 #
 #    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
-#      BOOST_VERSION: 1_77_0
 #      CMAKE_GENERATOR: 'Visual Studio 17 2022'
 #      CMAKE_ARCHITECTURE: x64
 #      CMAKE_PLATFORM: x64
@@ -119,7 +109,7 @@ install:
   - cmd: |
       choco install jq
       rem Work around for outdated curl version giving problems with GitHub Authentication when redirected.
-      set PATH=%APPVEYOR_BUILD_FOLDER%\downloads\doxygen-1.8.14;C:\msys64\%COMPILER_ID%\bin;C:\msys64\usr\bin;%PATH%
+      set PATH=C:\msys64\%COMPILER_ID%\bin;C:\msys64\usr\bin;%PATH%
       curl --version
       cd %APPVEYOR_BUILD_FOLDER%
   - git submodule update --init --recursive
@@ -133,10 +123,6 @@ before_build:
       C:\msys64\usr\bin\md5sum.exe -b %BUILD_SOURCE_ARCHIVE% > %BUILD_SOURCE_ARCHIVE%.md5
       C:\msys64\usr\bin\sha256sum.exe -b %BUILD_SOURCE_ARCHIVE% > %BUILD_SOURCE_ARCHIVE%.sha256
       mkdir %APPVEYOR_BUILD_FOLDER%\downloads
-      rem set DOWNLOAD_FILE_DOXYGEN=doxygen-1.8.14.windows.x64.bin.zip
-      rem appveyor DownloadFile https://sourceforge.net/projects/doxygen/files/rel-1.8.14/%DOWNLOAD_FILE_DOXYGEN% -FileName %DOWNLOAD_FILE_DOXYGEN%
-      rem 7z x %DOWNLOAD_FILE_DOXYGEN% -o%APPVEYOR_BUILD_FOLDER%\downloads\doxygen-1.8.14
-      rem doxygen --version
       rem ##############
       if defined APPVEYOR_REPO_TAG_NAME (set SUPERGLU_REPO_VERSION=%SUPERGLU_VERSION%) else (set SUPERGLU_REPO_VERSION=latest)
       if defined APPVEYOR_REPO_TAG_NAME (set SUPERGLU_REPO_TAG_NAME=v%SUPERGLU_VERSION%) else (set SUPERGLU_REPO_TAG_NAME=CI-builds)
@@ -148,7 +134,7 @@ before_build:
       curl -s -S -L -H "Authorization: token %GH_AUTH_TOKEN%" -H "Accept: application/octet-stream" -o %DOWNLOAD_FILE_SUPERGLU% %DOWNLOAD_ADDRESS_SUPERGLU%
       7z x %DOWNLOAD_FILE_SUPERGLU% -o%APPVEYOR_BUILD_FOLDER%\downloads
       rem ##############
-      cmake -H. -Bbuild -G "%CMAKE_GENERATOR%" -A %CMAKE_ARCHITECTURE% -DCMAKE_INSTALL_PREFIX=%APPVEYOR_BUILD_FOLDER%\Coin3D -DCMAKE_PREFIX_PATH=%APPVEYOR_BUILD_FOLDER%\downloads\Coin3D -DBOOST_ROOT=C:\Libraries\boost_%BOOST_VERSION% -DUSE_SUPERGLU=ON
+      cmake -H. -Bbuild -G "%CMAKE_GENERATOR%" -A %CMAKE_ARCHITECTURE% -DCMAKE_INSTALL_PREFIX=%APPVEYOR_BUILD_FOLDER%\Coin3D -DCMAKE_PREFIX_PATH=%APPVEYOR_BUILD_FOLDER%\downloads\Coin3D -DUSE_SUPERGLU=ON
 
 build_script:
   - cmd: |

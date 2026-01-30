@@ -48,6 +48,17 @@
 */
 
 #include <Inventor/SoRenderManager.h>
+#include <Inventor/elements/SoLinePatternElement.h>
+#include <Inventor/elements/SoLineWidthElement.h>
+#include <Inventor/elements/SoDrawStyleElement.h>
+#include <Inventor/elements/SoLightModelElement.h>
+#include <Inventor/elements/SoMaterialBindingElement.h>
+#include <Inventor/elements/SoPolygonOffsetElement.h>
+#include <Inventor/elements/SoOverrideElement.h>
+#include <Inventor/elements/SoTextureQualityElement.h>
+#include <Inventor/elements/SoTextureOverrideElement.h>
+#include <Inventor/elements/SoComplexityTypeElement.h>
+#include <Inventor/elements/SoLazyElement.h>
 
 #include <algorithm>
 //FIXME:Need this include early, since including it via SoRenderManagerP.h will cause problems for cygwin. Don't understand the root cause BFG 20090629
@@ -78,7 +89,7 @@
 #include "misc/AudioTools.h"
 #include "coindefs.h"
 
-#if BOOST_WORKAROUND(COIN_MSVC, <= COIN_MSVC_6_0_VERSION)
+#if COIN_WORKAROUND(COIN_MSVC, <= COIN_MSVC_6_0_VERSION)
 // symbol length truncation
 #pragma warning(disable:4786)
 #endif // VC6.0
@@ -126,6 +137,12 @@
   \var SoRenderManager::RenderMode SoRenderManager::BOUNDING_BOX
 
   Only show the bounding box of each object.
+*/
+
+/*!
+  \var SoRenderManager::RenderMode SoRenderManager::SHADED_HIDDEN_LINES
+
+  Render dashed hidden lines with solid visible lines using three-pass rendering approach.
 */
 
 /*!
@@ -270,6 +287,11 @@ SoRenderManager::SoRenderManager(void)
 
   PRIVATE(this)->glaction = new SoGLRenderAction(SbViewportRegion(400, 400));
   PRIVATE(this)->audiorenderaction = new SoAudioRenderAction;
+
+  PRIVATE(this)->clipsensor = NULL;
+  //  new SoNodeSensor(SoRenderManagerP::updateClippingPlanesCB, PRIVATE(this));
+  //PRIVATE(this)->clipsensor->setPriority(this->getRedrawPriority() - 1);
+
 }
 
 /*!
@@ -291,6 +313,8 @@ SoRenderManager::~SoRenderManager()
     delete PRIVATE(this)->superimpositions;
   }
 
+  //delete PRIVATE(this)->clipsensor;
+
   if (PRIVATE(this)->scene)
     PRIVATE(this)->scene->unref();
   this->setCamera(NULL);
@@ -309,6 +333,7 @@ SoRenderManager::~SoRenderManager()
 void
 SoRenderManager::setSceneGraph(SoNode * const sceneroot)
 {
+  //this->detachClipSensor();
   this->detachRootSensor();
   // Don't unref() until after we've set up the new root, in case the
   // old root == the new sceneroot. (Just to be that bit more robust.)
@@ -319,6 +344,7 @@ SoRenderManager::setSceneGraph(SoNode * const sceneroot)
   if (PRIVATE(this)->scene) {
     PRIVATE(this)->scene->ref();
     this->attachRootSensor(PRIVATE(this)->scene);
+    //this->attachClipSensor(PRIVATE(this)->scene);
   }
   
   if (oldroot) oldroot->unref();
@@ -410,6 +436,38 @@ SoRenderManager::detachRootSensor(void)
   if (PRIVATE(this)->rootsensor) {
     PRIVATE(this)->rootsensor->detach();
   }
+}
+
+/*
+  Attaches this SoRenderManagers clipsensor to a scene
+
+  \param[in] sceneroot scene to attach to
+
+  \deprecated Will not be available in Coin 5
+*/
+void
+SoRenderManager::attachClipSensor(SoNode * const sceneroot)
+{
+  //PRIVATE(this)->clipsensor->attach(sceneroot);
+  //if (PRIVATE(this)->autoclipping != SoRenderManager::NO_AUTO_CLIPPING) {
+  //  PRIVATE(this)->clipsensor->schedule();
+  //}
+}
+
+/*
+  Detaches the clipsensor from all tracked scenes
+
+  \deprecated Will not be available in Coin 5
+*/
+void
+SoRenderManager::detachClipSensor(void)
+{
+  //if (PRIVATE(this)->clipsensor->isScheduled()) {
+  //  PRIVATE(this)->clipsensor->unschedule();
+  //}
+  //if (PRIVATE(this)->clipsensor->getAttachedNode()) {
+  //  PRIVATE(this)->clipsensor->detach();
+  //}
 }
 
 /*!
@@ -810,6 +868,56 @@ SoRenderManager::renderSingle(SoGLRenderAction * action,
       this->actuallyRender(action, initmatrices, FALSE, FALSE);
     }
     break;
+  case SoRenderManager::SHADED_HIDDEN_LINES:
+    {
+      // three-pass approach, faces first, visible edges as solid lines
+      // and then hidden lines as dashed lines
+
+      // pass 1
+      SoDrawStyleElement::set(state, node, SoDrawStyleElement::FILLED);
+      SoLightModelElement::set(state, node, SoLightModelElement::PHONG);
+      SoPolygonOffsetElement::set(state, node, 1.0f, 1.0f,
+                                  SoPolygonOffsetElement::FILLED, TRUE);
+      SoOverrideElement::setDrawStyleOverride(state, node, TRUE);
+      SoOverrideElement::setLightModelOverride(state, node, TRUE);
+      SoOverrideElement::setPolygonOffsetOverride(state, node, TRUE);
+      
+      // render all faces
+      this->actuallyRender(action, initmatrices, clearwindow, clearzbuffer);
+
+      // pass 2
+      SoDrawStyleElement::set(state, node, SoDrawStyleElement::LINES);
+      SoPolygonOffsetElement::set(state, node, 0.0f, 0.0f,
+                                  SoPolygonOffsetElement::FILLED, FALSE);
+      SoOverrideElement::setDrawStyleOverride(state, node, TRUE);
+      SoOverrideElement::setPolygonOffsetOverride(state, node, TRUE);
+      
+      // sanity checks
+      glDisable(GL_LINE_STIPPLE);
+      glDepthMask(GL_FALSE);
+      glDepthFunc(GL_LEQUAL);
+
+      // render visible edges as solid ones
+      this->actuallyRender(action, initmatrices, FALSE, FALSE);
+      
+      // pass 3
+      glDepthFunc(GL_GREATER);
+      SoLineWidthElement::set(state, node, 1.0f);
+      SoOverrideElement::setLineWidthOverride(state, node, TRUE);
+      glLineWidth(1.0f);
+      glEnable(GL_LINE_STIPPLE);
+      glLineStipple(2, 0xF0F0); // dashed line
+      
+      // render hidden edges as dashed lines
+      this->actuallyRender(action, initmatrices, FALSE, FALSE);
+
+      // Restore OpenGL state
+      glDisable(GL_LINE_STIPPLE);
+      glDepthMask(GL_TRUE);
+      glDepthFunc(GL_LEQUAL);
+      glLineWidth(1.0f);
+    }
+    break;
   case SoRenderManager::WIREFRAME_OVERLAY:
       SoPolygonOffsetElement::set(state, node, 1.0f, 1.0f,
                                   SoPolygonOffsetElement::FILLED, TRUE);
@@ -942,6 +1050,21 @@ void
 SoRenderManager::setAutoClipping(AutoClippingStrategy autoclipping)
 {
   PRIVATE(this)->autoclipping = autoclipping;
+
+  //if (PRIVATE(this)->scene) {
+  //  switch (autoclipping) {
+  //  case SoRenderManager::NO_AUTO_CLIPPING:
+  //    this->detachClipSensor();
+  //    break;
+  //  case SoRenderManager::FIXED_NEAR_PLANE:
+  //  case SoRenderManager::VARIABLE_NEAR_PLANE:
+  //    if (!PRIVATE(this)->clipsensor->getAttachedNode()) {
+  //      PRIVATE(this)->clipsensor->attach(PRIVATE(this)->scene);
+  //    }
+  //    PRIVATE(this)->clipsensor->schedule();
+  //    break;
+  //  }
+  //}
 }
 
 /*!
