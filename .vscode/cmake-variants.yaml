@@ -1,0 +1,16 @@
+builtType:
+  default: debug
+  description: Coin Build Options
+  choices:
+    debug:
+      short: Debug
+      long: Build with Coin debugging information
+      buildType: Debug
+      env:
+        CMAKE_PREFIX_PATH: "/c/Coin3D"
+    release:
+      short: Release
+      long: Optimize the Coin artifact binaries
+      buildType: Release
+      env:
+        CMAKE_PREFIX_PATH: "/c/Coin3D/lib"

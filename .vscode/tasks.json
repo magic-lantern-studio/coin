@@ -1,0 +1,25 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build-release",
+      "type": "shell",
+      "command": "cd ..; cmake -Hcoin -Bcoin_build_release -G \"MSYS Makefiles\" -DCMAKE_INSTALL_PREFIX=/c/Coin3D -DCOIN_BUILD_DOCUMENTATION=OFF -DUSE_SUPERGLU=ON -DMAGIC_LANTERN=ON; cd coin_build_release; make",
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "build-debug",
+      "type": "shell",
+      "command": "cd ..; cmake -Hcoin -Bcoin_build_debug -G \"MSYS Makefiles\" -DCMAKE_INSTALL_PREFIX=/c/Coin3D -DCMAKE_BUILD_TYPE=Debug -DCOIN_BUILD_DOCUMENTATION=OFF -DUSE_SUPERGLU=ON -DMAGIC_LANTERN=ON; cd coin_build_debug; make",
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      }
+    }
+  ]
+}
