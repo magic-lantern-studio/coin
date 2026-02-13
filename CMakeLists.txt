@@ -84,6 +84,7 @@ cmake_dependent_option(COIN_BUILD_DOCUMENTATION_CHM "Build compressed HTML help 
 option(COIN_THREADSAFE "Enable thread safe render traversals." OFF)
 option(HAVE_VRML97 "Enable VRML97 support." ON)
 cmake_dependent_option(COIN_HAVE_JAVASCRIPT "Enable JavaScript capabilities for VRML97." ON "HAVE_VRML97" OFF)
+option(HAVE_X3D "Enable X3D support." ON)
 option(HAVE_NODEKITS "Enable NodeKit support." ON)
 cmake_dependent_option(HAVE_DRAGGERS "Enable Dragger support." ON "HAVE_NODEKITS" OFF)
 cmake_dependent_option(HAVE_MANIPULATORS "Enable Manipulator support." ON "HAVE_NODEKITS" OFF)
@@ -128,6 +129,7 @@ report_prepare(
   COIN_BUILD_AWESOME_DOCUMENTATION
   COIN_THREADSAFE
   HAVE_VRML97
+  HAVE_X3D
   COIN_HAVE_JAVASCRIPT
   HAVE_NODEKITS
   HAVE_DRAGGERS
@@ -871,6 +873,11 @@ if(HAVE_VRML97)
 else()
   set(FEAT_HAVE_VRML97 0)
 endif()
+if(HAVE_X3D)
+  set(FEAT_HAVE_X3D 1)
+else()
+  set(FEAT_HAVE_X3D 0)
+endif()
 if(HAVE_SOUND)
   set(FEAT_HAVE_SOUND 1)
 else()
@@ -918,6 +925,7 @@ endif()
 
 # add_feature_info(ThreadSafe COIN_THREADSAFE "Thread safe render traversals.")
 # add_feature_info(VRML97 HAVE_VRML97 "VRML97 support.")
+# add_feature_info(X3D HAVE_X3D "X3D support.")
 # add_feature_info(JavaScript COIN_HAVE_JAVASCRIPT "JavaScript capabilities.")
 # add_feature_info(NodeKits HAVE_NODEKITS "NodeKit support.")
 # add_feature_info(Draggers HAVE_DRAGGERS "Dragger support.")
