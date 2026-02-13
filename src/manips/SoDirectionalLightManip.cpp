@@ -39,7 +39,8 @@
 /*!
   \class SoDirectionalLightManip SoDirectionalLightManip.h Inventor/manips/SoDirectionalLightManip.h
   \brief The SoDirectionalLightManip class is used to manipulate SoDirectionalLight nodes.
-  \ingroup manips
+
+  \ingroup coin_manips
 
   A manipulator is used by replacing the node you want to edit in the
   graph with the manipulator. Draggers are used to manipulate the
@@ -95,7 +96,9 @@ SO_NODE_SOURCE(SoDirectionalLightManip);
 */
 
 
-// documented in superclass
+/*!
+  \copybrief SoNode::initClass(void)
+*/
 void
 SoDirectionalLightManip::initClass(void)
 {
@@ -103,7 +106,7 @@ SoDirectionalLightManip::initClass(void)
 }
 
 /*!
-  The constructor sets up the internal SoDiretionalLightDragger used
+  The constructor sets up the internal SoDirectionalLightDragger used
   by the manipulator.
 */
 SoDirectionalLightManip::SoDirectionalLightManip(void)

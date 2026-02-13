@@ -33,7 +33,8 @@
 /*!
   \class SoDecomposeMatrix SoDecomposeMatrix.h Inventor/engines/SoDecomposeMatrix.h
   \brief The SoDecomposeMatrix class is used to decompose a matrix into simple transformations.
-  \ingroup engines
+
+  \ingroup coin_engines
 */
 
 #include <Inventor/engines/SoDecomposeMatrix.h>
@@ -88,7 +89,9 @@ SoDecomposeMatrix::SoDecomposeMatrix()
   SO_ENGINE_ADD_OUTPUT(scaleOrientation,SoMFRotation);
 }
 
-// Documented in superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoDecomposeMatrix::initClass()
 {

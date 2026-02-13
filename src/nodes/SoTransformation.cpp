@@ -33,7 +33,8 @@
 /*!
   \class SoTransformation SoTransformation.h Inventor/nodes/SoTransformation.h
   \brief The SoTransformation class is the abstract base class for transformation nodes.
-  \ingroup nodes
+
+  \ingroup coin_nodes
 
   To position and orient geometry within the 3D world space, various
   node types for transformations are used. These nodes all inherit the
@@ -112,7 +113,9 @@ SoTransformation::~SoTransformation()
 {
 }
 
-// Doc from superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoTransformation::initClass(void)
 {

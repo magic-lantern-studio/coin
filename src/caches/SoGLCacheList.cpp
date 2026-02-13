@@ -31,9 +31,10 @@
 \**************************************************************************/
 
 /*!
-  \class SoGLCacheList include/Inventor/caches/SoGLCacheList.h
+  \class SoGLCacheList SoGLCacheList.h Inventor/caches/SoGLCacheList.h
   \brief The SoGLCacheList class is used to store and manage OpenGL caches.
-  \ingroup caches
+
+  \ingroup coin_caches
 */
 
 #include <Inventor/caches/SoGLCacheList.h>
@@ -62,7 +63,7 @@
 
 // SGI Inventor uses an LRU/MRU strategy or something here. We're not
 // quite sure we should support multiple caches per SoSeparator
-// though. After all, there is some overhead in cheching for valid
+// though. After all, there is some overhead in checking for valid
 // caches etc. If a situation occurs where multiple caches would help
 // the performance, the user should probably redesign the scene graph
 // and enable caching further down the scene graph instead. We will
@@ -543,7 +544,7 @@ SoGLCacheList::open(SoGLRenderAction * action, SbBool autocache)
                                   PRIVATE(this)->opencache->getPostLazyState());
     PRIVATE(this)->opencache->open(state);
 
-    // force a dependency on the transparecy type
+    // force a dependency on the transparency type
     // FIXME: consider adding a new element for storing the
     // transparency type.  The dependency tracking on the transparency
     // type would then work automatically. pederb, 2005-02-18

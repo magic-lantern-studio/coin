@@ -30,24 +30,21 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-/*! \file common.h */
-
 /*!
   \struct cc_sched common.h Inventor/C/threads/common.h
-  \ingroup threads
+  \ingroup coin_threads
   \brief The structure for the thread scheduler.
 */
 
 /*!
   \typedef struct cc_sched cc_sched
-  \ingroup threads
-  \brief The type definition for the thread schduler structure.
+  \ingroup coin_threads
+  \brief The type definition for the thread scheduler structure.
 */
 
-/*! \file sched.h */
 #include <Inventor/C/threads/sched.h>
 
-#include <assert.h>
+#include <cassert>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -92,7 +89,7 @@ void cc_sched_change_priority(cc_sched * sched,
 
 #else /* HAVE_THREADS && DOXYGEN_SKIP_THIS*/
 
-#include <stdlib.h>
+#include <cstdlib>
 
 #include <Inventor/C/errors/debugerror.h>
 #include <Inventor/C/threads/mutex.h>
@@ -164,7 +161,7 @@ sched_worker_entry_point(void * userdata)
     cc_mutex_unlock(sched->mutex);
     item->workfunc(item->closure);
     cc_mutex_lock(sched->mutex);
-    cc_memalloc_deallocate(sched->itemalloc, (void *)item);
+    cc_memalloc_deallocate(sched->itemalloc, item);
     if (sched->numallowed > 0) sched->numallowed--;
   }
   cc_mutex_unlock(sched->mutex);
@@ -199,7 +196,7 @@ cc_sched_construct(int numthreads)
   Destruct the scheduler.
 
   This method will block until all currently executing jobs have finished.
-  Any remaining scheduled jobs will be cancelled.
+  Any remaining scheduled jobs will be canceled.
 
   Note that this differs from Coin-2. To emulate Coin-2 behavior, call
   cc_sched_wait_all() before calling this method.
@@ -266,8 +263,8 @@ cc_sched_schedule(cc_sched * sched,
   if (item->schedid == 0) {
     item->schedid = sched->schedid_counter++;
   }
-  cc_heap_add(sched->itemheap, (void *)item);
-  cc_dict_put(sched->schedid_dict, item->schedid, (void *)item);
+  cc_heap_add(sched->itemheap, item);
+  cc_dict_put(sched->schedid_dict, item->schedid, item);
   if (cc_dict_get_num_elements(sched->schedid_dict) == 1) {
     sched_try_trigger(sched);
   }

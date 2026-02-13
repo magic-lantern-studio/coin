@@ -39,7 +39,8 @@
 /*!
   \class SoVRMLFontStyle SoVRMLFontStyle.h Inventor/VRMLnodes/SoVRMLFontStyle.h
   \brief The SoVRMLFontStyle class is used to define the current font.
-  \ingroup VRMLnodes
+
+  \ingroup coin_VRMLnodes
 
   Important note: currently, the SoVRMLText node implementation is not
   complete, and some of the features mentioned in the documentation
@@ -266,7 +267,9 @@
 
 SO_NODE_SOURCE(SoVRMLFontStyle);
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLFontStyle::initClass(void) // static
 {

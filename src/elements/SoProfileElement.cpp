@@ -33,7 +33,8 @@
 /*!
   \class SoProfileElement Inventor/elements/SoProfileElement.h
   \brief The SoProfileElement class is yet to be documented.
-  \ingroup elements
+
+  \ingroup coin_elements
 
   FIXME: write doc.
 */

@@ -34,7 +34,7 @@
   \class SoShadowCulling SoShadowCulling.h Inventor/annex/FXViz/nodes/SoShadowCulling.h
   \brief The SoShadowCulling class is a node for setting the shadow style on nodes.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   <b>FILE FORMAT/DEFAULTS:</b>
   \code
@@ -50,7 +50,7 @@
 
 #include <Inventor/annex/FXViz/nodes/SoShadowCulling.h>
 
-#include <stdio.h>
+#include <cstdio>
 
 #include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/elements/SoShapeHintsElement.h>
@@ -84,7 +84,7 @@
 /*!
   \var SoShadowCulling::Style SoShadowCulling::NO_CULLING
 
-  Render both backfacing and frontfacting triangles into the shadow map.
+  Render both back facing and front facing triangles into the shadow map.
 */
 
 
@@ -114,7 +114,9 @@ SoShadowCulling::~SoShadowCulling()
 {
 }
 
-// Doc from superclass.
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoShadowCulling::initClass(void)
 {

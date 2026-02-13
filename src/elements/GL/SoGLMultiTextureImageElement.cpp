@@ -32,8 +32,11 @@
 
 /*!
   \class SoGLMultiTextureImageElement Inventor/elements/SoGLMultiTextureImageElement.h
-  \brief The SoGLMultiTextureImageElement is used to control the current GL texture for texture units.
-  \ingroup elements
+  \brief The SoGLMultiTextureImageElement class is used to control the current GL texture for texture units.
+
+  \ingroup coin_elements
+
+  FIXME: write doc.
 */
 
 // *************************************************************************
@@ -86,9 +89,9 @@ public:
 
 SO_ELEMENT_CUSTOM_CONSTRUCTOR_SOURCE(SoGLMultiTextureImageElement);
 
+
 /*!
-  This static method initializes static data in the
-  SoGLMultiTextureImageElement class.
+  \copydetails SoElement::initClass(void)
 */
 
 void
@@ -96,6 +99,10 @@ SoGLMultiTextureImageElement::initClass(void)
 {
   SO_ELEMENT_INIT_CLASS(SoGLMultiTextureImageElement, inherited);
 }
+
+/*!
+  Constructor.
+*/
 
 SoGLMultiTextureImageElement::SoGLMultiTextureImageElement(void)
 {
@@ -106,7 +113,7 @@ SoGLMultiTextureImageElement::SoGLMultiTextureImageElement(void)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 
 SoGLMultiTextureImageElement::~SoGLMultiTextureImageElement(void)
@@ -234,7 +241,7 @@ SoGLMultiTextureImageElement::set(SoState * const state, SoNode * const node,
   }
   elem->updateGL(unit);
 
-  // FIXME: check if it's possible to support for other units as well
+  // FIXME: check if it is possible to support for other units as well
   if ((unit == 0) && image && image->isOfType(SoGLBigImage::getClassTypeId())) {
     SoShapeStyleElement::setBigImageEnabled(state, TRUE);
   }
@@ -358,6 +365,13 @@ SoGLMultiTextureImageElement::updateGL(const int unit)
       dl->call(state);
     }
     cc_glglue_glActiveTexture(glue, (GLenum) GL_TEXTURE0);
+
+    GLenum glerror = sogl_glerror_debugging() ? glGetError() : GL_NO_ERROR;
+    while (glerror) {
+        SoDebugError::postWarning("SoGLMultiTextureImageElement::updateGL",
+            "glError() = %d\n", glerror);
+        glerror = glGetError();
+    }
   }
 }
 

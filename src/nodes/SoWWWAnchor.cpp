@@ -33,7 +33,8 @@
 /*!
   \class SoWWWAnchor SoWWWAnchor.h Inventor/nodes/SoWWWAnchor.h
   \brief The SoWWWAnchor class adds URL callbacks to the highlighted geometry.
-  \ingroup nodes
+
+  \ingroup coin_nodes
 
   In addition to highlighting geometry under the cursor, the application
   programmer can set callbacks. It is possible to set one callback for
@@ -43,7 +44,7 @@
   #Inventor V2.1 ascii
   
   WWWAnchor {
-     name "http://www.coin3d.org/Coin/egg.iv"
+     name "https://github.com/coin3d/coin/egg.iv"
      description "Easter Egg"
   
      Separator {
@@ -69,11 +70,10 @@
     }
   \endcode
 
-  \since Inventor 2.1
+  \since SGI Inventor 2.1
 */
 
 
-/*! \file SoWWWAnchor.h */
 #include <Inventor/nodes/SoWWWAnchor.h>
 
 #include <Inventor/events/SoMouseButtonEvent.h>
@@ -100,9 +100,9 @@
   assure that the URL works with all browsers, the coordinates are
   divided by commas sent as the hex representation.
 
-  If a model by the name of sim.wrl resided at www.coin3d.org and the
+  If a model by the name of sim.wrl resided at https://github.com/coin3d/ and the
   picked point had the coordinates [1.5, 10, 6.77], the resulting URL
-  would be "http://www.coin3d.org/sim.wrl?1.5%2c10%2c6.77".
+  would be "https://github.com/coin3d/sim.wrl?1.5%2c10%2c6.77".
 */
 
 
@@ -184,6 +184,9 @@ SoWWWAnchor::~SoWWWAnchor()
 }
 
 // doc in super
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoWWWAnchor::initClass(void)
 {
@@ -205,7 +208,7 @@ SoWWWAnchor::setFullURLName(const SbString & url)
 }
 
 /*!
-  Returns the full URL if it's set by
+  Returns the full URL if it is set by
   SoWWWAnchor::setFullURLName(). Otherwise the contents of
   SoWWWAnchor::name is returned.
 

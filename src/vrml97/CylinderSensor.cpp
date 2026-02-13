@@ -38,8 +38,9 @@
 
 /*!
   \class SoVRMLCylinderSensor SoVRMLCylinderSensor.h Inventor/VRMLnodes/SoVRMLCylinderSensor
-  \brief The SoVRMLCylinderSensor class maps pointer motion into rotations around the Y axis.
-  \ingroup VRMLnodes
+  \brief The SoVRMLCylinderSensor class maps pointer motion into rotations around the Y-axis.
+
+  \ingroup coin_VRMLnodes
 
   \WEB3DCOPYRIGHT
 
@@ -169,7 +170,7 @@
 
 /*!
   \var SoSFFloat SoVRMLCylinderSensor::minAngle
-  Minimum angle around Y axis.
+  Minimum angle around Y-axis.
 */
 
 /*!
@@ -193,7 +194,9 @@
 
 SO_NODE_SOURCE(SoVRMLCylinderSensor);
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLCylinderSensor::initClass(void)
 {
@@ -263,7 +266,7 @@ SoVRMLCylinderSensor::dragFinish(void)
 }
 
 //
-// Private method that finds the angle around the Y axis.
+// Private method that finds the angle around the Y-axis.
 //
 float
 SoVRMLCylinderSensor::findAngle(const SbRotation & rot)

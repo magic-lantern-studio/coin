@@ -39,7 +39,8 @@
 /*!
   \class SoVRMLTransform SoVRMLTransform.h Inventor/VRMLnodes/SoVRMLTransform.h
   \brief The SoVRMLTransform class is a grouping node that defines a transformation for its children.
-  \ingroup VRMLnodes
+
+  \ingroup coin_VRMLnodes
 
   \WEB3DCOPYRIGHT
 
@@ -195,7 +196,9 @@
 
 SO_NODE_SOURCE(SoVRMLTransform);
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLTransform::initClass(void)
 {
@@ -250,7 +253,7 @@ SoVRMLTransform::pointAt(const SbVec3f & from,
 {
   this->scale = SbVec3f(1.0f, 1.0f, 1.0f);
   this->center = SbVec3f(0.0f, 0.0f, 0.0f);
-  this->scaleOrientation = SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f);
+  this->scaleOrientation = SbRotation::identity();
 
   this->translation = from;
   SbVec3f dir = to - from;
@@ -312,6 +315,8 @@ SoVRMLTransform::getTranslationSpaceMatrix(SbMatrix & matrix,
   tmp.setRotate(this->scaleOrientation.getValue());
   matrix.multRight(tmp);
   tmp.setRotate(this->rotation.getValue());
+  matrix.multRight(tmp);
+  tmp.setTranslate(this->center.getValue());
   matrix.multRight(tmp);
   tmp.setTranslate(this->translation.getValue());
   matrix.multRight(tmp);

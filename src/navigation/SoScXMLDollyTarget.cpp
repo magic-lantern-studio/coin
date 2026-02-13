@@ -34,7 +34,7 @@
 
 /*!
   \class SoScXMLDollyTarget SoScXMLDollyTarget.h Inventor/scxml/SoScXMLDollyTarget.h
-  \brief SCXML event target service for zoom-behaviour.
+  \brief SCXML event target service for zoom behaviour.
 
   Events:
 
@@ -72,15 +72,15 @@
       [absmaxfocaldistance] {float}
       [motiontype] {string:exponential,linear}
 
-  \ingroup navigation
-  \since 2008-02-14
+  \ingroup coin_navigation
+  \since Coin 3.1
 */
 
 #include <cassert>
 #include <string>
 #include <cfloat>
 
-#include <boost/scoped_array.hpp>
+#include <memory>
 
 #include <Inventor/SbVec2f.h>
 #include <Inventor/SbViewportRegion.h>
@@ -316,7 +316,7 @@ SoScXMLDollyTarget::processOneEvent(const ScXMLEvent * event)
     if (motiontype) {
       SbString motiontypestr = motiontype;
       if (motiontype[0] == '\'') { // unwrap
-        boost::scoped_array<char> buf(new char [strlen(motiontypestr.getString()) + 1]);
+        std::unique_ptr<char[]> buf(new char [strlen(motiontypestr.getString()) + 1]);
         int res = sscanf(motiontype, "'%[^']'", buf.get());
         if (res == 1) {
           motiontypestr = buf.get();
@@ -548,13 +548,13 @@ SoScXMLDollyTarget::jump(SoCamera * camera, float focaldistance)
 
 // *************************************************************************
 /*!
-  Steps the camera relative to its orientation and focal point by diff.
+  Steps the camera relative to its orientation and focal point by \a diff.
 
-  If \a exponential is FALSE, then the diff value is treated as an absolute
+  If \a exponential is FALSE, then the \a diff value is treated as an absolute
   distance value.
 
   If \a mindistance and/or \a maxdistance is anything but 0.0, they are checked
-  against the focaldistance, and the focaldistance will be clamped inside the
+  against the focal distance, and the focal distance will be clamped inside the
   range. Both are not needed, if only one is specified, only that part of the
   range will be used to limit the dollying.
 

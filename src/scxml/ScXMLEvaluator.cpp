@@ -36,7 +36,7 @@
   \class ScXMLEvaluator ScXMLEvaluator.h Inventor/scxml/ScXMLEvaluator.h
   \brief defines an interface for profile-dependent evaluators.
 
-  \ingroup scxml
+  \ingroup coin_scxml
   \since Coin 3.1
 */
 
@@ -44,7 +44,7 @@
 #include <cstring>
 #include <cstdio>
 
-#include <boost/scoped_array.hpp>
+#include <memory>
 
 #include <Inventor/SbString.h>
 #include <Inventor/scxml/ScXMLEvent.h>
@@ -149,7 +149,7 @@ ScXMLEvaluator::setStateMachine(ScXMLStateMachine * sm)
   Does nothing - overridden in derived classes.
 
   The intention of this function is to clear out temporary variables that
-  has the scope of only one event being processed by the scxml state machine.
+  have the scope of only one event being processed by the scxml state machine.
 */
 void
 ScXMLEvaluator::clearTemporaryVariables(void)
@@ -162,7 +162,7 @@ ScXMLEvaluator::clearTemporaryVariables(void)
   \class ScXMLDataObj ScXMLEvaluator.h Inventor/scxml/ScXMLEvaluator.h
   \brief base class for evaluator data objects in the SCXML data module
 
-  \ingroup scxml
+  \ingroup coin_scxml
   \since Coin 3.1
 */
 
@@ -176,9 +176,7 @@ ScXMLDataObj::initClass(void)
 
 void
 ScXMLDataObj::setContainer(ScXMLObject * container) {
-  if (this->container) {
-    delete container;
-  }
+  delete this->container;
   this->container = container;
 }
 
@@ -203,7 +201,7 @@ ScXMLDataObj::~ScXMLDataObj(void)
   \class ScXMLConstantDataObj ScXMLEvaluator.h Inventor/scxmlScXMLEvaluator.h
   \brief base class for immediate data values
 
-  \ingroup scxml
+  \ingroup coin_scxml
   \since Coin 3.1
 */
 
@@ -241,7 +239,7 @@ ScXMLDataObj *
 ScXMLStringDataObj::createFor(const char * strval)
 {
   assert(strval && strval[0] == '\'');
-  boost::scoped_array<char> buf(new char [strlen(strval) + 1]);
+  std::unique_ptr<char[]> buf(new char [strlen(strval) + 1]);
   int res = sscanf(strval, "'%[^']'", buf.get());
   if (res == 1) {
     return new ScXMLStringDataObj(buf.get());
@@ -275,10 +273,8 @@ ScXMLStringDataObj::~ScXMLStringDataObj(void)
 void
 ScXMLStringDataObj::setString(const char * strptr)
 {
-  if (this->value) {
-    delete [] this->value;
-    this->value = NULL;
-  }
+  delete [] this->value;
+  this->value = NULL;
   if (strptr) {
     this->value = new char [strlen(strptr) + 1];
     strcpy(this->value, strptr);
@@ -462,10 +458,8 @@ ScXMLSbDataObj::~ScXMLSbDataObj(void)
 void
 ScXMLSbDataObj::setSbValue(const char * sbvalue)
 {
-  if (this->value) {
-    delete [] this->value;
-    this->value = NULL;
-  }
+  delete [] this->value;
+  this->value = NULL;
   if (sbvalue) {
     this->value = new char [ strlen(sbvalue) + 1 ];
     strcpy(this->value, sbvalue);
@@ -545,19 +539,15 @@ ScXMLExprDataObj::ScXMLExprDataObj(void)
 
 ScXMLExprDataObj::~ScXMLExprDataObj(void)
 {
-  if (this->result) {
-    delete this->result;
-    this->result = NULL;
-  }
+  delete this->result;
+  this->result = NULL;
 }
 
 ScXMLDataObj *
 ScXMLExprDataObj::evaluate(ScXMLStateMachine * sm)
 {
-  if (this->result) {
-    delete this->result;
-    this->result = NULL;
-  }
+  delete this->result;
+  this->result = NULL;
   SbBool ok = this->evaluateNow(sm, this->result);
   if (!ok) return NULL;
   return this->result;
@@ -568,7 +558,7 @@ ScXMLExprDataObj::evaluate(ScXMLStateMachine * sm)
   \class ScXMLReferenceDataObj ScXMLEvaluator.h Inventor/scxml/ScXMLEvaluator.h
   \brief A data object representing a reference to another object in the data model.
 
-  \ingroup scxml
+  \ingroup coin_scxml
 */
 
 SCXML_OBJECT_SOURCE(ScXMLReferenceDataObj);
@@ -610,10 +600,8 @@ ScXMLReferenceDataObj::~ScXMLReferenceDataObj(void)
 void
 ScXMLReferenceDataObj::setReference(const char * referencestr)
 {
-  if (this->reference) {
-    delete [] this->reference;
-    this->reference = NULL;
-  }
+  delete [] this->reference;
+  this->reference = NULL;
   if (referencestr) {
     this->reference = new char [ strlen(referencestr) + 1 ];
     strcpy(this->reference, referencestr);
@@ -662,7 +650,7 @@ ScXMLReferenceDataObj::evaluateNow(ScXMLStateMachine * sm, ScXMLDataObj *& point
   \class ScXMLAndOpExprDataObj ScXMLEvaluator.h Inventor/scxml/ScXMLEvaluator.h
   \brief Implements the logical AND operator.
 
-  \ingroup scxml
+  \ingroup coin_scxml
 */
 SCXML_OBJECT_SOURCE(ScXMLAndOpExprDataObj);
 
@@ -717,14 +705,10 @@ ScXMLAndOpExprDataObj::ScXMLAndOpExprDataObj(ScXMLDataObj * lhsptr, ScXMLDataObj
 
 ScXMLAndOpExprDataObj::~ScXMLAndOpExprDataObj(void)
 {
-  if (this->lhs) {
-    delete this->lhs;
-    this->lhs = NULL;
-  }
-  if (this->rhs) {
-    delete this->rhs;
-    this->rhs = NULL;
-  }
+  delete this->lhs;
+  this->lhs = NULL;
+  delete this->rhs;
+  this->rhs = NULL;
 }
 
 void
@@ -856,14 +840,10 @@ ScXMLOrOpExprDataObj::ScXMLOrOpExprDataObj(ScXMLDataObj * lhsptr, ScXMLDataObj *
 
 ScXMLOrOpExprDataObj::~ScXMLOrOpExprDataObj(void)
 {
-  if (this->lhs) {
-    delete this->lhs;
-    this->lhs = NULL;
-  }
-  if (this->rhs) {
-    delete this->rhs;
-    this->rhs = NULL;
-  }
+  delete this->lhs;
+  this->lhs = NULL;
+  delete this->rhs;
+  this->rhs = NULL;
 }
 
 void
@@ -980,10 +960,8 @@ ScXMLNotOpExprDataObj::ScXMLNotOpExprDataObj(ScXMLDataObj * rhsptr)
 
 ScXMLNotOpExprDataObj::~ScXMLNotOpExprDataObj(void)
 {
-  if (this->rhs) {
-    delete this->rhs;
-    this->rhs = NULL;
-  }
+  delete this->rhs;
+  this->rhs = NULL;
 }
 
 void
@@ -1085,14 +1063,10 @@ ScXMLEqualsOpExprDataObj::ScXMLEqualsOpExprDataObj(ScXMLDataObj * lhsptr, ScXMLD
 
 ScXMLEqualsOpExprDataObj::~ScXMLEqualsOpExprDataObj(void)
 {
-  if (this->lhs) {
-    delete this->lhs;
-    this->lhs = NULL;
-  }
-  if (this->rhs) {
-    delete this->rhs;
-    this->rhs = NULL;
-  }
+  delete this->lhs;
+  this->lhs = NULL;
+  delete this->rhs;
+  this->rhs = NULL;
 }
 
 void
@@ -1211,14 +1185,10 @@ ScXMLAddOpExprDataObj::ScXMLAddOpExprDataObj(ScXMLDataObj * lhsptr, ScXMLDataObj
 
 ScXMLAddOpExprDataObj::~ScXMLAddOpExprDataObj(void)
 {
-  if (this->lhs) {
-    delete this->lhs;
-    this->lhs = NULL;
-  }
-  if (this->rhs) {
-    delete this->rhs;
-    this->rhs = NULL;
-  }
+  delete this->lhs;
+  this->lhs = NULL;
+  delete this->rhs;
+  this->rhs = NULL;
 }
 
 void
@@ -1318,14 +1288,10 @@ ScXMLSubtractOpExprDataObj::ScXMLSubtractOpExprDataObj(ScXMLDataObj * lhsptr, Sc
 
 ScXMLSubtractOpExprDataObj::~ScXMLSubtractOpExprDataObj(void)
 {
-  if (this->lhs) {
-    delete this->lhs;
-    this->lhs = NULL;
-  }
-  if (this->rhs) {
-    delete this->rhs;
-    this->rhs = NULL;
-  }
+  delete this->lhs;
+  this->lhs = NULL;
+  delete this->rhs;
+  this->rhs = NULL;
 }
 
 void
@@ -1427,14 +1393,10 @@ ScXMLMultiplyOpExprDataObj::ScXMLMultiplyOpExprDataObj(ScXMLDataObj * lhsptr, Sc
 
 ScXMLMultiplyOpExprDataObj::~ScXMLMultiplyOpExprDataObj(void)
 {
-  if (this->lhs) {
-    delete this->lhs;
-    this->lhs = NULL;
-  }
-  if (this->rhs) {
-    delete this->rhs;
-    this->rhs = NULL;
-  }
+  delete this->lhs;
+  this->lhs = NULL;
+  delete this->rhs;
+  this->rhs = NULL;
 }
 
 void
@@ -1536,14 +1498,10 @@ ScXMLDivideOpExprDataObj::ScXMLDivideOpExprDataObj(ScXMLDataObj * lhsptr, ScXMLD
 
 ScXMLDivideOpExprDataObj::~ScXMLDivideOpExprDataObj(void)
 {
-  if (this->lhs) {
-    delete this->lhs;
-    this->lhs = NULL;
-  }
-  if (this->rhs) {
-    delete this->rhs;
-    this->rhs = NULL;
-  }
+  delete this->lhs;
+  this->lhs = NULL;
+  delete this->rhs;
+  this->rhs = NULL;
 }
 
 void
@@ -1647,10 +1605,8 @@ ScXMLNegateOpExprDataObj::ScXMLNegateOpExprDataObj(ScXMLDataObj * rhsptr)
 
 ScXMLNegateOpExprDataObj::~ScXMLNegateOpExprDataObj(void)
 {
-  if (this->rhs) {
-    delete this->rhs;
-    this->rhs = NULL;
-  }
+  delete this->rhs;
+  this->rhs = NULL;
 }
 
 void

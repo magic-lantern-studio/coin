@@ -39,7 +39,8 @@
 /*!
   \class SoVRMLBackground SoVRMLBackground.h Inventor/VRMLnodes/SoVRMLBackground.h
   \brief The SoVRMLBackground class is used for specifying a viewer panorama.
-  \ingroup VRMLnodes
+
+  \ingroup coin_VRMLnodes
 
   \WEB3DCOPYRIGHT
 
@@ -115,7 +116,7 @@
   colour value is for the nadir which is not specified in the
   groundAngle field. If the last groundAngle is less than pi/2, the
   region between the last groundAngle and the equator is
-  non-existant. The ground colour is linearly interpolated between the
+  non-existent. The ground colour is linearly interpolated between the
   specified groundColor values.
 
   The backUrl, bottomUrl, frontUrl, leftUrl, rightUrl, and topUrl
@@ -168,9 +169,9 @@
 #include <Inventor/VRMLnodes/SoVRMLBackground.h>
 #include "coindefs.h"
 
-#include <assert.h>
-#include <string.h>
-#include <stdio.h>
+#include <cassert>
+#include <cstring>
+#include <cstdio>
 
 #include <Inventor/SbRotation.h>
 #include <Inventor/SoDB.h>
@@ -180,6 +181,8 @@
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
+#include <Inventor/actions/SoGetMatrixAction.h>
+#include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoProjectionMatrixElement.h>
@@ -347,6 +350,9 @@ public:
   SbStringList directoryList; // used for searching for textures
   SbBool geometrybuilt;
 
+  SoSearchAction * searchaction;
+  SoGetMatrixAction * getmatrixaction;
+
   void buildGeometry(void);
   void modifyCubeFace(SoMFString & urls, SoSeparator * facesep, const int32_t * vindices);
   SoSeparator * createCubeFace(const SoMFString & urls, SoSeparator * sep, const int32_t * vindices);
@@ -368,7 +374,9 @@ background_bbfix(SoAction * action, SoNode * COIN_UNUSED_ARG(node))
   SoCacheElement::invalidate(action->getState());
 }
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLBackground::initClass(void) // static
 {
@@ -466,6 +474,11 @@ SoVRMLBackground::SoVRMLBackground(void)
   PRIVATE(this)->geometrybuilt = FALSE;  
   PRIVATE(this)->camera = NULL;
   PRIVATE(this)->rootnode = NULL;
+
+  // actions for ancestors' rotations
+  PRIVATE(this)->searchaction = new SoSearchAction;
+  PRIVATE(this)->searchaction->setNode(this);
+  PRIVATE(this)->getmatrixaction = new SoGetMatrixAction(SbViewportRegion());
 }
 
 /*!
@@ -494,6 +507,9 @@ SoVRMLBackground::~SoVRMLBackground()
   
   delete PRIVATE(this)->setbindsensor;
   delete PRIVATE(this)->isboundsensor;
+
+  delete PRIVATE(this)->searchaction;
+  delete PRIVATE(this)->getmatrixaction;
   
   delete PRIVATE(this)->children;
   delete PRIVATE(this);
@@ -514,7 +530,7 @@ SoVRMLBackground::GLRender(SoGLRenderAction * action)
   SbRotation rot(tmp);
 
   if (vrmlbackground_viewup_set) {
-    // create a rotation from the positive Y axis to the new view up
+    // create a rotation from the positive Y-axis to the new view up
     SbRotation r2(SbVec3f(0.0f, 1.0f, 0.0f), 
                   SbVec3f(vrmlbackground_viewup[0],
                           vrmlbackground_viewup[1],
@@ -523,6 +539,35 @@ SoVRMLBackground::GLRender(SoGLRenderAction * action)
     PRIVATE(this)->camera->orientation = r2.inverse();
   }
   else {
+    // get the path from the scene graph root to this node
+    switch(action->getWhatAppliedTo()) {
+      case SoAction::AppliedCode::NODE:
+        PRIVATE(this)->searchaction->apply(action->getNodeAppliedTo());
+        break;
+      case SoAction::AppliedCode::PATH:
+        PRIVATE(this)->searchaction->apply(action->getPathAppliedTo());
+        break;
+      case SoAction::AppliedCode::PATH_LIST:
+        PRIVATE(this)->searchaction->apply(*action->getPathListAppliedTo());
+        break;
+    }
+    SoPath * path = PRIVATE(this)->searchaction->getPath();
+    if (path != NULL) {
+      // get the transformation matrix of this path
+      const SbViewportRegion vpr = action->getViewportRegion();
+      PRIVATE(this)->getmatrixaction->setViewportRegion(vpr);
+      PRIVATE(this)->getmatrixaction->apply(path);
+      SbMatrix transformation = PRIVATE(this)->getmatrixaction->getMatrix();
+      // get the rotation part of the matrix
+      // (note that a SoVRMLBackground node ignores any transformation of ancestors' except rotation)
+      SbVec3f translation;
+      SbRotation rotation;
+      SbVec3f scalevector;
+      SbRotation scaleorientation;
+      transformation.getTransform(translation, rotation, scalevector, scaleorientation);
+      // set camera orientation
+      rot = rotation * rot;
+    }
     PRIVATE(this)->camera->orientation = rot.inverse();
   }
 
@@ -560,8 +605,7 @@ SoVRMLBackground::GLRender(SoGLRenderAction * action)
 void
 SoVRMLBackgroundP::buildGeometry(void)
 {
-
-  float sphereradius = 1.5;
+  double sphereradius = 1.5;
   SbList <float> angles;
   const int slices = 30; // Number of slices, i.e. vertical resolution of the spheres.
   
@@ -686,7 +730,7 @@ SoVRMLBackgroundP::buildGeometry(void)
 
   if ((PUBLIC(this)->groundAngle.getNum() > 0) || (PUBLIC(this)->groundColor.getNum() > 0)) {
 
-    sphereradius = sphereradius * 0.9f;
+    sphereradius = sphereradius * 0.9;
     angles.truncate(0);
     angles.append(0);
     float angle = 0;
@@ -709,7 +753,7 @@ SoVRMLBackgroundP::buildGeometry(void)
         } 
         angles.append(angle);
       }
-      if (angles.getLength() < 3) // A 'sphere' must have atleast 3 faces
+      if (angles.getLength() < 3) // A 'sphere' must have at least 3 faces
         angles.append(angle);
 
     }
@@ -1025,7 +1069,7 @@ background_bindingchangeCB(void * data, SoSensor * sensor)
   // FIXME: Support for 'set_bind' and 'isBound' must be implemented.
   // But first, a Coin viewer must support this kind of special node
   // treatment (this applies to 'Fog', 'NavigationInfo' and 'Viewport'
-  // nodes aswell) (11Aug2003 handegar)
+  // nodes as well) (11Aug2003 handegar)
 
   if (sensor == pimpl->setbindsensor) {
     SoDebugError::postWarning("background_bindingchangeCB", "'set_bind' event not implemented yet");

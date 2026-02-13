@@ -34,9 +34,9 @@
 #include "SoGLCgShaderObject.h"
 #include "coindefs.h"
 
-#include <string.h>
-#include <stdio.h>
-#include <assert.h>
+#include <cstring>
+#include <cstdio>
+#include <cassert>
 
 #include <Inventor/errors/SoDebugError.h>
 
@@ -272,7 +272,7 @@ SoGLCgShaderParameter::isValid(const SoGLShaderObject * shader,
 {
   assert(shader->shaderType() == SoShader::CG_SHADER);
 
-  if (strlen(name) == 0) return FALSE;
+  if (!name || name[0] == '\0') return FALSE;
 
   // FIXME: how to handle a new compiled shader object? -- martin
   if (this->isEqual(this->cacheType, type) && (this->cacheName == name) &&
@@ -314,7 +314,7 @@ SoGLCgShaderParameter::isValid(const SoGLShaderObject * shader,
   }
 
   // handle array
-  if ((this->cacheType == CG_ARRAY)) {
+  if (this->cacheType == CG_ARRAY) {
     int dim = glue_cgGetArrayDimension(this->cgParameter);
 
     if (dim != 1) {

@@ -31,8 +31,17 @@
 \**************************************************************************/
 
 /*!
-  \class SoPrimitiveVertexCache include/Inventor/caches/SoPrimitiveVertexCache.h
+  \class SoPrimitiveVertexCache SoPrimitiveVertexCache.h Inventor/caches/SoPrimitiveVertexCache.h
   The SoPrimitiveVertexClass is used to cache generated triangles.
+*/
+
+/*!
+  \class SoPrimitiveVertexCache SoPrimitiveVertexCache.h Inventor/caches/SoPrimitiveVertexCache.h
+  \brief This cache contains an organized version of the geometry in vertex array form.
+
+  \ingroup coin_caches
+
+  \since Coin 3.0
 */
 
 // *************************************************************************
@@ -74,13 +83,6 @@
 #include "rendering/SoVertexArrayIndexer.h"
 #include "SbBasicP.h"
 
-/*!
-  \class SoPrimtiveVertexCache SoPrimitiveVertexCache.h Inventor/caches/SoPrimitiveVertexCache.h
-  \brief This cache contains an organized version of the geometry in vertex array form.
-
-  \since Coin 3.0
-*/
-
 // *************************************************************************
 
 class SoPrimitiveVertexCacheP {
@@ -103,6 +105,25 @@ public:
       rgbavbo(NULL),
       tangentvbo(NULL)
   { }
+  ~SoPrimitiveVertexCacheP()
+  {
+    delete triangleindexer;
+    delete lineindexer;
+    delete pointindexer;
+    delete vertexvbo;
+    delete normalvbo;
+    delete texcoord0vbo;
+    delete rgbavbo;
+    delete tangentvbo;
+
+    for (int i = 0; i < multitexvbo.getLength(); i++) {
+      delete multitexvbo[i];
+    }
+    if (lastenabled >= 1) {
+      delete[] multitexcoords;
+    }
+    delete[] deptharray;
+  }
 
   class Vertex {
   public:
@@ -302,22 +323,6 @@ SoPrimitiveVertexCache::~SoPrimitiveVertexCache()
 
   }
 #endif // debug
-
-  delete PRIVATE(this)->triangleindexer;
-  delete PRIVATE(this)->lineindexer;
-  delete PRIVATE(this)->pointindexer;
-  delete PRIVATE(this)->vertexvbo;
-  delete PRIVATE(this)->normalvbo;
-  delete PRIVATE(this)->texcoord0vbo;
-  delete PRIVATE(this)->rgbavbo;
-
-  for (int i = 0; i < PRIVATE(this)->multitexvbo.getLength(); i++) {
-    delete PRIVATE(this)->multitexvbo[i];
-  }
-  if (PRIVATE(this)->lastenabled >= 1) {
-    delete[] PRIVATE(this)->multitexcoords;
-  }
-  delete [] PRIVATE(this)->deptharray;
 }
 
 SbBool 
@@ -330,7 +335,7 @@ SoPrimitiveVertexCache::isValid(const SoState * state) const
 }
 
 /*!
-  Closes the cache after it's created. Takes care of SoGLLazyElement synchronization.
+  Closes the cache after it is created. Takes care of SoGLLazyElement synchronization.
 */
 void 
 SoPrimitiveVertexCache::close(SoState * state)
@@ -373,13 +378,13 @@ SoPrimitiveVertexCache::renderTriangles(SoState * state, const int arrays) const
     SoPrimitiveVertexCacheP * thisp = const_cast<SoPrimitiveVertexCacheP *>(&PRIVATE(this).get());
 
     thisp->enableVBOs(glue, contextid, color, normal, texture, enabled, lastenabled);
-    PRIVATE(this)->triangleindexer->render(glue, TRUE, contextid);
+    PRIVATE(this)->triangleindexer->render(state, TRUE, contextid);
     thisp->disableVBOs(glue, color, normal, texture, enabled, lastenabled);
   }
   else if (SoGLDriverDatabase::isSupported(glue, SO_GL_VERTEX_ARRAY)) {
     SoPrimitiveVertexCacheP * thisp = const_cast<SoPrimitiveVertexCacheP *>(&PRIVATE(this).get());
     thisp->enableArrays(glue, color, normal, texture, enabled, lastenabled);
-    PRIVATE(this)->triangleindexer->render(glue, FALSE, contextid);
+    PRIVATE(this)->triangleindexer->render(state, FALSE, contextid);
     thisp->disableArrays(glue, color, normal, texture, enabled, lastenabled);
   }
   else {
@@ -420,7 +425,7 @@ SoPrimitiveVertexCache::renderLines(SoState * state, const int arrays) const
   if (SoGLDriverDatabase::isSupported(glue, SO_GL_VERTEX_ARRAY)) {
     SoPrimitiveVertexCacheP * thisp = const_cast<SoPrimitiveVertexCacheP *>(&PRIVATE(this).get());
     thisp->enableArrays(glue, color, normal, texture, enabled, lastenabled);
-    PRIVATE(this)->lineindexer->render(glue, FALSE, contextid);
+    PRIVATE(this)->lineindexer->render(state, FALSE, contextid);
     thisp->disableArrays(glue, color, normal, texture, enabled, lastenabled);
   }
   else {
@@ -460,7 +465,7 @@ SoPrimitiveVertexCache::renderPoints(SoState * state, const int arrays) const
   if (SoGLDriverDatabase::isSupported(glue, SO_GL_VERTEX_ARRAY)) {
     SoPrimitiveVertexCacheP * thisp = const_cast<SoPrimitiveVertexCacheP *>(&PRIVATE(this).get());
     thisp->enableArrays(glue, color, normal, texture, enabled, lastenabled);
-    PRIVATE(this)->pointindexer->render(glue, FALSE, contextid);
+    PRIVATE(this)->pointindexer->render(state, FALSE, contextid);
     thisp->disableArrays(glue, color, normal, texture, enabled, lastenabled);
   }
   else {

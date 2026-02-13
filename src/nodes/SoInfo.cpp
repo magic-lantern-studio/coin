@@ -33,7 +33,8 @@
 /*!
   \class SoInfo SoInfo.h Inventor/nodes/SoInfo.h
   \brief The SoInfo class is a node for holding text information.
-  \ingroup nodes
+
+  \ingroup coin_nodes
 
   This is simply a placeholder for textual information about a
   scene. Typically used for specifying author and copyright
@@ -41,7 +42,7 @@
   purposes, of course.
 
   SoInfo nodes does not influence traversal in any way for any of the
-  builtin actions.
+  built-in actions.
 
   <b>FILE FORMAT/DEFAULTS:</b>
   \code
@@ -85,7 +86,9 @@ SoInfo::~SoInfo()
 {
 }
 
-// Doc from superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoInfo::initClass(void)
 {

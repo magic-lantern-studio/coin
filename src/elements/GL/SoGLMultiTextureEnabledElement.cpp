@@ -31,11 +31,10 @@
 \**************************************************************************/
 
 /*!
-  \class SoGLTextureEnabledElement Inventor/elements/SoGLTextureEnabledElement.h
-  \brief The SoGLTextureEnabledElement class is an element which controls whether texturing is enabled or not.
-  \ingroup elements
+  \class SoGLMultiTextureEnabledElement Inventor/elements/SoGLMultiTextureEnabledElement.h
+  \brief The SoGLMultiTextureEnabledElement class is an element which controls whether texturing is enabled or not.
 
-  \sa SoGLTexture3EnabledElement
+  \ingroup coin_elements
 */
 
 #include <Inventor/elements/SoGLMultiTextureEnabledElement.h>
@@ -47,13 +46,17 @@
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
+#include <Inventor/errors/SoDebugError.h>
 #include <Inventor/system/gl.h>
 #include <Inventor/C/glue/gl.h>
 #include <cassert>
+#include "rendering/SoGL.h"
 
 SO_ELEMENT_SOURCE(SoGLMultiTextureEnabledElement);
 
-// doc from parent
+/*!
+  \copydetails SoElement::initClass(void)
+*/
 void
 SoGLMultiTextureEnabledElement::initClass(void)
 {
@@ -61,7 +64,7 @@ SoGLMultiTextureEnabledElement::initClass(void)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 SoGLMultiTextureEnabledElement::~SoGLMultiTextureEnabledElement(void)
 {
@@ -133,6 +136,13 @@ SoGLMultiTextureEnabledElement::updategl(const int unit)
   if (this->isEnabled(unit)) glEnable(GL_TEXTURE_2D);
   else glDisable(GL_TEXTURE_2D);
   cc_glglue_glActiveTexture(glue, (GLenum) GL_TEXTURE0);
+
+  GLenum glerror =  sogl_glerror_debugging() ? glGetError() : GL_NO_ERROR;
+  while (glerror) {
+    SoDebugError::postWarning("SoGLMultiTextureEnabledElement::updategl",
+                              "glError() = %d\n", glerror);
+    glerror = glGetError();
+  }
 }
 
 void
@@ -181,5 +191,11 @@ SoGLMultiTextureEnabledElement::updategl(const int unit, const Mode newvalue, co
   }
   cc_glglue_glActiveTexture(glue, (GLenum) GL_TEXTURE0);
 
+  GLenum glerror =  sogl_glerror_debugging() ? glGetError() : GL_NO_ERROR;
+  while (glerror) {
+    SoDebugError::postWarning("SoGLMultiTextureEnabledElement::updategl",
+                              "glError() = %d\n", glerror);
+    glerror = glGetError();
+  }
 }
 

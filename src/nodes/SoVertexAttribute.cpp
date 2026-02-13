@@ -33,7 +33,7 @@
 #include <Inventor/nodes/SoVertexAttribute.h>
 #include <Inventor/elements/SoGLVertexAttributeElement.h>
 
-#include <boost/scoped_ptr.hpp>
+#include <memory>
 
 #include <Inventor/actions/SoWriteAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -57,10 +57,10 @@
 #include "elements/SoVertexAttributeData.h"
 
 /*!
-  \class SoVertexAttribute Inventor/nodes/SoVertexAttribute.h
+  \class SoVertexAttribute SoVertexAttribute.h Inventor/nodes/SoVertexAttribute.h
   \brief A generic node for providing GL vertex attributes of various types.
 
-  The SoVertexAttribute nodes is used with the SoShaderProgram node to
+  The SoVertexAttribute nodes are used with the SoShaderProgram node to
   send vertex attributes to the vertex shader.
 
   \verbatim
@@ -105,7 +105,7 @@ The vertex shader (vertex.glsl)
   \endcode
 
   \sa SoVertexAttributeBinding
-  \ingroup shaders
+  \ingroup coin_shaders
   \COIN_CLASS_EXTENSION
   \since Coin 3.0
 */
@@ -118,8 +118,8 @@ public:
   GLenum gltype;
   SbBool isreading;
   SoMFFloat dummyfield;
-  boost::scoped_ptr<SoMField> valuesfield;
-  boost::scoped_ptr<SoFieldData> fielddata;
+  std::unique_ptr<SoMField> valuesfield;
+  std::unique_ptr<SoFieldData> fielddata;
   SoVertexAttributeData * attributedata;
   SoVertexAttribute * publ;
 }; // SoVertexAttributeP
@@ -142,6 +142,9 @@ SoVertexAttribute::getFieldData(void) const
   return PRIVATE(this)->fielddata.get();
 }
 
+/*!
+  Creates a new instance of the class type corresponding to the SoType object.
+*/
 void *
 SoVertexAttribute::createInstance(void)
 {
@@ -152,6 +155,9 @@ SoVertexAttribute::createInstance(void)
 
 SoType SoVertexAttribute::classTypeId STATIC_SOTYPE_INIT;
 
+/*!
+  \copybrief SoNode::initClass(void)
+*/
 void
 SoVertexAttribute::initClass(void)
 {
@@ -165,10 +171,13 @@ SoVertexAttribute::initClass(void)
   SO_ENABLE(SoGLRenderAction, SoGLVertexAttributeElement);
 }
 
+/*!
+  Constructor.
+*/
 SoVertexAttribute::SoVertexAttribute(void)
 {
   // We don't use SO_NODE_INTERNAL_CONSTRUCTOR(SoVertexAttribute) here because
-  // the fieldData setup has to be overriden in custom ways for this node...
+  // the fieldData setup has to be overridden in custom ways for this node...
 
   this->setNodeType(SoNode::COIN_3_0);
   this->isBuiltIn = TRUE;
@@ -182,22 +191,29 @@ SoVertexAttribute::SoVertexAttribute(void)
   // initialize attribute data
   PRIVATE(this)->publ = this;
   PRIVATE(this)->isreading = FALSE;
-  PRIVATE(this)->attributedata = new SoVertexAttributeData;
-  PRIVATE(this)->attributedata->name = SbName::empty();
-  PRIVATE(this)->attributedata->index = -1;
-  PRIVATE(this)->attributedata->state = NULL;
-  PRIVATE(this)->attributedata->data = NULL;
-  PRIVATE(this)->attributedata->shaderobj = 0;
-  PRIVATE(this)->attributedata->nodeid = NULL;
-  PRIVATE(this)->attributedata->vbo = NULL;
+  SoVertexAttributeData* attributedata = new SoVertexAttributeData;
+  attributedata->name = SbName::empty();
+  attributedata->index = -1;
+  attributedata->state = NULL;
+  attributedata->data = NULL;
+  attributedata->shaderobj = 0;
+  attributedata->nodeid = NULL;
+  attributedata->vbo = NULL;
+  PRIVATE(this)->attributedata = attributedata;
 }
 
+/*!
+  Destructor.
+*/
 SoVertexAttribute::~SoVertexAttribute(void)
 {
   delete PRIVATE(this)->attributedata;
 }
 
-// Doc in superclass
+/*!
+  This static method returns the SoType object associated with
+  objects of this class.
+*/
 SoType
 SoVertexAttribute::getClassTypeId(void)
 {
@@ -254,7 +270,7 @@ SoVertexAttribute::GLRender(SoGLRenderAction * action)
   }
 
   // check if there was an SoShaderProgram node before this node in
-  // the scenegraph
+  // the scene graph
   SoGLShaderProgram * shaderprogram =
     static_cast<SoGLShaderProgram *>(SoGLShaderProgramElement::get(state));
 

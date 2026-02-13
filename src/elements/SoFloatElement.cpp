@@ -33,7 +33,8 @@
 /*!
   \class SoFloatElement Inventor/elements/SoFloatElement.h
   \brief SoFloatElement is an abstract base class for elements that consists of a single float value.
-  \ingroup elements
+
+  \ingroup coin_elements
 
   This is the superclass of elements where the new element data \e
   replaces the old data, and where the data the element stores is a
@@ -57,10 +58,14 @@ SO_ELEMENT_ABSTRACT_SOURCE(SoFloatElement);
 
 /*!
   \var float SoFloatElement::data
-  The element's value.
+
+  The floating point value of the element.
 */
 
-// doc in super
+/*!
+  \copydetails SoElement::initClass(void)
+*/
+
 void
 SoFloatElement::initClass(void)
 {
@@ -164,7 +169,10 @@ SoFloatElement::setElt(float value)
   this->data = value;
 }
 
-// doc in super
+/*!
+  Initializes the element to its default value. The default
+  value is 0.0.
+*/
 void
 SoFloatElement::init(SoState * state)
 {

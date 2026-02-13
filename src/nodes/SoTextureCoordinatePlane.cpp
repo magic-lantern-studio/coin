@@ -33,7 +33,8 @@
 /*!
   \class SoTextureCoordinatePlane SoTextureCoordinatePlane.h Inventor/nodes/SoTextureCoordinatePlane.h
   \brief The SoTextureCoordinatePlane class generates texture coordinates by projecting onto a plane.
-  \ingroup nodes
+
+  \ingroup coin_nodes
 
   SoTextureCoordinatePlane is used for generating texture coordinates
   by projecting the object onto a texture plane.  The s, t and r
@@ -186,6 +187,9 @@ SoTextureCoordinatePlane::~SoTextureCoordinatePlane()
 }
 
 // doc from parent
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoTextureCoordinatePlane::initClass(void)
 {

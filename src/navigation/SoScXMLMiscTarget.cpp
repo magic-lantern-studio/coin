@@ -34,9 +34,9 @@
 
 /*!
   \class SoScXMLMiscTarget SoScXMLMiscTarget.h Inventor/navigation/SoScXMLMiscTarget.h
-  \brief Some misc navigation utility functions.
+  \brief Miscellaneous navigation utility functions.
 
-  \ingroup navigation
+  \ingroup coin_navigation
 */
 
 #include <cassert>

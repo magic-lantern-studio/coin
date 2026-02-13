@@ -33,7 +33,8 @@
 /*!
   \class SoPickAction SoPickAction.h Inventor/actions/SoPickAction.h
   \brief The SoPickAction class is the base class for picking actions.
-  \ingroup actions
+
+  \ingroup coin_actions
 
   The basis for all interaction features that Coin provides for the
   application programmer is the pick actions. Draggers, manipulators,
@@ -42,9 +43,9 @@
   various ways.
 
   This class is not supposed to be used directly by the application
-  programmer, as it is more a place-holder for the common interface of
+  programmer, as it is more a placeholder for the common interface of
   picking operations. It does not contain any actual code for doing
-  scenegraph picks.
+  scene graph picks.
 
   Coin provides a fully functional picking action for the application
   programmer to use through the SoRayPickAction class (which inherits
@@ -78,7 +79,9 @@ public:
 SO_ACTION_SOURCE(SoPickAction);
 
 
-// Override from parent class.
+/*!
+  \copydetails SoAction::initClass(void)
+*/
 void
 SoPickAction::initClass(void)
 {
@@ -122,7 +125,7 @@ SoPickAction::setViewportRegion(const SbViewportRegion & newregion)
   Returns the viewport region used by the action.
  */
 const SbViewportRegion &
-SoPickAction::getViewportRegion(void)
+SoPickAction::getViewportRegion(void) const
 {
   return this->vpRegion;
 }

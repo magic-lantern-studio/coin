@@ -40,7 +40,7 @@
   intended for communicating with such systems.  It also manages the external
   event queue for such systems (systems may also have internal event queues).
 
-  \ingroup scxml
+  \ingroup coin_scxml
   \since Coin 3.1
 */
 
@@ -49,7 +49,7 @@
 #include <list>
 #include <algorithm>
 
-#include <boost/scoped_ptr.hpp>
+#include <memory>
 
 #include <Inventor/SbName.h>
 #include <Inventor/C/threads/mutex.h>
@@ -68,20 +68,20 @@ class DelayEventData {
   // FIXME: these objects should per spec die with the invoking eventtarget.
 public:
   DelayEventData(void)
-  : targettype(NULL), targetname(NULL), delay(0.0f), alarm(NULL), event(NULL)
+  : targettype(NULL), targetname(NULL), delay(0.0f), alarm(), event(NULL)
   {
   }
   ~DelayEventData(void)
   {
     delete [] this->targettype; this->targettype = NULL;
     delete [] this->targetname; this->targetname = NULL;
-    if (event) { delete this->event; this->event = NULL; }
+    delete this->event; this->event = NULL;
   }
 
   char * targettype;
   char * targetname;
   float delay;
-  boost::scoped_ptr<SoAlarmSensor> alarm;
+  std::unique_ptr<SoAlarmSensor> alarm;
   const ScXMLEvent * event;
 };
 
@@ -220,10 +220,10 @@ ScXMLEventTarget::registerEventTarget(ScXMLEventTarget * target, const char * se
     if (target == sessionit->second) {
       // already registered
       SoDebugError::post("ScXMLEventTarget::registerEventTarget",
-                         "type/name/session touple already registered for this target");
+                         "type/name/session tuple already registered for this target");
     } else {
       SoDebugError::post("ScXMLEventTarget::registerEventTarget",
-                         "type/name/session touple already registered for another target");
+                         "type/name/session tuple already registered for another target");
     }
   } else {
     SessionMapEntry entry(targetsessionid.getString(), target);
@@ -442,7 +442,7 @@ ScXMLEventTarget::setEventTargetName(const char * targetnamestr)
 
 /*!
   Queues an ScXMLEvent event.
-  The event is copied, and can be deleted as soon as the function return.
+  The event is copied, and can be deleted as soon as the function returns.
 */
 void
 ScXMLEventTarget::queueEvent(const ScXMLEvent * event)
@@ -636,8 +636,10 @@ ScXMLEventTarget::sendExternalEvent(const ScXMLSendElt * sendelt)
   }
 
   if (strcmp(sendtargettypeattr, "scxml") == 0) {
+    // FIXME: implement proper action
   }
   else if (strcmp(sendtargettypeattr, "x-coin-navigation") == 0) {
+    // FIXME: implement proper action
   }
   else {
     this->queueInternalEvent(SbName("error.send.TargetTypeInvalid"));
@@ -651,7 +653,7 @@ ScXMLEventTarget::sendExternalEvent(const ScXMLSendElt * sendelt)
   const char * delaystr = sendelt->getDelayAttribute();
   if (delaystr) {
     // format: "<num>s" or "<num>ms"
-    int len = strlen(delaystr);
+    size_t len = strlen(delaystr);
     if (len > 1) {
       if (delaystr[len-1] != 's') {
         SoDebugError::post("ScXMLEventTarget::sendExternalEvent",

@@ -33,24 +33,24 @@
 /*!
   \class SoSceneManager SoSceneManager.h Inventor/SoSceneManager.h
   \brief The SoSceneManager class provides the main interface between the scene graph and the GUI toolkit.
-  \ingroup general
 
-  The renderarea class from the GUI toolkit you are using uses this
+  \ingroup coin_general
+
+  The render area class from the GUI toolkit you are using uses this
   class as the interface against the scene graph. Event handling and
   providing "hooks" to do rendering are the main functions of the
   class.
 
   A Coin library instance within an application will typically contain
   a single SoSceneManager object. The pointer for this object is
-  stored in the GUI renderarea class.
+  stored in the GUI render area class.
 */
 
 // *************************************************************************
 
-/*! \file SoSceneManager.h */
 #include <Inventor/SoSceneManager.h>
 
-#include <assert.h>
+#include <cassert>
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -207,7 +207,7 @@ SoSceneManager::getCamera(void) const
 }
 
 /*!
-  Reinitialize after parameters affecting the OpenGL context has
+  Reinitialize after parameters affecting the OpenGL context have
   changed.
 */
 void
@@ -249,7 +249,7 @@ SoSceneManager::redraw(void)
 /*!
   Set the node which is top of the scene graph we're managing.  The \a
   sceneroot node reference count will be increased by 1, and any
-  previously set scene graph top node will have it's reference count
+  previously set scene graph top node will have its reference count
   decreased by 1.
 
   \sa getSceneGraph()
@@ -288,7 +288,7 @@ SoSceneManager::getSceneGraph(void) const
   Update window size of our SoGLRenderAction's viewport settings.
 
   Note that this will \e only change the information about window
-  dimensions, the actual viewport size and origin (ie the rectangle
+  dimensions, the actual viewport size and origin (i.e. the rectangle
   which redraws are confined to) will stay the same.
 
   \sa setViewportRegion()
@@ -393,7 +393,7 @@ SoSceneManager::setViewportRegion(const SbViewportRegion & newregion)
 }
 
 /*!
-  Returns current viewport region used by the renderaction and the
+  Returns current viewport region used by the render action and the
   event handling.
 
   \sa setViewportRegion()
@@ -427,9 +427,9 @@ SoSceneManager::getBackgroundColor(void) const
 
 /*!
   Set index of background color in the color lookup table if rendering
-  in colorindex mode.
+  in color index mode.
 
-  Note: colorindex mode is not supported yet in Coin.
+  Note: color index mode is not supported yet in Coin.
  */
 void
 SoSceneManager::setBackgroundIndex(const int index)
@@ -477,7 +477,7 @@ SoSceneManager::activate(void)
 }
 
 /*!
-  Deactive rendering and event handling.
+  Deactivate rendering and event handling.
  */
 void
 SoSceneManager::deactivate(void)

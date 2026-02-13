@@ -31,8 +31,10 @@
 \**************************************************************************/
 
 /*!
-  \class SoAlphaTest SoAlphaTest.h
+  \class SoAlphaTest SoAlphaTest.h Inventor/nodes/SoAlphaTest.h
   \brief The SoAlphaTest class is a node used to control the GL alpha test function.
+
+  \ingroup coin_nodes
 
   With this node you can control the OpenGL alpha test function. The
   alpha test function enables you to discard fragments based on its
@@ -42,7 +44,7 @@
 
   Alpha testing is typically used when rendering textures where all
   pixels are either completely opaque or completely
-  transparent. Transparency sorting propblems are avoided when alpha
+  transparent. Transparency sorting problems are avoided when alpha
   testing is used instead of blending, since depth testing can still
   be enabled and no sorting or delayed rendering is needed.
 
@@ -50,7 +52,14 @@
   TransparencyType node with value = NONE, and an AlphaTest node with
   \e function set to GREATER and \e value set to for instance 0.01.
 
-  \ingroup nodes
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
+    AlphaTest {
+        function NONE
+        value 0.5
+    }
+  \endcode
+
   \COIN_CLASS_EXTENSION
   \since Coin 4.0
 */
@@ -68,8 +77,8 @@
 */
 
 /*!
- \var SoAlphaTest::Function SoAlphaTest::NONE
- No alpha test is performed.
+  \var SoAlphaTest::Function SoAlphaTest::NONE
+  No alpha test is performed.
 */
 
 /*!
@@ -126,6 +135,9 @@
 
 SO_NODE_SOURCE(SoAlphaTest);
 
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoAlphaTest::initClass(void)
 {

@@ -33,7 +33,8 @@
 /*!
   \class SoGate SoGate.h Inventor/engines/SoGate.h
   \brief The SoGate class is used to selectively copy values from input to output.
-  \ingroup engines
+
+  \ingroup coin_engines
 
   This engine will forward values from the SoGate::input field to the
   SoGate::output field when the SoGate::enable field is \c TRUE.
@@ -152,7 +153,9 @@ SoGate::SoGate(SoType type)
 }
 
 
-// doc from parent
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoGate::initClass(void)
 {

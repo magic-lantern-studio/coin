@@ -44,7 +44,7 @@
   over the view frustum, such as in CAVE or other multipipe
   applications.
 
-  \ingroup nodes
+  \ingroup coin_nodes
   \since Coin 2.5
 */
 
@@ -74,7 +74,7 @@
 
 #include <Inventor/nodes/SoFrustumCamera.h>
 
-#include <math.h>
+#include <cmath>
 
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/SbSphere.h>
@@ -104,6 +104,9 @@ SoFrustumCamera::~SoFrustumCamera(void)
 }
 
 // Doc in superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoFrustumCamera::initClass(void)
 {
@@ -166,7 +169,7 @@ SoFrustumCamera::viewBoundingBox(const SbBox3f & box, float aspect, float slack)
 
   // First, we want to move the camera in such a way that it is
   // pointing straight at the center of the scene bounding box -- but
-  // without modifiying the rotation value (so we can't use
+  // without modifying the rotation value (so we can't use
   // SoCamera::pointAt()).
   SbVec3f cameradirection;
   this->orientation.getValue().multVec(SbVec3f(0, 0, -1), cameradirection);

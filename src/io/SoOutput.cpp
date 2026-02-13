@@ -33,7 +33,8 @@
 /*!
   \class SoOutput SoOutput.h Inventor/SoOutput.h
   \brief The SoOutput class is an abstraction of an output stream.
-  \ingroup general
+
+  \ingroup coin_general
 
   SoOutput offers the ability to write basic types to a file or a
   memory buffer in either ASCII or binary format.
@@ -42,7 +43,7 @@
 */
 
 /*!
-  \page compression_overview File compression
+  \page coin_compression_overview File compression
 
   Coin can support reading and writing Inventor and VRML files compressed
   with either gzip or bzip2 (as of yet - more formats may come in the
@@ -58,7 +59,7 @@
   The list of available compression methods can be fetched with the
   SoOutput::getAvailableCompressionMethods method.
 
-  You can not use file compression together with I/O to memory buffers,
+  You cannot use file compression together with I/O to memory buffers,
   except for reading from memory buffers containing gzip-compressed files.
 
   For backwards compatibility with Coin 2.0 and Coin 1.0, compressed files
@@ -71,15 +72,14 @@
 
 // *************************************************************************
 
-/*! \file SoOutput.h */
 #include <Inventor/SoOutput.h>
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif // HAVE_CONFIG_H
 
-#include <assert.h>
-#include <string.h>
+#include <cassert>
+#include <cstring>
 
 #ifdef HAVE_WINDOWS_H
 #include <windows.h>
@@ -105,7 +105,7 @@
 
 /*! \enum SoOutput::Stage
   Enumerates the possible stages of a write operation (writing needs to be
-  done in mutiple passes).
+  done in multiple passes).
 
   \sa setStage(), getStage()
 */
@@ -260,7 +260,7 @@ public:
     return this->writer;
   }
   void setWriter(SoOutput_Writer * writerptr) {
-    if (this->writer) delete this->writer;
+    delete this->writer;
     this->writer = writerptr;
   }
 private:
@@ -367,9 +367,9 @@ SoOutput::~SoOutput(void)
   Set up a new file pointer which we will write to.
 
   Important note: do \e not use this method when the Coin library has
-  been compiled as an MSWindows DLL, as passing FILE* instances back
+  been compiled as a Microsoft Windows DLL, as passing FILE* instances back
   or forth to DLLs is dangerous and will most likely cause a
-  crash. This is an intrinsic limitation for MSWindows DLLs.
+  crash. This is an intrinsic limitation for Microsoft Windows DLLs.
 
   \sa openFile(), setBuffer(), getFilePointer()
  */
@@ -383,13 +383,13 @@ SoOutput::setFilePointer(FILE * newFP)
 }
 
 /*!
-  Returns the current filepointer. If we're writing to a memory
+  Returns the current file pointer. If we're writing to a memory
   buffer, \c NULL is returned.
 
   Important note: do \e not use this method when the Coin library has
-  been compiled as an MSWindows DLL, as passing FILE* instances back
+  been compiled as a Microsoft Windows DLL, as passing FILE* instances back
   or forth to DLLs is dangerous and will most likely cause a
-  crash. This is an intrinsic limitation for MSWindows DLLs.
+  crash. This is an intrinsic limitation for Microsoft Windows DLLs.
 
   \sa setFilePointer()
  */
@@ -400,11 +400,11 @@ SoOutput::getFilePointer(void) const
 }
 
 /*!
-  Opens a file for writing. If the file can not be opened or is not
-  writeable, \a FALSE will be returned.
+  Opens a file for writing. If the file cannot be opened or is not
+  writable, \a FALSE will be returned.
 
   Files opened by this method will automatically be closed if the
-  user supplies another filepointer, another filename for writing,
+  user supplies another file pointer, another filename for writing,
   or if the SoOutput instance is deleted.
 
   \sa setFilePointer(), setBuffer(), closeFile()
@@ -462,7 +462,7 @@ SoOutput::closeFile(void)
   memory buffer.
 
   This method will return \e TRUE if the compression method selected
-  is available. If it's not available, \e FALSE will be returned and
+  is available. If it is not available, \e FALSE will be returned and
   compression is disabled.
 
   \sa getAvailableCompressionMethods()
@@ -525,7 +525,7 @@ SoOutput::getAvailableCompressionMethods(unsigned int & num)
   make it a habit to always use getBuffer() to retrieve the memory
   buffer pointer after write operations.
 
-  Here's a complete, stand-alone usage example which shows how to
+  Here's a complete, standalone usage example which shows how to
   write a scene graph to a memory buffer:
 
   \code
@@ -745,7 +745,7 @@ SoOutput::setStage(Stage stage)
 
 /*!
   Returns an indicator on the current write stage. Writing is done in two
-  passes, one to count and check connections, one to do the actual ascii or
+  passes, one to count and check connections, one to do the actual ASCII or
   binary export of data.
 
   You should not need to use this method, as it is meant for internal
@@ -784,7 +784,7 @@ SoOutput::write(const char * s)
 {
   const size_t writelen = strlen(s);
   if (this->isBinary()) { this->write((int)writelen); }
-  this->writeBytesWithPadding(s, (int)writelen);
+  this->writeBytesWithPadding(s, writelen);
 }
 
 /*!
@@ -1003,19 +1003,17 @@ SoOutput::write(const double d)
 }
 
 #ifdef __CYGWIN__
-#include <boost/static_assert.hpp>
-
 void
 SoOutput::write(long int i)
 {
-  BOOST_STATIC_ASSERT(sizeof(long int) == sizeof(int));
+  static_assert(sizeof(long int) == sizeof(int), "long int size must match int on Cygwin");
   write(static_cast<int>(i));
 }
 
 void
 SoOutput::write(unsigned long int i)
 {
-  BOOST_STATIC_ASSERT(sizeof(unsigned long int) == sizeof(unsigned int));
+  static_assert(sizeof(unsigned long int) == sizeof(unsigned int), "unsigned long int size must match unsigned int on Cygwin");
   write(static_cast<unsigned int>(i));
 }
 #endif //__CYGWIN__
@@ -1162,7 +1160,7 @@ SoOutput::indent(void)
 }
 
 /*!
-  Reset all value and make ready for using another filepointer or buffer.
+  Reset all value and make ready for using another file pointer or buffer.
 */
 void
 SoOutput::reset(void)
@@ -1206,7 +1204,7 @@ SoOutput::setCompact(SbBool flag)
 }
 
 /*!
-  Returns whether or not the write routines tries to compact the data when
+  Returns whether or not the write routines try to compact the data when
   writing it (i.e. using less whitespace, etc).
 
   Note that "compact" in this sense does \e not mean "bitwise compression",
@@ -1220,7 +1218,7 @@ SoOutput::isCompact(void) const
 
 /*!
   Set up annotation of different aspects of the output data. This is not
-  useful for much else than debugging purposes, I s'pose.
+  useful for much else than debugging purposes, I suppose.
 */
 void
 SoOutput::setAnnotation(uint32_t bits)
@@ -1254,7 +1252,7 @@ SoOutput::getAnnotation(void)
   Returns \a FALSE if there's not enough space left, otherwise \a TRUE.
 
   Note that there will automatically be made an attempt at allocating
-  more memory if the realloction callback function argument of
+  more memory if the reallocation callback function argument of
   setBuffer() was not \a NULL.
 */
 SbBool
@@ -1271,7 +1269,7 @@ SoOutput::makeRoomInBuf(size_t bytes)
 /*!
   \COININTERNAL
 
-  Write the given number of bytes from the array, pad with zeroes to get
+  Write the given number of bytes from the array, pad with zeros to get
   on a 4-byte boundary if file format is binary.
 */
 void
@@ -1328,7 +1326,7 @@ SoOutput::checkHeader(void)
 }
 
 /*!
-  Returns \a TRUE of we're set up to write to a memory buffer.
+  Returns \a TRUE if we're set up to write to a memory buffer.
 */
 SbBool
 SoOutput::isToBuffer(void) const
@@ -1413,7 +1411,7 @@ SoOutput::removeDEFNode(SbName name)
   BogusSet * defnames = PRIVATE(this)->getCurrentDefNames(FALSE);
   assert(defnames);
 #if COIN_DEBUG
-  SbBool ret = defnames->erase(name.getString());
+  size_t ret = defnames->erase(name.getString());
   assert(ret && "Tried to remove nonexisting DEFnode");
 #else
   (void)defnames->erase(name.getString());

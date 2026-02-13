@@ -33,7 +33,8 @@
 /*!
   \class SoPointDetail SoPointDetail.h Inventor/details/SoPointDetail.h
   \brief The SoPointDetail class is for storing detailed information for a single 3D point.
-  \ingroup details
+
+  \ingroup coin_details
 
   Instances of this class are used among other things for storing
   information about the vertices of lines and polygons after pick
@@ -64,7 +65,9 @@ SoPointDetail::~SoPointDetail()
 {
 }
 
-// Doc in superclass.
+/*!
+  \copybrief SoDetail::initClass(void)
+*/
 void
 SoPointDetail::initClass(void)
 {

@@ -33,7 +33,8 @@
 /*!
   \class SoConcatenate SoConcatenate.h Inventor/engines/SoConcatenate.h
   \brief The SoConcatenate class is used to concatenate several inputs into one output.
-  \ingroup engines
+
+  \ingroup coin_engines
 
   Takes all the values from the 10 input multivalue fields in turn and
   concatenates them into the multivalue output.
@@ -143,7 +144,9 @@ SoConcatenate::SoConcatenate(SoType type)
 }
 
 
-// doc from parent
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoConcatenate::initClass(void)
 {

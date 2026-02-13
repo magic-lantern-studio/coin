@@ -33,7 +33,8 @@
 /*!
   \class SoContextHandler SoContextHandler.h Inventor/misc/SoContextHandler.h
   \brief The SoContextHandler class is for now to be treated as an internal class.
-  \ingroup general
+
+  \ingroup coin_general
 
   \since Coin 2.0
 */
@@ -57,10 +58,9 @@
 
 // *************************************************************************
 
-/*! \file SoContextHandler.h */
 #include <Inventor/misc/SoContextHandler.h>
 
-#include <stdlib.h>
+#include <cstdlib>
 
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/lists/SbList.h>
@@ -258,7 +258,7 @@ SoContextHandler::removeContextDestructionCallback(ContextDestructionCB * func, 
   item.closure = closure;
 
   CC_MUTEX_LOCK(socontexthandler_mutex);
-  int didremove = socontexthandler_hashlist->erase(item);
+  size_t didremove = socontexthandler_hashlist->erase(item);
   assert(didremove);
   CC_MUTEX_UNLOCK(socontexthandler_mutex);
 }

@@ -33,7 +33,8 @@
 /*!
   \class SoLineSet SoLineSet.h Inventor/nodes/SoLineSet.h
   \brief The SoLineSet class is used to render and organize non-indexed polylines.
-  \ingroup nodes
+
+  \ingroup coin_nodes
 
   Polylines are specified using the numVertices field. Coordinates,
   normals, materials and texture coordinates are fetched in order from
@@ -66,7 +67,7 @@
 
   The width of the rendered lines can be controlled through the
   insertion of an SoDrawStyle node in front of SoLineSet node(s) in
-  the scenegraph.
+  the scene graph.
 
   <b>FILE FORMAT/DEFAULTS:</b>
   \code
@@ -195,19 +196,19 @@ SoLineSet::findNormalBinding(SoState * const state) const
     SoNormalBindingElement::get(state);
 
   switch (normbind) {
-  case SoMaterialBindingElement::OVERALL:
+  case SoNormalBindingElement::OVERALL:
     binding = OVERALL;
     break;
-  case SoMaterialBindingElement::PER_VERTEX:
-  case SoMaterialBindingElement::PER_VERTEX_INDEXED:
+  case SoNormalBindingElement::PER_VERTEX:
+  case SoNormalBindingElement::PER_VERTEX_INDEXED:
     binding = PER_VERTEX;
     break;
-  case SoMaterialBindingElement::PER_PART:
-  case SoMaterialBindingElement::PER_PART_INDEXED:
+  case SoNormalBindingElement::PER_PART:
+  case SoNormalBindingElement::PER_PART_INDEXED:
     binding = PER_SEGMENT;
     break;
-  case SoMaterialBindingElement::PER_FACE:
-  case SoMaterialBindingElement::PER_FACE_INDEXED:
+  case SoNormalBindingElement::PER_FACE:
+  case SoNormalBindingElement::PER_FACE_INDEXED:
     binding = PER_LINE;
     break;
   default:
@@ -369,7 +370,9 @@ namespace { namespace SoGL { namespace LineSet {
 
 } } } // namespace
 
-// doc from parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoLineSet::initClass(void)
 {

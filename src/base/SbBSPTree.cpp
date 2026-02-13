@@ -47,7 +47,8 @@
 /*!
   \class SbBSPTree SbBSPTree.h Inventor/SbBSPTree.h
   \brief The SbBSPTree class provides a binary space partitioning container.
-  \ingroup base
+
+  \ingroup coin_base
 
   This class can be used to organize searches for 3D points or normals
   in a set in O(log(n)) time.

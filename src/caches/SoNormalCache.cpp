@@ -33,7 +33,8 @@
 /*!
   \class SoNormalCache SoNormalCache.h Inventor/caches/SoNormalCache.h
   \brief The SoNormalCache class is used to hold cached normals.
-  \ingroup caches
+
+  \ingroup coin_caches
 
   As an extension to the original SGI Open Inventor v2.1 API, it is
   also possible to generate normals using this class.
@@ -85,7 +86,7 @@ public:
 // *************************************************************************
 
 /*!
-  Contructor with \a state being the current state.
+  Constructor with \a state being the current state.
 */
 SoNormalCache::SoNormalCache(SoState * const state)
   : SoCache(state)
@@ -760,7 +761,7 @@ SoNormalCache::generatePerFaceStrip(const SbVec3f * const coords,
 }
 
 /*!
-  Generates one normal per triangle strips (avarages all triangle normals).
+  Generates one normal per triangle strips (averages all triangle normals).
 */
 void
 SoNormalCache::generatePerStrip(const SbVec3f * const coords,

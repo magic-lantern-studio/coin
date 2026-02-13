@@ -30,6 +30,15 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
+/*!
+  \class SoNodeVisualize Inventor/annex/Profiler/nodekits/SoNodeVisualize.h
+  \brief The SoNodeVisualize class is yet to be documented.
+
+  \ingroup coin_elements
+
+  FIXME: write doc.
+*/
+
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif // HAVE_CONFIG_H
@@ -40,8 +49,6 @@
 
 #include <map>
 #include <string>
-
-#include <boost/scoped_ptr.hpp>
 
 #include <Inventor/SoDB.h>
 #include <Inventor/SoInput.h>
@@ -248,7 +255,7 @@ SoNodeVisualize::visualize(SoNode * node) {
   this->node=node;
   if (node!=NULL) {
     SoType type = node->getTypeId();
-    //FIXME: Exhange all the named textures, with images
+    //FIXME: Exchange all the named textures, with images
     //FIXME: Make the images better fitting for its shape
     //FIXME: Check if cubes are better options for some of the nodetypes
     //FIXME: Make smaller textures
@@ -400,7 +407,7 @@ SoNodeVisualize::recalculate() {
 
    If no argument given, visualizes everything
 
-   WARNING: Allthough the default is to visualize everything, it is
+   WARNING: Although the default is to visualize everything, it is
    recommended to set a limit on how deep you want to traverse. If you
    go to deep, the memory requirements, and recalculation may become
    so heavy it grinds to a halt. Additionally it is difficult to see,
@@ -435,11 +442,11 @@ void
 SoNodeVisualize::traverse(SoProfilerStats * stats)
 {
   // FIXME 20071109 rolvs: This is just crammed in here, during the last hours of the hackathon.
-  // And I'm quite sure that a better way to do this alltogeher might be
+  // And I'm quite sure that a better way to do this altogether might be
   // conjured. its also more than possible that I duplicate some functionality somewhere here...
   // And phew. Cut and paste programming. Darn.
 
-  // check if this->node is a cache-separator. In that case, find it's material and set it.
+  // check if this->node is a cache-separator. In that case, find its material and set it.
   //this->getChildrenGeometry()
   assert(stats && "Stats not set.");
   SoMaterial * material = static_cast<SoMaterial *>(this->color.getValue());
@@ -459,7 +466,7 @@ SoNodeVisualize::traverse(SoProfilerStats * stats)
   if ((parent != NULL) && (this->node != NULL)) {
     const unsigned long CRITICAL = 10;
 
-    /*SoNode * parent = */this->parent->node;
+    //SoNode * parent = this->parent->node;
     // FIXME: larsa
     unsigned long msec = 0; // stats->getTotalProfilingTime(parent, this->node).getMsecValue();
     msec = SbMax<unsigned long>(CRITICAL, msec);
@@ -575,7 +582,7 @@ SoNodeVisualize::~SoNodeVisualize()
 }
 
 /*!
-   Standard intialization for node catalog
+   Standard initialization for node catalog
 */
 void
 SoNodeVisualize::initClass(void)
@@ -648,11 +655,11 @@ SoNodeVisualize::handleEvent(SoHandleEventAction * action)
   if (!pp) { return; }
 
   SoFullPath * path = static_cast<SoFullPath*>(pp->getPath());
-  SoShape* shape = static_cast<SoShape*>(this->getAnyPart("shape",TRUE));
+  SoShape* shapenode = static_cast<SoShape*>(this->getAnyPart("shape",TRUE));
 
   //REVIEW: BFG - Not sure what I'm doing here, the getDetail is
   //from an example source
-  if (path->containsNode(shape) && pp->getDetail(shape) == NULL) {
+  if (path->containsNode(shapenode) && pp->getDetail(shapenode) == NULL) {
     SbVec3f point = pp->getPoint();
     this->clicked();
   }
@@ -722,9 +729,9 @@ SoNodeVisualize::nodeNumChildren() {
 }
 
 /*!
-  Resets the datastructure in anticipation of a reanalysis
+  Resets the data structure in anticipation of a reanalysis
 
-  This puts the structure in the same inconsistent structure as the empty constructor
+  This puts the structure in the same inconsistent state as the empty constructor
 */
 void
 SoNodeVisualize::reset() {

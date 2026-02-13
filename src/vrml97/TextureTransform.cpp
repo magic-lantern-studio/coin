@@ -39,7 +39,8 @@
 /*!
   \class SoVRMLTextureTransform SoVRMLTextureTransform.h Inventor/VRMLnodes/SoVRMLTextureTransform.h
   \brief The SoVRMLTextureTransform class defines a transformation applied to texture coordinates.
-  \ingroup VRMLnodes
+
+  \ingroup coin_VRMLnodes
 
   \WEB3DCOPYRIGHT
 
@@ -91,7 +92,7 @@
   intermediate transformation matrices, 
   
   \verbatim
-  Tc' = -C × S × R × C × T × Tc
+  Tc' = -C Ã— S Ã— R Ã— C Ã— T Ã— Tc
   \endverbatim
 
   Note that this transformation order is the reverse of the Transform
@@ -123,7 +124,7 @@
 
 #include <Inventor/VRMLnodes/SoVRMLTextureTransform.h>
 
-#include <math.h>
+#include <cmath>
 
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/elements/SoMultiTextureMatrixElement.h>
@@ -136,7 +137,9 @@
 
 SO_NODE_SOURCE(SoVRMLTextureTransform);
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLTextureTransform::initClass(void)
 {

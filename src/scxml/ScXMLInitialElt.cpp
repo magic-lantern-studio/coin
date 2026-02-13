@@ -36,17 +36,17 @@
   \class ScXMLInitialElt ScXMLInitialElt.h Inventor/scxml/ScXMLInitialElt.h
   \brief implements the &lt;initial&gt; SCXML element.
 
-  An &lt;initial&gt; elements has no attributes, and should contain one
+  An &lt;initial&gt; element has no attributes, and should contain one
   conditionless &lt;transition&gt; element with a target attribute that
   identifies a descendant state element of the parent state element.
 
   \since Coin 3.0
-  \ingroup scxml
+  \ingroup coin_scxml
 */
 
 #include <cassert>
 
-#include <boost/scoped_ptr.hpp>
+#include <memory>
 
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/C/XML/element.h>
@@ -137,9 +137,9 @@ ScXMLInitialEltReader::read(ScXMLElt * container, cc_xml_elt * xmlelt, ScXMLDocu
 
 class ScXMLInitialElt::PImpl {
 public:
-  PImpl(void) : transitionptr(NULL) { }
+  PImpl(void) { }
 
-  boost::scoped_ptr<ScXMLTransitionElt> transitionptr;
+  std::unique_ptr<ScXMLTransitionElt> transitionptr;
 };
 
 #define PRIVATE(obj) ((obj)->pimpl)

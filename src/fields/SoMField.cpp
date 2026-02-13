@@ -33,7 +33,8 @@
 /*!
   \class SoMField SoMField.h Inventor/fields/SoMField.h
   \brief The SoMField class is the base class for fields which can contain multiple values.
-  \ingroup fields
+
+  \ingroup coin_fields
 
   All field types which may contain more than one member
   value inherits this class. SoMField is an abstract class.
@@ -141,7 +142,7 @@
   executed, something can go wrong during notification if you have
   application code monitoring changes, and the application code then
   for instance triggers an action or something that tries to use the
-  coordIndex field before it's updated to it's correct size with the
+  coordIndex field before it is updated to its correct size with the
   setNum() call.
 
   (Notification can in this case, as always, be temporarily disabled
@@ -280,7 +281,7 @@ using std::strlen;
 */
 /*!
   \var SbBool SoMField::userDataIsUsed
-  Is \c TRUE if data has been set through a setValuesPointer() call
+  Is \c TRUE if data have been set through a setValuesPointer() call
   and set to \c FALSE through a enableDeleteValues() call.
 */
 
@@ -299,14 +300,19 @@ somfield_mutex_cleanup(void)
 
 // *************************************************************************
 
-// Overridden from parent class.
+
+/*!
+  \copydetails SoField::getClassTypeId(void)
+*/
 SoType
 SoMField::getClassTypeId(void)
 {
   return SoMField::classTypeId;
 }
 
-// Overridden from parent class.
+/*!
+  \copydetails SoField::initClass(void)
+*/
 void
 SoMField::initClass(void)
 {
@@ -356,7 +362,7 @@ SoMField::makeRoom(int newnum)
   from \a valuestring, otherwise \c FALSE.
 
   If \a index is larger than the current number of elements in the
-  field, this method will automatically expand the field to accomodate
+  field, this method will automatically expand the field to accommodate
   the new value.
 */
 SbBool
@@ -385,11 +391,9 @@ static size_t mfield_buffer_size = 0;
 static void
 mfield_buffer_cleanup(void)
 {
-  if (mfield_buffer) {
-    free(mfield_buffer);
-    mfield_buffer = NULL;
-    mfield_buffer_size = 0;
-  }
+  free(mfield_buffer);
+  mfield_buffer = NULL;
+  mfield_buffer_size = 0;
 }
 
 static void *
@@ -622,7 +626,7 @@ SoMField::writeBinaryValues(SoOutput * out) const
 }
 
 // Number of values written to each line during export to ASCII format
-// files. Override this in subclasses for prettier formating.
+// files. Override this in subclasses for prettier formatting.
 int
 SoMField::getNumValuesPerLine(void) const
 {
@@ -676,7 +680,7 @@ SoMField::deleteValues(int start, int numarg)
 {
   // Note: this function is overridden in SoMFNode, SoMFEngine and
   // SoMFPath, so if you do any changes here, take a look at those
-  // methods aswell (they are collected in the common template
+  // methods as well (they are collected in the common template
   // MFNodeEnginePath.tpl).
 
   // Don't use getNum(), so we avoid recursive evaluate() calls.
@@ -785,7 +789,7 @@ SoMField::allocValues(int newnum)
   // Important notice: the "non-realloc"-version of this method is
   // found in SoSubField.h. If you make modifications here, do check
   // whether or not they should be matched with modifications in that
-  // method aswell.
+  // method as well.
 
   assert(newnum >= 0);
 
@@ -823,15 +827,15 @@ SoMField::allocValues(int newnum)
       if (oldmaxnum != this->maxNum) {
         // FIXME: Umm.. aren't we supposed to use realloc() here?
         // 20000915 mortene.
+        size_t buffersize = size_t(this->maxNum) * size_t(fsize);
         unsigned char * newblock = new unsigned char[this->maxNum * fsize];
-        int copysize = fsize * SbMin(this->num, newnum);
-        (void) memcpy(newblock, this->valuesPtr(), copysize);
+        size_t copysize = size_t(fsize) * size_t(SbMin(this->num, newnum));
+        (void)memcpy(newblock, this->valuesPtr(), copysize);
         // we have to dereference old values in SoMFNode, SoMFPath and
         // SoMFEngine, so we just initialize the part of the array
         // with no defined values to NULL.
-        int rest = this->maxNum*fsize - copysize;
-        if (rest > 0) {
-          (void)memset(newblock + copysize, 0, rest);
+        if (buffersize > copysize) {
+          (void)memset(newblock + copysize, 0, buffersize - copysize);
         }
         if (!this->userDataIsUsed) {
           delete[] static_cast<unsigned char *>(this->valuesPtr());
@@ -841,10 +845,11 @@ SoMField::allocValues(int newnum)
       }
     }
     else {
-      unsigned char * data = new unsigned char[newnum * fsize];
+      size_t buffersize = size_t(newnum) * size_t(fsize);
+      unsigned char * data = new unsigned char[buffersize];
       // we have to dereference old values in SoMFNode, SoMFPath and
       // SoMFEngine, so we just initialize the array to NULL.
-      (void)memset(data, 0, newnum * fsize);
+      (void)memset(data, 0, buffersize);
       this->setValuesPtr(data);
       this->userDataIsUsed = FALSE;
       this->maxNum = newnum;

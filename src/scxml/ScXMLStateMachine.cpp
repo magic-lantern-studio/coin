@@ -30,16 +30,15 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-/*! \file ScXMLStateMachine.h */
-#include <Inventor/scxml/ScXMLStateMachine.h>
-
 /*!
   \class ScXMLStateMachine ScXMLStateMachine.h Inventor/scxml/ScXMLStateMachine.h
   \brief Manager for processing events and setting states in SCXML structures.
 
   \since Coin 3.0
-  \ingroup scxml
+  \ingroup coin_scxml
 */
+
+#include <Inventor/scxml/ScXMLStateMachine.h>
 
 #ifdef _MSC_VER
 #pragma warning(disable:4786) // symbol truncated
@@ -52,7 +51,7 @@
 #include <map>
 #include <vector>
 
-#include <boost/scoped_ptr.hpp>
+#include <memory>
 
 #include <Inventor/errors/SoDebugError.h>
 
@@ -112,17 +111,14 @@ public:
       name(SbName::empty()), sessionid(SbName::empty()),
       loglevel(3),
       description(NULL),
-      evaluator(NULL),
-      initializer(NULL)
+      evaluator(NULL)
   {
   }
 
   ~PImpl(void)
   {
-    if (this->description) {
-      delete this->description;
-      this->description = NULL;
-    }
+    delete this->description;
+    this->description = NULL;
   }
 
   ScXMLStateMachine * pub;
@@ -152,7 +148,7 @@ public:
   StateChangeCallbackList statechangecallbacklist;
   void invokeStateChangeCallbacks(const char * identifier, SbBool enterstate);
 
-  boost::scoped_ptr<ScXMLTransitionElt> initializer;
+  std::unique_ptr<ScXMLTransitionElt> initializer;
 
   std::vector<ScXMLElt *> activestatelist;
 
@@ -255,7 +251,7 @@ ScXMLStateMachine::setDescription(ScXMLDocument * document)
   PRIVATE(this)->finished = FALSE;
   PRIVATE(this)->activestatelist.clear();
 
-  // set up the correct evalutor and identify the modules that are enabled
+  // set up the correct evaluator and identify the modules that are enabled
   ScXMLElt * rootelt = document->getRoot();
   if (rootelt->isOfType(ScXMLScxmlElt::getClassTypeId())) {
     ScXMLScxmlElt * scxmlelt = static_cast<ScXMLScxmlElt *>(rootelt);
@@ -378,8 +374,8 @@ ScXMLStateMachine::processOneEvent(const ScXMLEvent * event)
   if (PRIVATE(this)->activestatelist.size() == 0) {
     if (PRIVATE(this)->initializer.get() == NULL) {
       PRIVATE(this)->initializer.reset(new ScXMLTransitionElt);
-      // FIXME
       if (PRIVATE(this)->description->getRoot()->getInitial()) {
+        // FIXME: implement proper action
       } else {
         PRIVATE(this)->initializer->setTargetAttribute(PRIVATE(this)->description->getRoot()->getInitialAttribute());
       }
@@ -660,10 +656,10 @@ ScXMLStateMachine::isFinished(void) const
 
 
 /*!
-  This method returns the current event during event processing, and NULL
+  This method returns the current event during event processing, and \c NULL
   when not processing events.
 
-  Event processing is in special cases done with NULL as the current event,
+  Event processing is in special cases done with \c NULL as the current event,
   as for instance during state machine initialization.
 */
 
@@ -671,8 +667,8 @@ ScXMLStateMachine::isFinished(void) const
 
 /*!
   Returns the number of active states in the state machine.  This number
-  should currently be 1, but in the future, when <parallel> is implemented,
-  it can be more.
+  should currently be 1, but in the future, when &lt;parallel&gt; is implemented,
+  it can be greater.
 */
 int
 ScXMLStateMachine::getNumActiveStates(void) const
@@ -936,7 +932,7 @@ ScXMLStateMachine::PImpl::enterState(ScXMLElt * object)
     const ScXMLElt * container = final->getContainer();
     assert(container);
     const char * id = container->getXMLAttribute("id");
-    if (!id || strlen(id) == 0) {
+    if (!id || id[0] == '\0') {
       if (container->isOfType(ScXMLDocument::getClassTypeId())) {
         // there is not ParentID to post a ParentID.done event in
         // this case. study SCXML state to see what to do?

@@ -45,7 +45,7 @@
 
 #include <Inventor/misc/SoGLDriverDatabase.h>
 
-#include <string.h>
+#include <cstring>
 
 #include <Inventor/C/tidbits.h>
 #include <Inventor/SbName.h>
@@ -1063,7 +1063,7 @@ SoGLDriverDatabaseP::addFeatures(const cc_glglue * COIN_UNUSED_ARG(context), con
     else {
 #if COIN_DEBUG
     SoDebugError::postWarning("SoGLDriverDatabaseP::addFeature",
-      "Feature %s has unknown or no commment.",
+      "Feature %s has unknown or no comment.",
       featurename.getString());
 #endif
     }
@@ -1072,9 +1072,9 @@ SoGLDriverDatabaseP::addFeatures(const cc_glglue * COIN_UNUSED_ARG(context), con
 
 /*!
 
-  Convenience function which checks whether \a feature is suppported
+  Convenience function which checks whether \a feature is supported
   for \a context.  If \a feature is an OpenGL extension, it checks if
-  it's actually supported by the driver, and then calls
+  it is actually supported by the driver, and then calls
   SoGLDriverDatabase::isBroken() to check if the feature is broken for
   \a context.
 

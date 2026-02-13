@@ -33,7 +33,8 @@
 /*!
   \class SoOrthographicCamera SoOrthographicCamera.h Inventor/nodes/SoOrthographicCamera.h
   \brief The SoOrthographicCamera class defines a camera node with orthographic rendering.
-  \ingroup nodes
+
+  \ingroup coin_nodes
 
   Orthographic rendering will not give a particularly realistic
   impression of the scene, but non-realistic rendering is for various
@@ -62,7 +63,7 @@
   }
   \endverbatim
 
-  You will likely encounter Z-buffer issues with this technique which
+  You will likely encounter z-buffer issues with this technique which
   makes the overlay / HUD graphics end up interspersed with the "real"
   geometry. If so, this can be solved by e.g. inserting an SoCallback
   node in the sub-scene, where you let the callback disable the depth
@@ -96,7 +97,7 @@
 
 /*!
   \var SoSFFloat SoOrthographicCamera::height
-  Height of viewport in world-space scale. Defaults to 2.0 units.
+  Height of viewport in world space scale. Defaults to 2.0 units.
 */
 
 // *************************************************************************
@@ -121,6 +122,9 @@ SoOrthographicCamera::~SoOrthographicCamera()
 }
 
 // Doc in superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoOrthographicCamera::initClass(void)
 {
@@ -175,7 +179,7 @@ SoOrthographicCamera::viewBoundingBox(const SbBox3f & box,
 
   // We want to move the camera in such a way that it is pointing
   // straight at the center of the scene bounding box -- but without
-  // modifiying the rotation value (so we can't use SoCamera::pointAt()),
+  // modifying the rotation value (so we can't use SoCamera::pointAt()),
   // and positioned at the edge of the bounding sphere.
   SbVec3f cameradirection;
   this->orientation.getValue().multVec(SbVec3f(0, 0, -1), cameradirection);

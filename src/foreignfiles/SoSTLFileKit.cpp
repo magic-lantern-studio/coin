@@ -117,7 +117,7 @@ public:
   supported by a wide variety of computer-aided design programs.  STL
   models are, because of their intended purpose, always
   representations of solid objects.  STL is short for
-  Stereolithography, the process used for 3D printing.
+  stereolithography, the process used for 3D printing.
 
   Ordinary STL models do not contain color information.  There are,
   however, two extensions to the binary file format for specifying
@@ -128,7 +128,7 @@ public:
   get it right at once since we have write support (we don't want to
   inadvertently create a third color extension ;).
 
-  When writing STL files, certain STL model criterias are not enforced
+  When writing STL files, certain STL model criteria are not enforced
   by SoSTLFileKit.  These are:
 
   - STL models should represent complete solids - it is the user's
@@ -157,7 +157,7 @@ public:
 SO_KIT_SOURCE(SoSTLFileKit)
 
 /*!
-  Initializes class and registers file identification functions.
+  \copydetails SoNode::initClass(void)
 */
 
 void
@@ -170,7 +170,7 @@ SoSTLFileKit::initClass(void)
 }
 
 /*!
-  Returns wether or not \a filename is identified as an STL file.
+  Returns whether or not \a filename is identified as an STL file.
 */
 
 SbBool
@@ -244,7 +244,7 @@ SoSTLFileKit::canReadFile(const char * filename) const
 }
 
 /*!
-  Reads in an STL file.  Both ascii and binary files are supported.
+  Reads in an STL file.  Both ASCII and binary files are supported.
   For binary files, the color extensions are not implemented yet.
 
   Returns FALSE if \a filename could not be opened or parsed
@@ -287,9 +287,11 @@ SoSTLFileKit::readFile(const char * filename)
   while ( loop ) {
     const int peekval = stl_reader_peek(reader);
     if ( peekval == STL_BEGIN ) {
+      // FIXME: implement proper action
     } else if ( peekval == STL_INIT_INFO ) {
       // FIXME: set info
     } else if ( peekval == STL_EXIT_INFO ) {
+      // FIXME: implement proper action
     } else if ( peekval == STL_END ) {
       loop = FALSE;
     } else if ( peekval == STL_FACET ) {
@@ -569,11 +571,11 @@ SoSTLFileKit::addFacet(const SbVec3f & v1, const SbVec3f & v2, const SbVec3f & v
   long v1idx = PRIVATE(this)->points->findPoint(v1), v1new = (v1idx == -1);
   long v2idx = PRIVATE(this)->points->findPoint(v2), v2new = (v2idx == -1);
   long v3idx = PRIVATE(this)->points->findPoint(v3), v3new = (v3idx == -1);
-  if (!v1new) { v1idx = (long) PRIVATE(this)->points->getUserData(v1idx); }
-  if (!v2new) { v2idx = (long) PRIVATE(this)->points->getUserData(v2idx); }
-  if (!v3new) { v3idx = (long) PRIVATE(this)->points->getUserData(v3idx); }
+  if (!v1new) { v1idx = (long) reinterpret_cast<intptr_t>(PRIVATE(this)->points->getUserData(v1idx)); }
+  if (!v2new) { v2idx = (long) reinterpret_cast<intptr_t>(PRIVATE(this)->points->getUserData(v2idx)); }
+  if (!v3new) { v3idx = (long) reinterpret_cast<intptr_t>(PRIVATE(this)->points->getUserData(v3idx)); }
   long nidx = PRIVATE(this)->normals->findPoint(n);
-  if (nidx != -1) { nidx = (long) PRIVATE(this)->normals->getUserData(nidx); }
+  if (nidx != -1) { nidx = (long) reinterpret_cast<intptr_t>(PRIVATE(this)->normals->getUserData(nidx)); }
 
   // toss out invalid facets - facets where two or more points are in
   // the same location.  what are these - are they lines and points or
@@ -619,7 +621,7 @@ SoSTLFileKit::addFacet(const SbVec3f & v1, const SbVec3f & v2, const SbVec3f & v
   if (v1new) {
     v1idx = PRIVATE(this)->numvertices;
     coordinates->point.set1Value(v1idx, v1);
-    PRIVATE(this)->points->addPoint(v1, (void *) v1idx);
+    PRIVATE(this)->points->addPoint(v1, (void*) ((uintptr_t) v1idx));
     PRIVATE(this)->numvertices++;
   } else {
     PRIVATE(this)->numsharedvertices++;
@@ -629,7 +631,7 @@ SoSTLFileKit::addFacet(const SbVec3f & v1, const SbVec3f & v2, const SbVec3f & v
   if (v2new) {
     v2idx = PRIVATE(this)->numvertices;
     coordinates->point.set1Value(v2idx, v2);
-    PRIVATE(this)->points->addPoint(v2, (void *) v2idx);
+    PRIVATE(this)->points->addPoint(v2, (void*) ((uintptr_t) v2idx));
     PRIVATE(this)->numvertices++;
   } else {
     PRIVATE(this)->numsharedvertices++;
@@ -639,7 +641,7 @@ SoSTLFileKit::addFacet(const SbVec3f & v1, const SbVec3f & v2, const SbVec3f & v
   if (v3new) {
     v3idx = PRIVATE(this)->numvertices;
     coordinates->point.set1Value(v3idx, v3);
-    PRIVATE(this)->points->addPoint(v3, (void *) v3idx);
+    PRIVATE(this)->points->addPoint(v3, (void*) ((uintptr_t) v3idx));
     PRIVATE(this)->numvertices++;
   } else {
     PRIVATE(this)->numsharedvertices++;
@@ -650,7 +652,7 @@ SoSTLFileKit::addFacet(const SbVec3f & v1, const SbVec3f & v2, const SbVec3f & v
   if (nidx == -1) {
     nidx = PRIVATE(this)->numnormals;
     normals->vector.set1Value(nidx, n);
-    PRIVATE(this)->normals->addPoint(n, (void *) nidx);
+    PRIVATE(this)->normals->addPoint(n, (void*) ((uintptr_t) nidx));
     PRIVATE(this)->numnormals++;
   } else {
     PRIVATE(this)->numsharednormals++;

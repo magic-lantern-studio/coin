@@ -33,7 +33,8 @@
 /*!
   \class SoGeoCoordinate SoGeoCoordinate.h Inventor/nodes/SoGeoCoordinate.h
   \brief The SoGeoCoordinate class is used to specify a list of geographical coordinates.
-  \ingroup nodes
+
+  \ingroup coin_nodes
 
   <b>FILE FORMAT/DEFAULTS:</b>
   \code
@@ -80,8 +81,8 @@
 
 class SoGeoCoordinateP {
 public:
-  uint32_t originid;
-  uint32_t thisid;
+  SbUniqueId originid;
+  SbUniqueId thisid;
   SbList <SbVec3f> coords;
 };
 
@@ -117,7 +118,9 @@ SoGeoCoordinate::~SoGeoCoordinate(void)
 {
 }
 
-// Doc from superclass.
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoGeoCoordinate::initClass(void)
 {
@@ -215,8 +218,8 @@ SoGeoCoordinate::getTransform(SoGeoOrigin * origin, const int idx) const
 BOOST_AUTO_TEST_CASE(initialized)
 {
   BOOST_CHECK_MESSAGE(SoGeoCoordinate::getClassTypeId() != SoType::badType(),
-                      "SoGeoCoordinate class not initializated");
-  boost::intrusive_ptr<SoGeoCoordinate> node(new SoGeoCoordinate);
+                      "SoGeoCoordinate class not initialized");
+  SoRefPtr<SoGeoCoordinate> node(new SoGeoCoordinate);
   BOOST_CHECK_MESSAGE(node->getTypeId() != SoType::badType(),
                       "missing class initialization");
   BOOST_CHECK_EQUAL(node->point.getNum(), 1);

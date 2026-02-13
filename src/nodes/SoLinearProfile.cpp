@@ -33,7 +33,8 @@
 /*!
   \class SoLinearProfile SoLinearProfile.h Inventor/nodes/SoLinearProfile.h
   \brief The SoLinearProfile class is a node for specifying linear profile curves.
-  \ingroup nodes
+
+  \ingroup coin_nodes
 
   Use nodes of this type if you want to set up profiles that are
   simply straight lines connected by control points.
@@ -52,7 +53,7 @@
 #include <Inventor/nodes/SoLinearProfile.h>
 #include "coindefs.h"
 
-#include <stdlib.h>
+#include <cstdlib>
 
 #include <Inventor/elements/SoProfileCoordinateElement.h>
 #include <Inventor/lists/SbList.h>
@@ -125,7 +126,9 @@ SoLinearProfile::~SoLinearProfile()
 {
 }
 
-// Doc from superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoLinearProfile::initClass(void)
 {

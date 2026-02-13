@@ -39,7 +39,8 @@
 /*!
   \class SoVRMLSpotLight SoVRMLSpotLight.h Inventor/VRMLnodes/SoVRMLSpotLight.h
   \brief The SoVRMLSpotLight class defines a spot light source.
-  \ingroup VRMLnodes
+
+  \ingroup coin_VRMLnodes
 
   \WEB3DCOPYRIGHT
 
@@ -186,7 +187,7 @@
 
 #include <Inventor/VRMLnodes/SoVRMLSpotLight.h>
 
-#include <math.h>
+#include <cmath>
 
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/SbColor4f.h>
@@ -203,7 +204,9 @@
 
 SO_NODE_SOURCE(SoVRMLSpotLight);
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLSpotLight::initClass(void)
 {

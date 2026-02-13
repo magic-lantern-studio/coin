@@ -33,7 +33,8 @@
 /*!
   \class SoError SoError.h Inventor/errors/SoError.h
   \brief The SoError class is the base class for all the error handling classes.
-  \ingroup errors
+
+  \ingroup coin_errors
 
   The default error handler just prints messages on the standard error
   output channel, but this can be overridden by client applications.
@@ -41,12 +42,11 @@
   Being able to override the default handler is useful when you want
   to collect error messages upon e.g. model import for later
   presentation of the messages to the user in any custom manner (like
-  for instance in a GUI messagebox).
+  for instance in a GUI message box).
 
   The SoError class is not designed to be particularly useful for
   "direct use". Within the Coin library it is only used through its
   subclasses.
-
 */
 
 // *************************************************************************
@@ -69,6 +69,13 @@
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
+
+/*!
+  \typedef void SoErrorCB(const class SoError * error, void * data)
+
+  The type definition of the callback function that is called for messages posted via
+  this class.
+*/
 
 // *************************************************************************
 
@@ -93,7 +100,6 @@ SoError::callbackForwarder(const cc_error * error, void * COIN_UNUSED_ARG(data))
   assert(SoError::callback != NULL);
   (*SoError::callback)(&wrappederr, SoError::callbackData);
 }
-
 
 /*!
   \fn SoError::~SoError()
@@ -166,7 +172,7 @@ SoError::isOfType(const SoType type) const
   this class.
 
   Note that this will not override the error/debug message handler for
-  subclasses, these will have to be overrided by calling the subclass'
+  subclasses, these will have to be overridden by calling the subclass'
   setHandlerCallback() method.
 
   \sa defaultHandlerCB()
@@ -224,7 +230,7 @@ SoError::getDebugString(void) const
 
 /*!
   This method posts an error message.  The \a format string and the
-  trailing aguments should follow the printf() standard.
+  trailing arguments should follow the printf() standard.
 */
 void
 SoError::post(const char * const format, ...)

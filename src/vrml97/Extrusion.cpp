@@ -39,7 +39,8 @@
 /*!
   \class SoVRMLExtrusion SoVRMLExtrusion.h Inventor/VRMLnodes/SoVRMLExtrusion.h
   \brief The SoVRMLExtrusion class is a a geometry node for extruding a cross section along a spine.
-  \ingroup VRMLnodes
+
+  \ingroup coin_VRMLnodes
 
   \WEB3DCOPYRIGHT
 
@@ -264,7 +265,7 @@
   described in 4.6.3, Shapes and geometry
   (<http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-VRML97/part1/concepts.html#4.6.3>).
 
-  For instance, a circular crossSection with counter-clockwise
+  For instance, a circular crossSection with counterclockwise
   ordering and the default spine form a cylinder. With solid TRUE and
   ccw TRUE, the cylinder is visible from the outside. Changing ccw to
   FALSE makes it visible from the inside.  The ccw, solid, convex, and
@@ -326,9 +327,9 @@
 
 #include <Inventor/VRMLnodes/SoVRMLExtrusion.h>
 
-#include <float.h>
-#include <math.h>
-#include <string.h>
+#include <cfloat>
+#include <cmath>
+#include <cstring>
 
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/lists/SbList.h>
@@ -477,7 +478,9 @@ SO_NODE_SOURCE(SoVRMLExtrusion);
 
 // *************************************************************************
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLExtrusion::initClass(void) // static
 {
@@ -598,7 +601,7 @@ SoVRMLExtrusion::GLRender(SoGLRenderAction * action)
 
     SoGLVertexAttributeElement::getInstance(state)->enableVBO(action);
 
-    PRIVATE(this)->vbocache->getVertexArrayIndexer()->render(glue, TRUE, contextid);
+    PRIVATE(this)->vbocache->getVertexArrayIndexer()->render(state, TRUE, contextid);
 
     cc_glglue_glBindBuffer(glue, GL_ARRAY_BUFFER, 0); // Reset VBO binding
     cc_glglue_glDisableClientState(glue, GL_NORMAL_ARRAY);
@@ -1073,7 +1076,7 @@ SoVRMLExtrusionP::generateCoords(void)
   SbVec3f X, Y, Z;
 
   // find first non-collinear spine segments and calculate the first
-  // valid Y and Z axis
+  // valid Y- and Z-axis
   for (i = 0; i < numspine && (prevY == empty || prevZ == empty); i++) {
     if (prevY == empty) {
       Y = calculate_y_axis(spine, i, numspine, closed);
@@ -1086,7 +1089,7 @@ SoVRMLExtrusionP::generateCoords(void)
   }
 
   if (prevY == empty) prevY = SbVec3f(0.0f, 1.0f, 0.0f);
-  if (prevZ == empty) { // all spine segments are colinear, calculate constant Z axis
+  if (prevZ == empty) { // all spine segments are colinear, calculate constant Z-axis
     prevZ = SbVec3f(0.0f, 0.0f, 1.0f);
     if (prevY != SbVec3f(0.0f, 1.0f, 0.0f)) {
       SbRotation rot(SbVec3f(0.0f, 1.0f, 0.0f), prevY);
@@ -1244,7 +1247,7 @@ SoVRMLExtrusionP::generateCoords(void)
       }
     }
     else {
-      // let the tesselator create triangles
+      // let the tessellator create triangles
       this->tess.beginPolygon(FALSE);
       for (i = (connected ? numcross-2 : numcross-1); i >= 0; i--) {
         int theidx = numcross*numspine + i;
@@ -1285,7 +1288,7 @@ SoVRMLExtrusionP::generateCoords(void)
       }
     }
     else {
-      // let the tesselator create triangles
+      // let the tessellator create triangles
       this->tess.beginPolygon(FALSE);
       for (i = (connected ? numcross-2 : numcross-1); i >= 0; i--) {
         int theidx = (numspine+offset)*numcross + numcross - 1 - i;

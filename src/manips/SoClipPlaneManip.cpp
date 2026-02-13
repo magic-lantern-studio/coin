@@ -39,7 +39,8 @@
 /*!
   \class SoClipPlaneManip SoClipPlaneManip.h Inventor/manips/SoClipPlaneManip.h
   \brief The SoClipPlaneManip class is used to manipulate clip planes.
-  \ingroup manips
+
+  \ingroup coin_manips
 
   A manipulator is used by replacing the node you want to edit in the
   graph with the manipulator. Draggers are used to manipulate the
@@ -80,7 +81,7 @@
   #include <Inventor/actions/SoGetBoundingBoxAction.h>
   #include <Inventor/SoInput.h>
   #include <Inventor/manips/SoClipPlaneManip.h>
-  #include <assert.h>
+  #include <cassert>
   
   // *************************************************************************
   
@@ -188,7 +189,9 @@ SO_NODE_SOURCE(SoClipPlaneManip);
 
 // *************************************************************************
 
-// Documented in superclass
+/*!
+  \copybrief SoNode::initClass(void)
+*/
 void
 SoClipPlaneManip::initClass(void)
 {
@@ -573,11 +576,11 @@ SoClipPlaneManip::valueChangedCB(void * m, SoDragger * dragger)
   Called whenever one of the fields changes value.
 */
 void
-SoClipPlaneManip::fieldSensorCB(void * m, SoSensor * s)
+SoClipPlaneManip::fieldSensorCB(void * m, SoSensor * sensor)
 {
   SoClipPlaneManip *thisp = (SoClipPlaneManip*)m;
 
-  if (s == thisp->onFieldSensor) return; // FIXME: should we care? pederb, 2003-02-28
+  if (sensor == thisp->onFieldSensor) return; // FIXME: should we care? pederb, 2003-02-28
 
   SoDragger * dragger = thisp->getDragger();
   if (dragger != NULL) {
@@ -587,7 +590,7 @@ SoClipPlaneManip::fieldSensorCB(void * m, SoSensor * s)
     SbVec3f n = thisp->plane.getValue().getNormal();
     planept = thisp->draggerPosition.getValue();
 
-    if (s == thisp->planeFieldSensor) {
+    if (sensor == thisp->planeFieldSensor) {
       float dist = thisp->plane.getValue().getDistance(planept);
       planept += n * dist;
     }

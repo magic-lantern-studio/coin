@@ -33,7 +33,8 @@
 /*!
   \class SoNotList SoNotification.h Inventor/misc/SoNotification.h
   \brief The SoNotList class is a list of SoNotRec notification records.
-  \ingroup general
+
+  \ingroup coin_general
 */
 
 #include <Inventor/misc/SoNotification.h>
@@ -41,8 +42,8 @@
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/SbName.h>
-#include <assert.h>
-#include <time.h>
+#include <cassert>
+#include <ctime>
 
 
 /*!
@@ -187,7 +188,7 @@ SoNotList::getLastEngineOutput(void) const
 /*!
   Returns the time stamp when the notification started.
 */
-uint32_t
+SbUniqueId
 SoNotList::getTimeStamp(void) const
 {
   return this->stamp;

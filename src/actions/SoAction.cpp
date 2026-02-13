@@ -33,7 +33,8 @@
 /*!
   \class SoAction SoAction.h Inventor/actions/SoAction.h
   \brief The SoAction class is the base class for all traversal actions.
-  \ingroup actions
+
+  \ingroup coin_actions
 
   Applying actions is the basic mechanism in Coin for executing
   various operations on scene graphs or paths within scene graphs,
@@ -41,17 +42,17 @@
   etc.
 
   The basic operation is to instantiate an action, set it up with
-  miscellaneous parameters if necessary, then call it's apply() method
-  on the root node of the scenegraph (or sub-graph of a scenegraph).
-  The action then traverses the scenegraph from the root node,
-  depth-first and left-to-right, applying it's specific processing at
+  miscellaneous parameters if necessary, then call its apply() method
+  on the root node of the scene graph (or subgraph of a scene graph).
+  The action then traverses the scene graph from the root node,
+  depth-first and left-to-right, applying its specific processing at
   the nodes where it is applicable.
 
-  (The SoAction and it's derived classes in Coin is an implementation
+  (The SoAction and its derived classes in Coin is an implementation
   of the design pattern commonly known as the "Visitor" pattern.)
 
   Here's a simple example that shows how to use the SoWriteAction to
-  dump a scenegraph in the Inventor format to a file:
+  dump a scene graph in the Inventor format to a file:
 
   \code
    int write_scenegraph(const char * filename, SoNode * root)
@@ -68,12 +69,12 @@
   \endcode
 
   After traversal, some action types have stored information about the
-  (sub-)scenegraph that was traversed, which you can then inquire
+  (sub-)scene graph that was traversed, which you can then inquire
   about through methods like SoGetBoundingBoxAction::getBoundingBox(),
   SoRayPickAction::getPickedPoint(),
-  SoGetPrimitiveCountAction::getTriangleCount(), etc etc.
+  SoGetPrimitiveCountAction::getTriangleCount(), etc.
 
-  See the various built-in actions for further information (ie the
+  See the various built-in actions for further information (i.e. the
   subclasses of this class), or look at the example code applications
   of the Coin library to see how actions are generally used.
 
@@ -86,11 +87,11 @@
   // This is sample code on how you can get progress indication on Coin
   // export operations by extending the library with your own action
   // class. The new class inherits SoWriteAction. The code is presented
-  // as a stand-alone example.
+  // as a standalone example.
   //
-  // The general technique is to inherit SoWriteAction and override it's
-  // "entry point" into each node of the scenegraph. The granularity of
-  // the progress callbacks is on a per-node basis, which should usually
+  // The general technique is to inherit SoWriteAction and override its
+  // "entry point" into each node of the scene graph. The granularity of
+  // the progress callbacks is on a per node basis, which should usually
   // be good enough.
 
   #include <Inventor/SoDB.h>
@@ -228,13 +229,7 @@
 #include "misc/SoDBP.h" // for global envvar COIN_PROFILER
 #include "misc/SoCompactPathList.h"
 
-#include <Inventor/annex/Profiler/SoProfiler.h>
-#include <Inventor/annex/Profiler/elements/SoProfilerElement.h>
 #include "profiler/SoNodeProfiling.h"
-#ifdef HAVE_NODEKITS
-#include <Inventor/annex/Profiler/nodekits/SoProfilerVisualizeKit.h>
-#include <Inventor/annex/Profiler/nodekits/SoProfilerTopKit.h>
-#endif // HAVE_NODEKITS
 
 // define this to debug path traversal
 // #define DEBUG_PATH_TRAVERSAL
@@ -253,7 +248,7 @@ SoType SoAction::classTypeId STATIC_SOTYPE_INIT;
   \fn SoType SoAction::getTypeId(void) const
 
   Returns the type identification of an action derived from a class
-  inheriting SoAction.  This is used for run-time type checking and
+  inheriting SoAction.  This is used for runtime type checking and
   "downward" casting.
 
   Usage example:
@@ -266,7 +261,7 @@ SoType SoAction::classTypeId STATIC_SOTYPE_INIT;
       SoGLRenderAction * glrender = (SoGLRenderAction *)action;
       /// [then something] ///
     }
-    return; // ignore if not renderaction
+    return; // ignore if not render action
   }
   \endcode
 
@@ -275,7 +270,7 @@ SoType SoAction::classTypeId STATIC_SOTYPE_INIT;
   actions: this method needs to be overridden in \e all
   subclasses. This is typically done as part of setting up the full
   type system for extension classes, which is usually accomplished by
-  using the pre-defined macros available through
+  using the predefined macros available through
   Inventor/nodes/SoSubAction.h: SO_ACTION_SOURCE, SO_ACTION_INIT_CLASS
   and SO_ACTION_CONSTRUCTOR.
 
@@ -337,7 +332,7 @@ SoType SoAction::classTypeId STATIC_SOTYPE_INIT;
 #define PRIVATE(obj) ((obj)->pimpl)
 
 /*!
-  Default constructor, does all necessary toplevel initialization.
+  Default constructor, does all necessary top level initialization.
 */
 SoAction::SoAction(void)
   : state(NULL),
@@ -368,7 +363,7 @@ SoAction::~SoAction(void)
 // *************************************************************************
 
 /*!
-  Initializes the run-time type system for this class, and sets up the
+  Initializes the runtime type system for this class, and sets up the
   enabled elements and action method list.
 */
 void
@@ -437,7 +432,7 @@ SoAction::initClasses(void)
 }
 
 /*!
-  Returns the run-time type object associated with instances of this
+  Returns the runtime type object associated with instances of this
   class.
 */
 SoType
@@ -588,7 +583,6 @@ SoAction::apply(SoNode * root)
     }
 
     if (SoProfiler::isConsoleActive()) {
-      SoType profileactiontype = SoProfilerP::getActionType();
       if (this->isOfType(SoProfilerP::getActionType())) {
         SoProfilerElement * pelt = SoProfilerElement::get(state);
         if (pelt != NULL) {
@@ -842,7 +836,7 @@ SoAction::nullAction(SoAction *, SoNode *)
 }
 
 /*!
-  Returns a code indicating what (node, path, or pathlist) the action
+  Returns a code indicating what (node, path, or path list) the action
   instance is being applied to.
 */
 SoAction::AppliedCode
@@ -854,7 +848,7 @@ SoAction::getWhatAppliedTo(void) const
 /*!
   Returns a pointer to the node the action is being applied to.
 
-  If action is not being applied to a node (but a path or a pathlist),
+  If action is not being applied to a node (but a path or a path list),
   the method returns \c NULL.
 */
 SoNode *
@@ -868,7 +862,7 @@ SoAction::getNodeAppliedTo(void) const
   The path is managed by the action instance and should not be destroyed or
   modified by the caller.
 
-  If action is not being applied to a path (but a node or a pathlist),
+  If action is not being applied to a path (but a node or a path list),
   the method returns \c NULL.
 */
 SoPath *
@@ -885,7 +879,7 @@ SoAction::getPathAppliedTo(void) const
   If action is not being applied to a path list (but a node or a
   path), the method returns \c NULL.
 
-  The returned pathlist pointer need not be equal to the list apply()
+  The returned path list pointer need not be equal to the list apply()
   was called with, as the action may have reorganized the path list
   for efficiency reasons.
 
@@ -1261,7 +1255,7 @@ SoAction::getClassActionMethods(void)
 // so keep it general.
 /*!
   This virtual method is called from SoAction::apply(), and is the
-  entry point for the actual scenegraph traversal.
+  entry point for the actual scene graph traversal.
 
   It can be overridden to initialize the action at traversal start,
   for specific initializations in the action subclasses inheriting
@@ -1269,7 +1263,7 @@ SoAction::getClassActionMethods(void)
 
   Default method just calls traverse(), which any overridden
   implementation of the method must do too (or call
-  SoAction::beginTraversal()) to trigger the scenegraph traversal.
+  SoAction::beginTraversal()) to trigger the scene graph traversal.
 */
 void
 SoAction::beginTraversal(SoNode * node)
@@ -1363,42 +1357,6 @@ SoAction::switchToNodeTraversal(SoNode * node)
   this->currentpathcode = storedpathcode;
   PRIVATE(this)->applieddata = storeddata;
   PRIVATE(this)->appliedcode = storedcode;
-}
-
-// *************************************************************************
-
-SoProfilerStats *
-SoActionP::getProfilerStatsNode(void)
-{
-  static SoProfilerStats * pstats = NULL;
-  if (!pstats) {
-    pstats = new SoProfilerStats;
-    pstats->ref();
-  }
-  return pstats;
-}
-
-SoNode *
-SoActionP::getProfilerOverlay(void)
-{
-  if (!SoProfiler::isEnabled() || !SoProfiler::isOverlayActive())
-    return NULL;
-
-  static SoNode * nodekit = NULL;
-#ifdef HAVE_NODEKITS
-  if (nodekit == NULL) {
-    SoProfilerTopKit * kit = new SoProfilerTopKit;
-    kit->ref();
-    kit->setPart("profilingStats",
-                 SoActionP::getProfilerStatsNode());
-    nodekit = kit;
-
-    SoProfilerVisualizeKit * viskit = new SoProfilerVisualizeKit;
-    viskit->stats.setValue(SoActionP::getProfilerStatsNode());
-    kit->addOverlayGeometry(viskit);
-  }
-#endif // HAVE_NODEKITS
-  return nodekit;
 }
 
 // *************************************************************************

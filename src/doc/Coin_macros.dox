@@ -31,9 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \page macros_nodes
-
-  <h2>Node Macros</h2>
+  \page macros_nodes Node Macros
 
   - \ref SO_NODE_HEADER
   - \ref SO_NODE_ABSTRACT_HEADER
@@ -46,7 +44,7 @@
   - \ref SO_NODE_ADD_FIELD
   - \ref SO_NODE_DEFINE_ENUM_VALUE
 
-  \ingroup macros
+  \ingroup coin_macros
 */
 
 #define SO_NODE_HEADER(classname)
@@ -57,7 +55,7 @@
   object creation and type identification.
 
   \sa SO_NODE_SOURCE
-  \ingroup nodes
+  \ingroup coin_nodes
 */
 
 #define SO_NODE_ABSTRACT_HEADER(classname)
@@ -69,7 +67,7 @@
   the object creation part is omitted.
 
   \sa SO_NODE_ABSTRACT_SOURCE
-  \ingroup nodes
+  \ingroup coin_nodes
 */
 
 #define SO_NODE_INIT_CLASS(classname, parentclass, parentname)
@@ -82,7 +80,7 @@
   and fill it with its field values.
 
   \sa SO_NODE_INIT_ABSTRACT_CLASS
-  \ingroup nodes
+  \ingroup coin_nodes
 */
 
 #define SO_NODE_INIT_ABSTRACT_CLASS(classname, parentclass, parentname)
@@ -94,41 +92,41 @@
   class) for type identification purposes.
 
   \sa SO_NODE_INIT_CLASS
-  \ingroup nodes
+  \ingroup coin_nodes
 */
 
 #define SO_NODE_SOURCE(classname)
 /*!
   \def SO_NODE_SOURCE(classname)
 
-  This macro sets up the impementation of the declarations in \ref
-  SO_NODE_HEADER.  It chould be placed in the implementation file for
+  This macro sets up the implementation of the declarations in \ref
+  SO_NODE_HEADER.  It should be placed in the implementation file for
   extension nodes.
 
   \sa SO_NODE_HEADER
-  \ingroup nodes
+  \ingroup coin_nodes
 */
 
 #define SO_NODE_ABSTRACT_SOURCE(classname)
 /*!
   \def SO_NODE_ABSTRACT_SOURCE(classname)
 
-  This macro sets up the impementation of the declarations in \ref
-  SO_NODE_ABSTRACT_HEADER.  It chould be placed in the implementation
+  This macro sets up the implementation of the declarations in \ref
+  SO_NODE_ABSTRACT_HEADER.  It should be placed in the implementation
   file for abstract extension nodes.
 
   \sa SO_NODE_ABSTRACT_HEADER
-  \ingroup nodes
+  \ingroup coin_nodes
 */
 
 #define SO_NODE_CONSTRUCTOR(classname)
 /*!
   \def SO_NODE_CONSTRUCTOR(classname)
 
-  Place this in the node constructor.  It sets up the fielddata object
+  Place this in the node constructor.  It sets up the field data object
   for the node class.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 */
 
 #define SO_NODE_IS_FIRST_INSTANCE()
@@ -140,7 +138,7 @@
   extra initialization needs to be done that can't be done in the
   initClass() function.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 */
 
 #define SO_NODE_ADD_FIELD(field, defaultvalue)
@@ -151,7 +149,7 @@
   value.  For use in the constructor, below the \ref
   SO_NODE_CONSTRUCTOR macro.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 */
 
 #define SO_NODE_DEFINE_ENUM_VALUE(enumname, enumvalue)
@@ -161,6 +159,6 @@
   This macro associates enum names with values, used for file
   input/output.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 */
 

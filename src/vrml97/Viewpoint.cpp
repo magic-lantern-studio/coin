@@ -39,7 +39,8 @@
 /*!
   \class SoVRMLViewpoint SoVRMLViewpoint.h Inventor/VRMLnodes/SoVRMLViewpoint.h
   \brief The SoVRMLViewpoint class is a perspective camera class.
-  \ingroup VRMLnodes
+
+  \ingroup coin_VRMLnodes
 
   \WEB3DCOPYRIGHT
 
@@ -206,7 +207,7 @@
     specifies a "#ViewpointName".
 
   Both of these mechanisms override the jump field value of the
-  specified Viewpoint node (#ViewpointName) and assume that jump is
+  specified Viewpoint node ("#ViewpointName") and assume that jump is
   TRUE when binding to the new Viewpoint. The behaviour of the viewer
   transition to the newly bound Viewpoint depends on the currently
   bound NavigationInfo node's type field value (see SoVRMLNavigationInfo).
@@ -292,18 +293,18 @@
 
 /*!
   \var SoSFTime SoVRMLViewpoint::bindTime
-  An event out that is sent when the viewpoint is bound.
+  An eventOut that is sent when the viewpoint is bound.
 */
 
 /*!
   \var SoSFBool SoVRMLViewpoint::isBound
-  An event out that is sent when the viewpoint is bound/unbound.
+  An eventOut that is sent when the viewpoint is bound/unbound.
 */
 
 #include <Inventor/VRMLnodes/SoVRMLViewpoint.h>
 #include "coindefs.h"
 
-#include <math.h>
+#include <cmath>
 
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 
@@ -311,7 +312,9 @@
 
 SO_NODE_SOURCE(SoVRMLViewpoint);
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLViewpoint::initClass(void)
 {

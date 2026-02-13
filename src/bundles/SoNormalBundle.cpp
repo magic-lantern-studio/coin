@@ -31,9 +31,10 @@
 \**************************************************************************/
 
 /*!
-  \class SoNormalBundle include/Inventor/bundles/SoNormalBundle.h
+  \class SoNormalBundle SoNormalBundle.h Inventor/bundles/SoNormalBundle.h
   \brief The SoNormalBundle class simplifies normal handling.
-  \ingroup bundles
+
+  \ingroup coin_bundles
 
   This class is currently not used in Coin but is provided for
   API compatibility.

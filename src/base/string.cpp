@@ -30,7 +30,6 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-/*! \file string.h */
 #include <Inventor/C/base/string.h>
 
 #include <cassert>
@@ -75,7 +74,8 @@ using std::printf;
 /*!
   \struct cc_string string.h Inventor/C/base/string.h
   \brief The cc_string type is a C ADT for ASCII string management.
-  \ingroup base
+
+  \ingroup coin_base
 
   This is a Coin extension.
 */
@@ -258,7 +258,7 @@ cc_string_set_subtext(cc_string * me, const char * text, int start, int end)
   size_t size;
 
   if ( text == NULL ) text = emptystring;
-  len = cc_string_strnlen(text,end);
+  len = (int)cc_string_strnlen(text,end);
   if ( end == -1 ) end = len - 1;
 
 #if COIN_DEBUG
@@ -543,10 +543,10 @@ cc_string_vsprintf(cc_string * me, const char * formatstr, va_list args)
   SbBool expand;
 
   do {
-    length = coin_vsnprintf(me->pointer, me->bufsize, formatstr, args);
+    length = coin_vsnprintf(me->pointer, (unsigned int)me->bufsize, formatstr, args);
     expand = (length == -1);
     if ( expand ) {
-      /* Note: On MSWindows, using Microsoft's CRT, _vsnprintf(),
+      /* Note: On Microsoft Windows, using Microsoft's CRT, _vsnprintf(),
          called by coin_vsnprintf(), doesn't add a terminating '0' at
          the end of the buffer if the number of characters to write is
          equal to or larger than the buffer size (second parameter to
@@ -710,7 +710,7 @@ cc_string_utf8_validate_length(const char * str)
 
 
 #if defined HAVE_WINDOWS_H
-#include <Windows.h> // for WideCharToMultiByte
+#include <windows.h> // for WideCharToMultiByte
 #endif
 
 void cc_string_set_wtext(cc_string * me, const wchar_t * text)

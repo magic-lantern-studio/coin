@@ -37,7 +37,7 @@
   \brief implements the &lt;state&gt; SCXML element.
 
   \since Coin 3.0
-  \ingroup scxml
+  \ingroup coin_scxml
 */
 
 #include <cassert>
@@ -45,7 +45,7 @@
 #include <algorithm>
 #include <vector>
 
-#include <boost/scoped_ptr.hpp>
+#include <memory>
 
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/C/tidbits.h>
@@ -492,15 +492,7 @@ ScXMLStateEltReader::read(ScXMLElt * container, cc_xml_elt * xmlelt, ScXMLDocume
 
 class ScXMLStateElt::PImpl {
 public:
-  PImpl(void)
-  : onentryptr(NULL),
-    onexitptr(NULL),
-    initialptr(NULL),
-    datamodelptr(NULL),
-    invokeptr(NULL)
-    //srcref(NULL)
-  {
-  }
+  PImpl(void) { }
 
   ~PImpl(void)
   {
@@ -512,18 +504,18 @@ public:
     SCXML__CLEAR_STD_VECTOR(this->anchorlist, ScXMLAnchorElt *);
   }
 
-  boost::scoped_ptr<ScXMLOnEntryElt> onentryptr;
-  boost::scoped_ptr<ScXMLOnExitElt> onexitptr;
+  std::unique_ptr<ScXMLOnEntryElt> onentryptr;
+  std::unique_ptr<ScXMLOnExitElt> onexitptr;
   std::vector<ScXMLTransitionElt *> transitionlist;
-  boost::scoped_ptr<ScXMLInitialElt> initialptr;
+  std::unique_ptr<ScXMLInitialElt> initialptr;
   std::vector<ScXMLStateElt *> statelist;
   std::vector<ScXMLParallelElt *> parallellist;
   std::vector<ScXMLFinalElt *> finallist;
   std::vector<ScXMLHistoryElt *> historylist;
   std::vector<ScXMLAnchorElt *> anchorlist;
-  boost::scoped_ptr<ScXMLDataModelElt> datamodelptr;
-  boost::scoped_ptr<ScXMLInvokeElt> invokeptr;
-  //boost::scoped_ptr<ScXMLDocument> srcref;
+  std::unique_ptr<ScXMLDataModelElt> datamodelptr;
+  std::unique_ptr<ScXMLInvokeElt> invokeptr;
+  // std::unique_ptr<ScXMLDocument> srcref;
 };
 
 #define PRIVATE(obj) ((obj)->pimpl)
@@ -568,7 +560,7 @@ ScXMLStateElt::~ScXMLStateElt(void)
 
 /*!
   Sets the XML 'src' attribute for the SCXML &lt;state&gt; element.
-  To get the attribute value intepreted and taken action upon, you will
+  To get the attribute value interpreted and taken action upon, you will
   also need to [FIXME]
 */
 void

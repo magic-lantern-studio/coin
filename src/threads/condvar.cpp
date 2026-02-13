@@ -30,26 +30,23 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-/*! \file common.h */
-
 /*!
   \struct cc_condvar common.h Inventor/C/threads/common.h
-  \ingroup threads
+  \ingroup coin_threads
   \brief The structure for a conditional variable.
 */
 
 /*!
   \typedef struct cc_condvar cc_condvar
-  \ingroup threads
+  \ingroup coin_threads
   \brief The type definition for the conditional variable structure.
 */
 
-/*! \file condvar.h */
 #include <Inventor/C/threads/condvar.h>
 
-#include <stdlib.h>
-#include <assert.h>
-#include <errno.h>
+#include <cstdlib>
+#include <cassert>
+#include <cerrno>
 
 #ifdef HAVE_SYS_TIME_H
 #include <sys/time.h>
@@ -110,12 +107,12 @@ cc_condvar_construct(void)
   return condvar;
 }
 
-/*! Destroys the given \a condvar. */
+/*! Destroys the given conditional variable \a condvar. */
 
 void
 cc_condvar_destruct(cc_condvar * condvar)
 {
-  assert((condvar != NULL));
+  assert(condvar != NULL);
   cc_condvar_struct_clean(condvar);
   free(condvar);
 }

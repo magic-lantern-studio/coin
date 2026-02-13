@@ -32,11 +32,11 @@
 
 /*!
   \class SbImage SbImage.h Inventor/SbImage.h
-  \brief The SbImage class is an abstract datatype for 2D and 3D images.
-  \ingroup base
+  \brief The SbImage class is an abstract data type for 2D and 3D images.
+
+  \ingroup coin_base
 
   \COIN_CLASS_EXTENSION
-
   \since Coin 1.0
 */
 
@@ -44,8 +44,6 @@
 // quite common that the same image is used several times in a scene
 // and for different contexts. The API should stay the same though.
 // 20001026 mortene (original comment by pederb).
-
-/*! \file SbImage.h */
 
 /*!
   \typedef SbBool SbImageScheduleReadCB(const SbString &, SbImage *, void *)
@@ -109,7 +107,8 @@ public:
       datatype(SETVALUEPTR_DATA),
       size(0,0,0),
       bpp(0),
-      schedulecb(NULL)
+      schedulecb(NULL),
+      scheduleclosure(NULL)
 #ifdef COIN_THREADSAFE
     , rwmutex(SbRWMutex::READ_PRECEDENCE)
 #endif // COIN_THREADSAFE
@@ -160,7 +159,7 @@ public:
   void writeLock(void) {
     //fprintf(stderr,"writelock: %p\n", this);
     this->rwmutex.writeLock();
-    //fprintf(stderr,"writelock achived: %p\n", this);
+    //fprintf(stderr,"writelock achieved: %p\n", this);
   }
   void writeUnlock(void) {
     //fprintf(stderr,"writeUnlock: %p\n", this);
@@ -348,12 +347,11 @@ SbImage::setValue(const SbVec3s & size, const int bytesperpixel,
   PRIVATE(this)->writeLock();
   PRIVATE(this)->schedulename = "";
   PRIVATE(this)->schedulecb = NULL;
+  size_t buffersize = size_t(size[0]) * size_t(size[1]) * size_t(size[2] == 0 ? 1 : size[2]) * size_t(bytesperpixel);
   if (PRIVATE(this)->bytes && PRIVATE(this)->datatype == SbImageP::INTERNAL_DATA) {
     // check for special case where we don't have to reallocate
     if (bytes && (size == PRIVATE(this)->size) && (bytesperpixel == PRIVATE(this)->bpp)) {
-      memcpy(PRIVATE(this)->bytes, bytes, 
-             int(size[0]) * int(size[1]) * int(size[2]==0?1:size[2]) *
-             bytesperpixel);
+      (void)memcpy(PRIVATE(this)->bytes, bytes, buffersize);
       PRIVATE(this)->writeUnlock();
       return;
     }
@@ -361,20 +359,16 @@ SbImage::setValue(const SbVec3s & size, const int bytesperpixel,
   PRIVATE(this)->freeData();
   PRIVATE(this)->size = size;
   PRIVATE(this)->bpp = bytesperpixel;
-  int buffersize = int(size[0]) * int(size[1]) * int(size[2]==0?1:size[2]) * 
-    bytesperpixel;
   if (buffersize) {
     // Align buffers because the binary file format has the data aligned
     // (simplifies export code in SoSFImage).
-    buffersize = ((buffersize + 3) / 4) * 4;
-    PRIVATE(this)->bytes = new unsigned char[buffersize];
+    size_t alignedbuffersize = ((buffersize + 3) / 4) * 4;
+    PRIVATE(this)->bytes = new unsigned char[alignedbuffersize];
     PRIVATE(this)->datatype = SbImageP::INTERNAL_DATA;
 
     if (bytes) {
       // Important: don't copy buffersize num bytes here!
-      (void)memcpy(PRIVATE(this)->bytes, bytes,
-                   int(size[0]) * int(size[1]) * int(size[2]==0?1:size[2]) * 
-                   bytesperpixel);
+      (void)memcpy(PRIVATE(this)->bytes, bytes, buffersize);
     }
   }
   PRIVATE(this)->writeUnlock();
@@ -456,7 +450,7 @@ SbImage::searchForFile(const SbString & basename,
 /*!
   Reads image data from \a filename. In Coin, simage is used to
   load image files, and several common file formats are supported.
-  simage can be downloaded from our webpages.  If loading
+  simage can be downloaded from our web pages.  If loading
   fails for some reason this method returns FALSE, and the instance
   is set to an empty image. If the file is successfully loaded, the
   file image data is copied into this class.
@@ -481,7 +475,7 @@ SbImage::readFile(const SbString & filename,
   SbString finalname = SbImage::searchForFile(filename, searchdirectories,
                                               numdirectories);
 
-  // use callback to load the image if it's set
+  // use callback to load the image if it is set
   if (SbImageP::readimagecallbacks) {
     for (int i = 0; i < SbImageP::readimagecallbacks->getLength(); i++) {
       SbImageP::ReadImageCBData cbdata = (*SbImageP::readimagecallbacks)[i];
@@ -503,7 +497,7 @@ SbImage::readFile(const SbString & filename,
   if (!simage_wrapper()->available) {
     SoDebugError::postWarning("SbImage::readFile",
                               "The simage library is not available, "
-                              "can not import any images from disk.");
+                              "cannot import any images from disk.");
     return FALSE;
   }
 
@@ -568,11 +562,12 @@ SbImage::operator==(const SbImage & image) const
       ret = (PRIVATE(this)->bytes == PRIVATE(&image)->bytes);
     }
     else {
+      size_t buffersize = size_t(PRIVATE(this)->size[0]) *
+          size_t(PRIVATE(this)->size[1]) *
+          size_t(PRIVATE(this)->size[2] == 0 ? 1 : PRIVATE(this)->size[2]) *
+          size_t(PRIVATE(this)->bpp);
       ret = memcmp(PRIVATE(this)->bytes, PRIVATE(&image)->bytes,
-                   int(PRIVATE(this)->size[0]) *
-                   int(PRIVATE(this)->size[1]) *
-                   int(PRIVATE(this)->size[2]==0?1:PRIVATE(this)->size[2]) * 
-                   PRIVATE(this)->bpp) == 0;
+                   buffersize) == 0;
     }
   }
   this->readUnlock();
@@ -744,15 +739,15 @@ BOOST_AUTO_TEST_CASE(copyConstruct)
   int tmp2;
 
 
-  for (int i=0;i<sizeof(buf); ++i) {
+  for (size_t i=0;i<sizeof(buf); ++i) {
     BOOST_CHECK_MESSAGE(foo.getValue(tmp1,tmp2)[i]==bar.getValue(tmp1,tmp2)[i],"Input value error");
   }
 
-  for (int i=0;i<sizeof(buf); ++i) {
-    foo.getValue(tmp1,tmp2)[i]=sizeof(buf)-i;
+  for (size_t i=0;i<sizeof(buf); ++i) {
+    foo.getValue(tmp1,tmp2)[i]=(unsigned char)(sizeof(buf)-i);
   }
 
-  for (int i=0;i<sizeof(buf); ++i) {
+  for (size_t i=0;i<sizeof(buf); ++i) {
     BOOST_CHECK_MESSAGE(foo.getValue(tmp1,tmp2)[i]==sizeof(buf)-bar.getValue(tmp1,tmp2)[i],"Error after changing second buffer");
   }
 

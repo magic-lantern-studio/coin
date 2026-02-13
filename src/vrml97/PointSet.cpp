@@ -39,7 +39,8 @@
 /*!
   \class SoVRMLPointSet SoVRMLPointSet.h Inventor/VRMLnodes/SoVRMLPointSet.h
   \brief The SoVRMLPointSet class is used to represent a set of 3D points.
-  \ingroup VRMLnodes
+
+  \ingroup coin_VRMLnodes
 
   \WEB3DCOPYRIGHT
 
@@ -124,7 +125,9 @@ is_material_per_vertex(SoVRMLPointSet * ps, SoState * state)
 
 SO_NODE_SOURCE(SoVRMLPointSet);
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLPointSet::initClass(void)
 {

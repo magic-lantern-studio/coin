@@ -68,7 +68,7 @@
   TODO: Describe functionality and provide usage example.
 
   \sa SoProfilerElement
-  \ingroup profiler
+  \ingroup coin_profiler
 */
 
 /*!
@@ -77,7 +77,7 @@
   Name of types traversed during the current render traversal.
 
   This field is tightly connected to the \a renderingTimePerNodeType field as
-  they will contain the same number of elements, and each value
+  it will contain the same number of elements, and each value
   in \a renderingTimePerNodeType matches the node type with the same index in
   this field.
 
@@ -90,7 +90,7 @@
   Time spent, during the current render traversal, per node type.
 
   This field is tightly connected to the \a renderedNodeType field as
-  they will contain the same number of elements, and each value
+  it will contain the same number of elements, and each value
   in this field matches the node type with the same index in
   \a renderedNodeType.
 
@@ -219,14 +219,13 @@ SoProfilerStatsP::updateNodeTypeTimingMap(SoProfilerElement * e)
     SbProfilingNodeTypeKey k = keys[i];
     std::map<int16_t, TypeTimings>::iterator it = this->type_timings.find(k);
     if (it != this->type_timings.end()) {
-      /*TypeTimings & timings = */it->second;
+      TypeTimings & timings = it->second;
       SbTime totaltime, maxtime;
       uint32_t count;
       data.getStatsForType(k, totaltime, maxtime, count);
-      it->second.total += totaltime;
-      it->second.max += maxtime;
-      it->second.count += count;
-
+      timings.total += totaltime;
+      timings.max += maxtime;
+      timings.count += count;
     } else {
       TypeTimings timings;
       SbTime totaltime, maxtime;
@@ -351,7 +350,9 @@ SO_NODE_SOURCE(SoProfilerStats);
 
 // *************************************************************************
 
-// Doc from superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoProfilerStats::initClass(void)
 {
@@ -487,7 +488,7 @@ SoProfilerStats::notify(SoNotList * COIN_UNUSED_ARG(l))
   // redraws of the scene graph.
   //
   // and it doesn't expose any state relevant for any other nodes that
-  // do "real work" in the scenegraph anyway, so this is the correct
+  // do "real work" in the scene graph anyway, so this is the correct
   // thing to do.
 }
 

@@ -31,9 +31,10 @@
 \**************************************************************************/
 
 /*!
-  \class SoShaderProgramCache caches/SoShaderProgramCache.h
+  \class SoShaderProgramCache SoShaderProgramCache.h Inventor/caches/SoShaderProgramCache.h
   \brief The SoShaderProgramCache class is used to cache shader programs.
-  \ingroup caches
+
+  \ingroup coin_caches
 */
 
 // *************************************************************************

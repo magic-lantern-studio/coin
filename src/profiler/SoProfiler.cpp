@@ -30,11 +30,9 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-// This page ends up under Modules => Scene Graph Profiling ...
-
 
 /*!
-  \page profiling_intro
+  \page coin_profiling_intro Scene Graph Profiling
 
   <h2>Enabling profiling in Coin</h2>
 
@@ -48,7 +46,7 @@
   the \ref COIN_PROFILER_OVERLAY environment variable.
 
   This will give you the default profiling graphics, which
-  shows a top-list of node timings categorized by node types, a
+  shows a top list of node timings categorized by node types, a
   scrolling graph of action traversal timings, and a scene graph
   navigator for closer scene graph inspection.
 
@@ -61,9 +59,7 @@
   traversal through the scene graph since the last SoGLRenderAction, up
   to the point where SoProfilerStats is located. Depending of how you
   wish to use the data, either attach sensors to the fields, or connect
-  the the fields on other coin nodes to the fields on SoProfilerStats.
-
-  \ingroup profiler
+  the fields on other coin nodes to the fields on SoProfilerStats.
 */
 
 
@@ -105,7 +101,7 @@
   \class SoProfiler SoProfiler.h Profiler/SoProfiler.h
   \brief Main static class for initializing the scene graph profiling subsystem.
 
-  \ingroup profiler
+  \ingroup coin_profiler
 */
 
 namespace {
@@ -404,7 +400,7 @@ SoProfilerP::parseCoinProfilerOverlayVariable(void)
           profiler::console::lines = atoi(subargs[0].data());
           if (profiler::console::lines < 0 || profiler::console::lines > 512) {
             SoDebugError::postWarning("SoProfiler",
-                                      "Number of lines out of range. Seting 20.",
+                                      "Number of lines out of range. Setting 20.",
                                       profiler::console::lines);
             profiler::console::lines = 20;
           }
@@ -513,15 +509,18 @@ SoProfilerP::parseCoinProfilerOverlayVariable(void)
             ++it;
           }
         } else {
+          // FIXME: implement proper action
         }
       }
 
       // configure charts
       else if (param[0].compare("graph") == 0) {
+        // FIXME: implement proper action
       }
 
       // configure scene graph view
       else if (param[0].compare("sceneview") == 0) {
+        // FIXME: implement proper action
       }
 
       // fallthrough

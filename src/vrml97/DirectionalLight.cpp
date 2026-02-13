@@ -38,8 +38,9 @@
 
 /*!
   \class SoVRMLDirectionalLight SoVRMLDirectionalLight.h Inventor/VRMLnodes/SoVRMLDirectionalLight.h
-  \brief The SoVRMLDirectionalLight class is a node type for specifying directional light sources
-  \ingroup VRMLnodes
+  \brief The SoVRMLDirectionalLight class is a node type for specifying directional light sources.
+
+  \ingroup coin_VRMLnodes
 
   \WEB3DCOPYRIGHT
 
@@ -95,7 +96,9 @@
 
 SO_NODE_SOURCE(SoVRMLDirectionalLight);
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLDirectionalLight::initClass(void) // static
 {

@@ -36,7 +36,7 @@
 
   Currently only GLSL scripts are supported.
 
-  \ingroup shaders
+  \ingroup coin_shaders
 */
 
 #include "misc/SoShaderGenerator.h"
@@ -139,7 +139,7 @@ SoShaderGenerator::addNamedFunction(const SbName & name, const SbBool checkexist
 }
 
 /*!
-  Add a statment to the main function.
+  Add a statement to the main function.
 */
 void 
 SoShaderGenerator::addMainStatement(const SbString & str)

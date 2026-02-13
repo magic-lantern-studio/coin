@@ -39,7 +39,8 @@
 /*!
   \class SoVRMLLOD SoVRMLLOD.h Inventor/VRMLnodes/SoVRMLLOD.h
   \brief The SoVRMLLOD class is used to represent various levels of detail based on distance.
-  \ingroup VRMLnodes
+
+  \ingroup coin_VRMLnodes
 
   \WEB3DCOPYRIGHT
 
@@ -160,7 +161,9 @@ SO_NODE_SOURCE(SoVRMLLOD);
 
 // *************************************************************************
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLLOD::initClass(void) // static
 {

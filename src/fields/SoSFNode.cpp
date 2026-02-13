@@ -42,7 +42,8 @@
 /*!
   \class SoSFNode SoSFNode.h Inventor/fields/SoSFNode.h
   \brief The SoSFNode class is a container for a single node.
-  \ingroup fields
+
+  \ingroup coin_fields
 
   This field container stores a pointer to a Coin node. It takes care
   of the necessary functionality for handling copy, import and export
@@ -82,7 +83,9 @@
 SO_SFIELD_REQUIRED_SOURCE(SoSFNode);
 
 
-// Override from parent class.
+/*!
+  \copydetails SoField::initClass(void)
+*/
 void
 SoSFNode::initClass(void)
 {
@@ -281,7 +284,7 @@ SoSFNode::countWriteRefs(SoOutput * out) const
 //    - copyFrom() is called (typically from SoFieldData::overlay())
 //    - copyFrom() calls operator=()
 //    - operator=() calls setValue()
-//    - we have a local copy (ie not from SoSubField.h) of setValue()
+//    - we have a local copy (i.e. not from SoSubField.h) of setValue()
 //      that sets up auditing and references the item
 //
 // <mortene@sim.no>
@@ -355,6 +358,7 @@ BOOST_AUTO_TEST_CASE(initialized)
                       "missing class initialization");
 }
 
+#ifdef HAVE_VRML97
 BOOST_AUTO_TEST_CASE(vrml97nullchild)
 {
   // NULL values for children must be allowed, or we break VRML97
@@ -374,5 +378,6 @@ BOOST_AUTO_TEST_CASE(vrml97nullchild)
     g->unref();
   }
 }
+#endif
 
 #endif // COIN_TEST_SUITE

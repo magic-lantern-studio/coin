@@ -48,7 +48,7 @@
 #include <Inventor/SbBasic.h> // for SO__QUOTE() definition
 #include <Inventor/SbName.h>
 #include <Inventor/C/tidbits.h>
-#include <assert.h>
+#include <cassert>
 // Include SoElement.h to be Open Inventor compatible at compile-time.
 #include <Inventor/elements/SoElement.h>
 
@@ -81,7 +81,16 @@ public: \
 #define PRIVATE_SOELEMENT_VARIABLES(_class_) \
 int _class_::classStackIndex; \
 SoType _class_::classTypeId STATIC_SOTYPE_INIT; \
+ \
+/*! \
+  This static method returns the SoType object associated with \
+  objects of this class. \
+*/ \
 SoType _class_::getClassTypeId(void) { return _class_::classTypeId; } \
+ \
+/*!
+  This static method returns the state stack index for the class. \
+*/ \
 int _class_::getClassStackIndex(void) { return _class_::classStackIndex; }
 
 
@@ -93,16 +102,22 @@ _class_::_class_(void) { }
 PRIVATE_SOELEMENT_VARIABLES(_class_) \
 _class_::_class_(void) { this->setTypeId(_class_::classTypeId); \
                          this->setStackIndex(_class_::classStackIndex); } \
-/*! \COININTERNAL */ \
-void * _class_::createInstance(void) { return static_cast<void *>(new _class_); }
+/*! \COININTERNAL \
+ \
+  Creates a new instance of the class type corresponding to the SoType object. \
+*/ \
+void * _class_::createInstance(void) { return new _class_; }
 
 /*
   Specific to Coin. Added 2003-10-27.
 */
 #define SO_ELEMENT_CUSTOM_CONSTRUCTOR_SOURCE(_class_) \
 PRIVATE_SOELEMENT_VARIABLES(_class_) \
-/*! \COININTERNAL */ \
-void * _class_::createInstance(void) { return static_cast<void *>(new _class_); }
+/*! \COININTERNAL \
+ \
+  Creates a new instance of the class type corresponding to the SoType object. \
+*/ \
+void * _class_::createInstance(void) { return new _class_; }
 
 // *************************************************************************
 

@@ -31,16 +31,17 @@
 \**************************************************************************/
 
 /*!
-  \class SoType Inventor/SoType.h
-  \brief The SoType class is the basis for the run-time type system in Coin.
-  \ingroup general
+  \class SoType SoType.h Inventor/SoType.h
+  \brief The SoType class is the basis for the runtime type system in Coin.
+
+  \ingroup coin_general
 
   Many of the classes in the Coin library must have their type
   information registered before any instances are created (including,
   but not limited to: engines, nodes, fields, actions, nodekits and
   manipulators). The use of SoType to store this information provides
   lots of various functionality for working with class hierarchies,
-  comparing class types, instantiating objects from classnames, etc
+  comparing class types, instantiating objects from class names, etc
   etc.
 
   It is for instance possible to do things like this:
@@ -71,12 +72,12 @@
   information: super classes must be registered before any of their
   derived classes are.
 
-  See also \ref dynload_overview for some additional SoType-related
+  See also \ref coin_dynload_overview for some additional SoType-related
   information.
 */
 
 /*!
-  \page dynload_overview Dynamic Loading of Extension Nodes
+  \page coin_dynload_overview Dynamic Loading of Extension Nodes
 
   When Coin tries to get hold of a node type object (SoType) for a
   class based on the name string of the node type, it will - if no
@@ -128,12 +129,11 @@
 
 // *************************************************************************
 
-/*! \file SoType.h */
 #include <Inventor/SoType.h>
 
-#include <assert.h>
-#include <stdlib.h> // NULL
-#include <string.h> // strcmp()
+#include <cassert>
+#include <cstdlib> // NULL
+#include <cstring> // strcmp()
 #include <cctype>   // toupper()
 
 #include <Inventor/errors/SoDebugError.h>
@@ -213,8 +213,8 @@ static NameMap * dynload_tries = NULL;
   class' instantiation method. It is an extension on the original
   Inventor API.  Mostly only useful for internal purposes.
 
-  An instantation method will take no arguments and returns a
-  void-pointer to a newly allocated and initialized object of the
+  An instantiation method will take no arguments and returns a
+  void pointer to a newly allocated and initialized object of the
   class type.
 */
 
@@ -286,7 +286,7 @@ SoType::createType(const SoType parent, const SbName name,
   int16_t discard;
   if (type_dict->get(name.getString(), discard)) {
     SoDebugError::post("SoType::createType",
-                       "a type with name ``%s'' already created",
+                       "a type with name \"%s\" already created",
                        name.getString());
     return SoType::fromName(name.getString());
   }
@@ -319,7 +319,7 @@ SoType::removeType(const SbName & name)
   int16_t index = 0;
   if (!type_dict->get(name.getString(), index)) {
     SoDebugError::post("SoType::removeType",
-                       "type with name ``%s'' not found",
+                       "type with name \"%s\" not found",
                        name.getString());
     return FALSE;
   }
@@ -350,7 +350,7 @@ SoType::removeType(const SbName & name)
   Here's a \e complete code examples which shows how to fully override
   a built-in Coin node class, so that a) your application-specific
   extension class gets instantiated instead of the built-in class upon
-  scenegraph import, and b) it gets written out properly upon export:
+  scene graph import, and b) it gets written out properly upon export:
 
   \code
   #include <Inventor/SoDB.h>
@@ -398,7 +398,7 @@ SoType::removeType(const SbName & name)
     SO_NODE_INIT_CLASS(MyWWWInline, SoWWWInline, "SoWWWInline");
 
     // Override instantiation method, so we get MyWWWInline instead of
-    // SoWWWInline instances upon scenegraph import.
+    // SoWWWInline instances upon scene graph import.
     (void)SoType::overrideType(SoWWWInline::getClassTypeId(),
                                MyWWWInline::createInstance);
   }
@@ -433,7 +433,7 @@ SoType::removeType(const SbName & name)
       "}";
 
     SoInput in;
-    in.setBuffer((void *)ivscene, strlen(ivscene));
+    in.setBuffer(ivscene, strlen(ivscene));
     SoSeparator * root = SoDB::readAll(&in);
     root->ref();
 
@@ -470,11 +470,11 @@ typedef void __cdecl initClassFunction(void);
 typedef void initClassFunction(void);
 #endif
 
-POTENTIAL_ROTTING_DOCUMENTATION
+//POTENTIAL_ROTTING_DOCUMENTATION
 /*!
   This static function returns the SoType object associated with name \a name.
 
-  Type objects for builtin types can be retreived by name both with and
+  Type objects for built-in types can be retrieved by name both with and
   without the "So" prefix.  For dynamically loadable extension nodes, the
   name given to this function must match exactly.
 
@@ -715,7 +715,7 @@ SoType::badType(void)
 {
   SoType bad;
   // Important note: internally in Coin (in the various initClass()
-  // methods for nodes, engines, fields, etc etc), we depend on the
+  // methods for nodes, engines, fields, etc.), we depend on the
   // bitpattern for SoType::badType() to equal 0x0000.
   bad.index = 0;
   return bad;
@@ -773,12 +773,12 @@ SoType::isDerivedFrom(const SoType parent) const
   NB: do not write code which depends in any way on the order of the
   elements returned in \a list.
 
-  Here is a small, stand-alone example which shows how this method can
+  Here is a small, standalone example which shows how this method can
   be used for introspection, listing all subclasses of the SoBase
   superclass:
 
   \code
-  #include <stdio.h>
+  #include <cstdio>
   #include <Inventor/SoDB.h>
   #include <Inventor/lists/SoTypeList.h>
 
@@ -843,7 +843,7 @@ SoType::canCreateInstance(void) const
 /*!
   This method instantiates an object of the current type.
 
-  For types that can not be instantiated, \c NULL is returned.
+  For types that cannot be instantiated, \c NULL is returned.
 
   \DANGEROUS_ALLOC_RETURN
 
@@ -869,7 +869,7 @@ SoType::createInstance(void) const
 }
 
 /*!
-  This function returns the number of types registered in the run-time type
+  This function returns the number of types registered in the runtime type
   system.
 */
 
@@ -899,7 +899,7 @@ SoType::getInstantiationMethod(void) const
 /*!
   \fn int16_t SoType::getKey(void) const
 
-  This method returns the type's index in the internal typelist.
+  This method returns the type's index in the internal type list.
 
 */
 

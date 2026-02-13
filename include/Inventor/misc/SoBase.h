@@ -121,8 +121,8 @@ private:
   static SoType classTypeId;
 
   struct {
-    mutable int referencecount  : 28;
-    mutable unsigned int alive  :  4;
+    mutable signed int referencecount : 28;
+    mutable unsigned int alive : 4;
   } objdata;
 
   void doNotify(SoNotList * l, const void * auditor, const SoNotRec::Type type);
@@ -131,9 +131,5 @@ private:
   class PImpl;
   friend class PImpl; // MSVC6
 };
-
-// support for boost::intrusive_ptr<SoBase>
-inline void intrusive_ptr_add_ref(SoBase * obj) { obj->ref(); }
-inline void intrusive_ptr_release(SoBase * obj) { obj->unref(); }
 
 #endif // !COIN_SOBASE_H

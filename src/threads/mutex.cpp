@@ -40,28 +40,25 @@
    20050516 mortene.
 */
 
-/*! \file common.h */
-
 /*!
   \struct cc_mutex common.h Inventor/C/threads/common.h
-  \ingroup threads
+  \ingroup coin_threads
   \brief The structure for a mutex.
 */
 
 /*!
   \typedef struct cc_mutex cc_mutex
-  \ingroup threads
+  \ingroup coin_threads
   \brief The type definition for the mutex structure.
 */
 
-/*! \file mutex.h */
 #include <Inventor/C/threads/mutex.h>
 
-#include <stdlib.h>
-#include <assert.h>
-#include <stddef.h>
-#include <errno.h>
-#include <float.h>
+#include <cstdlib>
+#include <cassert>
+#include <cstddef>
+#include <cerrno>
+#include <cfloat>
 
 #include <Inventor/C/base/time.h>
 #include <Inventor/C/errors/debugerror.h>
@@ -134,11 +131,22 @@ cc_mutex_struct_clean(cc_mutex * mutex_struct)
    excessive mutex construction. */
 
 /* don't hide 'static' these to hide them in file-scope, as they are
-   used from rwmutex.cpp and recmutex.cpp aswell. */
+   used from rwmutex.cpp and recmutex.cpp as well. */
 unsigned int cc_debug_mtxcount = 0;
 const char * COIN_DEBUG_MUTEX_COUNT = "COIN_DEBUG_MUTEX_COUNT";
 
 /**************************************************************************/
+
+/* Return value of COIN_DEBUG_MUTEX_COUNT environment variable. */
+static int coin_debug_mutex_count(void)
+{
+  static int d = -1;
+  if (d == -1) {
+    const char* val = coin_getenv("COIN_DEBUG_MUTEX_COUNT");
+    d = val ? atoi(val) : 0;
+  }
+  return d;
+}
 
 /*! Constructs a mutex. */
 cc_mutex *
@@ -149,13 +157,11 @@ cc_mutex_construct(void)
   assert(mutex != NULL);
   cc_mutex_struct_init(mutex);
 
-  { /* debugging */
-    const char * env = coin_getenv(COIN_DEBUG_MUTEX_COUNT);
-    if (env && (atoi(env) > 0)) {
-      cc_debug_mtxcount += 1;
-      (void)fprintf(stderr, "DEBUG: live mutexes +1 => %u (mutex++)\n",
-                    cc_debug_mtxcount);
-    }
+  /* debugging */
+  if (coin_debug_mutex_count() > 0) {
+    cc_debug_mtxcount += 1;
+    (void)fprintf(stderr, "DEBUG: live mutexes +1 => %u (mutex++)\n",
+                  cc_debug_mtxcount);
   }
 
   return mutex;
@@ -165,14 +171,12 @@ cc_mutex_construct(void)
 void
 cc_mutex_destruct(cc_mutex * mutex)
 {
-  { /* debugging */
-    const char * env = coin_getenv(COIN_DEBUG_MUTEX_COUNT);
-    if (env && (atoi(env) > 0)) {
-      assert((cc_debug_mtxcount > 0) && "skewed mutex construct/destruct pairing");
-      cc_debug_mtxcount -= 1;
-      (void)fprintf(stderr, "DEBUG: live mutexes -1 => %u (mutex--)\n",
-                    cc_debug_mtxcount);
-    }
+  /* debugging */
+  if (coin_debug_mutex_count() > 0) {
+    assert((cc_debug_mtxcount > 0) && "skewed mutex construct/destruct pairing");
+    cc_debug_mtxcount -= 1;
+    (void)fprintf(stderr, "DEBUG: live mutexes -1 => %u (mutex--)\n",
+                  cc_debug_mtxcount);
   }
 
   assert(mutex != NULL);
@@ -182,7 +186,7 @@ cc_mutex_destruct(cc_mutex * mutex)
 
 /**************************************************************************/
 
-/*! Locks the the \a mutex specified. */
+/*! Locks the \a mutex specified. */
 void
 cc_mutex_lock(cc_mutex * mutex)
 {
@@ -281,7 +285,7 @@ cc_mutex_init(void)
   assert(h && "GetModuleHandle('kernel32.dll') failed!");
 
   /* This function is unsupported in Win95/98/Me and NT <=3.51, but we
-     still want to use it if it's available, since it can provide
+     still want to use it if it is available, since it can provide
      major speed-ups for certain aspects of Win32 mutex handling. */
   cc_mutex_TryEnterCriticalSection = (cc_mutex_TryEnterCriticalSection_func)
     GetProcAddress(h, "TryEnterCriticalSection");
@@ -293,7 +297,7 @@ cc_mutex_init(void)
     /* atexit priority makes this callback trigger after other cleanup
        functions. */
     /* FIXME: not sure if this really needs the "- 1", but I added it
-       to keep the same order wrt the other thread-related clean-up
+       to keep the same order wrt the other thread-related cleanup
        functions, since before I changed hard-coded numbers for
        enumerated values for coin_atexit() invocations. 20060301 mortene. */
     coin_atexit((coin_atexit_f*) cc_mutex_cleanup, CC_ATEXIT_THREADING_SUBSYSTEM_LOWPRIORITY);
@@ -322,4 +326,4 @@ cc_mutex_global_unlock(void)
 {
   (void) cc_mutex_unlock(cc_global_mutex);
 }
- 
+

@@ -31,9 +31,10 @@
 \**************************************************************************/
 
 /*!
-  \class SbBox3d Inventor/SbBox3d.h
+  \class SbBox3d SbBox3d.h Inventor/SbBox3d.h
   \brief The SbBox3d class is an abstraction for an axis aligned 3 dimensional box.
-  \ingroup base
+
+  \ingroup coin_base
 
   This box abstraction class is used by other entities in the Coin
   library for data exchange and storage. It provides a representation
@@ -79,6 +80,30 @@
 
   The coordinates of \a min should be less than the coordinates of \a
   max if you want to make a valid box.
+*/
+
+/*!
+  \fn SbBox3d::SbBox3d(const SbBox3f & box)
+
+  Constructs an SbBox3d instance from the value in an SbBox3f instance.
+
+  \since Coin 2.5
+*/
+
+/*!
+  \fn SbBox3d::SbBox3d(const SbBox3s & box)
+
+  Constructs an SbBox3d instance from the value in an SbBox3s instance.
+
+  \since Coin 2.5
+*/
+
+/*!
+  \fn SbBox3d::SbBox3d(const SbBox3i32 & box)
+
+  Constructs an SbBox3d instance from the value in an SbBox3i32 instance.
+
+  \since Coin 2.5
 */
 
 /*!
@@ -259,7 +284,7 @@ SbBox3d::intersect(const SbVec3d & point) const
 }
 
 /*!
-  Check if the given \a box lies wholly or partly within the boundaries
+  Check if the given \a box lies entirely or partially within the boundaries
   of this box.
  */
 SbBool
@@ -335,14 +360,15 @@ SbBox3d::makeEmpty(void)
   \fn SbBool SbBox3d::hasVolume(void) const
 
   Check if the box has been correctly specified and by that virtue
-  has volume.
+  has "positive" volume, i.e. all coordinates of its upper right corner
+  (the maximum point) are greater than the corresponding coordinates 
+  of its lower left corner (the minimum point).
 */
 
 /*!
   \fn double SbBox3d::getVolume(void) const
 
-  Check if the box has "positive" volume, i.e. the lower left corner is
-  actually lower and more left than the maximum point.
+  Returns the volume of the box.
 */
 
 /*!
@@ -427,8 +453,8 @@ SbBox3d::transform(const SbDPMatrix & matrix)
 }
 
 /*!
-  Dump the state of this object to the \a file stream. Only works in
-  debug version of library, method does nothing in an optimized compile.
+  Dump the state of this object to the \a fp file stream. Only works in
+  debug version of library, method does nothing in an optimized build.
  */
 void
 SbBox3d::print(FILE * fp) const
@@ -503,32 +529,83 @@ SbBox3d::outside(const SbDPMatrix & mvp, int & cullbits) const
 
 /*!
   Return the point on the box closest to the given \a point.
+  If the given point equals the center, the center point of
+  the positive Z face is returned.
  */
 SbVec3d
 SbBox3d::getClosestPoint(const SbVec3d & point) const
 {
-  SbVec3d closest = point;
+    if (isEmpty()) return point;
 
-  SbVec3d center = this->getCenter();
-  double devx = closest[0] - center[0];
-  double devy = closest[1] - center[1];
-  double devz = closest[2] - center[2];
-  double halfwidth = (this->maxpt[0] - this->minpt[0]) / 2.0;
-  double halfheight = (this->maxpt[1] - this->minpt[1]) / 2.0;
-  double halfdepth = (this->maxpt[2] - this->minpt[2]) / 2.0;
+    double halfwidth = (this->maxpt[0] - this->minpt[0]) / 2.0;
+    double halfheight = (this->maxpt[1] - this->minpt[1]) / 2.0;
+    double halfdepth = (this->maxpt[2] - this->minpt[2]) / 2.0;
 
-  // Move point to be on the nearest plane of the box.
-  if ((fabs(devx) > fabs(devy)) && (fabs(devx) > fabs(devz)))
-    closest[0] = center[0] + halfwidth * ((devx < 0.0) ? -1.0 : 1.0);
-  else if (fabs(devy) > fabs(devz))
-    closest[1] = center[1] + halfheight * ((devy < 0.0) ? -1.0 : 1.0);
-  else
-    closest[2] = center[2] + halfdepth * ((devz < 0.0) ? -1.0 : 1.0);
+    SbVec3d center = this->getCenter();
+    if (point == center)
+        return SbVec3d(halfwidth, halfheight, this->maxpt[2]);
 
-  // Clamp to be inside box.
-  closest[0] = SbMin(SbMax(closest[0], this->minpt[0]), this->maxpt[0]);
-  closest[1] = SbMin(SbMax(closest[1], this->minpt[1]), this->maxpt[1]);
-  closest[2] = SbMin(SbMax(closest[2], this->minpt[2]), this->maxpt[2]);
+    SbVec3d vec = point - center;
 
-  return closest;
+    SbVec3d absvec;
+    absvec[0] = halfwidth > 0.0 ? fabs(vec[0] / halfwidth) : fabs(vec[0]);
+    absvec[1] = halfheight > 0.0 ? fabs(vec[1] / halfheight) : fabs(vec[1]);
+    absvec[2] = halfdepth > 0.0 ? fabs(vec[2] / halfdepth) : fabs(vec[2]);
+
+    SbVec3d closest;
+
+    // Clamp to be on box hull.
+    closest[0] = SbMin(absvec[0], 1.0);
+    closest[1] = SbMin(absvec[1], 1.0);
+    closest[2] = SbMin(absvec[2], 1.0);
+
+    // Move point to be on the nearest plane of the unit box ((-1 -1 -1), (1 1 1)).
+    if ((absvec[0] > absvec[1]) && (absvec[0] > absvec[2])) // yz-plane
+        closest[0] = 1.0;
+    else if ((absvec[1] > absvec[0]) && (absvec[1] > absvec[2])) // xz-plane
+        closest[1] = 1.0;
+    else if ((absvec[2] > absvec[0]) && (absvec[2] > absvec[1])) // xy-plane
+        closest[2] = 1.0;
+    else if ((absvec[0] == absvec[1]) && (absvec[0] == absvec[2])) // corner
+        closest = SbVec3d(1.0, 1.0, 1.0);
+    else if (absvec[0] == absvec[1]) { // edge parallel to z-axis
+        closest[0] = 1.0;
+        closest[1] = 1.0;
+    }
+    else if (absvec[0] == absvec[2]) { // edge parallel to y-axis
+        closest[0] = 1.0;
+        closest[2] = 1.0;
+    }
+    else if (absvec[1] == absvec[2]) { // edge parallel to x-axis
+        closest[1] = 1.0;
+        closest[2] = 1.0;
+    }
+
+    closest[0] *= (vec[0] < 0.0) ? -halfwidth : halfwidth;
+    closest[1] *= (vec[1] < 0.0) ? -halfheight : halfheight;
+    closest[2] *= (vec[2] < 0.0) ? -halfdepth : halfdepth;
+
+    closest += center;
+
+    return closest;
 }
+
+#ifdef COIN_TEST_SUITE
+BOOST_AUTO_TEST_CASE(checkGetClosestPoint) {
+    SbVec3d point(1524, 13794, 851);
+    SbVec3d min(1557, 3308, 850);
+    SbVec3d max(3113, 30157, 1886);
+
+    SbBox3d box(min, max);
+    SbVec3d expected(1557, 13794, 851);
+
+    BOOST_CHECK_MESSAGE(box.getClosestPoint(point) == expected,
+        "Closest point does not fit");
+
+    SbVec3d sizes = box.getSize();
+    SbVec3d expectedCenterQuery(sizes[0] / 2.0, sizes[1] / 2.0, max[2]);
+
+    BOOST_CHECK_MESSAGE(box.getClosestPoint(box.getCenter()) == expectedCenterQuery,
+        "Closest point for center query does not fit");
+}
+#endif //COIN_TEST_SUITE

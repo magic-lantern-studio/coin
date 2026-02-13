@@ -32,8 +32,9 @@
 
 /*!
   \class SbIntList SbIntList.h Inventor/lists/SbIntList.h
-  \brief The SbIntList class is a container for integer list arrays.
-  \ingroup base
+  \brief The SbIntList class is a container for integer numbers.
+
+  \ingroup coin_base
 
   \sa SbList
 */

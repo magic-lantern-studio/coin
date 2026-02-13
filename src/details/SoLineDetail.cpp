@@ -33,7 +33,8 @@
 /*!
   \class SoLineDetail SoLineDetail.h Inventor/details/SoLineDetail.h
   \brief The SoLineDetail class is for storing detailed 3D line information.
-  \ingroup details
+
+  \ingroup coin_details
 
   Instances of this class are used among other things for storing
   information about lines after pick operations, and for storing
@@ -64,7 +65,9 @@ SoLineDetail::~SoLineDetail()
 {
 }
 
-// Doc in superclass.
+/*!
+  \copybrief SoDetail::initClass(void)
+*/
 void
 SoLineDetail::initClass(void)
 {

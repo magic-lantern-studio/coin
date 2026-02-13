@@ -39,8 +39,9 @@
 /*!
   \class SoVRMLAudioClip SoVRMLAudioClip.h Inventor/VRMLnodes/SoVRMLAudioClip.h
   \brief The SoVRMLAudioClip class is used to load and store audio data.
-  \ingroup VRMLnodes
-  \ingroup sound
+
+  \ingroup coin_VRMLnodes
+  \ingroup coin_sound
 
   Audio data is loaded using the simage library, so make sure you have
   built the simage library with support for the audio file formats you
@@ -99,11 +100,11 @@
   achieve the proper pitch change.  A duration_changed event is sent
   whenever there is a new value for the "normal" duration of the
   clip. Typically, this will only occur when the current url in use
-  changes and the sound data has been loaded, indicating that the clip
+  changes and the sound data have been loaded, indicating that the clip
   is playing a different sound source.  The duration is the length of
   time in seconds for one cycle of the audio for a pitch set to
   1.0. Changing the pitch field will not trigger a duration_changed
-  event. A duration value of "-1" implies that the sound data has not
+  event. A duration value of "-1" implies that the sound data have not
   yet loaded or the value is unavailable for some reason. A
   duration_changed event shall be generated if the AudioClip node is
   loaded when the VRML file is read or the AudioClip node is added to
@@ -159,12 +160,11 @@
   This eventOut is sent when the sound starts/stops playing.
 */
 
-/*! \file SoVRMLAudioClip.h */
 #include <Inventor/VRMLnodes/SoVRMLAudioClip.h>
 #include "coindefs.h"
 
-#include <string.h>
-#include <stdio.h> // for EOF
+#include <cstring>
+#include <cstdio> // for EOF
 
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/actions/SoAudioRenderAction.h>
@@ -256,18 +256,19 @@ public:
 
   class StaticData {
   public:
-    StaticData(void) {
-      this->pauseBetweenTracks = 2.0;
-      this->introPause = 0.0;
-      this->defaultTimerInterval = 0.1f;
-      this->defaultSampleRate = 44100;
-      this->warnAboutMissingSimage = TRUE;
+    StaticData(void)
+      : pauseBetweenTracks(2.0)
+      , introPause(0.0)
+      , defaultTimerInterval(0.1f)
+      , defaultSampleRate(44100)
+      , warnAboutMissingSimage(TRUE)
+    {
     }
     SbStringList subdirectories;
     SbTime pauseBetweenTracks;
     SbTime introPause;
-    int defaultSampleRate;
     SbTime defaultTimerInterval;
+    int defaultSampleRate;
     SbBool warnAboutMissingSimage;
   };
 
@@ -314,7 +315,9 @@ cleanup_audioclip(void)
 
 SO_NODE_SOURCE(SoVRMLAudioClip);
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLAudioClip::initClass(void) // static
 {
@@ -482,7 +485,7 @@ SoVRMLAudioClip::getSampleRate()
 /*! Sets callbacks for opening, reading, seeking, telling and closing
  an audio source. Specifying NULL for a function is OK, except for the
  read function. If a function set to NULL is later called, a default
- implementation doing nothing is called in it's place. */
+ implementation doing nothing is called in its place. */
 
 void
 SoVRMLAudioClip::setCallbacks(open_func *opencb, read_func *readcb, 
@@ -634,7 +637,7 @@ SoVRMLAudioClipP::simageVersionOK(const char *functionName)
       SoDebugError::postWarning(functionName,
                                 "This function needs a version of simage that supports"
                                 "the stream interface and parameter access to be able "
-                                "to read audio files. Please visit www.coin3d.org "
+                                "to read audio files. Please visit https://github.com/coin3d/ "
                                 "and download the latest version of simage.");
       SoVRMLAudioClipP::staticdata->warnAboutMissingSimage = FALSE;
     }
@@ -677,8 +680,8 @@ SoVRMLAudioClipP::stopPlaying()
     before the sound figures out it should also stop playing,
     read() might try to open the next file (or reopen the
     existing file if loop==TRUE) and we might get an "echo-effect".
-    We should perhaps keep an internal isActive that is "allways"
-    equal to the external isActive, allthough this should
+    We should perhaps keep an internal isActive that is "always"
+    equal to the external isActive, although this should
     be synchronized, so read() can check it safely, and
     decide to not open a file if it is FALSE.
     Investigate this further.
@@ -783,7 +786,7 @@ SoVRMLAudioClipP::internal_read(void * COIN_UNUSED_ARG(datasource), void *buffer
   while (!bufferFilled) {
     if (this->currentPause>0.0) {
       // deliver a zero'ed,  buffer
-      int outputsize = (numframes - framepos) * channelsdelivered * 
+      size_t outputsize = size_t(numframes - framepos) * size_t(channelsdelivered) *
         sizeof(int16_t);
       memset(((int16_t *)buffer) + framepos*channelsdelivered, 0, outputsize);
       this->currentPause -= (double)(numframes - framepos) / 
@@ -801,7 +804,7 @@ SoVRMLAudioClipP::internal_read(void * COIN_UNUSED_ARG(datasource), void *buffer
 
     if (this->playlist.getLength() == 0) {
       this->closeFile();
-      int outputsize = (numframes - framepos) * channelsdelivered * 
+      size_t outputsize = size_t(numframes - framepos) * size_t(channelsdelivered) *
         sizeof(int16_t);
       memset(((int16_t *)buffer) + framepos*channelsdelivered, 0, 
               outputsize);
@@ -821,7 +824,7 @@ SoVRMLAudioClipP::internal_read(void * COIN_UNUSED_ARG(datasource), void *buffer
         else {
           // We have played all files in the list, and we're not looping.
           // => We can stop playing.
-          int outputsize = (numframes - framepos) * channelsdelivered * 
+          size_t outputsize = size_t(numframes - framepos) * size_t(channelsdelivered) *
             sizeof(int16_t);
           memset(((int16_t *)buffer) + framepos*channelsdelivered, 0, 
                  outputsize);
@@ -847,7 +850,7 @@ SoVRMLAudioClipP::internal_read(void * COIN_UNUSED_ARG(datasource), void *buffer
       }
 
       if (!success) {
-        int outputsize = (numframes - framepos) * channelsdelivered * 
+        size_t outputsize = size_t(numframes - framepos) * size_t(channelsdelivered) * 
           sizeof(int16_t);
         memset(((int16_t *)buffer) + framepos*channelsdelivered, 0, 
                outputsize);
@@ -923,7 +926,7 @@ SoVRMLAudioClipP::loadUrl()
 
   for (int i=0; i<PUBLIC(this)->url.getNum(); i++) {
     const char * str = PUBLIC(this)->url[i].getString();
-    if ( (str == NULL) || (strlen(str)==0) )
+    if (!str || str[0] == '\0')
       continue; // ignore empty url
 
     SbString filename =
@@ -1122,7 +1125,7 @@ SoVRMLAudioClipP::openFile(const char *filename)
   // of SoInput::getDirectories() (make a copy of the returned
   // SbStringList from when the SoVRMLAudioClip was read).  20050113 mortene.
   //
-  // FIXME: this is attempted again and again when the file can not be
+  // FIXME: this is attempted again and again when the file cannot be
   // opened. Once should be sufficient, and subsequent attempts should
   // be short-cutted somewhere before this in the call-chain. 20050627 mortene.
   this->stream = simage_wrapper()->s_stream_open(filename, NULL);
@@ -1130,7 +1133,7 @@ SoVRMLAudioClipP::openFile(const char *filename)
     // FIXME: sound should stop playing.  20021101 thammer
     SoDebugError::postWarning("SoVRMLAudioClipP::openFile",
                               "Couldn't open file '%s'.\n"
-                              "Here's some advice for debbugging:\n\n"
+                              "Here's some advice for debugging:\n\n"
                               "Audio data is loaded using the \"simage\" library. "
                               "Make sure you have\n"
                               "built the simage library with support for the audio file formats you\n"

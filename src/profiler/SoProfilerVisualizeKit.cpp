@@ -30,6 +30,13 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
+/*!
+  \class SoProfilerVisualizeKit SoProfilerVisualizeKit.h Inventor/annex/Profiler/nodekits/SoProfilerVisualizeKit.h
+  \brief The SoProfilerVisualizeKit element class is yet to be documented.
+
+  \ingroup coin_profiler
+*/
+
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif // HAVE_CONFIG_H
@@ -39,7 +46,7 @@
 #include <Inventor/annex/Profiler/nodekits/SoProfilerVisualizeKit.h>
 #include "coindefs.h"
 
-#include <boost/scoped_ptr.hpp>
+#include <memory>
 
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/annex/Profiler/nodekits/SoNodeVisualize.h>
@@ -77,7 +84,7 @@ namespace {
 
   void rootChangedCB(void * data, SoSensor * COIN_UNUSED_ARG(sense)){
     // FIXME 20071109 rolvs: Is it possible to automatically detect structural changes
-    // in the scenegraph? Perhaps from Inventor/misc/SoNotRec.h or something. Now
+    // in the scene graph? Perhaps from Inventor/misc/SoNotRec.h or something. Now
     // we build the SoNodeVisualize-tree on every root-change
     SoProfilerVisualizeKit * kit = (SoProfilerVisualizeKit*)data;
     if(!kit->getPart("visualtree", FALSE))
@@ -118,10 +125,10 @@ namespace {
 struct SoProfilerVisualizeKitP
 {
   // Sensors
-  boost::scoped_ptr<SoFieldSensor> cacheSensor;
-  boost::scoped_ptr<SoFieldSensor> rootSensor;
-  boost::scoped_ptr<SoFieldSensor> statsTriggerSensor;
-  boost::scoped_ptr<SoFieldSensor> statsSensor;
+  std::unique_ptr<SoFieldSensor> cacheSensor;
+  std::unique_ptr<SoFieldSensor> rootSensor;
+  std::unique_ptr<SoFieldSensor> statsTriggerSensor;
+  std::unique_ptr<SoFieldSensor> statsSensor;
 };
 
 #define PRIVATE(x) ((x)->pimpl)

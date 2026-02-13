@@ -39,7 +39,8 @@
 /*!
   \class SoVRMLTextureCoordinate SoVRMLTextureCoordinate.h Inventor/VRMLnodes/SoVRMLTextureCoordinate.h
   \brief The SoVRMLTextureCoordinate class binds texture coordinates to vertex-based geometry.
-  \ingroup VRMLnodes
+
+  \ingroup coin_VRMLnodes
 
   \WEB3DCOPYRIGHT
 
@@ -66,7 +67,7 @@
   map that has N pixels in the given direction as follows:
 
   \verbatim
-  Texture map location = (C - floor(C)) × N 
+  Texture map location = (C - floor(C)) Ã— N 
   \endverbatim
 
   If the texture map is not repeated, the texture coordinates are
@@ -75,7 +76,7 @@
   \verbatim
   Texture map location = N, if C > 1.0, 
                        = 0.0, if C < 0.0, 
-                       = C × N, if 0.0 <= C <= 1.0.
+                       = C Ã— N, if 0.0 <= C <= 1.0.
   \endverbatim
 
   Details on repeating textures are specific to texture map node types
@@ -110,7 +111,9 @@ class SoVRMLTextureCoordinateP {
 
 SO_NODE_SOURCE(SoVRMLTextureCoordinate);
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLTextureCoordinate::initClass(void)
 {

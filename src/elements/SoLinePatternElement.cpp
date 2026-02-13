@@ -33,7 +33,8 @@
 /*!
   \class SoLinePatternElement Inventor/elements/SoLinePatternElement.h
   \brief The SoLinePatternElement class defines the line stipple pattern.
-  \ingroup elements
+
+  \ingroup coin_elements
 
   Line stippling is used to mask out fragments of a line.
 */
@@ -47,8 +48,7 @@
 SO_ELEMENT_SOURCE(SoLinePatternElement);
 
 /*!
-  This static method initializes static data for the
-  SoLinePatternElement class.
+  \copydetails SoElement::initClass(void)
 */
 
 void
@@ -58,7 +58,7 @@ SoLinePatternElement::initClass(void)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 
 SoLinePatternElement::~SoLinePatternElement(void)

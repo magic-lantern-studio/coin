@@ -33,9 +33,10 @@
 /*!
   \class SoTransform SoTransform.h Inventor/nodes/SoTransform.h
   \brief The SoTransform class is the "all-purpose" transformation node type.
-  \ingroup nodes
 
-  Like SoMatrixTransform, nodes of this type gives the application
+  \ingroup coin_nodes
+
+  Like SoMatrixTransform, nodes of this type give the application
   programmer maximum flexibility when specifying geometry
   transformations in a scene graph. If you want to set and keep the
   various components of the transformation matrix in separate
@@ -89,8 +90,8 @@
   mytransformnode->rotation.setValue(0, 0, 1, 1.5707963f);
   \endcode
 
-  The programmer clearly tries to set a PI/2 rotation around the Z
-  axis, but this will fail, as the SbRotation constructor invoked
+  The programmer clearly tries to set a PI/2 rotation around the Z-axis,
+  but this will fail, as the SbRotation constructor invoked
   above is the one that takes as arguments the 4 floats of a \e
   quaternion. What the programmer almost certainly wanted to do was to
   use the SbRotation constructor that takes a rotation vector and a
@@ -125,9 +126,9 @@ SoTransform::SoTransform(void)
   SO_NODE_INTERNAL_CONSTRUCTOR(SoTransform);
 
   SO_NODE_ADD_FIELD(translation, (0.0f, 0.0f, 0.0f));
-  SO_NODE_ADD_FIELD(rotation, (SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f)));
+  SO_NODE_ADD_FIELD(rotation, (SbRotation::identity()));
   SO_NODE_ADD_FIELD(scaleFactor, (1.0f, 1.0f, 1.0f));
-  SO_NODE_ADD_FIELD(scaleOrientation, (SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f)));
+  SO_NODE_ADD_FIELD(scaleOrientation, (SbRotation::identity()));
   SO_NODE_ADD_FIELD(center, (0.0f, 0.0f, 0.0f));
 }
 
@@ -138,7 +139,9 @@ SoTransform::~SoTransform()
 {
 }
 
-// Doc from superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoTransform::initClass(void)
 {
@@ -155,7 +158,7 @@ SoTransform::pointAt(const SbVec3f & frompoint, const SbVec3f & topoint)
 {
   this->scaleFactor = SbVec3f(1.0f, 1.0f, 1.0f);
   this->center = SbVec3f(0.0f, 0.0f, 0.0f);
-  this->scaleOrientation = SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f);
+  this->scaleOrientation = SbRotation::identity();
   
   this->translation = frompoint;  
   SbVec3f dir = topoint - frompoint;
@@ -166,7 +169,7 @@ SoTransform::pointAt(const SbVec3f & frompoint, const SbVec3f & topoint)
 #if COIN_DEBUG
   else {
     SoDebugError::postWarning("SoTransform::pointAt",
-                              "frompt == topoint");
+                              "frompoint == topoint");
 
   }
 #endif // COIN_DEBUG
@@ -321,7 +324,6 @@ SoTransform::recenter(const SbVec3f & newcenter)
   this->center = newcenter;
 }
 
-
 // Doc from superclass.
 void
 SoTransform::doAction(SoAction * action)
@@ -332,8 +334,10 @@ SoTransform::doAction(SoAction * action)
                       this->scaleFactor.getValue(),
                       this->scaleOrientation.getValue(),
                       this->center.getValue());
-  
-  SoModelMatrixElement::mult(action->getState(), this, matrix);
+
+  if (matrix != SbMatrix::identity()) {
+      SoModelMatrixElement::mult(action->getState(), this, matrix);
+  }
 }
 
 // Doc from superclass.

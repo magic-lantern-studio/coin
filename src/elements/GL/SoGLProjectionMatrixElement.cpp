@@ -33,7 +33,8 @@
 /*!
   \class SoGLProjectionMatrixElement Inventor/elements/SoGLProjectionMatrixElement.h
   \brief The SoGLProjectionMatrixElement class is yet to be documented.
-  \ingroup elements
+
+  \ingroup coin_elements
 
   FIXME: write doc.
 */
@@ -53,8 +54,7 @@
 SO_ELEMENT_SOURCE(SoGLProjectionMatrixElement);
 
 /*!
-  This static method initializes static data for the
-  SoGLProjectionMatrixElement class.
+  \copydetails SoElement::initClass(void)
 */
 
 void
@@ -64,7 +64,7 @@ SoGLProjectionMatrixElement::initClass(void)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 
 SoGLProjectionMatrixElement::~SoGLProjectionMatrixElement(void)

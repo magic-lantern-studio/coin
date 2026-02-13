@@ -33,7 +33,8 @@
 /*!
   \class SoMarkerSet SoMarkerSet.h Inventor/nodes/SoMarkerSet.h
   \brief The SoMarkerSet class displays a set of 2D bitmap markers in 3D.
-  \ingroup nodes
+
+  \ingroup coin_nodes
 
   This node uses the coordinates currently on the state (or in the
   vertexProperty field) in order. The numPoints field specifies the
@@ -67,8 +68,8 @@
 
 #include <Inventor/nodes/SoMarkerSet.h>
 
-#include <math.h>
-#include <string.h>
+#include <cmath>
+#include <cstring>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -137,10 +138,10 @@ SoMarkerSet::~SoMarkerSet()
 // ----------------------------------------------------------------------
 
 typedef struct {
+  unsigned char *data;
   int width;
   int height;
   int align;
-  unsigned char *data;
   SbBool deletedata;
 } so_marker;
 
@@ -156,13 +157,15 @@ free_marker_images(void)
     // markers have been added.. free marker->data
     for (int i = SoMarkerSet::NUM_MARKERS; i < markerlist->getLength(); i++) {
       so_marker * tmp = &(*markerlist)[i];
-      if (tmp->deletedata) delete tmp->data;
+      if (tmp->deletedata) delete[] tmp->data;
     }
   }
   delete markerlist;
 }
 
-// doc in super
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoMarkerSet::initClass(void)
 {
@@ -196,7 +199,7 @@ SoMarkerSet::findMaterialBinding(SoState * const state) const
   return binding;
 }
 
-static char marker_char_bitmaps[] =
+static const char marker_char_bitmaps[] =
 {
   // CROSS_5_5
   "         "
@@ -1135,8 +1138,8 @@ SoMarkerSet::GLRender(SoGLRenderAction * action)
 {
   // FIXME: the marker bitmaps are toggled off when the leftmost pixel
   // is outside the left border, and ditto for the bottommost pixel
-  // versus the bottom border. They should be drawn partly until they
-  // are wholly outside the canvas instead. 20011218 mortene.
+  // versus the bottom border. They should be drawn partially until they
+  // are entirely outside the canvas instead. 20011218 mortene.
 
   SoState * state = action->getState();
 
@@ -1188,13 +1191,13 @@ SoMarkerSet::GLRender(SoGLRenderAction * action)
   // Symptom treatment against the complete marker set vanishing for certain
   // view angles. We'll disable the clipping planes temporarily. Individual
   // markers are still clipped using SoCullElement::cullTest() below.
-  // See https://bitbucket.org/Coin3D/coin/pull-requests/52 for a test case.
-  int numPlanes = 0;
+  // See https://github.com/coin3d/coin/pull-requests/52 for a test case.
+  GLint numPlanes = 0;
   glGetIntegerv(GL_MAX_CLIP_PLANES, &numPlanes);
   SbList<SbBool> planesEnabled;
-  for (int i = 0; i < numPlanes; ++i) {
-    planesEnabled.append(glIsEnabled(GL_CLIP_PLANE0 + (GLuint)i));
-    glDisable(GL_CLIP_PLANE0 + (GLuint)i);
+  for (GLint i = 0; i < numPlanes; ++i) {
+    planesEnabled.append(glIsEnabled(GL_CLIP_PLANE0 + i));
+    glDisable(GL_CLIP_PLANE0 + i);
   }
 
   glMatrixMode(GL_MODELVIEW);
@@ -1257,9 +1260,9 @@ SoMarkerSet::GLRender(SoGLRenderAction * action)
     glBitmap(tmp->width, tmp->height, 0, 0, 0, 0, tmp->data);
   }
 
-  for (int i = 0; i < numPlanes; ++i) {
+  for (GLint i = 0; i < numPlanes; ++i) {
     if (planesEnabled[i]) {
-      glEnable(GL_CLIP_PLANE0 + (GLuint)i);
+      glEnable(GL_CLIP_PLANE0 + i);
     }
   }
 
@@ -1369,7 +1372,7 @@ swap_updown(unsigned char *data, int width, int height)
   data is ordered. Does nothing if \a markerIndex is NONE.
 
   Here's a complete usage example which demonstrates how to set up a
-  user-specified marker from a char-map.  Note that the "multi-colored"
+  user specified marker from a character map.  Note that the "multi colored"
   pixmap data is converted to a monochrome bitmap before being passed to
   addMarker() because addMarker() supports only bitmaps.
 
@@ -1444,7 +1447,7 @@ SoMarkerSet::addMarker(int idx, const SbVec2s & size,
   temp->align = 1;
 
   int datasize = ((size[0] + 7) / 8) * size[1];
-  if (temp->deletedata) delete temp->data;
+  if (temp->deletedata) delete[] temp->data;
   temp->deletedata = TRUE;
   temp->data = new unsigned char[ datasize ];
   memcpy(temp->data,bytes,datasize);
@@ -1491,7 +1494,7 @@ SoMarkerSet::removeMarker(int idx)
   if (idx == NONE ||
       idx >= markerlist->getLength()) return FALSE;
   so_marker * tmp = &(*markerlist)[idx];
-  if (tmp->deletedata) delete tmp->data;
+  if (tmp->deletedata) delete[] tmp->data;
   markerlist->remove(idx);
   return TRUE;
 }

@@ -66,10 +66,10 @@
 #include <Inventor/misc/SoGLBigImage.h>
 #include "coindefs.h"
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#include <assert.h>
+#include <cstdlib>
+#include <cstdio>
+#include <cstring>
+#include <cassert>
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -167,7 +167,7 @@ public:
   void resetCache(void);
   static void reset(SoGLBigImageTls * tls, SoState * state = NULL);
   static void unrefOldDL(SoGLBigImageTls * tls, SoState * state, const uint32_t maxage);
-  void createCache(const unsigned char * bytes, const SbVec2s size, const int nc);
+  void createCache(const unsigned char * bytes, const SbVec2s & size, const int nc);
 };
 
 SoType SoGLBigImageP::classTypeId STATIC_SOTYPE_INIT;
@@ -227,6 +227,7 @@ SoGLBigImage::~SoGLBigImage()
   delete PRIVATE(this);
 }
 
+// Doc in superclass.
 void
 SoGLBigImage::unref(SoState * state)
 {
@@ -235,7 +236,7 @@ SoGLBigImage::unref(SoState * state)
 }
 
 /*!
-  \COININTERNAL
+  This static method initializes static data for the SoGLBigImage class.
 */
 void
 SoGLBigImage::initClass(void)
@@ -246,7 +247,10 @@ SoGLBigImage::initClass(void)
   coin_atexit((coin_atexit_f*) soglbigimagep_cleanup, CC_ATEXIT_NORMAL);
 }
 
-// Doc in superclass.
+/*!
+  This static method returns the SoType object associated with
+  objects of this class.
+*/
 SoType
 SoGLBigImage::getClassTypeId(void)
 {
@@ -607,7 +611,7 @@ SoGLBigImageP::copySubImage(SoGLBigImageTls * tls,
   if ((div == 1) || (this->cache && level < this->numcachelevels && this->cache[level])) {
     SbVec2s pos(idx % tls->dim[0], idx / tls->dim[0]);
 
-    // FIXME: investigate if it's possible to set the pixel transfer
+    // FIXME: investigate if it is possible to set the pixel transfer
     // mode so that we don't have to copy the data into a temporary
     // image. This is probably fast enough though.  pederb?.
 
@@ -693,7 +697,7 @@ SoGLBigImageP::copySubImage(SoGLBigImageTls * tls,
       }
     }
 
-    memset(tls->averagebuf, 0, w*h*nc*sizeof(int)/div);
+    memset(tls->averagebuf, 0, size_t(w)* size_t(h)* size_t(nc)*sizeof(int) / size_t(div));
     unsigned int * aptr = tls->averagebuf;
     int y;
     for (y = 0; y < h; y++) {
@@ -866,11 +870,11 @@ image_downsample_fast(const int width, const int height, const int nc,
 }
 
 void
-SoGLBigImageP::createCache(const unsigned char * bytes, const SbVec2s size, const int nc)
+SoGLBigImageP::createCache(const unsigned char * bytes, const SbVec2s& size, const int nc)
 {
   int levels = 0;
 
-  while (((size[0]>>levels) > 0) || ((size[1]>>levels) > 0)) {
+  while (((size[0]>>levels) != 0) || ((size[1]>>levels) != 0)) {
     levels++;
   }
   if (levels == 0) return;

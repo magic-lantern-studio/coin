@@ -36,7 +36,7 @@
  *
  * Compile with
  *
- *         bison -p so_eval -o evaluator_tab.c -l evaluator.y
+ *         bison -Dapi.prefix=so_eval -o evaluator_tab.c -l evaluator.y
  *
  * ..with GNU bison version 1.27 (which is what we have on nfs.sim.no)
  * then patch the resulting evaluator_tab.c file with
@@ -58,6 +58,7 @@
 #endif /* HAVE_IO_H */
 #include <Inventor/C/basic.h>
 #include "engines/evaluator.h"
+#define yyalloc so_evalalloc
 %}
 
 %union
@@ -116,7 +117,7 @@ expression    : expression ';' subexpression
               | subexpression { root_node = $1; $$ = $1; }
               ;
 
-subexpression : { $$ = NULL }
+subexpression : { $$ = NULL; }
               | fltlhs '=' fltstatement { $$ = so_eval_create_binary(ID_ASSIGN_FLT, $1, $3); }
               | veclhs '=' vecstatement { $$ = so_eval_create_binary(ID_ASSIGN_VEC, $1, $3); }
               ;

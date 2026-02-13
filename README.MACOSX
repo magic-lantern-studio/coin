@@ -1,6 +1,9 @@
-This file contains information about building Coin on Mac OS X.
+For building Coin on macOS platform, you should in general follow the
+instructions in the INSTALL file.
+
+This file contains additional information about building Coin on Mac OS X.
 For more information on getting started, known issues, and more, see
-http://www.coin3d.org/mac/.
+https://github.com/coin3d/coin/wiki/Mac%20information%20page.
 
 
 Building Coin
@@ -99,7 +102,7 @@ related to Mac OS X versions, ABI compatibility, etc.
 Mac OS 10.4 ("Tiger") and 10.5 ("Leopard")
 ------------------------------------------
 
-No particuar notes for these at this time.
+No particular notes for these at this time.
 
 
 The Inventor framework
@@ -191,7 +194,7 @@ The problem was caused by the fact that when building Coin, we
 specifically set -L/usr/lib/gcc/darwin/default/private/, forcing the
 version of libstdc++.dylib in that directory to be linked in. Now when
 the user compiled an application in Project Builder, the application
-linked against a *different* version of libstc++, and when the
+linked against a *different* version of libstdc++, and when the
 application was run, that version of the library was used, leading to
 an undefined symbol error.  The only reason for having
 -L/usr/lib/gcc/darwin/default/private/ in the first place was a

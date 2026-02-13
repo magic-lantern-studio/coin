@@ -39,7 +39,8 @@
 /*!
   \class SoVRMLColorInterpolator SoVRMLColorInterpolator.h Inventor/VRMLnodes/SoVRMLColorInterpolator.h
   \brief The SoVRMLColorInterpolator class is used to interpolate color values.
-  \ingroup VRMLnodes
+
+  \ingroup coin_VRMLnodes
 
   \WEB3DCOPYRIGHT
 
@@ -88,7 +89,9 @@
 
 SO_NODEENGINE_SOURCE(SoVRMLColorInterpolator);
 
-// doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLColorInterpolator::initClass(void) // static
 {

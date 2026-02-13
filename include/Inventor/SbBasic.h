@@ -34,6 +34,9 @@
 \**************************************************************************/
 
 #include <Inventor/C/basic.h>
+#ifndef NDEBUG
+#include <Inventor/C/errors/debugerror.h>
+#endif // !NDEBUG
 
 /* ********************************************************************** */
 /* Trap people trying to use Inventor headers while compiling C source code.
@@ -58,35 +61,35 @@
  *   SbMax(Val1, Val2)       - returns maximum value
  *   SbClamp(Val, Min, Max)  - returns clamped value
  *   SbSwap(Val1, Val2)      - swaps the two values (no return value)
- *   SbSqr(val)              - returns (val)²
+ *   SbSqr(val)              - returns squared value
  */
 
-template <class Type>
+template <typename Type>
 inline Type SbAbs( Type Val ) {
   return (Val < 0) ? 0 - Val : Val;
 }
 
-template <class Type>
+template <typename Type>
 inline Type SbMax( const Type A, const Type B ) {
   return (A < B) ? B : A;
 }
 
-template <class Type>
+template <typename Type>
 inline Type SbMin( const Type A, const Type B ) {
   return (A < B) ? A : B;
 }
 
-template <class Type>
+template <typename Type>
 inline Type SbClamp( const Type Val, const Type Min, const Type Max ) {
   return (Val < Min) ? Min : (Val > Max) ? Max : Val;
 }
 
-template <class Type>
+template <typename Type>
 inline void SbSwap( Type & A, Type & B ) {
   Type T; T = A; A = B; B = T;
 }
 
-template <class Type>
+template <typename Type>
 inline Type SbSqr(const Type val) {
   return val * val;
 }
@@ -96,14 +99,6 @@ inline Type SbSqr(const Type val) {
 // SbDividerChk() - checks if divide-by-zero is attempted, and emits a
 // warning if so for debug builds.  inlined like this to not take much
 // screenspace in inline functions.
-
-// Missing include for cc_debugerror_post() added here. The previous "trick"
-// for not needing to resolve symbols in global namespace no longer works
-// with newer compilers.
-#ifndef NDEBUG
-#include <Inventor/C/errors/debugerror.h>
-#endif // !NDEBUG
-
 
 #ifndef NDEBUG
 template <typename Type>

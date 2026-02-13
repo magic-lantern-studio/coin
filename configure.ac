@@ -15,8 +15,8 @@
 # release version number info
 m4_define([COIN_MAJOR], [4])
 m4_define([COIN_MINOR], [0])
-m4_define([COIN_MICRO], [0])
-m4_define([COIN_BETA], [a])
+m4_define([COIN_MICRO], [7])
+m4_define([COIN_BETA], [])
 
 # This is probably a more correct setup, but will be harder to keep if
 # we want major and minor to grow slowly (but is that any point?)
@@ -31,7 +31,7 @@ m4_define([SO_NUMBER], [m4_eval(COIN_MAJOR*20)])
 # For Mac OS X Compiler Frameworks:
 m4_define([MAC_FRAMEWORK_NAME_DEFAULT], [Inventor])
 m4_define([MAC_FRAMEWORK_PREFIX_DEFAULT], [/Library/Frameworks])
-m4_define([MAC_FRAMEWORK_VERSION_DEFAULT], [C])
+m4_define([MAC_FRAMEWORK_VERSION_DEFAULT], [D])
 
 # **************************************************************************
 
@@ -436,7 +436,18 @@ AC_ARG_ENABLE(
 AM_CONDITIONAL([USE_SYSTEM_EXPAT], [$sim_ac_enable_system_expat])
 
 if $sim_ac_enable_system_expat; then
-  AC_DEFINE([HAVE_SYSTEM_EXPAT], 1, [Define this if you want to use a system installation of expat])
+  sim_ac_save_LIBS=$LIBS
+  LIBS="$LIBS -lexpat"
+  AC_MSG_CHECKING([for system installation of expat])
+  AC_TRY_LINK(
+   [#include <expat.h>],
+   [(void)XML_ParserCreate(0);],
+   [AC_DEFINE([HAVE_SYSTEM_EXPAT], 1, [Define this if you want to use the system installation of Expat])
+    COIN_EXTRA_LIBS="$COIN_EXTRA_LIBS -lexpat"
+    AC_MSG_RESULT([available])],
+   [AC_MSG_ERROR([expat library not found. (If you do not want to enable using the system installation of Expat library in Coin, do not specify the "--enable-system-expat" option to the configure script.)])
+    LIBS=$sim_ac_save_LIBS])
+
   SIM_AC_CONFIGURATION_SETTING([Use system expat], [Yes])
 else
   SIM_AC_CONFIGURATION_SETTING([Use system expat], [No (default)])
@@ -624,7 +635,7 @@ if $sim_ac_enable_threads; then
      [sim_ac_win32_threads_available=true
       sim_ac_threads_api="native Win32"
       AC_DEFINE([USE_W32THREAD], , [define to use the Win32 threads API])
-      AC_DEFINE([COIN_THREADID_TYPE], DWORD, [System dependant thread ID type])])
+      AC_DEFINE([COIN_THREADID_TYPE], DWORD, [System dependent thread ID type])])
       # (we just ignore failure, as we fall through to POSIX threads)
     AC_MSG_RESULT($sim_ac_win32_threads_available)
   fi
@@ -1272,6 +1283,26 @@ AC_TRY_LINK([
   AC_MSG_RESULT([no])
 ])
 
+AC_MSG_CHECKING([for localtime_s() function])
+AC_TRY_COMPILE(
+ [#include <time.h>], [
+  time_t t;
+  struct tm buf;
+  (void) localtime_s(&buf, &t);
+ ], [AC_DEFINE(HAVE_LOCALTIME_S, 1, [define if localtime_s() is available])
+  AC_MSG_RESULT([available])],
+ [AC_MSG_RESULT([not available])])
+
+AC_MSG_CHECKING([for localtime_r() function])
+AC_TRY_COMPILE(
+ [#include <time.h>], [
+  time_t t;
+  struct tm buf;
+  (void) localtime_r(&t, &buf);
+], [AC_DEFINE(HAVE_LOCALTIME_R, 1, [define if localtime_r() is available])
+  AC_MSG_RESULT([available])],
+ [AC_MSG_RESULT([not available])])
+
 # *******************************************************************
 # Test for misc functions, typically not part of neither ISO C or POSIX.
 
@@ -1373,7 +1404,6 @@ if $coin_can_do_runtime_linking; then
   AC_DEFINE_UNQUOTED([HAVE_DYNAMIC_LINKING], 1,
                      [should be defined if there is some way of doing dynamic linking])
 fi
-
 
 # *******************************************************************
 # * Set us up for using the simage library (if wanted, and if
@@ -1731,6 +1761,13 @@ else
 fi
 
 # *******************************************************************
+# * EXPAT specific stuff.
+# *******************************************************************
+if test x"$sim_ac_have_win32_api" = x"false" && test x"$sim_ac_enable_system_expat" = x"false"; then
+  AC_DEFINE([XML_DEV_URANDOM], 1, [Define to extract entropy from /dev/urandom])
+fi
+
+# *******************************************************************
 # * Handle the detection and inclusion of X11 libraries.
 # *******************************************************************
 
@@ -1938,7 +1975,7 @@ AC_DEFINE_UNQUOTED([OPENGL_SYSTEM_LIBRARY_NAME], ["$sim_ac_opengl_dll_name"],
 # * (IBM AIX, SGI IRIX 6.2 and IRIX 6.5 with standard settings are
 # * known to fail).
 # *
-# * This nasty hack also have a lot of positivie bieffects, such as
+# * This nasty hack also have a lot of positive byeffects, such as
 # * increasing optimization, and memory usage of the compiler, while
 # * reducing the compile time for a release build.
 # *******************************************************************
@@ -2349,7 +2386,6 @@ AC_CONFIG_FILES([
         include/Inventor/C/glue/Makefile
         include/Inventor/C/threads/Makefile
         include/Inventor/VRMLnodes/Makefile
-        include/Inventor/XML/Makefile
         include/Inventor/actions/Makefile
         include/Inventor/bundles/Makefile
         include/Inventor/caches/Makefile
@@ -2612,4 +2648,3 @@ fi
 SIM_AC_CONFIGURATION_SUMMARY
 
 echo ""
-

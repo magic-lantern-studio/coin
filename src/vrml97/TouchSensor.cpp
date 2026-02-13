@@ -39,7 +39,8 @@
 /*!
   \class SoVRMLTouchSensor SoVRMLTouchSensor.h Inventor/VRMLnodes/SoVRMLTouchSensor.h
   \brief The SoVRMLTouchSensor class tracks to pointer position and sends events based on user interaction.
-  \ingroup VRMLnodes
+
+  \ingroup coin_VRMLnodes
 
   \WEB3DCOPYRIGHT
 
@@ -78,7 +79,7 @@
   geometry to one in which it no longer intersects the geometry, or
   some other geometry is obstructing the TouchSensor node's geometry,
   an isOver FALSE event is generated. These events are generated only
-  when the pointing device has moved and changed `over' state. Events
+  when the pointing device has moved and changed 'over' state. Events
   are not generated if the geometry itself is animating and moving
   underneath the pointing device.
 
@@ -255,7 +256,9 @@ touchsensor_get_current_time(void)
 
 SO_NODE_SOURCE(SoVRMLTouchSensor);
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLTouchSensor::initClass(void)
 {

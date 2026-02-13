@@ -36,14 +36,14 @@
   \class ScXMLIfElt ScXMLIfElt.h Inventor/scxml/ScXMLIfElt.h
   \brief implements the &lt;if&gt; SCXML element.
 
-  \ingroup scxml
+  \ingroup coin_scxml
 */
 
 #include <cassert>
 #include <vector>
 #include <algorithm>
 
-#include <boost/scoped_ptr.hpp>
+#include <memory>
 
 #include <Inventor/C/XML/element.h>
 #include <Inventor/errors/SoDebugError.h>
@@ -106,7 +106,7 @@ ScXMLIfEltReader::read(ScXMLElt * container, cc_xml_elt * xmlelt, ScXMLDocument 
     if (strcmp(elementtype, "elseif") == 0) {
       if (unlikely(ifelt->getElse())) {
         SoDebugError::post("ScXMLIfEltReader::read",
-                           "<if> can not contain <elseif> after and <else> element");
+                           "<if> cannot contain <elseif> after an <else> element");
         delete ifelt;
         return NULL;
       }
@@ -124,7 +124,7 @@ ScXMLIfEltReader::read(ScXMLElt * container, cc_xml_elt * xmlelt, ScXMLDocument 
     else if (strcmp(elementtype, "else") == 0) {
       if (unlikely(ifelt->getElse())) {
         SoDebugError::post("ScXMLIfEltReader::read",
-                           "<if> can not contain multiple <else> elements");
+                           "<if> cannot contain multiple <else> elements");
         delete ifelt;
         return NULL;
       }
@@ -235,7 +235,7 @@ ScXMLIfEltReader::read(ScXMLElt * container, cc_xml_elt * xmlelt, ScXMLDocument 
 
 class ScXMLIfElt::PImpl {
 public:
-  PImpl(void) : pub(NULL), elseelt(NULL)
+  PImpl(void) : pub(NULL)
   {
   }
 
@@ -251,7 +251,7 @@ public:
   ScXMLIfElt * pub;
 
   std::vector<ScXMLElseIfElt *> elseiflist;
-  boost::scoped_ptr<ScXMLElseElt> elseelt;
+  std::unique_ptr<ScXMLElseElt> elseelt;
   std::vector< std::vector<ScXMLExecutableElt *> * > executables;
 };
 
@@ -452,8 +452,8 @@ ScXMLIfElt::execute(ScXMLStateMachine * statemachine) const
       if (res->isOfType(ScXMLBoolDataObj::getClassTypeId())) {
         boolres = static_cast<ScXMLBoolDataObj *>(res);
         if (boolres->getBool()) {
-          for (int i = 0; i < this->getNumExecutables(elseif); ++i) {
-            ScXMLExecutableElt * executable = this->getExecutable(elseif, i);
+          for (int j = 0; j < this->getNumExecutables(elseif); ++j) {
+            ScXMLExecutableElt * executable = this->getExecutable(elseif, j);
             executable->execute(statemachine);
           }
           return;

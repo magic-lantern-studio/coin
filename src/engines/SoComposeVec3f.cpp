@@ -33,7 +33,8 @@
 /*!
   \class SoComposeVec3f SoComposeVec3f.h Inventor/engines/SoComposeVec3f.h
   \brief The SoComposeVec3f class is used to compose 3D vectors from floats.
-  \ingroup engines
+
+  \ingroup coin_engines
 */
 
 #include <Inventor/engines/SoComposeVec3f.h>
@@ -73,7 +74,9 @@ SoComposeVec3f::SoComposeVec3f()
   SO_ENGINE_ADD_OUTPUT(vector,SoMFVec3f);
 }
 
-// Documented in superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoComposeVec3f::initClass()
 {

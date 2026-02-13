@@ -34,7 +34,8 @@
   \class SoSField SoSField.h Inventor/fields/SoSField.h
   \brief The SoSField class is the base class for fields which contains
   only a single value.
-  \ingroup fields
+
+  \ingroup coin_fields
 
   All field types which should always contain only a single member
   value inherits this class. SoSField is an abstract class.
@@ -104,7 +105,9 @@ SoType SoSField::classTypeId STATIC_SOTYPE_INIT;
 
 // *************************************************************************
 
-// Overridden from parent class.
+/*!
+  \copydetails SoField::getClassTypeId(void)
+*/
 SoType
 SoSField::getClassTypeId(void)
 {
@@ -127,7 +130,9 @@ SoSField::~SoSField()
 {
 }
 
-// Overridden from parent class.
+/*!
+  \copydetails SoField::initClass(void)
+*/
 void
 SoSField::initClass(void)
 {

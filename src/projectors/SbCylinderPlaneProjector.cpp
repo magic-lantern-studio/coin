@@ -33,7 +33,8 @@
 /*!
   \class SbCylinderPlaneProjector SbCylinderPlaneProjector.h Inventor/projectors/SbCylinderPlaneProjector.h
   \brief The SbCylinderPlaneProjector class projects 2D points to a half-cylinder and a plane.
-  \ingroup projectors
+
+  \ingroup coin_projectors
 
   This projector uses a plane along with the half-cylinder of
   SbCylinderSectionProjector for projections. If the 2D point mapping
@@ -47,7 +48,7 @@
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
-#include <float.h>
+#include <cfloat>
 
 /*!
   Default constructor. See
@@ -148,7 +149,7 @@ SbCylinderPlaneProjector::getRotation(const SbVec3f & point1, const SbBool tol1,
     SbLine myLine(point1, ptOnLine);
     if (!this->cylinder.intersect(myLine, pt1_tol)) {
       // shouldn't happen, but be robust if it does
-      return SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f);
+      return SbRotation::identity();
     }
     pt1_tol = horizline.getClosestPoint(pt1_tol);
   }
@@ -160,7 +161,7 @@ SbCylinderPlaneProjector::getRotation(const SbVec3f & point1, const SbBool tol1,
     SbLine myLine(pt2, ptOnLine);
     if (!this->cylinder.intersect(myLine, pt2_tol)) {
       // shouldn't happen, but be robust if it does
-      return SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f);
+      return SbRotation::identity();
     }
     pt2_tol = horizline.getClosestPoint(pt2_tol);
   }

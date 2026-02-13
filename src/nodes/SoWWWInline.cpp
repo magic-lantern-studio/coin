@@ -33,13 +33,14 @@
 /*!
   \class SoWWWInline SoWWWInline.h Inventor/nodes/SoWWWInline.h
   \brief The SoWWWInline class is a node used to include data from an URL.
-  \ingroup nodes
+
+  \ingroup coin_nodes
 
   If the URL is not a local file, the application is responsible for
   supplying a callback to a function which will fetch the data of the
   URL.
 
-  As long as no data has been imported, the scenegraph representation
+  As long as no data have been imported, the scene graph representation
   of the node will be that of a bounding box enclosing the geometry we
   expect to fetch from the URL.  The application is naturally also
   responsible for specifying the expected dimensions of the geometry.
@@ -81,12 +82,11 @@
 
 // *************************************************************************
 
-/*! \file SoWWWInline.h */
 #include <Inventor/nodes/SoWWWInline.h>
 
-#include <stddef.h>
-#include <stdlib.h>
-#include <stdio.h>
+#include <cstddef>
+#include <cstdlib>
+#include <cstdio>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -117,7 +117,7 @@
 
 /*!
   \enum SoWWWInline::BboxVisibility
-  Used to enumerate bbox rendering strategies.
+  Used to enumerate bounding box rendering strategies.
 */
 /*!
   \var SoWWWInline::BboxVisibility SoWWWInline::NEVER
@@ -134,7 +134,7 @@
 
 /*!
   \var SoSFString SoWWWInline::name
-  Name of file/URL where children should be read.
+  Name of file/URL where children should be read from.
 */
 
 /*!
@@ -248,6 +248,9 @@ SoWWWInline::~SoWWWInline()
 }
 
 // doc in super
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoWWWInline::initClass(void)
 {
@@ -314,7 +317,7 @@ SoWWWInline::isURLDataRequested(void) const
 }
 
 /*!
-  Return \c TRUE if the current child data has been read from file/URL
+  Return \c TRUE if the current child data have been read from file/URL
   and set using setChildData().
 */
 SbBool
@@ -351,7 +354,7 @@ SoWWWInline::setChildData(SoNode * urldata)
 /*!
   Returns the child data for this node. This can be data read from a
   file, from an URL, from the contents of SoWWWInline::alternateRep or
-  that was manually set with SoWWWInline::setChildData().
+  data that was manually set with SoWWWInline::setChildData().
 */
 SoNode *
 SoWWWInline::getChildData(void) const
@@ -580,7 +583,7 @@ SoWWWInline::doAction(SoAction * action)
 }
 
 /*!
-  This method should probably have been private in OIV. It is
+  This method should probably have been private in Open Inventor API. It is
   obsoleted in Coin. Let us know if you need it.
 */
 void
@@ -721,7 +724,7 @@ SoWWWInlineP::readNamedFile()
   else {
     // Note that we handle this differently than Inventor, which lets
     // the whole import fail.
-    SoReadError::post(&in, "Unable to read subfile: ``%s''",
+    SoReadError::post(&in, "Unable to read subfile: \"%s\"",
                       name.getString());
   }
 

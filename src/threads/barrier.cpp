@@ -30,26 +30,23 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-/*! \file common.h */
-
 /*!
   \struct cc_barrier common.h Inventor/C/threads/common.h
-  \ingroup threads
+  \ingroup coin_threads
   \brief The structure for the thread barrier.
 */
 
 /*!
   \typedef struct cc_barrier cc_barrier
-  \ingroup threads
+  \ingroup coin_threads
   \brief The type definition for the thread barrier structure.
 */
 
-/*! \file barrier.h */
 #include <Inventor/C/threads/barrier.h>
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <assert.h>
+#include <cstdlib>
+#include <cstdio>
+#include <cassert>
 
 #include <Inventor/C/threads/mutex.h>
 #include <Inventor/C/threads/condvar.h>
@@ -58,7 +55,7 @@
 
 /* ********************************************************************** */
 
-/*! Constucts a new thread barrier. */
+/*! Constructs a new thread barrier. */
 
 cc_barrier *
 cc_barrier_construct(unsigned int count)

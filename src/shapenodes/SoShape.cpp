@@ -33,9 +33,10 @@
 /*!
   \class SoShape SoShape.h Inventor/nodes/SoShape.h
   \brief The SoShape class is the superclass for geometry shapes.
-  \ingroup nodes
 
-  The node types which have actual geometry to render inherits this
+  \ingroup coin_nodes
+
+  The node types which have actual geometry to render inherit this
   class. For convenience, the SoShape class contains various common
   code used by the subclasses.
 */
@@ -44,8 +45,8 @@
 
 #include <Inventor/nodes/SoShape.h>
 
-#include <string.h>
-#include <stdlib.h>
+#include <cstring>
+#include <cstdlib>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -225,7 +226,7 @@ public:
   }
 
   // we can use a per-instance mutex here instead of this class-wide
-  // one, but we go for the class-wide one since at least MSWindows
+  // one, but we go for the class-wide one since at least Microsoft Windows
   // might have a rather strict limit on the total amount of mutex
   // resources a process / user can hold at any one time.
   //
@@ -360,7 +361,9 @@ SoShape::~SoShape()
   delete PRIVATE(this);
 }
 
-// Doc in parent.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoShape::initClass(void)
 {
@@ -475,6 +478,11 @@ SoShape::getScreenSize(SoState * const state, const SbBox3f & boundingbox,
                 SoProjectionMatrixElement::get(state));
 
   SbVec2s vpsize = SoViewportRegionElement::get(state).getViewportSizePixels();
+  if (boundingbox.isEmpty())
+  {
+      rectsize = vpsize * 0.5;
+      return;
+  }
   SbVec3f bmin, bmax;
   boundingbox.getBounds(bmin, bmax);
 
@@ -1457,8 +1465,7 @@ SoShape::getBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
     box = PRIVATE(this)->bboxcache->getProjectedBox();
     // we know center will be set, so just fetch it from the cache
     center = PRIVATE(this)->bboxcache->getCenter();
-  }
-  if (isvalid) {
+
     return;
   }
 
@@ -1776,7 +1783,7 @@ SoShape::validatePVCache(SoGLRenderAction * action)
     // this _must_ be called after creating the pvcache
 
     // FIXME: consider if we should call a virtual function here to
-    // enable subclasses to modify the primtive vertex cache. Must be
+    // enable subclasses to modify the primitive vertex cache. Must be
     // done before to state->pop() call.
     state->pop();
     SoCacheElement::setInvalid(storedinvalid);

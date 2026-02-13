@@ -33,7 +33,8 @@
 /*!
   \class SoLineHighlightRenderAction SoLineHighlightRenderAction.h Inventor/actions/SoLineHighlightRenderAction.h
   \brief The SoLineHighlightRenderAction class renders selections with line highlighting.
-  \ingroup actions
+
+  \ingroup coin_actions
 
   See the documentation of SoBoxHighlightRenderAction.
 
@@ -148,7 +149,9 @@ SO_ACTION_SOURCE(SoLineHighlightRenderAction);
 
 // *************************************************************************
 
-// Override from parent class.
+/*!
+  \copydetails SoAction::initClass(void)
+*/
 void
 SoLineHighlightRenderAction::initClass(void)
 {

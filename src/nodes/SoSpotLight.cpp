@@ -32,11 +32,12 @@
 
 /*!
   \class SoSpotLight SoSpotLight.h Inventor/nodes/SoSpotLight.h
-  \brief The SoSpotLight class is a node type for light sources with a cone shaped lightvolume.
-  \ingroup nodes
+  \brief The SoSpotLight class is a node type for light sources with a cone shaped light volume.
+
+  \ingroup coin_nodes
 
   Spotlights are light sources with a position and a direction. They
-  can be thought of as a pointlight with a lampshade.
+  can be thought of as a point light with a lampshade.
 
   See also documentation of parent class for important information
   regarding light sources in general.
@@ -89,7 +90,7 @@
   \var SoSFVec3f SoSpotLight::direction
 
   Direction vector, where the light is pointing. Default is to point
-  along the negative z-axis.
+  along the negative Z-axis.
 */
 /*!
   \var SoSFFloat SoSpotLight::dropOffRate
@@ -105,7 +106,7 @@
 
   The angle in radians from the direction vector where there will be
   no light outside (i.e. the angle of the "lampshade"). Default value
-  is PI/4.0 (i.e. 45°). The value of this field will be clamped to
+  is PI/4.0 (i.e. 45Â°). The value of this field will be clamped to
   [0.0, PI/2] before it is used.
 */
 
@@ -137,6 +138,9 @@ SoSpotLight::~SoSpotLight()
 }
 
 // Doc in superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoSpotLight::initClass(void)
 {

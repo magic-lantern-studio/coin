@@ -33,14 +33,15 @@
 /*!
   \class SoMFUShort SoMFUShort.h Inventor/fields/SoMFUShort.h
   \brief The SoMFUShort class is a container for unsigned short integer values.
-  \ingroup fields
+
+  \ingroup coin_fields
 
   This field supports application data sharing through a
   setValuesPointer() method. See SoMField documentation for
   information on how to use this function.
 
   This field is used where nodes, engines or other field containers
-  needs to store a group of multiple short unsigned integer values.
+  need to store a group of multiple short unsigned integer values.
 
   \sa SoSFUShort
 */
@@ -65,7 +66,9 @@ SO_MFIELD_SETVALUESPOINTER_SOURCE(SoMFUShort, unsigned short, unsigned short);
 
 // *************************************************************************
 
-// Override from parent class.
+/*!
+  \copydetails SoField::initClass(void)
+*/
 void
 SoMFUShort::initClass(void)
 {

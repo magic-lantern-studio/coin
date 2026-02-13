@@ -36,7 +36,7 @@
   \class ScXMLMinimumExprDataObj ScXMLMinimumEvaluator.h Inventor/scxml/ScXMLMinimumEvaluator.h
   \brief implements the data objects for the evaluator for the minimum profile.
 
-  \ingroup scxml
+  \ingroup coin_scxml
 */
 
 /*!
@@ -45,13 +45,13 @@
 
   - In()
 
-  \ingroup scxml
+  \ingroup coin_scxml
 */
 
 #include <cassert>
 #include <cstring>
 
-#include <boost/scoped_array.hpp>
+#include <memory>
 
 #include <Inventor/scxml/ScXML.h>
 #include <Inventor/scxml/ScXMLAbstractStateElt.h>
@@ -201,10 +201,8 @@ ScXMLInExprDataObj::~ScXMLInExprDataObj(void)
 void
 ScXMLInExprDataObj::setStateId(const char * stateidstr)
 {
-  if (this->stateid) {
-    delete [] this->stateid;
-    this->stateid = NULL;
-  }
+  delete [] this->stateid;
+  this->stateid = NULL;
   if (stateidstr) {
     this->stateid = new char [strlen(stateidstr) + 1];
     strcpy(this->stateid, stateidstr);
@@ -257,7 +255,7 @@ ScXMLAppendOpExprDataObj::createFor(ScXMLDataObj * lhs, ScXMLDataObj * rhs)
       rhs->isOfType(ScXMLStringDataObj::getClassTypeId())) {
     ScXMLStringDataObj * lhsstring = static_cast<ScXMLStringDataObj *>(lhs);
     ScXMLStringDataObj * rhsstring = static_cast<ScXMLStringDataObj *>(rhs);
-    boost::scoped_array<char> string(new char [strlen(lhsstring->getString()) + strlen(rhsstring->getString()) + 1]);
+    std::unique_ptr<char[]> string(new char [strlen(lhsstring->getString()) + strlen(rhsstring->getString()) + 1]);
     strcpy(string.get(), lhsstring->getString());
     strcat(string.get(), rhsstring->getString());
     delete rhsstring;
@@ -279,14 +277,10 @@ ScXMLAppendOpExprDataObj::ScXMLAppendOpExprDataObj(ScXMLDataObj * lhsptr, ScXMLD
 
 ScXMLAppendOpExprDataObj::~ScXMLAppendOpExprDataObj(void)
 {
-  if (this->lhs) {
-    delete this->lhs;
-    this->lhs = NULL;
-  }
-  if (this->rhs) {
-    delete this->rhs;
-    this->rhs = NULL;
-  }
+  delete this->lhs;
+  this->lhs = NULL;
+  delete this->rhs;
+  this->rhs = NULL;
 }
 
 void
@@ -347,7 +341,7 @@ ScXMLAppendOpExprDataObj::evaluateNow(ScXMLStateMachine * sm, ScXMLDataObj *& po
     return FALSE;
   }
 
-  boost::scoped_array<char> string(new char [strlen(lhsevaled->getString()) + strlen(rhsevaled->getString()) + 1]);
+  std::unique_ptr<char[]> string(new char [strlen(lhsevaled->getString()) + strlen(rhsevaled->getString()) + 1]);
   strcpy(string.get(), lhsevaled->getString());
   strcat(string.get(), rhsevaled->getString());
 
@@ -360,8 +354,6 @@ ScXMLAppendOpExprDataObj::evaluateNow(ScXMLStateMachine * sm, ScXMLDataObj *& po
 #include <cmath>
 #include <cfloat>
 
-#include <boost/scoped_ptr.hpp>
-
 #include <Inventor/scxml/ScXMLStateMachine.h>
 #include <Inventor/scxml/ScXMLDocument.h>
 #include <Inventor/scxml/ScXML.h>
@@ -373,8 +365,8 @@ BOOST_AUTO_TEST_CASE_EXPECTED_FAILURES(MimimumExpressions,1);
 
 BOOST_AUTO_TEST_CASE(MimimumExpressions)
 {
-  boost::scoped_ptr<ScXMLStateMachine> sm(new ScXMLStateMachine);
-  boost::scoped_ptr<ScXMLEvaluator> evaluator(new ScXMLMinimumEvaluator);
+  std::unique_ptr<ScXMLStateMachine> sm(new ScXMLStateMachine);
+  std::unique_ptr<ScXMLEvaluator> evaluator(new ScXMLMinimumEvaluator);
 
   ScXMLDataObj * res = NULL;
   ScXMLBoolDataObj * boolobj = NULL;

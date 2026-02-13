@@ -39,7 +39,8 @@
 /*!
   \class SoInteractionKit SoInteractionKit.h Inventor/nodekits/SoInteractionKit.h
   \brief The SoInteractionKit class is a base class for draggers.
-  \ingroup nodekits
+
+  \ingroup coin_nodekits
 
   This nodekit class makes it possible to set surrogate paths for
   parts. Instead of creating new geometry for the dragger, it is
@@ -79,7 +80,7 @@
 
 #include <Inventor/nodekits/SoInteractionKit.h>
 
-#include <stdlib.h>
+#include <cstdlib>
 
 #include <Inventor/C/tidbits.h>
 #include <Inventor/SoDB.h>
@@ -245,7 +246,7 @@ SoInteractionKit::SoInteractionKit(void)
   PRIVATE(this)->fieldsensor = new SoFieldSensor(SoInteractionKit::fieldSensorCB, PRIVATE(this));
   PRIVATE(this)->fieldsensor->setPriority(0);
 
-  this->setUpConnections(TRUE, TRUE);
+  SoInteractionKit::setUpConnections(TRUE, TRUE);
 }
 
 /*!
@@ -258,7 +259,9 @@ SoInteractionKit::~SoInteractionKit()
   delete PRIVATE(this);
 }
 
-// doc in super
+/*!
+  \copybrief SoNode::initClass(void)
+*/
 void
 SoInteractionKit::initClass(void)
 {
@@ -451,7 +454,7 @@ SoInteractionKit::readInstance(SoInput * in, unsigned short flags)
   directory prefix for \a fileName, or no resource file will be loaded
   (and \a defaultBuffer will be used instead).
 
-  If both a \a fileName and a \a defaultBuffer is provided, the file
+  If both a \a fileName and a \a defaultBuffer are provided, the file
   will be attempted found and loaded first, if that fails, the
   geometry will be attempted read from the buffer.
 */
@@ -491,7 +494,7 @@ SoInteractionKit::readDefaultParts(const char * fileName,
   }
 
   if (!root && defaultBuffer) {
-    input.setBuffer((void *)defaultBuffer, defBufSize);
+    input.setBuffer(defaultBuffer, defBufSize);
     root = (SoNode *)SoDB::readAll(&input);
   }
 
@@ -566,7 +569,7 @@ SoInteractionKit::setAnyPartAsDefault(const SbName & partname,
                                       SbBool onlyifdefault)
 {
   // FIXME: this is lame and error-prone -- default dragger-parts are
-  // actually just stored outside any scenegraph, and then picked up
+  // actually just stored outside any scene graph, and then picked up
   // like this. We should at least prefix the node names with an
   // internal namespace prefix. See also the related FIXME in
   // readDefaultParts(). 20020322 mortene.
@@ -591,7 +594,7 @@ SoInteractionKit::setAnyPartAsDefault(const SbName & partname,
 // FIXME: the API doc on setAnySurrogatePath() below stinks. Surrogate
 // parts is such a useful mechanism that it deserves proper
 // documentation. We should explain what it's good for, the details of
-// setting up a surrogate part, and add in a small usage example (ie
+// setting up a surrogate part, and add in a small usage example (i.e.
 // source code). 20021008 mortene.
 
 /*!
@@ -677,14 +680,14 @@ SoInteractionKit::setUpConnections(SbBool onoff, SbBool doitalways)
     return onoff;
 
   if (onoff) {
-    inherited::setUpConnections(onoff, FALSE);
+    (void)inherited::setUpConnections(onoff, FALSE);
     PRIVATE(this)->connectFields(TRUE);
     PRIVATE(this)->attachSensor(TRUE);
   }
   else {
     PRIVATE(this)->attachSensor(FALSE);
     PRIVATE(this)->connectFields(FALSE);
-    inherited::setUpConnections(onoff, FALSE);
+    (void)inherited::setUpConnections(onoff, FALSE);
   }
   return !(this->connectionsSetUp = onoff);
 }
@@ -693,7 +696,7 @@ SoInteractionKit::setUpConnections(SbBool onoff, SbBool doitalways)
 SbBool
 SoInteractionKit::setPart(const int partNum, SoNode * node)
 {
-  // Overriden to detect when part changes value. If a substitute path
+  // Overridden to detect when part changes value. If a substitute path
   // for that part exists, it must be cleared.
 
   PRIVATE(this)->removeSurrogatePath(this->getNodekitCatalog()->getName(partNum));

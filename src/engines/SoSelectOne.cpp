@@ -33,7 +33,8 @@
 /*!
   \class SoSelectOne SoSelectOne.h Inventor/engines/SoSelectOne.h
   \brief The SoSelectOne class is used to select one value from a set of values.
-  \ingroup engines
+
+  \ingroup coin_engines
 
   The output field will be the index'th value of the input multivalue
   field.
@@ -171,13 +172,13 @@ SoSelectOne::initialize(const SoType inputfieldtype)
 
   SbString multiname = inputfieldtype.getName().getString();
   // Built-in fields always start with the "MF", but we try to handle
-  // user-defined fields aswell.
+  // user-defined fields as well.
   const char * ptr = strstr(multiname.getString(), "MF");
   assert(ptr != NULL && "invalid input field type");
   const ptrdiff_t offset = ptr - multiname.getString();
-  SbString singlename = (offset == 0) ? SbString("") : multiname.getSubString(0, int(offset - 1));
+  SbString singlename = (offset == 0) ? SbString("") : multiname.getSubString(0, (int)offset - 1);
   singlename += 'S';
-  singlename += multiname.getSubString(int(offset + 1));
+  singlename += multiname.getSubString((int)offset + 1);
 
   SoType outputtype = SoType::fromName(singlename);
   assert(outputtype != SoType::badType() &&
@@ -191,7 +192,9 @@ SoSelectOne::initialize(const SoType inputfieldtype)
   this->output->setContainer(this);
 }
 
-// Documented in superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoSelectOne::initClass(void)
 {

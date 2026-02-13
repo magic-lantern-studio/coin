@@ -33,20 +33,20 @@
 /*!
   \class SoActionMethodList SoActionMethodList.h Inventor/lists/SoActionMethodList.h
   \brief The SoActionMethodList class contains function pointers for action methods.
-  \ingroup actions
+
+  \ingroup coin_actions
 
   An SoActionMethodList contains one function pointer per node
   type. Each action contains an SoActioMethodList to know which
   functions to call during scene graph traversal.
 */
 
-/*! \file SoActionMethodList.h */
 #include <Inventor/lists/SoActionMethodList.h>
 #include <Inventor/lists/SoTypeList.h>
 #include <Inventor/lists/SbList.h>
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/nodes/SoNode.h>
-#include <assert.h>
+#include <cassert>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -110,8 +110,13 @@ SoActionMethodList::~SoActionMethodList()
   delete PRIVATE(this);
 }
 
-// Documented in superclass. Overridden from parent to cast from \c
-// void pointer.
+/*!
+  \copydetails SbPList::operator[](const int index) const
+
+  Overloaded from parent to return an SoActionMethod.
+
+  \sa SbPList::operator[]()
+*/ 
 SoActionMethod &
 SoActionMethodList::operator[](const int index)
 {

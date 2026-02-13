@@ -30,25 +30,22 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-/*! \file common.h */
-
 /*!
   \struct cc_worker common.h Inventor/C/threads/common.h
-  \ingroup threads
+  \ingroup coin_threads
   \brief The structure for a worker thread.
 */
 
 /*!
   \typedef struct cc_worker cc_worker
-  \ingroup threads
+  \ingroup coin_threads
   \brief The type definition for the worker thread structure.
 */
 
-/*! \file worker.h */
 #include <Inventor/C/threads/worker.h>
 
-#include <stdlib.h>
-#include <assert.h>
+#include <cstdlib>
+#include <cassert>
 
 #include <Inventor/C/threads/thread.h>
 #include <Inventor/C/threads/mutex.h>

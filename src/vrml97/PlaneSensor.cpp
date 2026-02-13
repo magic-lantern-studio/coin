@@ -39,7 +39,8 @@
 /*!
   \class SoVRMLPlaneSensor SoVRMLPlaneSensor.h Inventor/VRMLnodes/SoVRMLPlaneSensor
   \brief The SoVRMLPlaneSensor class maps pointer motion into object space translations.
-  \ingroup VRMLnodes
+
+  \ingroup coin_VRMLnodes
   
   \WEB3DCOPYRIGHT
 
@@ -147,17 +148,17 @@
 
 /*!
   \var SoSFVec2f SoVRMLPlaneSensor::minPosition
-  The minimum position.
+  The minimum position. Initial value is [0, 0].
 */
 
 /*!
   \var SoSFVec2f SoVRMLPlaneSensor::maxPosition
-  The maximum position.
+  The maximum position. Initial value is [-1, -1].
 */
 
 /*!
   \var SoSFVec3f SoVRMLPlaneSensor::offset
-  Current position. Initial value is (0, 0).
+  Current position. Initial value is [0, 0, 0].
 */
 
 /*!
@@ -174,7 +175,9 @@
 
 SO_NODE_SOURCE(SoVRMLPlaneSensor);
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLPlaneSensor::initClass(void)
 {

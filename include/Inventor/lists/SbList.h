@@ -33,8 +33,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#include <assert.h>
-#include <stddef.h> // NULL definition
+#include <cassert>
+#include <cstddef> // NULL definition
 #include <Inventor/SbBasic.h> // TRUE/FALSE
 
 // We usually implement inline functions below the class definition,
@@ -66,7 +66,7 @@
 #pragma warning(disable:4275)
 #endif // _MSC_VER
 
-template <class Type>
+template <typename Type>
 class SbList {
   // Older compilers aren't too happy about const declarations in the
   // class definitions, so use the enum trick described by Scott

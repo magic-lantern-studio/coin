@@ -33,7 +33,8 @@
 /*!
   \class SoCounter SoCounter.h Inventor/engines/SoCounter.h
   \brief The SoCounter class is an integer counter engine.
-  \ingroup engines
+
+  \ingroup coin_engines
 
   The engine counts from its \a min value to its \a max value, adding
   the value of \a step each time \a trigger is touched.
@@ -119,7 +120,9 @@ SoCounter::~SoCounter()
 {
 }
 
-// Documented in superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoCounter::initClass()
 {

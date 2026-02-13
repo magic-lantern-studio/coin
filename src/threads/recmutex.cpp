@@ -30,25 +30,22 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-/*! \file common.h */
-
 /*!
   \struct cc_recmutex common.h Inventor/C/threads/common.h
-  \ingroup threads
+  \ingroup coin_threads
   \brief The structure for the recursive mutex.
 */
 
 /*!
   \typedef struct cc_recmutex cc_recmutex
-  \ingroup threads
+  \ingroup coin_threads
   \brief The type definition for the recursive mutex structure.
 */
 
-/*! \file recmutex.h */
 #include <Inventor/C/threads/recmutex.h>
 
-#include <stdlib.h>
-#include <assert.h>
+#include <cstdlib>
+#include <cassert>
 
 #include <Inventor/C/errors/debugerror.h>
 #include <Inventor/C/threads/mutex.h>

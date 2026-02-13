@@ -30,13 +30,21 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
+/*!
+  \class SoJavaScriptEngine SoJavaScriptEngine.h Inventor/misc/SoJavaScriptEngine.h
+  \brief The SoJavaScriptEngine class is yet to be documented.
+
+  \ingroup coin_general
+
+  \since Coin 2.0
+*/
+
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
 #ifdef COIN_HAVE_JAVASCRIPT
   
-/*! \file SoJavaScriptEngine.h */
 #include <Inventor/misc/SoJavaScriptEngine.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/C/tidbits.h>
@@ -108,7 +116,7 @@ SoJavaScriptEngineP::executeJSScript(JSScript * script) const
 // FIXME: imported from SquirrelMonkey/src/jsutils.cpp
 // 20050719 erikgors.
 /*!
-  Prints a stacktrace for the pending exception.
+  Prints a stack trace for the pending exception.
   Does nothing if there aren't any pending exceptions.
 */
 static void printJSException(JSContext *cx)
@@ -191,7 +199,7 @@ static JSBool JavascriptPrint(JSContext * cx, JSObject * COIN_UNUSED_ARG(obj),
     out += spidermonkey()->JS_GetStringBytes(spidermonkey()->JS_ValueToString(cx, argv[i]));
   }
   
-  SoDebugError::postInfo("JavascriptPrint", out.getString());
+  SoDebugError::postInfo("JavascriptPrint", "%s", out.getString());
   return JS_TRUE;
 }
 
@@ -246,7 +254,7 @@ SoJavaScriptEngine::SoJavaScriptEngine()
   // FIXME: maybe this should be optional? 20050719 erikgors.
   spidermonkey()->JS_DefineFunction(cx, global, "print", JavascriptPrint, 0, 0);
 
-  // Make the engine accessable from within the context
+  // Make the engine accessible from within the context
   spidermonkey()->JS_SetContextPrivate(cx, this);
 
 #ifdef HAVE_VRML97
@@ -325,7 +333,7 @@ SoJavaScriptEngine::setGlobal(JSObject * global)
 }
 
 /*!
- Init the spidermonkey runtime.
+  Initialize the spidermonkey runtime.
  */
 SbBool
 SoJavaScriptEngine::init(uint32_t maxBytes)
@@ -367,7 +375,7 @@ SoJavaScriptEngine::init(uint32_t maxBytes)
 }
 
 /*!
- Shutdown the spidermonkey runtime.
+  Shutdown the spidermonkey runtime.
  */
 void
 SoJavaScriptEngine::shutdown(void)
@@ -394,7 +402,7 @@ SoJavaScriptEngine::debug(void)
 }
 
 /*!
-  Turn on/off the automatic reference-count handling of Coin nodes
+  Turn on/off the automatic reference count handling of Coin nodes
   created in JavaScript. When switched off, the programmer must
   explicitly call ref()/unref() for the Coin nodes JavaScript.
   
@@ -505,7 +513,7 @@ SoJavaScriptEngine::field2jsval(const SoField * f, jsval * v) const
 {
   int n = PRIVATE(this)->handlerList.getLength();
 
-  // go backwards. new handlers has precedence. 20050719 erikgors.
+  // go backwards. new handlers have precedence. 20050719 erikgors.
   while (n --> 0) {
     const SoJavaScriptEngineP::JavascriptHandler & handler = PRIVATE(this)->handlerList[n];
 
@@ -546,7 +554,7 @@ SoJavaScriptEngine::jsval2field(const jsval v, SoField * f) const
 {
   int n = PRIVATE(this)->handlerList.getLength();
 
-  // go backwards. new handlers has precedence. 20050719 erikgors.
+  // go backwards. new handlers have precedence. 20050719 erikgors.
   while (n --> 0) {
     const SoJavaScriptEngineP::JavascriptHandler & handler = PRIVATE(this)->handlerList[n];
 
@@ -558,7 +566,7 @@ SoJavaScriptEngine::jsval2field(const jsval v, SoField * f) const
         JSString * jsstr = spidermonkey()->JS_ValueToString(PRIVATE(this)->context, v); 
         const char * str = spidermonkey()->JS_GetStringBytes(jsstr);
         SoDebugError::postWarning("SoJavaScriptEngine::jsval2field",
-                                  "convertion of '%s' to SoField type '%s' failed",
+                                  "conversion of '%s' to SoField type '%s' failed",
                                   str, handler.type.getName().getString());
         return FALSE;
       }

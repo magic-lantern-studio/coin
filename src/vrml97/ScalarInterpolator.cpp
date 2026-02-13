@@ -39,7 +39,8 @@
 /*!
   \class SoVRMLScalarInterpolator SoVRMLScalarInterpolator.h Inventor/VRMLnodes/SoVRMLScalarInterpolator.h
   \brief The SoVRMLScalarInterpolator class is used to interpolate scalar values.
-  \ingroup VRMLnodes
+
+  \ingroup coin_VRMLnodes
   
   \verbatim
   ScalarInterpolator {
@@ -78,7 +79,9 @@
 
 SO_NODEENGINE_SOURCE(SoVRMLScalarInterpolator);
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLScalarInterpolator::initClass(void) // static
 {

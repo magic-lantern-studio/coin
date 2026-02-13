@@ -30,9 +30,6 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-/*! \file SoScXMLNavigationTarget.h */
-#include <Inventor/navigation/SoScXMLNavigationTarget.h>
-
 /*!
   \class SoScXMLNavigationTarget SoScXMLNavigationTarget.h Inventor/navigation/SoScXMLNavigationTarget.h
   \brief base class for navigation system SCXML event target services
@@ -40,16 +37,18 @@
   This class contains some common, useful, utility functions for implementing
   navigation system event targets.
 
-  \ingroup navigation
-  \since 2009-02-14
+  \ingroup coin_navigation
+  \since Coin 3.1
 */
+
+#include <Inventor/navigation/SoScXMLNavigationTarget.h>
 
 #include <cassert>
 #include <cstring>
 #include <cstdio>
 #include <map>
 
-#include <boost/scoped_array.hpp>
+#include <memory>
 
 #include <Inventor/SbVec2f.h>
 #include <Inventor/SbVec3f.h>
@@ -114,7 +113,7 @@ SoScXMLNavigationTarget::~SoScXMLNavigationTarget(void)
 }
 
 /*!
-  Returns the Data* base handle for the datastructure that corresponds to the given
+  Returns the Data* base handle for the data structure that corresponds to the given
   \a sessionid.  The \a constructor argument is the function responsible for creating
   the Data-derived object if the session is new (or have been cleaned up earlier).
 */
@@ -157,7 +156,7 @@ SoScXMLNavigationTarget::freeSessionData(SbName sessionid)
 }
 
 /*!
-  Returns the sessionid that is associated with the \a event.  If no
+  Returns the session id that is associated with the \a event.  If no
   session id is found, SbName::empty() is returned.
 */
 SbName
@@ -172,7 +171,7 @@ SoScXMLNavigationTarget::getSessionId(const ScXMLEvent * event)
     return SbName::empty();
   }
   if (sessionidstr[0] == '\'') { // unwrap string representation
-    boost::scoped_array<char> buf(new char [strlen(sessionidstr)+1]);
+    std::unique_ptr<char[]> buf(new char [strlen(sessionidstr)+1]);
     int res = sscanf(sessionidstr, "'%[^']'", buf.get());
     if (res == 1) {
       return SbName(buf.get());
@@ -182,7 +181,7 @@ SoScXMLNavigationTarget::getSessionId(const ScXMLEvent * event)
 }
 
 /*!
-  Returns the state machine that is associated with the given sessionid, or NULL
+  Returns the state machine that is associated with the given \a sessionid, or NULL
   if there are no state machines registered for the session id.
 */
 ScXMLStateMachine *
@@ -200,7 +199,7 @@ SoScXMLNavigationTarget::getStateMachine(const ScXMLEvent * event, SbName sessio
 }
 
 /*!
-  Returns the So- state machine that is associated with the given sessionid, or NULL
+  Returns the So- state machine that is associated with the given \a sessionid, or NULL
   if there are no state machines registered for the session id or if the state machine
   is not of SoScXMLStateMachine type.
 */
@@ -223,7 +222,7 @@ SoScXMLNavigationTarget::getSoStateMachine(const ScXMLEvent * event, SbName sess
 
 /*!
   Returns the current active camera, or NULL if there is no active camera set.
-  If NULL is returned, error messages has been posted.
+  If NULL is returned, error messages have been posted.
 */
 SoCamera *
 SoScXMLNavigationTarget::getActiveCamera(const ScXMLEvent * event, SbName sessionid)
@@ -311,7 +310,7 @@ SoScXMLNavigationTarget::getEventString(const ScXMLEvent * event, const char * l
     return FALSE;
   }
   else {
-    boost::scoped_array<char> buf(new char [strlen(valuestr) + 1]);
+    std::unique_ptr<char[]> buf(new char [strlen(valuestr) + 1]);
     int res = sscanf(valuestr, "'%[^']'", buf.get());
     if (res == 1) {
       str_out = buf.get();

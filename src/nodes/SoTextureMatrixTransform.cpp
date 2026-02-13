@@ -33,7 +33,8 @@
 /*!
   \class SoTextureMatrixTransform SoTextureMatrixTransform.h Inventor/nodes/SoTextureMatrixTransform.h
   \brief The SoTextureMatrixTransform class is used to define a texture matrix transformation.
-  \ingroup nodes
+
+  \ingroup coin_nodes
 
   Textures applied to shapes in the scene can be transformed by
   "prefixing" in the state with instances of this node type.
@@ -101,6 +102,9 @@ SoTextureMatrixTransform::~SoTextureMatrixTransform()
 }
 
 // Documented in superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoTextureMatrixTransform::initClass(void)
 {

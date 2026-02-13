@@ -10,7 +10,7 @@
 */
 #define SBBYTEBUFFER_PRIVATE_VARIABLES \
   size_t size_; \
-  boost::shared_array<char> buffer; \
+  std::shared_ptr<char> buffer; \
   SbBool invalid; \
   static SbByteBuffer invalidBuffer_;
 
@@ -18,12 +18,11 @@
 #define COIN_SBBYTEBUFFER_H
 
 #include <cstring>
+#include <memory>
 #include <Inventor/SbBasic.h>
 
 #ifndef ABI_BREAKING_OPTIMIZE
 class SbByteBufferP;
-#else
-#include <boost/shared_array.hpp>
 #endif //ABI_BREAKING_OPTIMIZE
 
 
@@ -73,7 +72,7 @@ class COIN_DLL_API SbByteBuffer {
 
 #endif // !COIN_SBBYTEBUFFER_H
 
-//The SBBYTEBUFFER_PRIVATE_VARIABLES must survice an inclusion from the .icc file
+//The SBBYTEBUFFER_PRIVATE_VARIABLES must survive an inclusion from the .icc file
 #ifndef COIN_ICC_INCLUDE
 #undef SBBYTEBUFFER_PRIVATE_VARIABLES
 #endif //COIN_ICC_INCLUDE

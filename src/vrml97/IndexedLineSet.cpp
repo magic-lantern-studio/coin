@@ -39,7 +39,8 @@
 /*!
   \class SoVRMLIndexedLineSet SoVRMLIndexedLineSet.h Inventor/VRMLnodes/SoVRMLIndexedLineSet.h
   \brief The SoVRMLIndexedLineSet class is used to represent a generic 3D line shape.
-  \ingroup VRMLnodes
+
+  \ingroup coin_VRMLnodes
 
   \WEB3DCOPYRIGHT
 
@@ -59,9 +60,9 @@
   constructing polylines from 3D vertices specified in the coord
   field. IndexedLineSet uses the indices in its coordIndex field to
   specify the polylines by connecting vertices from the coord
-  field. An index of "- 1" indicates that the current polyline has
+  field. An index of "-1" indicates that the current polyline has
   ended and the next one begins. The last polyline may be (but does
-  not have to be) followed by a "- 1".  IndexedLineSet is specified in
+  not have to be) followed by a "-1".  IndexedLineSet is specified in
   the local coordinate system and is affected by the transformations
   of its ancestors.  
 
@@ -114,7 +115,7 @@
 
 #include <Inventor/VRMLnodes/SoVRMLIndexedLineSet.h>
 
-#include <assert.h>
+#include <cassert>
 
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/SoPrimitiveVertex.h>
@@ -181,6 +182,9 @@ class SoVRMLIndexedLineSetP {
 
 SO_NODE_SOURCE(SoVRMLIndexedLineSet);
 
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLIndexedLineSet::initClass(void) // static
 {
@@ -382,7 +386,7 @@ SoVRMLIndexedLineSet::GLRender(SoGLRenderAction * action)
     }
     
     if (PRIVATE(this)->vaindexer) {
-      PRIVATE(this)->vaindexer->render(sogl_glue_instance(state), dovbo, contextid);
+      PRIVATE(this)->vaindexer->render(state, dovbo, contextid);
     }
     UNLOCK_VAINDEXER(this);
 
@@ -543,10 +547,8 @@ SoVRMLIndexedLineSet::notify(SoNotList * list)
   SoField *f = list->getLastField();
   if (f == &this->coordIndex) {
     LOCK_VAINDEXER(this);
-    if (PRIVATE(this)->vaindexer) {
-      delete PRIVATE(this)->vaindexer;
-      PRIVATE(this)->vaindexer = NULL;
-    }
+    delete PRIVATE(this)->vaindexer;
+    PRIVATE(this)->vaindexer = NULL;
     UNLOCK_VAINDEXER(this);
   }
   inherited::notify(list);

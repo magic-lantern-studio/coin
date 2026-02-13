@@ -39,7 +39,8 @@
 /*!
   \class SoVRMLTimeSensor SoVRMLTimeSensor.h Inventor/VRMLnodes/SoVRMLTimeSensor.h
   \brief The SoVRMLTimeSensor class is a multi-purpose time event generator.
-  \ingroup VRMLnodes
+
+  \ingroup coin_VRMLnodes
 
   \WEB3DCOPYRIGHT
 
@@ -244,7 +245,9 @@ public:
 
 SO_NODEENGINE_SOURCE(SoVRMLTimeSensor);
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLTimeSensor::initClass(void) // static
 {
@@ -342,7 +345,7 @@ SoVRMLTimeSensor::write(SoWriteAction * action)
   // Re-connect to realTime field.
   if (connectfromrealTime) {
     // Don't send notification when reconnecting to preserve the state
-    // of the scenegraph between write passes.
+    // of the scene graph between write passes.
     this->timeIn.connectFrom(connectfield, TRUE);
     this->timeIn.setDefault(defaultflag);
   }

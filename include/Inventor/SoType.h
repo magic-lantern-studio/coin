@@ -34,7 +34,7 @@
 \**************************************************************************/
 
 #include <Inventor/SbBasic.h>
-#include <stdlib.h> // For NULL definition.
+#include <cstdlib> // For NULL definition.
 
 #ifndef COIN_INTERNAL
 // The next include for Open Inventor compatibility.
@@ -52,7 +52,7 @@ class SoTypeList;
 class SoFieldData;
 class SbDict;
 struct SoTypeData;
-template <class Type> class SbList;
+template <typename Type> class SbList;
 
 // *************************************************************************
 

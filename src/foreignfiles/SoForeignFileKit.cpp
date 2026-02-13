@@ -36,11 +36,10 @@
 
 #ifdef HAVE_NODEKITS
 
-/*! \file SoForeignFileKit.h */
 #include <ForeignFiles/SoForeignFileKit.h>
 
-#include <assert.h>
-#include <stdlib.h>
+#include <cassert>
+#include <cstdlib>
 
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/nodes/SoSeparator.h>
@@ -56,7 +55,7 @@
 #include "tidbitsp.h"
 
 /*!
-  \page foreignfilesupport Foreign File Format Support
+  \page coin_foreign_file_support Foreign File Format Support
 
   This is a page describing foreign file format support in Coin.
 
@@ -74,7 +73,7 @@
   actions), and choose to first do pure Open Inventor organization
   when the node kit is asked to write its contents as a scene graph.
 
-  FIXME: Document autoloading when implemented and tested
+  FIXME: Document auto loading when implemented and tested
 
   \sa SoForeignFileKit, SoSTLFileKit
 */
@@ -85,7 +84,7 @@
 
   Abstract base class for foreign file format support in Coin.
 
-  \relates foreignfilesupport
+  \relates coin_foreign_file_support
   \COIN_CLASS_EXTENSION
   \since Coin 3.0
 */
@@ -119,6 +118,9 @@ foreignfilekit_cleanup(void)
   SoForeignFileKitP::fileexts = NULL;
 }
 
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoForeignFileKit::initClass(void)
 {
@@ -326,7 +328,7 @@ SoForeignFileKit::canReadFile(const char * COIN_UNUSED_ARG(filename)) const
 /*!
   Reads the given file into the internal representation.
   If successful, Coin should now be able to render the scene.
-  If you need a pure Coin scenegraph, call convert().
+  If you need a pure Coin scene graph, call convert().
 */
 SbBool
 SoForeignFileKit::readFile(const char * COIN_UNUSED_ARG(filename))

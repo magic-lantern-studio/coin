@@ -46,7 +46,6 @@
 // For Open Inventor compatibility.
 #include <Inventor/nodes/SoScale.h>
 #endif // !COIN_INTERNAL
-/*! \file SoDragger.h */
 
 class SbRotation;
 class SbVec2f;
@@ -58,7 +57,6 @@ class SoEvent;
 class SoPickedPoint;
 class SoDraggerP;
 
-/*! Callback definition for draggers */
 typedef void SoDraggerCB(void * data, SoDragger * dragger);
 
 class COIN_DLL_API SoDragger : public SoInteractionKit {
@@ -177,6 +175,8 @@ protected:
   // being a private method to a protected method in Coin to make it
   // possible to construct draggers which can handle Motion3 events.
   void updateDraggerCache(const SoPath * path);
+
+  virtual const SoPickedPoint* getPickedPointForStart(SoHandleEventAction* action);
 
 private:
   void updateElements(class SoState * state);

@@ -51,7 +51,8 @@
 /*!
   \class SbVec3d SbVec3d.h Inventor/SbVec3d.h
   \brief The SbVec3d class is a 3 dimensional vector with double precision floating point coordinates.
-  \ingroup base
+
+  \ingroup coin_base
 
   This vector class provides storage for a 3 dimensional double
   precision floating point vector as well as simple floating point
@@ -93,7 +94,7 @@
 
   Constructs an SbVec3d instance from an SbVec3b instance.
 
-  \Coin 2.5
+  \since Coin 2.5
 */
 
 /*!
@@ -101,7 +102,7 @@
 
   Constructs an SbVec3d instance from an SbVec3s instance.
 
-  \Coin 2.5
+  \since Coin 2.5
 */
 
 /*!
@@ -109,7 +110,7 @@
 
   Constructs an SbVec3d instance from an SbVec3i32 instance.
 
-  \Coin 2.5
+  \since Coin 2.5
 */
 
 /*!
@@ -135,7 +136,7 @@ SbVec3d::SbVec3d(const SbDPPlane & p0, const SbDPPlane & p1, const SbDPPlane & p
 
   // The equation for a point in a plane can be:
   //
-  //                N·(P - P0) = 0    , N is the plane's normal vectors,
+  //                NÂ·(P - P0) = 0    , N is the plane's normal vectors,
   //                                    P is the point and P0 is the "root
   //                                    point" of the plane (i.e. the point
   //                                    in the plane closest to the coordinate
@@ -143,13 +144,13 @@ SbVec3d::SbVec3d(const SbDPPlane & p0, const SbDPPlane & p1, const SbDPPlane & p
   //
   // Simplifying and substituting, we get this:
   //
-  //                N·P = d           , d is the distance from the origin to
+  //                NÂ·P = d           , d is the distance from the origin to
   //                                    the closest point on the plane
   //
   // Using this for all three given planes:
-  //                N0·P = d0
-  //                N1·P = d1
-  //                N2·P = d2
+  //                N0Â·P = d0
+  //                N1Â·P = d1
+  //                N2Â·P = d2
   //
   // Taking the dot products we get a set of linear equations:
   //
@@ -158,7 +159,7 @@ SbVec3d::SbVec3d(const SbDPPlane & p0, const SbDPPlane & p1, const SbDPPlane & p
   //   n2x*px + n2y*py + n2z*pz = d2   , where [px, py, pz] are the unknowns.
   //
   // This can be solved by applying the Gauss elimination method. See
-  // for instance "Advanced Engineering Mathemathics", Kreyszig, 6th edition,
+  // for instance "Advanced Engineering Mathematics", Kreyszig, 6th edition,
   // chapter 19.
   //                                                        19980817 mortene.
 
@@ -182,7 +183,7 @@ SbVec3d::SbVec3d(const SbDPPlane & p0, const SbDPPlane & p1, const SbDPPlane & p
 
 
   int i, j;
-  const int n = 3; // Input matrix dimensions are n × (n+1).
+  const int n = 3; // Input matrix dimensions are n Ã— (n+1).
 
   for (int k=0; k < n-1; k++) {
     j=k;
@@ -381,7 +382,7 @@ SbVec3d::setValue(const SbVec3f & v)
 /*!
   Sets this vector to the vector \a v.
 
-  \Coin 2.5
+  \since Coin 2.5
 */
 
 SbVec3d &
@@ -396,7 +397,7 @@ SbVec3d::setValue(const SbVec3b & v)
 /*!
   Sets this vector to the vector \a v.
 
-  \Coin 2.5
+  \since Coin 2.5
 */
 
 SbVec3d &
@@ -411,7 +412,7 @@ SbVec3d::setValue(const SbVec3s & v)
 /*!
   Sets this vector to the vector \a v.
 
-  \Coin 2.5
+  \since Coin 2.5
 */
 
 SbVec3d &
@@ -537,7 +538,7 @@ SbVec3d::toString() const
 }
 
 /*!
-  Convert from a string representation, return wether this is a valid conversion
+  Convert from a string representation, return whether this is a valid conversion
 */
 SbBool
 SbVec3d::fromString(const SbString & str)
@@ -548,9 +549,8 @@ SbVec3d::fromString(const SbString & str)
 }
 
 /*!
-  Dump the state of this object to the \a file stream. Only works in
-  debug version of library, method does nothing in an optimized
-  compile.
+  Dump the state of this object to the \a fp file stream. Only works in
+  debug version of library, method does nothing in an optimized build.
 */
 void
 SbVec3d::print(FILE * fp) const

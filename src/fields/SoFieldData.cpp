@@ -33,10 +33,11 @@
 /*!
   \class SoFieldData SoFieldData.h Inventor/fields/SoFieldData.h
   \brief The SoFieldData class is a container for a prototype set of fields.
-  \ingroup fields
+
+  \ingroup coin_fields
 
   This class is instantiated once for each class of objects which use
-  fields, and which needs to be able to import and export them.
+  fields, and which need to be able to import and export them.
 
   Each field of a class is stored with the name it has been given
   within its "owner" class and a pointer offset to the dynamic
@@ -234,7 +235,7 @@ SoFieldData::addField(SoFieldContainer * base, const char * name,
 
     // FIXME: disabled yet, as we should first make a test program to
     // see if this robustness check is ok with the current Coin
-    // code. The check shuold simply run through all
+    // code. The check should simply run through all
     // SoFieldContainer-derived classes and make an instance of all
     // non-abstract ones. Then see if there'll be any asserting or
     // crashing from the below check.
@@ -277,7 +278,7 @@ SoFieldData::overlay(SoFieldContainer * to, const SoFieldContainer * from,
 
   const SoFieldData * fd0 = to->getFieldData();
   const SoFieldData * fd1 = from->getFieldData();
-  if (!fd0 && !fd1) return;
+  if (!fd0 || !fd1) return;
 
   // The field containers should have equal SoFieldData sets.
   assert(fd0 && fd1 && *fd0==*fd1);
@@ -417,11 +418,11 @@ SoFieldData::getEnumData(const char * enumname, int & num,
 
 /*!
   Read field data from the \a in stream for fields belonging to \a
-  object. Returns \c TRUE if everything went ok, or \c FALSE if any
+  object. Returns \c TRUE if everything went OK, or \c FALSE if any
   error conditions occurs.
 
   \a erroronunknownfield decides whether or not \c FALSE should be
-  returned if a name identifier not recognized as a fieldname of \a
+  returned if a name identifier not recognized as a field name of \a
   object is encountered. Note that \a erroronunknownfield should be \c
   FALSE if \a object is a container with child objects, otherwise the
   code will fail upon the first child name specification.
@@ -464,7 +465,7 @@ SoFieldData::read(SoInput * in, SoFieldContainer * object,
     if (fieldflags & ~(SoFieldData::NOTBUILTIN)) {
       SoReadError::post(in,
                         "Unknown flags in control word: 0x%02x, "
-                        "please report to coin-support@sim.no",
+                        "please report to coin-support@coin3d.org",
                         fieldflags);
     }
 
@@ -630,11 +631,9 @@ SoFieldData::write(SoOutput * out, const SoFieldContainer * object) const
   // descriptions. Phew, the OIV binary format sucks....
   SbBool writeallfields = out->isBinary() && ! object->getIsBuiltIn();
 
-  uint16_t i;
-
   if (out->getStage() == SoOutput::COUNT_REFS) {
     // Handle first stage of write operations.
-    for (i=0; i < this->getNumFields(); i++) {
+    for (int i=0; i < this->getNumFields(); i++) {
       SoField * f = this->getField(object, i);
       if (writeallfields || f->shouldWrite()) {
         f->write(out, this->getFieldName(i));
@@ -682,7 +681,7 @@ SoFieldData::write(SoOutput * out, const SoFieldContainer * object) const
 
   SoProto * proto = out->getCurrentProto();
 
-  for (i = 0; i < this->getNumFields(); i++) {
+  for (int i = 0; i < this->getNumFields(); i++) {
     SoField * f = this->getField(object, i);
     // Test if field has a PROTO IS reference
     SbName pname = proto ?
@@ -761,7 +760,7 @@ SoFieldData::isSame(const SoFieldContainer * c1,
 }
 
 /*!
-  Reads a set of field specifications from \a in for an unknown nodeclass type,
+  Reads a set of field specifications from \a in for an unknown node class type,
   in the form "[ FIELDCLASS FIELDNAME, FIELDCLASS FIELDNAME, ... ]".
 
   \a numdescriptionsexpected is used for binary format import to know
@@ -846,7 +845,7 @@ SoFieldData::readFieldDescriptions(SoInput * in, SoFieldContainer * object,
 
 #if COIN_DEBUG && 0 // debug
     SoDebugError::postInfo("SoFieldData::readFieldDescriptions",
-                           "type: ``%s'', name: ``%s''",
+                           "type: \"%s\", name: \"%s\"",
                            fieldtypename.getString(), fieldname.getString());
 #endif // debug
 
@@ -915,7 +914,7 @@ SoFieldData::readFieldDescriptions(SoInput * in, SoFieldContainer * object,
 
 
 /*!
-  Write a set of field specifications to \a out for an unknown nodeclass type,
+  Write a set of field specifications to \a out for an unknown node class type,
   in the form "[ FIELDCLASS FIELDNAME, FIELDCLASS FIELDNAME, ... ]".
  */
 void

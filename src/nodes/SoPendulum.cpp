@@ -33,7 +33,8 @@
 /*!
   \class SoPendulum SoPendulum.h Inventor/nodes/SoPendulum.h
   \brief The SoPendulum class is used to create oscillating rotations.
-  \ingroup nodes
+
+  \ingroup coin_nodes
 
   A smooth transition between rotation0 and rotation1 is created using
   a cosine function. In the beginning of the cycle, rotation0 is
@@ -95,8 +96,8 @@ SoPendulum::SoPendulum(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoPendulum);
 
-  SO_NODE_ADD_FIELD(rotation0, (SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f)));
-  SO_NODE_ADD_FIELD(rotation1, (SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f)));
+  SO_NODE_ADD_FIELD(rotation0, (SbRotation::identity()));
+  SO_NODE_ADD_FIELD(rotation1, (SbRotation::identity()));
   SO_NODE_ADD_FIELD(speed, (1.0f));
   SO_NODE_ADD_FIELD(on, (TRUE));
 
@@ -127,7 +128,9 @@ SoPendulum::~SoPendulum()
   this->timer->unref();
 }
 
-// Doc from superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoPendulum::initClass(void)
 {
@@ -149,7 +152,7 @@ SoPendulum::write(SoWriteAction * action)
 
   inherited::write(action);
 
-  // Reenable all connections to/from internal engine. (Only done at
+  // Re-enable all connections to/from internal engine. (Only done at
   // last pass.)
   if (out->getStage() == SoOutput::WRITE)
     this->reconnectInternalEngine();
@@ -169,7 +172,7 @@ SoPendulum::copy(SbBool copyconnections) const
 
   SoPendulum * cp = (SoPendulum *)inherited::copy(copyconnections);
 
-  // Reenable all connections to/from internal engines.
+  // Re-enable all connections to/from internal engines.
   ((SoPendulum *)this)->reconnectInternalEngine();
 
   return cp;
@@ -191,7 +194,7 @@ SoPendulum::deconnectInternalEngine(void)
 }
 
 
-// Reenable all connections to/from internal engines.
+// Re-enable all connections to/from internal engines.
 void
 SoPendulum::reconnectInternalEngine(void)
 {

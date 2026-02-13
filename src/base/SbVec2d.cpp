@@ -34,7 +34,8 @@
   \class SbVec2d SbVec2d.h Inventor/SbVec2d.h
   \brief The SbVec2d class is a 2 dimensional vector with double precision
   floating point coordinates.
-  \ingroup base
+
+  \ingroup coin_base
 
   This vector class is used by many other classes in
   Coin. It provides storage for a vector in 2 dimensions as well
@@ -166,6 +167,12 @@ SbVec2d::length(void) const
 {
   return static_cast<double>(sqrt(this->sqrLength()));
 }
+
+/*!
+  \fn double SbVec2d::sqrLength(void) const
+
+  Returns the square of the length of the vector.
+*/
 
 /*!
   \fn void SbVec2d::negate(void)
@@ -378,8 +385,8 @@ SbVec2d::setValue(const SbVec2i32 & v)
 */
 
 /*!
-  Dump the state of this object to the \a file stream. Only works in
-  debug version of library, method does nothing in an optimized compile.
+  Dump the state of this object to the \a fp file stream. Only works in
+  debug version of library, method does nothing in an optimized build.
 */
 
 void

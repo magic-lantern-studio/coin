@@ -10,8 +10,6 @@ SbByteBuffer SbByteBufferP::invalidBuffer_;
 #endif
 
 #ifdef COIN_TEST_SUITE
-#include <boost/lexical_cast.hpp>
-
 BOOST_AUTO_TEST_CASE(pushUnique)
 {
 
@@ -53,7 +51,7 @@ BOOST_AUTO_TEST_CASE(pushOnEmpty)
   SbByteBuffer b("foo");
 
   BOOST_CHECK_MESSAGE(a.empty(),
-                      std::string("Size of empty buffer is") + boost::lexical_cast<std::string>(a.size())
+                      std::string("Size of empty buffer is") + ::CoinTest::stringify(a.size())
                       );
 
   a.push(b);
@@ -62,9 +60,9 @@ BOOST_AUTO_TEST_CASE(pushOnEmpty)
                       "Size of buffers differ"
                       );
 
-  for (int i=0; i < b.size(); ++i) {
+  for (size_t i=0; i < b.size(); ++i) {
     if(a[i]!=b[i]) {
-      printf("Mjau %d: %c != %c \n",i,a[i],b[i]);
+      printf("Mjau %lu: %c != %c \n",(unsigned long)i,a[i],b[i]);
     }
   }
 

@@ -39,7 +39,8 @@
 /*!
   \class SoDirectionalLightDragger SoDirectionalLightDragger.h Inventor/draggers/SoDirectionalLightDragger.h
   \brief The SoDirectionalLightDragger class provides interactive geometry for manipulating a directional light source.
-  \ingroup draggers
+
+  \ingroup coin_draggers
 
   \DRAGGER_DEFAULT_SCREENSHOT
 
@@ -65,7 +66,7 @@
   The Coin library also includes a manipulator class,
   SoDirectionalLightManip, which wraps the functionality provided by
   this class inside the necessary mechanisms for connecting it to
-  SoDirectionalLight node instances in a scenegraph.
+  SoDirectionalLight node instances in a scene graph.
 
   \sa SoDirectionalLightManip
 */
@@ -96,7 +97,7 @@
   care of automatically).
 
   It may also of course be connected to any other rotation field
-  controlling the direction of scenegraph geometry, it does not have
+  controlling the direction of scene graph geometry, it does not have
   to part of a SoDirectionalLight node specifically.
 */
 /*!
@@ -127,7 +128,9 @@ public:
 SO_KIT_SOURCE(SoDirectionalLightDragger);
 
 
-// Doc in superclass.
+/*!
+  \copydetails SoDragger::initClass(void)
+*/
 void
 SoDirectionalLightDragger::initClass(void)
 {
@@ -135,7 +138,7 @@ SoDirectionalLightDragger::initClass(void)
 }
 
 // FIXME: document which parts need to be present in the geometry
-// scenegraph, and what role they play in the dragger. 20010913 mortene.
+// scene graph, and what role they play in the dragger. 20010913 mortene.
 /*!
   \DRAGGER_CONSTRUCTOR
 
@@ -192,7 +195,7 @@ SoDirectionalLightDragger::SoDirectionalLightDragger(void)
                                        static_cast<int>(strlen(DIRECTIONALLIGHTDRAGGER_draggergeometry)));
   }
 
-  SO_KIT_ADD_FIELD(rotation, (SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f)));
+  SO_KIT_ADD_FIELD(rotation, (SbRotation::identity()));
   SO_KIT_ADD_FIELD(translation, (0.0f, 0.0f, 0.0f));
   SO_KIT_INIT_INSTANCE();
 

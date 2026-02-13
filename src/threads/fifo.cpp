@@ -30,25 +30,22 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-/*! \file common.h */
-
 /*!
   \struct cc_fifo common.h Inventor/C/threads/common.h
-  \ingroup threads
+  \ingroup coin_threads
   \brief The structure for a first-in, first-out queue.
 */
 
 /*!
   \typedef struct cc_fifo cc_fifo
-  \ingroup threads
+  \ingroup coin_threads
   \brief The type definition for the first-in, first-out queue structure.
 */
 
-/*! \file fifo.h */
 #include <Inventor/C/threads/fifo.h>
 
-#include <stdlib.h>
-#include <assert.h>
+#include <cstdlib>
+#include <cassert>
 
 #include <Inventor/C/threads/mutex.h>
 #include <Inventor/C/threads/condvar.h>

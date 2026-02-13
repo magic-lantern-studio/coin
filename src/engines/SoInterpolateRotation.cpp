@@ -33,7 +33,8 @@
 /*!
   \class SoInterpolateRotation SoInterpolateRotation.h Inventor/engines/SoInterpolateRotation.h
   \brief The SoInterpolateRotation class is used to interpolate between two rotations.
-  \ingroup engines
+
+  \ingroup coin_engines
 */
 
 #include <Inventor/engines/SoInterpolateRotation.h>

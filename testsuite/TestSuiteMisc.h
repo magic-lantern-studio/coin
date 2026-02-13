@@ -1,35 +1,67 @@
 #ifndef COIN_TESTSUITE_MISC
 #define COIN_TESTSUITE_MISC
 
+/**************************************************************************\
+* Copyright (c) Kongsberg Oil & Gas Technologies AS
+* All rights reserved.
+*
+* Redistribution and use in source and binary forms, with or without
+* modification, are permitted provided that the following conditions are
+* met:
+*
+* Redistributions of source code must retain the above copyright notice,
+* this list of conditions and the following disclaimer.
+*
+* Redistributions in binary form must reproduce the above copyright
+* notice, this list of conditions and the following disclaimer in the
+* documentation and/or other materials provided with the distribution.
+*
+* Neither the name of the copyright holder nor the names of its
+* contributors may be used to endorse or promote products derived from
+* this software without specific prior written permission.
+*
+* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+* "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+* LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+* A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+* HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+* LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+* DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+* THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+* (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+* OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+\**************************************************************************/
+
 #include <string>
 #include <ostream>
-#include <boost/lexical_cast.hpp>
 #include <Inventor/SbBasic.h>
 #include <Inventor/SbTypeInfo.h>
+#include "CoinTest.h"
 
-#ifndef TEST_SUITE_THOROUGNESS
+#ifndef TEST_SUITE_THOROUGHNESS
 /*
-  TEST_SUITE_THOROUGNESS levels are:
+  TEST_SUITE_THOROUGHNESS levels are:
   1 Just quick tests
   2 More thorough
   3 Expansive
 */
-#define TEST_SUITE_THOROUGNESS 1
-#endif //TEST_SUITE_THOROUGNESS
+#define TEST_SUITE_THOROUGHNESS 1
+#endif //TEST_SUITE_THOROUGHNESS
 
-#if TEST_SUITE_THOROUGNESS == 1
+#if TEST_SUITE_THOROUGHNESS == 1
 #define TEST_SUITE_QUICK
-#elif TEST_SUITE_THOROUGNESS == 2
+#elif TEST_SUITE_THOROUGHNESS == 2
 #define TEST_SUITE_THOROUG
-#elif TEST_SUITE_THOROUGNESS == 3
+#elif TEST_SUITE_THOROUGHNESS == 3
 #define TEST_SUITE_EXPANSIVE
-#endif //TEST_SUITE_THOROUGNESS
+#endif //TEST_SUITE_THOROUGHNESS
 
 // Test for almostEquality
 /*
   Note the difference between last parameter as float or int Last
   parameter as float, means relative tolerance, last parameter as int,
-  means maximal numer of orders difference in an ordered set of all
+  means maximal number of orders difference in an ordered set of all
   floats
 */
 inline bool floatEquals(float Ain, float Bin, unsigned int maxUlps)
@@ -71,7 +103,7 @@ floatEquals(float a, float b, float tol)
   return fabs(b-a)/fabs(a)<tol;
 }
 
-#define COIN_TESTCASE_CHECK_FLOAT(X,Y) BOOST_CHECK_MESSAGE(floatEquals((X), (Y), 1), std::string("unexpected value: expected ") + boost::lexical_cast<std::string>((Y)) +", got " + boost::lexical_cast<std::string>((X)) + " difference is: " + boost::lexical_cast<std::string>((X)-(Y)))
+#define COIN_TESTCASE_CHECK_FLOAT(X,Y) BOOST_CHECK_MESSAGE(floatEquals((X), (Y), 1), std::string("unexpected value: expected ") + ::CoinTest::stringify((Y)) +", got " + ::CoinTest::stringify((X)) + " difference is: " + ::CoinTest::stringify((X)-(Y)))
 
 namespace SIM { namespace Coin { namespace TestSuite {
 
@@ -100,7 +132,8 @@ template <typename T, typename S, typename U>
 bool
 fuzzyCompare(const T & v1, const S & v2, U tolerance = 64) 
 {
-  BOOST_STATIC_ASSERT(static_cast<int>(SbTypeInfo<T>::Dimensions)==static_cast<int>(SbTypeInfo<S>::Dimensions));
+  static_assert(static_cast<int>(SbTypeInfo<T>::Dimensions) == static_cast<int>(SbTypeInfo<S>::Dimensions),
+                "SbTypeInfo dimension mismatch");
   return fCompare<SbTypeInfo<T>::Dimensions>::cmp(v1,v2,tolerance);
 }
 
@@ -120,7 +153,7 @@ struct to<1> {
   static std::string 
   String(const T & v) 
   {
-    return  boost::lexical_cast<std::string>(v);
+    return ::CoinTest::stringify(v);
   }
 };
 } //namespace internal
@@ -139,7 +172,7 @@ struct to<1> {
 
 
 /*
- * The following ostream << operators are needed for the Boost.Test macros
+ * The following ostream << operators are needed for the testsuite macros
  * for when they report on failures with our custom datatypes.
  * Expand as needed.
  *

@@ -31,10 +31,10 @@
 \**************************************************************************/
 
 /*!
-  \class SoIntersectionDetectionAction Inventor/collision/SoIntersectionDetectionAction.h
+  \class SoIntersectionDetectionAction SoIntersectionDetectionAction.h Inventor/collision/SoIntersectionDetectionAction.h
   \brief The SoIntersectionDetectionAction class is for detecting intersecting primitives in a scene.
 
-  Note that only collisions between actual geometry in the scene is
+  Note that only collisions between actual geometry in the scene are
   detected, so the contents of some special nodes like e.g. SoText2
   and SoImage (which projects to screen-plane bitmap graphics, and not
   actual polygons) will not be considered for collision detection.
@@ -43,9 +43,9 @@
   high-performance component in Coin.  Using it in a continuous manner
   over complex scene graphs is doomed to be a performance killer.
 
-  Below is a simple usage example for this class. It was written as a
-  stand-alone framework set up for profiling and optimization of the
-  SoIntersectionDetectionAction. It tests intersection of all shapes
+  Below is a simple usage example for this class.  It was written as a
+  standalone framework set up for profiling and optimization of the
+  SoIntersectionDetectionAction.  It tests intersection of all shapes
   against each other for the loaded file.
 
   \code
@@ -107,7 +107,7 @@
   }
   \endcode
 
-  \ingroup actions
+  \ingroup coin_actions
   \since Coin 2.1
   \since TGS Inventor 2.4
 */
@@ -127,7 +127,6 @@
 
 // *************************************************************************
 
-/*! \file SoIntersectionDetectionAction.h */
 #include <Inventor/collision/SoIntersectionDetectionAction.h>
 
 #ifdef HAVE_CONFIG_H
@@ -174,7 +173,7 @@
 #include "collision/SbTri3f.h"
 #include "coindefs.h"
 
-#if BOOST_WORKAROUND(COIN_MSVC, <= COIN_MSVC_6_0_VERSION)
+#if COIN_WORKAROUND(COIN_MSVC, <= COIN_MSVC_6_0_VERSION)
 // symbol length truncation
 #pragma warning(disable:4786)
 #endif // VC6.0
@@ -313,6 +312,9 @@ ida_debug(void)
 
 SO_ACTION_SOURCE(SoIntersectionDetectionAction);
 
+/*!
+  \copybrief SoAction::initClass(void)
+*/
 void
 SoIntersectionDetectionAction::initClass(void)
 {
@@ -337,7 +339,7 @@ SoIntersectionDetectionAction::~SoIntersectionDetectionAction(void)
   This will affect all intersection detection action objects in use that
   don't have a locally set value.
 
-  The epsilon value is a worldspace value.
+  The epsilon value is a world space value.
 
   Be aware that increasing the epsilon value can \e dramatically
   increase the number of primitive intersection tests being done to
@@ -407,7 +409,7 @@ SoIntersectionDetectionAction::setTypeEnabled(SoType type, SbBool enable)
 
 /*!
   Returns whether nodes of specific types are enabled or not.  The \a checkgroups
-  argument can be set to TRUE if you wan't the return value to reflect whether
+  argument can be set to TRUE if you want the return value to reflect whether
   the node will be implicit enabled/disabled through the settings controlled by the
   setManipsEnabled() and setDraggersEnabled() functions.
 
@@ -655,7 +657,7 @@ SoIntersectionDetectionAction::removeIntersectionCallback(SoIntersectionCB * cb,
 void
 SoIntersectionDetectionAction::apply(SoNode * node)
 {
-  // Keep this around, as it's handy for dumping a stand-alone scene
+  // Keep this around, as it is handy for dumping a standalone scene
   // to work with from an invocation within an application framework.
 #if 0 // disabled
   SoOutput out;
@@ -835,7 +837,7 @@ public:
 
   ~ShapeData()
   {
-    if (this->primitives) { delete this->primitives; }
+    delete this->primitives;
   }
 
   PrimitiveData * getPrimitives(void);
@@ -1012,10 +1014,7 @@ SoIntersectionDetectionAction::PImpl::reset(void)
     delete data;
   }
   this->shapedata.truncate(0);
-  if (this->traverser != NULL) {
-    delete this->traverser;
-    this->traverser = NULL;
-  }
+  delete this->traverser;
   this->traverser = new SoCallbackAction;
 #ifdef HAVE_DRAGGERS
   this->traverser->addPreCallback(SoDragger::getClassTypeId(),
@@ -1070,7 +1069,7 @@ make_scene_graph(const SbBox3f & box, SoCoordinate3 *& coord3, SoIndexedLineSet 
 
 // This is a helper function for debugging purposes: it sets up a
 // small scene graph that shows the geometry of the SbXfBox3f input
-// argument, with the identity tag at it's corner.
+// argument, with the identity tag at its corner.
 static SoSeparator *
 make_scene_graph(const SbXfBox3f & xfbox, const char * tag)
 {
@@ -1163,7 +1162,7 @@ shapeinsideboxfunc(void * const item, const SbBox3f & box)
 }
 
 // Execute full set of intersection detection operations on all the
-// primitives that has been souped up from the scene graph.
+// primitives that have been souped up from the scene graph.
 void
 SoIntersectionDetectionAction::PImpl::doIntersectionTesting(void)
 {

@@ -39,7 +39,8 @@
 /*!
   \class SoNodekitCatalog SoNodekitCatalog.h Inventor/nodekits/SoNodekitCatalog.h
   \brief The SoNodekitCatalog class is a container for nodekit layouts.
-  \ingroup nodekits
+
+  \ingroup coin_nodekits
 
   Nodekits store all their hierarchical layout information and part
   information in instances of this class.
@@ -49,8 +50,8 @@
 
 #include <Inventor/nodekits/SoBaseKit.h>
 
-#include <assert.h>
-#include <stdio.h> // fprintf()
+#include <cassert>
+#include <cstdio> // fprintf()
 
 #include <Inventor/lists/SoTypeList.h>
 #if COIN_DEBUG
@@ -440,7 +441,7 @@ SoNodekitCatalog::isPublic(const SbName & name) const
 
 /*!
   Return a clone of this catalog. \a type will be used to set the type
-  and defaulttype values of the toplevel \c this entry.
+  and default type values of the top level \c this entry.
 */
 SoNodekitCatalog *
 SoNodekitCatalog::clone(SoType type) const
@@ -482,7 +483,7 @@ static void SoNodekitCatalogPropagateDefaultInit( SoNodekitCatalog * pthis )
                                                
 
 /*!
-  Add a new entry to the catalog. Returns \c TRUE if add was ok.
+  Add a new entry to the catalog. Returns \c TRUE if add was OK.
 */
 SbBool
 SoNodekitCatalog::addEntry(const SbName & name, SoType type,
@@ -511,7 +512,7 @@ SoNodekitCatalog::addEntry(const SbName & name, SoType type,
 
 #if COIN_DEBUG && 0
   SoDebugError::postInfo("SoNodekitCatalog::addEntry",
-                         "new entry: ``%s''", name.getString());
+                         "new entry: \"%s\"", name.getString());
 #endif
 
   CC_GLOBAL_LOCK;
@@ -587,7 +588,7 @@ SoNodekitCatalog::addEntry(const SbName & name, SoType type,
 }
 
 // Add the item at the correct position in the entry list, where the
-// arguemtn "newitem" is guaranteed to have both parent and rigt
+// argument "newitem" is guaranteed to have both parent and right
 // sibling (if any) present in the catalog.
 SbBool
 SoNodekitCatalog::reallyAddEntry(CatalogItem * newitem)
@@ -648,7 +649,7 @@ SoNodekitCatalog::addListItemType(const SbName & name, SoType type)
   if (!this->hasListItemType(name, type)) {
     // FIXME: If a part name is invalid, this procedure bails out
     // elsewhere on an assert. The check and debug comment should be
-    // superflous? If it isn't, it should be possible to find a way to
+    // superfluous? If it isn't, it should be possible to find a way to
     // write this that expresses the code intentions better. 
     // 20021029 rolvs
     
@@ -807,7 +808,7 @@ SoNodekitCatalog::addListItemType(const SbList<class CatalogItem *> & l,
   assert( l[part]->islist &&
           "type must be a list-item type" );
   assert( l[part]->itemtypeslist.find( type ) == -1 &&
-          "trying to add item that allready exists" );
+          "trying to add item that already exists" );
 
   l[part]->itemtypeslist.append(type);
 }

@@ -33,14 +33,14 @@
 /*!
   \class SoCallbackList SoCallbackList.h Inventor/lists/SoCallbackList.h
   \brief The SoCallbackList is a container for callback function pointers.
-  \ingroup general
+
+  \ingroup coin_general
 
   This list stores callback function pointers (along with
   user-specified extra data to pass to the callbacks) and provides a
   method for triggering the callback functions.
 */
 
-/*! \file SoCallbackList.h */
 #include <Inventor/lists/SoCallbackList.h>
 
 #if COIN_DEBUG
@@ -95,7 +95,11 @@ SoCallbackList::removeCallback(SoCallbackListCB * f, void * userdata)
   // of course whether it should be allowed to have the same callback
   // entry in the list twice...) 20050723 kyrah.
   while (idx != -1) {
-    if ((this->funclist[idx] == (void*)f) && (this->datalist[idx] == userdata)) break;
+    if ((this->funclist[idx] == (void*)f) && (this->datalist[idx] == userdata)) {
+      this->funclist.remove(idx);
+      this->datalist.remove(idx);
+      break;
+    }
     idx--;
   }
 
@@ -105,13 +109,10 @@ SoCallbackList::removeCallback(SoCallbackListCB * f, void * userdata)
   // already exists, else do nothing"? 20050723 kyrah.
   if (idx == -1) {
     SoDebugError::post("SoCallbackList::removeCallback",
-                       "Tried to remove non-existant callback function.");
+                       "Tried to remove non-existent callback function.");
     return;
   }
 #endif // COIN_DEBUG
-
-  this->funclist.remove(idx);
-  this->datalist.remove(idx);
 }
 
 /*!

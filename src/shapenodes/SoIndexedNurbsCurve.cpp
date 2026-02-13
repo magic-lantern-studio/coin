@@ -33,7 +33,8 @@
 /*!
   \class SoIndexedNurbsCurve SoIndexedNurbsCurve.h Inventor/nodes/SoIndexedNurbsCurve.h
   \brief The SoIndexedNurbsCurve class is a node for representing smooth curves.
-  \ingroup nodes
+
+  \ingroup coin_nodes
 
   Explaining NURBS is beyond the scope of this documentation. If you
   are unfamiliar with the principles of representing smooth curves and
@@ -154,7 +155,9 @@ SoIndexedNurbsCurve::~SoIndexedNurbsCurve()
   delete PRIVATE(this);
 }
 
-// doc from parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoIndexedNurbsCurve::initClass(void)
 {

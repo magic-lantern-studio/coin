@@ -30,17 +30,18 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-/*!
-  \class SbBool SbBasic.h Inventor/SbBasic.h
-  \brief SbBool is a compiler portable boolean type.
-  \ingroup base
-
-  SbBool is meant to be a "compiler portable" way of defining a
-  boolean type, since there are older compilers out there which don't
-  support the ISO-standard C++ \c bool keyword.
-
-  SbBool is not really a class, just a \c typedef.
-*/
+/// * !
+//  \typedef int SbBool
+//  \brief SbBool is a compiler portable boolean type.
+//
+//  \ingroup coin_base
+//
+//  SbBool is meant to be a "compiler portable" way of defining a
+//  boolean type, since there are older compilers out there which don't
+//  support the ISO-standard C++ \c bool keyword.
+//
+//  SbBool is not really a class, just a \c typedef.
+// * / 
 
 
 /* *********************************************************************** */
@@ -48,7 +49,8 @@
 /*!
   \class SoDB SoDB.h Inventor/SoDB.h
   \brief The SoDB class keeps track of internal global data.
-  \ingroup general
+
+  \ingroup coin_general
 
   This class collects various methods for initializing, setting and
   accessing common global data from the Coin library.
@@ -60,17 +62,16 @@
   any of the other Coin classes.
 */
 
-/*! \file SoDB.h */
 #include <Inventor/SoDB.h>
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif // HAVE_CONFIG_H
 
-#include <stdlib.h>
-#include <assert.h>
-#include <string.h>
-#include <stdarg.h>
+#include <cstdlib>
+#include <cassert>
+#include <cstring>
+#include <cstdarg>
 
 #ifdef HAVE_UNISTD_H
 #include <unistd.h> // fd_set (?)
@@ -107,7 +108,7 @@
 #include <Inventor/annex/ForeignFiles/SoForeignFileKit.h>
 #endif // HAVE_NODEKITS
 
-#include "coindefs.h" // COIN_STUB()
+#include "coindefs.h" // COIN_STUB(), COIN_INIT_CHECK_THREAD()
 #include "shaders/SoShader.h"
 #include "tidbitsp.h"
 #include "fields/SoGlobalField.h"
@@ -145,7 +146,6 @@
 
 #include <Inventor/annex/Profiler/SoProfiler.h>
 #include <Inventor/annex/Profiler/elements/SoProfilerElement.h>
-#include <Inventor/annex/Profiler/Nodekits/SoNodeVisualize.h>
 #include "profiler/SoProfilerP.h"
 
 // *************************************************************************
@@ -157,12 +157,14 @@ const char * SoDBP::EnvVars::COIN_PROFILER = "COIN_PROFILER";
 const char * SoDBP::EnvVars::COIN_PROFILER_OVERLAY = "COIN_PROFILER_OVERLAY";
 #endif // DOXYGEN_SKIP_THIS
 
-/*!*************************************************************************
+// *************************************************************************
+
+/*!
   \typedef void SoDBHeaderCB(void * data, SoInput * input)
 
-  The type definition for the both pre and post callback functions that may be
+  The type definition for the pre and post callback functions that may be
   specified for user defined headers. Note that for all internally defined headers
-  no callback functions are used.
+  callback functions are not used.
 */
 
 // *************************************************************************
@@ -179,7 +181,7 @@ static void cleanup_func(void)
 
 // *************************************************************************
 
-// For sanity checking that our static variables in Coin has had a
+// For sanity checking that our static variables in Coin have had a
 // chance to init themselves before the invocation of SoDB::init().
 //
 // At least under Windows, it is possible to force the compiler /
@@ -190,7 +192,7 @@ static void cleanup_func(void)
 
 // FIXME: this is probably not initialized upon system start, but
 // rather placed static in a thunk in the DLL/.so. Needs to fetch a
-// value that can not have been compiled in. 20050506 mortene.
+// value that cannot have been compiled in. 20050506 mortene.
 
 static uint32_t a_static_variable = 0xdeadbeef;
 
@@ -204,13 +206,15 @@ static uint32_t a_static_variable = 0xdeadbeef;
 void
 SoDB::init(void)
 {
+  COIN_INIT_CHECK_THREAD();
+
   // This is to catch the (unlikely) event that the C++ compiler adds
   // padding or rtti information to the SbVec3f (or similar) base classes.
   // We assume this isn't done several places in Coin, so the best thing to
   // do is just to assert here.
   assert(sizeof(SbVec3f) == 3*sizeof(float));
 
-  // Sanity check that our static variables in Coin has had a chance
+  // Sanity check that our static variables in Coin have had a chance
   // to init themselves before the first invocation of this function
   // happens. See above documentation on the variable for more
   // information.
@@ -287,7 +291,7 @@ SoDB::init(void)
 
   // Sanity check: if this breaks, the binary format import and export
   // routines will not work correctly. FIXME: the code should be fixed
-  // to use the int16_t type, then we can remove this stoopid check.
+  // to use the int16_t type, then we can remove this stupid check.
   assert(sizeof(short) == 2);
 
   if (sizeof(short) != 2) {
@@ -296,7 +300,7 @@ SoDB::init(void)
                               "(Coin not tested on this platform)");
   }
 
-  // Sanity check: if the int type is unequal to the long type, things
+  // Sanity check: if the int type is not equal to the long type, things
   // could break -- but probably not.
   assert(sizeof(int) == sizeof(long));
 
@@ -368,7 +372,7 @@ SoDB::init(void)
                        NULL, NULL, NULL);
 
   // FIXME: this is really only valid if the HAVE_VRML97 define is in
-  // place. If it's not, we should register the header in a way so
+  // place. If it is not, we should register the header in a way so
   // that we spit out a /specific/ warning about why VRML97 is not
   // supported in the configuration of the compiled libCoin. 20020808 mortene.
   SoDB::registerHeader(SbString("#VRML V2.0 utf8"), FALSE, 2.1f,
@@ -485,10 +489,6 @@ SoDB::init(void)
   SoProfilerP::parseCoinProfilerVariable();
   if (SoProfiler::isEnabled()) {
     SoProfiler::init();
-  } else {
-	// If the profiler is not enabled the textures static variable in the
-	// SoNodeVisualize causes a memory leak, as the static clean up is not called
-    cc_coin_atexit(SoNodeVisualize::cleanClass);
   }
 
   // Debugging for memory leaks will be easier if we can clean up the
@@ -500,9 +500,9 @@ SoDB::init(void)
 
 /*!
   Invoke this method as the last call of the application code, to
-  trigger a clean-up of all static resources used by the Coin library.
+  trigger a cleanup of all static resources used by the Coin library.
 
-  This is usually not necessary for stand-alone executable
+  This is usually not necessary for standalone executable
   applications, as the operating system will take care of cleaning up
   after the process as it exits.
 
@@ -672,7 +672,7 @@ SoDB::read(SoInput * in, SoNode *& rootnode)
   relationships, as usual.
 
   The common layout for how to load, work with and then finally
-  destruct and return memory resources of scenegraphs usually goes
+  destruct and return memory resources of scene graphs usually goes
   like this:
 
   \code
@@ -693,10 +693,10 @@ SoDB::read(SoInput * in, SoNode *& rootnode)
   // Bring ref-count of root-node back to zero to cause the
   // destruction of the scene.
   root->unref();
-  // (Upon self-destructing, the root-node will also de-reference
-  // it's children nodes, so they also self-destruct, and so on
-  // recursively down the scenegraph hierarchy until the complete
-  // scenegraph has self-destructed and thereby returned all
+  // (Upon self-destructing, the root-node will also dereference
+  // its children nodes, so they also self-destruct, and so on
+  // recursively down the scene graph hierarchy until the complete
+  // scene graph has self-destructed and thereby returned all
   // memory resources it was using.)
   \endcode
 
@@ -789,7 +789,7 @@ SoDB::isValidHeader(const char * teststring)
   Callbacks \a precallback and \a postcallback will be called before
   and after importing the custom format.
 
-  If \a headerstring can not be accepted as a valid file format header
+  If \a headerstring cannot be accepted as a valid file format header
   for Coin files, \c FALSE will be returned. A valid header \e must
   start with a '#' character, and not be more than 80 characters long.
 
@@ -946,7 +946,7 @@ SoDB::createGlobalField(const SbName & name, SoType type)
 #if COIN_DEBUG
   if (!type.canCreateInstance()) {
     SoDebugError::postWarning("SoDB::createGlobalField",
-                              "Can't create instance of field type ``%s''.",
+                              "Can't create instance of field type \"%s\".",
                               type.getName().getString());
     return NULL;
   }
@@ -1143,8 +1143,8 @@ SoDB::addConverter(SoType from, SoType to, SoType converter)
   if (!nonexist) {
 #if COIN_DEBUG
     SoDebugError::postWarning("SoDB::addConverter",
-                              "Conversion from ``%s'' to ``%s'' is already "
-                              "handled by instances of ``%s''",
+                              "Conversion from \"%s\" to \"%s\" is already "
+                              "handled by instances of \"%s\"",
                               from.getName().getString(),
                               to.getName().getString(),
                               converter.getName().getString());
@@ -1222,9 +1222,9 @@ SoDB::endNotify(void)
 }
 
 /*!
-  Turn on or off the realtime sensor.
+  Turn on or off the real time sensor.
 
-  The most common use for turning the realtime sensor off is to
+  The most common use for turning the real time sensor off is to
   control the realTime global field from the user application. This is
   for instance handy when you want to take screen snapshots at fixed
   intervals. See the class documentation of SoOffscreenRenderer for
@@ -1250,11 +1250,12 @@ SoDB::enableRealTimeSensor(SbBool on)
 }
 
 // private wrapper for readAll() and readAllVRML()
-SoNode *
+SoGroup *
 SoDB::readAllWrapper(SoInput * in, const SoType & grouptype)
 {
   assert(SoDB::isInitialized() && "you forgot to initialize the Coin library");
   assert(grouptype.canCreateInstance());
+  assert(grouptype.isDerivedFrom(SoGroup::getClassTypeId()));
 
   SbBool valid = in->isValidFile();
 
@@ -1296,7 +1297,6 @@ SoDB::readAllWrapper(SoInput * in, const SoType & grouptype)
     return NULL;
   }
 
-  assert(grouptype.isDerivedFrom(SoGroup::getClassTypeId()));
   const int stackdepth = in->filestack.getLength();
 
   SoGroup * root = (SoGroup *)grouptype.createInstance();
@@ -1324,7 +1324,7 @@ SoDB::readAllWrapper(SoInput * in, const SoType & grouptype)
     while (!in->eof() && in->read(dummy)) {
       if (readallerrors_termination < 1) {
         buf[0] = dummy;
-        SoReadError::post(in, "Erroneous character(s) after end of scenegraph: \"%s\". "
+        SoReadError::post(in, "Erroneous character(s) after end of scene graph: \"%s\". "
                           "This message will only be shown once for this file, "
                           "but more errors might be present", dummy != '\0' ? buf : "\\0");
       }
@@ -1487,7 +1487,7 @@ SoDB::isMultiThread(void)
   SoDB::readunlock(). If you fail to do this, you might experience
   that your application locks up.
 
-  All Coin actions has a read-lock on the global SoDB mutex while
+  All Coin actions have a read-lock on the global SoDB mutex while
   traversing the scene graph.
 
   \sa SoDB::readunlock(), SoDB::writelock()
@@ -1678,7 +1678,7 @@ SoDB::createRoute(SoNode * fromnode, const char * eventout,
 #if COIN_DEBUG
         SoDebugError::postWarning("SoDB::createRoute",
                                   "Tried to connect a ROUTE between entities "
-                                  "that can not be connected (due to lack of "
+                                  "that cannot be connected (due to lack of "
                                   "field type converter): %s.%s is of type "
                                   "%s, and %s.%s is of type %s",
                                   fromnodename.getString(), fromfieldname.getString(),
@@ -1749,7 +1749,7 @@ SoDB::removeRoute(SoNode * fromnode, const char * eventout,
     else to->disconnect(output);
   }
 #if COIN_DEBUG
-  else { // some error occured
+  else { // some error occurred
     SoDebugError::postWarning("SoDB::removeRoute",
                               "Unable to remove route: %s.%s TO %s.%s",
                               fromnodename.getString(), eventout,
@@ -1772,7 +1772,6 @@ SoDB::removeRoute(SoNode * fromnode, const char * eventout,
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoRotationXYZ.h>
-#include <boost/detail/workaround.hpp>
 
 BOOST_AUTO_TEST_CASE(globalRealTimeField)
 {
@@ -1797,12 +1796,13 @@ readErrorHandler(const SoError * error, void * data)
 {
 }
 
+#ifdef HAVE_VRML97
 BOOST_AUTO_TEST_CASE(readChildList)
 {
   static const char scene[] = "#VRML V2.0 utf8\n"
                               "DEF TestGroup Group { children [Group{}, Group{}, Group{}] }";
   SoInput in;
-  in.setBuffer((void *) scene, strlen(scene));
+  in.setBuffer(scene, strlen(scene));
   SoSeparator * root = SoDB::readAll(&in);
   BOOST_REQUIRE(root);
   root->ref();
@@ -1813,6 +1813,7 @@ BOOST_AUTO_TEST_CASE(readChildList)
   }
   root->unref();
 }
+#endif
 
 BOOST_AUTO_TEST_CASE(readEmptyChildList)
 {
@@ -1824,7 +1825,7 @@ BOOST_AUTO_TEST_CASE(readEmptyChildList)
   static const char scene[] = "#VRML V2.0 utf8\n"
                               "DEF TestGroup Group { children }";
   SoInput in;
-  in.setBuffer((void *) scene, strlen(scene));
+  in.setBuffer(scene, strlen(scene));
   SoSeparator * root = SoDB::readAll(&in);
   if (root) {
     SoGroup * group = (SoGroup *) SoNode::getByName("TestGroup");
@@ -1846,7 +1847,7 @@ BOOST_AUTO_TEST_CASE(readNullChildList)
                               "PROTO Object [ field MFNode testChildren NULL ] { }\n"
                               "DEF TestObject Object { }";
   SoInput in;
-  in.setBuffer((void *) scene, strlen(scene));
+  in.setBuffer(scene, strlen(scene));
   SoSeparator * root = SoDB::readAll(&in);
   if (root) {
     SoNode * object = (SoNode *) SoNode::getByName("TestObject");
@@ -1868,7 +1869,7 @@ BOOST_AUTO_TEST_CASE(readInvalidChildList)
   static const char scene[] = "#VRML V2.0 utf8\n"
                               "Group { children[0] }";
   SoInput in;
-  in.setBuffer((void *) scene, strlen(scene));
+  in.setBuffer(scene, strlen(scene));
   SoSeparator * root = SoDB::readAll(&in);
   BOOST_CHECK_MESSAGE(root == NULL, "Expected the import to fail");
 
@@ -1885,7 +1886,7 @@ BOOST_AUTO_TEST_CASE(testAlternateRepNull)
   static const char scene[] = "#Inventor V2.1 ascii\n"
                               "ExtensionNode { fields [ SFNode alternateRep ] }";
   SoInput in;
-  in.setBuffer((void *) scene, strlen(scene));
+  in.setBuffer(scene, strlen(scene));
   SoSeparator * root = SoDB::readAll(&in);
   BOOST_CHECK_MESSAGE(root, "Import should succeed");
   root->ref();

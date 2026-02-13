@@ -160,7 +160,7 @@ namespace {
 
     if (!GLUWrapper()->versionMatchesAtLeast(1, 3, 0)) {
       // GLU < 1.3 does not support view-independent error metrics
-      // for tesselation accuracy. => Fall back to pixel-based metric.
+      // for tessellation accuracy. => Fall back to pixel-based metric.
 
       // Settings chosen by visual inspection of same sample curves and
       // surfaces, and comparison with the result of using the object-
@@ -262,7 +262,8 @@ namespace {
           if (sogl_nurbs_debugging() && first) {
             first = FALSE;
             SoDebugError::postInfo("sogl_set_nurbs_complexity",
-                                   "sampling method = GLU_OBJECT PARAMETRIC_ERROR,"                                " GLU_PARAMETRIC_TOLERANCE = %.4f",
+                                   "sampling method = GLU_OBJECT PARAMETRIC_ERROR,"
+                                   " GLU_PARAMETRIC_TOLERANCE = %.4f",
                                    complexity);
           }
 
@@ -298,7 +299,7 @@ namespace {
           else if ( complexity < 0.80 ) tolerance = .5;
           else if ( complexity < 0.90 ) tolerance = .25;
           else                          tolerance = .125;
-	
+
           static SbBool first = TRUE;
           if (sogl_nurbs_debugging() && first) {
             first = FALSE;
@@ -317,18 +318,18 @@ namespace {
         }
       case SoComplexityTypeElement::OBJECT_SPACE:
         {
-		// Find the number of steps required for object space tessellation.
-		//
-		int srfSteps;
-		if      ( complexity < 0.10 ) srfSteps = 2;
-		else if ( complexity < 0.25 ) srfSteps = 3;
-		else if ( complexity < 0.40 ) srfSteps = 4;
-		else if ( complexity < 0.55 ) srfSteps = 5;
-		else                          srfSteps = (int)(pow(complexity, 3.32f)*28) + 2;
-	
-		int crvSteps;
-		if ( complexity < 0.5 ) crvSteps = (int)(18*complexity) + 1;
-		else                    crvSteps = (int)(380*complexity) - 180;
+          // Find the number of steps required for object space tessellation.
+          //
+          int srfSteps;
+          if      ( complexity < 0.10 ) srfSteps = 2;
+          else if ( complexity < 0.25 ) srfSteps = 3;
+          else if ( complexity < 0.40 ) srfSteps = 4;
+          else if ( complexity < 0.55 ) srfSteps = 5;
+          else                          srfSteps = (int)(pow(complexity, 3.32f)*28) + 2;
+
+          int crvSteps;
+          if ( complexity < 0.5 ) crvSteps = (int)(18*complexity) + 1;
+          else                    crvSteps = (int)(380*complexity) - 180;
 
           static int reducelinearnurbssteps = -1;
           if (reducelinearnurbssteps == -1) {
@@ -354,10 +355,10 @@ namespace {
             nvsteps = nusteps = uIsClosed ? srfSteps*4-1 : (numuctrlpts < 4 ? 1 : numuctrlpts - 3)*crvSteps;
 
           nusteps = int(nusteps/uSpan);
-		  if ( numvctrlpts )
-		    nvsteps = int(nvsteps/vSpan);
-		  else
-		    nvsteps = nusteps;
+          if ( numvctrlpts )
+            nvsteps = int(nvsteps/vSpan);
+          else
+            nvsteps = nusteps;
 
           static SbBool first = TRUE;
           if (sogl_nurbs_debugging() && first) {
@@ -631,13 +632,13 @@ namespace {
   /// Evaluate the derivatives of degree d and below at (u,v).
   void nurbs::RationalSurfaceDerivsH(const float u, const float v, const int d, SbVec4f** skl) {
     int du = SbMin( d, udegree );
-    // Initalize the requested derivatives greater than the degree in u.
+    // Initialize the requested derivatives greater than the degree in u.
     for ( int k = uorder; k <= d; k++ )
       for ( int l = 0; l <= d - k; l++ )
         skl[k][l] = SbVec4f(0.0f, 0.0f, 0.0f, 1.0f);
 
     int dv = SbMin( d, vdegree );
-    // Initalize the requested derivatives greater than the degree in v.
+    // Initialize the requested derivatives greater than the degree in v.
     for ( int l = vorder; l <= d; l++ )
       for ( int k = 0; k <= d - l; k++ )
         skl[k][l] = SbVec4f(0.0f, 0.0f, 0.0f, 1.0f);
@@ -688,17 +689,17 @@ namespace {
 
     for ( int k = 0; k <= d; k++ ) {
       for ( int l = 0; l <= d-k; l++ ) {
-        SbVec3f v(ders[k][l][0], ders[k][l][1], ders[k][l][2]);
+        SbVec3f v1(ders[k][l][0], ders[k][l][1], ders[k][l][2]);
         for ( int j = 1; j <= l; j++ )
-          v = v - Bin[l][j]*ders[0][j][3]*skl[k][l-j];
+          v1 = v1 - Bin[l][j]*ders[0][j][3]*skl[k][l-j];
         for ( int i = 1; i <= k; i++ ) {
           SbVec3f v2(0.0f, 0.0f, 0.0f);
-          v = v - Bin[k][i]*ders[i][0][3]*skl[k-i][l];
+          v1 = v1 - Bin[k][i]*ders[i][0][3]*skl[k-i][l];
           for ( int j = 1; j <= l; j++ )
             v2 = v2 + Bin[l][j]*ders[i][j][3]*skl[k-i][l-j];
-          v = v - Bin[k][i]*v2;
+          v1 = v1 - Bin[k][i]*v2;
         }
-        skl[k][l] = v/ders[0][0][3];
+        skl[k][l] = v1/ders[0][0][3];
         //char buffer[1024];
         //sprintf(buffer, "skl[%d][%d]: %g %g %g\tpv: %g %g %g\n", k, l, skl[k][l][0], skl[k][l][1], skl[k][l][2], pv[0], pv[1], pv[2]);
         //OutputDebugString(buffer);

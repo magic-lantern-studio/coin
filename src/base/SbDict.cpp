@@ -33,7 +33,8 @@
 /*!
   \class SbDict SbDict.h Inventor/SbDict.h
   \brief The SbDict class organizes a dictionary of keys and values.
-  \ingroup base
+
+  \ingroup coin_base
 
   It uses hashing to quickly insert and find entries in the dictionary.
   An entry consists of an unique key and a generic pointer.
@@ -67,7 +68,6 @@
 // *************************************************************************
 
 #define COIN_ALLOW_SBDICT
-/*! \file SbDict.h */
 #include <Inventor/SbDict.h>
 #undef COIN_ALLOW_SBDICT
 
@@ -158,7 +158,7 @@ SbDict::clear(void)
   Inserts a new entry into the dictionary. \a key should be
   a unique number, and \a value is the generic user data.
 
-  \e If \a key does not exist in the dictionary, a new entry
+  If \a key does not exist in the dictionary, a new entry
   is created and \c TRUE is returned. Otherwise, the generic user
   data is changed to \a value, and \c FALSE is returned.
 */

@@ -33,7 +33,8 @@
 /*!
   \class SoShuttle SoShuttle.h Inventor/nodes/SoShuttle.h
   \brief The SoShuttle class is used to oscillate between two translations.
-  \ingroup nodes
+
+  \ingroup coin_nodes
 
   A smooth transition between translation0 and translation1 is created
   using a cosine function. In the beginning of the cycle, translation0
@@ -84,7 +85,7 @@
 */
 /*!
   \var SoSFBool SoShuttle::on
-  Toggles animation on or off. Defauls to \c TRUE.
+  Toggles animation on or off. Defaults to \c TRUE.
 */
 
 // *************************************************************************
@@ -133,7 +134,9 @@ SoShuttle::~SoShuttle()
   this->timer->unref();
 }
 
-// doc in parent
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoShuttle::initClass(void)
 {
@@ -155,7 +158,7 @@ SoShuttle::write(SoWriteAction * action)
 
   inherited::write(action);
 
-  // Reenable all connections to/from internal engine. (Only done at
+  // Re-enable all connections to/from internal engine. (Only done at
   // last pass.)
   if (out->getStage() == SoOutput::WRITE)
     this->reconnectInternalEngines();
@@ -175,7 +178,7 @@ SoShuttle::copy(SbBool copyconnections) const
 
   SoShuttle * cp = (SoShuttle *)inherited::copy(copyconnections);
 
-  // Reenable all connections to/from internal engines.
+  // Re-enable all connections to/from internal engines.
   ((SoShuttle *)this)->reconnectInternalEngines();
 
   return cp;
@@ -197,7 +200,7 @@ SoShuttle::deconnectInternalEngines(void)
 }
 
 
-// Reenable all connections to/from internal engines.
+// Re-enable all connections to/from internal engines.
 void
 SoShuttle::reconnectInternalEngines(void)
 {

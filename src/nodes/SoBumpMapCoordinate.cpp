@@ -33,7 +33,8 @@
 /*!
   \class SoBumpMapCoordinate SoBumpMapCoordinate.h Inventor/nodes/SoBumpMapCoordinate.h
   \brief The SoBumpMapCoordinate class is a node for providing bump map coordinates to shape nodes.
-  \ingroup nodes
+
+  \ingroup coin_nodes
 
   When encountering nodes of this type during traversal, the
   coordinates it contains will be put on the state stack for later use
@@ -102,7 +103,9 @@ SoBumpMapCoordinate::~SoBumpMapCoordinate()
 {
 }
 
-// Doc from superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoBumpMapCoordinate::initClass(void)
 {

@@ -34,10 +34,10 @@
   \class SoShaderObject SoShaderObject.h Inventor/nodes/SoShaderObject.h
   \brief The SoShaderObject class is the superclass for all shader classes in Coin.
 
-  See \link coin_shaders Shaders in Coin \endlink for more information
+  See \ref coin_shaders_page "Shaders in Coin" for more information
   on how to set up a scene graph with shaders.
 
-  \ingroup shaders
+  \ingroup coin_shaders
 
   \sa SoShaderProgram
 */
@@ -104,7 +104,7 @@
 
 #include <Inventor/nodes/SoShaderObject.h>
 
-#include <assert.h>
+#include <cassert>
 
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoSearchAction.h>
@@ -139,6 +139,7 @@ public:
   ~SoShaderObjectP();
 
   void GLRender(SoGLRenderAction *action);
+  void render(SoState * state);
 
   SoGLShaderObject * getGLShaderObject(const uint32_t cachecontext) {
     SoGLShaderObject * obj = NULL;
@@ -233,7 +234,9 @@ SO_NODE_ABSTRACT_SOURCE(SoShaderObject);
 
 // *************************************************************************
 
-// doc from parent
+/*!
+  \copybrief SoNode::initClass(void)
+*/
 void SoShaderObject::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_ABSTRACT_CLASS(SoShaderObject,
@@ -329,7 +332,7 @@ SoShaderObject::readInstance(SoInput * in, unsigned short flags)
 }
 
 /*!
-  Returns the shader type detected in sourceProgram.
+  Returns the shader type detected in source program.
 */
 SoShaderObject::SourceType
 SoShaderObject::getSourceType(void) const
@@ -346,7 +349,7 @@ SbString SoShaderObject::getSourceProgram(void) const
 }
 
 /*!
-  Used internally to update shader paramters.
+  Used internally to update shader parameters.
 */
 void
 SoShaderObject::updateParameters(SoState * state)
@@ -389,14 +392,18 @@ SoShaderObjectP::~SoShaderObjectP()
 void
 SoShaderObjectP::GLRender(SoGLRenderAction * action)
 {
-  SbBool isactive = this->owner->isActive.getValue();
-  if (!isactive) return;
+  this->render(action ? action->getState() : NULL);
+}
 
-  SoState * state = action->getState();
+void
+SoShaderObjectP::render(SoState * state)
+{
+  SbBool isactive = this->owner->isActive.getValue();
+  if (!isactive || !state) return;
 
   SoGLShaderProgram * shaderProgram = SoGLShaderProgramElement::get(state);
   if (!shaderProgram) {
-    SoDebugError::postWarning("SoShaderObject::GLRender",
+    SoDebugError::postWarning("SoShaderObject::render",
                               "SoShaderObject seems to not be under a SoShaderProgram node");
     return;
   }
@@ -426,20 +433,20 @@ SoShaderObjectP::GLRender(SoGLRenderAction * action)
       case SoShaderObject::GLSL_PROGRAM: s = "GLSL_PROGRAM"; break;
       default: assert(FALSE && "unknown shader");
       }
-      SoDebugError::postWarning("SoShaderObjectP::GLRender",
+      SoDebugError::postWarning("SoShaderObjectP::render",
                                 "%s is not supported", s.getString());
       return;
     }
 
     switch (this->cachedSourceType) {
     case SoShaderObject::ARB_PROGRAM:
-      shaderobject = (SoGLShaderObject *)new SoGLARBShaderObject(cachecontext);
+      shaderobject = new SoGLARBShaderObject(cachecontext);
       break;
     case SoShaderObject::CG_PROGRAM:
-      shaderobject = (SoGLShaderObject*) new SoGLCgShaderObject(cachecontext);
+      shaderobject = new SoGLCgShaderObject(cachecontext);
       break;
     case SoShaderObject::GLSL_PROGRAM:
-      shaderobject = (SoGLShaderObject*) new SoGLSLShaderObject(cachecontext);
+      shaderobject = new SoGLSLShaderObject(cachecontext);
       break;
     default:
       assert(FALSE && "This shouldn't happen!");
@@ -469,6 +476,12 @@ SoShaderObjectP::GLRender(SoGLRenderAction * action)
     shaderProgram->addShaderObject(shaderobject);
     shaderobject->setIsActive(isactive);
   }
+}
+
+void
+SoShaderObject::render(SoState * state)
+{
+  PRIVATE(this)->render(state);
 }
 
 // sets this->cachedSourceType to [ARB|CG|GLSL]_PROGRAM
@@ -520,7 +533,7 @@ SoShaderObjectP::checkType(void)
   this->cachedSourceType = SoShaderObject::FILENAME;
 }
 
-// read the file if neccessary and assign content to this->cachedSourceProgram
+// read the file if necessary and assign content to this->cachedSourceProgram
 void
 SoShaderObjectP::readSource(void)
 {
@@ -713,7 +726,7 @@ SoShaderObjectP::updateAllParameters(const uint32_t cachecontext)
   shaderobject->setParametersDirty(FALSE);
 }
 
-// Update state matrix paramaters
+// Update state matrix parameters
 void
 SoShaderObjectP::updateStateMatrixParameters(const uint32_t cachecontext, SoState *state)
 {

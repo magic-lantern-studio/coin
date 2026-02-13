@@ -34,7 +34,8 @@
   \class SbBox3s SbBox3s.h Inventor/SbBox3s.h
   \brief The SbBox3s class is a 3 dimensional box with short
   integer coordinates.
-  \ingroup base
+
+  \ingroup coin_base
 
   This box class is used by other classes in Coin for data
   exchange. It provides storage for two box corners with short integer
@@ -80,6 +81,30 @@
 
   The coordinates of \a min should be less than the coordinates of
   \a max if you want to make a valid box.
+*/
+
+/*!
+  \fn SbBox3s::SbBox3s(const SbBox3i32 & box)
+
+  Constructs an SbBox3s instance from the value in an SbBox3i32 instance.
+
+  \since Coin 2.5
+*/
+
+/*!
+  \fn SbBox3s::SbBox3s(const SbBox3f & box)
+
+  Constructs an SbBox3s instance from the value in an SbBox3f instance.
+
+  \since Coin 2.5
+*/
+
+/*!
+  \fn SbBox3s::SbBox3s(const SbBox3d & box)
+
+  Constructs an SbBox3s instance from the value in an SbBox3d instance.
+
+  \since Coin 2.5
 */
 
 /*!
@@ -182,6 +207,14 @@ SbBox3s::makeEmpty(void)
 }
 
 /*!
+  \fn SbBool SbBox3s::isEmpty(void) const
+
+  Check if this has been marked as an empty box.
+
+  \sa makeEmpty().
+*/
+
+/*!
   \fn const SbVec3s & SbBox3s::getMin(void) const
 
   Returns the minimum point. This should usually be the lower left corner
@@ -197,6 +230,24 @@ SbBox3s::makeEmpty(void)
   point of the box.
 
   \sa getMin().
+*/
+
+/*!
+  \fn SbVec3s & SbBox3s::getMin(void)
+
+  Returns a modifiable reference to the minimum point.
+*/
+
+/*!
+  \fn SbVec3s & SbBox3s::getMax(void)
+
+  Returns a modifiable reference to the maximum point.
+*/
+
+/*!
+  \fn SbVec3s SbBox3s::getCenter(void) const
+
+  Returns the center point of the box.
 */
 
 /*!
@@ -243,7 +294,7 @@ SbBox3s::intersect(const SbVec3s & point) const
 }
 
 /*!
-  Check if \a box lies wholly or partly within the boundaries
+  Check if \a box lies entirely or partially within the boundaries
   of this box.
  */
 SbBool
@@ -259,33 +310,64 @@ SbBox3s::intersect(const SbBox3s & box) const
 }
 
 /*!
+  Return the point on the box closest to the given \a point.
+  If the given point equals the center, the center point of
+  the positive Z face is returned.
 */
-
 SbVec3f
-SbBox3s::getClosestPoint(const SbVec3f & pt) const
+SbBox3s::getClosestPoint(const SbVec3f & point) const
 {
-  SbVec3f closest = pt;
+  if (isEmpty()) return point;
 
-  SbVec3f center = this->getCenter();
-  float devx = closest[0] - center[0];
-  float devy = closest[1] - center[1];
-  float devz = closest[2] - center[2];
   float halfwidth = float(this->maxpt[0] - this->minpt[0]) / 2.0f;
   float halfheight = float(this->maxpt[1] - this->minpt[1]) / 2.0f;
   float halfdepth = float(this->maxpt[2] - this->minpt[2]) / 2.0f;
 
-  // Move point to be on the nearest plane of the box.
-  if ((fabs(devx) > fabs(devy)) && (fabs(devx) > fabs(devz)))
-    closest[0] = center[0] + halfwidth * ((devx < 0.0f) ? -1.0f : 1.0f);
-  else if (fabs(devy) > fabs(devz))
-    closest[1] = center[1] + halfheight * ((devy < 0.0f) ? -1.0f : 1.0f);
-  else
-    closest[2] = center[2] + halfdepth * ((devz < 0.0f) ? -1.0f : 1.0f);
+  SbVec3f center = this->getCenter();
+  if (point == center)
+    return SbVec3f(halfwidth, halfheight, float(this->maxpt[2]));
 
-  // Clamp to be inside box.
-  closest[0] = SbMin(SbMax(closest[0], float(minpt[0])), float(maxpt[0]));
-  closest[1] = SbMin(SbMax(closest[1], float(minpt[1])), float(maxpt[1]));
-  closest[2] = SbMin(SbMax(closest[2], float(minpt[2])), float(maxpt[2]));
+  SbVec3f vec = point - center;
+
+  SbVec3f absvec;
+  absvec[0] = float(halfwidth > 0.0f ? fabs(vec[0] / halfwidth) : fabs(vec[0]));
+  absvec[1] = float(halfheight > 0.0f ? fabs(vec[1] / halfheight) : fabs(vec[1]));
+  absvec[2] = float(halfdepth > 0.0f ? fabs(vec[2] / halfdepth) : fabs(vec[2]));
+
+  SbVec3f closest;
+
+  // Clamp to be on box hull.
+  closest[0] = SbMin(absvec[0], 1.0f);
+  closest[1] = SbMin(absvec[1], 1.0f);
+  closest[2] = SbMin(absvec[2], 1.0f);
+
+  // Move point to be on the nearest plane of the unit box ((-1 -1 -1), (1 1 1)).
+  if ((absvec[0] > absvec[1]) && (absvec[0] > absvec[2])) // yz-plane
+    closest[0] = 1.0f;
+  else if ((absvec[1] > absvec[0]) && (absvec[1] > absvec[2])) // xz-plane
+    closest[1] = 1.0f;
+  else if ((absvec[2] > absvec[0]) && (absvec[2] > absvec[1])) // xy-plane
+    closest[2] = 1.0f;
+  else if ((absvec[0] == absvec[1]) && (absvec[0] == absvec[2])) // corner
+    closest = SbVec3f(1.0f, 1.0f, 1.0f);
+  else if (absvec[0] == absvec[1]) { // edge parallel to z-axis
+    closest[0] = 1.0f;
+    closest[1] = 1.0f;
+  }
+  else if (absvec[0] == absvec[2]) { // edge parallel to y-axis
+    closest[0] = 1.0f;
+    closest[2] = 1.0f;
+  }
+  else if (absvec[1] == absvec[2]) { // edge parallel to x-axis
+    closest[1] = 1.0f;
+    closest[2] = 1.0f;
+  }
+
+  closest[0] *= (vec[0] < 0.0f) ? -halfwidth : halfwidth;
+  closest[1] *= (vec[1] < 0.0f) ? -halfheight : halfheight;
+  closest[2] *= (vec[2] < 0.0f) ? -halfdepth : halfdepth;
+
+  closest += center;
 
   return closest;
 }
@@ -321,6 +403,14 @@ SbBox3s::getClosestPoint(const SbVec3f & pt) const
 */
 
 /*!
+  \fn SbVec3s SbBox3s::getSize(void) const
+
+  Returns width, height and depth of box as a 3D vector.
+
+  \since Coin 3.0
+*/
+
+/*!
   \fn int operator == (const SbBox3s & b1, const SbBox3s & b2)
   \relates SbBox3s
 
@@ -336,6 +426,17 @@ SbBox3s::getClosestPoint(const SbVec3f & pt) const
 
 /*!
   \fn SbBool SbBox3s::hasVolume(void) const
+
+  Check if the box has been correctly specified and by that virtue
+  has "positive" volume, i.e. all coordinates of its upper right corner
+  (the maximum point) are greater than the corresponding coordinates 
+  of its lower left corner (the minimum point).
+*/
+
+/*!
+  \fn int SbBox3s::getVolume(void) const
+
+  Returns the volume of the box.
 */
 
 #ifdef COIN_TEST_SUITE
@@ -345,11 +446,26 @@ BOOST_AUTO_TEST_CASE(checkSize) {
 
   SbVec3s diff = max - min;
 
-  
   SbBox3s box(min, max);
 
   BOOST_CHECK_MESSAGE(box.getSize() == diff,
                       "Box has incorrect size");
+}
+BOOST_AUTO_TEST_CASE(checkGetClosestPoint) {
+  SbVec3f point(1524 , 13794 , 851);
+  SbVec3s min(1557, 3308, 850);
+  SbVec3s max(3113, 30157, 1886);
 
+  SbBox3s box(min, max);
+  SbVec3f expected(1557, 13794, 851);
+
+  BOOST_CHECK_MESSAGE(box.getClosestPoint(point) == expected,
+                      "Closest point does not fit");
+
+  SbVec3s sizes = box.getSize();
+  SbVec3f expectedCenterQuery(sizes[0]/2.0f, sizes[1]/2.0f, max[2]);
+
+  BOOST_CHECK_MESSAGE(box.getClosestPoint(box.getCenter()) == expectedCenterQuery,
+                      "Closest point for center query does not fit");
 }
 #endif //COIN_TEST_SUITE

@@ -33,7 +33,8 @@
 /*!
   \class SoEnvironment SoEnvironment.h Inventor/nodes/SoEnvironment.h
   \brief The SoEnvironment class is a node for specifying global rendering parameters.
-  \ingroup nodes
+
+  \ingroup coin_nodes
 
   This node type provides the application programmer with the ability
   to set global parameters influencing lighting and fog.
@@ -107,7 +108,7 @@
   \var SoSFColor SoEnvironment::ambientColor
 
   The color of the global ambient light. Defaults to full intensity
-  white, ie <1.0, 1.0, 1.0>.
+  white, i.e. <1.0, 1.0, 1.0>.
 
   Each component of this RGB vector is multiplied with the scalar
   value of SoEnvironment::ambientIntensity.
@@ -172,7 +173,9 @@ SoEnvironment::~SoEnvironment()
 {
 }
 
-// Doc from superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoEnvironment::initClass(void)
 {

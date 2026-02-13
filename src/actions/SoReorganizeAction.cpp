@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \page vbo_rendering Vertex array and VBO rendering in Coin
+  \page coin_vbo_rendering Vertex array and VBO rendering in Coin
 
   Coin 2.5 added improved support for OpenGL vertex array and VBO
   rendering.  This might lead to major rendering performance
@@ -123,14 +123,14 @@
   these nodes haven't got index arrays, and the only bindings supported
   are PER_VERTEX and OVERALL.
 
-  If it's inconvenient to create vertex array ready scene graphs
+  If it is inconvenient to create vertex array ready scene graphs
   directly from your application, it's also possible to use
   SoReorganizeAction to reorganize the geometry before rendering.
 */
 
 /*!
-  \class SoReorganizeAction Inventor/actions/SoReorganizeAction.h
-  \ingroup actions
+  \class SoReorganizeAction SoReorganizeAction.h Inventor/actions/SoReorganizeAction.h
+  \ingroup coin_actions
   \brief The SoReorganizeAction class reorganizes your scene graph to optimize traversal/rendering.
 
   Note. This is work-in-progress. pederb, 2005-04-05.
@@ -383,7 +383,9 @@ class SoReorganizeActionP {
 
 SO_ACTION_SOURCE(SoReorganizeAction);
 
-// Override from parent class.
+/*!
+  \copydetails SoAction::initClass(void)
+*/
 void
 SoReorganizeAction::initClass(void)
 {
@@ -407,6 +409,8 @@ SoReorganizeAction::SoReorganizeAction(SoSimplifier * COIN_UNUSED_ARG(simplifier
 
 SoReorganizeAction::~SoReorganizeAction(void)
 {
+  if (PRIVATE(this)->pvcache)
+    PRIVATE(this)->pvcache->unref();
 }
 
 SoSeparator *
@@ -663,13 +667,11 @@ SoReorganizeActionP::initShape(SoCallbackAction * action)
     switch (celem->getType()) {
     case SoMultiTextureCoordinateElement::DEFAULT:
     case SoMultiTextureCoordinateElement::EXPLICIT:
+    case SoMultiTextureCoordinateElement::FUNCTION:
       this->needtexcoords[0] = TRUE;
       break;
     case SoMultiTextureCoordinateElement::TEXGEN:
       // don't need texcoords for unit0
-      break;
-    case SoMultiTextureCoordinateElement::FUNCTION:
-      this->needtexcoords[0] = TRUE;
       break;
     default:
       canrenderasvertexarray = FALSE;
@@ -692,13 +694,11 @@ SoReorganizeActionP::initShape(SoCallbackAction * action)
         switch (melem->getType(i)) {
         case SoMultiTextureCoordinateElement::DEFAULT:
         case SoMultiTextureCoordinateElement::EXPLICIT:
+        case SoMultiTextureCoordinateElement::FUNCTION:
           this->needtexcoords[i] = TRUE;
           break;
         case SoMultiTextureCoordinateElement::TEXGEN:
           // don't need texcoords for unit i
-          break;
-        case SoMultiTextureCoordinateElement::FUNCTION:
-          this->needtexcoords[i] = TRUE;
           break;
         default:
           canrenderasvertexarray = FALSE;

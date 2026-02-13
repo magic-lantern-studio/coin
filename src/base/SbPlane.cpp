@@ -33,7 +33,8 @@
 /*!
   \class SbPlane SbPlane.h Inventor/SbLinear.h
   \brief The SbPlane class represents a plane in 3D space.
-  \ingroup base
+
+  \ingroup coin_base
 
   SbPlane is used by many other classes in Coin.  It provides a way of
   representing a plane, specified by a plane normal vector and a
@@ -108,9 +109,9 @@ SbPlane::SbPlane(const SbVec3f& p0, const SbVec3f& p1, const SbVec3f& p2)
 
   // we test and warn about a null vector above
   (void) this->normal.normalize();
-  //     N·point
+  //     NÂ·point
   // d = -------, |N| == 1
-  //       |N|²
+  //       |N|Â²
 
   this->distance = this->normal.dot(p0);
 }
@@ -133,9 +134,9 @@ SbPlane::SbPlane(const SbVec3f& normalref, const SbVec3f& point)
   // we test and warn about a null vector above
   (void) this->normal.normalize();
 
-  //     N·point
+  //     NÂ·point
   // d = -------, |N| == 1
-  //       |N|²
+  //       |N|Â²
 
   this->distance = this->normal.dot(point);
 }
@@ -182,15 +183,15 @@ SbPlane::intersect(const SbLine& l, SbVec3f& intersection) const
   //
   // We can also easily see that a point must satisfy this equation to lie
   // in the plane:
-  //                    N·(Q - d*N) = 0, where N is the normal vector,
+  //                    NÂ·(Q - d*N) = 0, where N is the normal vector,
   //                                     Q is the point and d the offset
   //                                     from the origin.
   //
   // Combining these two equations and simplifying we get:
   //
-  //                          d*|N|² - N·P
+  //                          d*|N|Â² - NÂ·P
   //                    t = ----------------, |N| == 1
-  //                               N·D
+  //                               NÂ·D
   //
   // Substituting t back in (1), we've solved the problem.
   //                                                         19980816 mortene.
@@ -243,7 +244,7 @@ SbPlane::isInHalfSpace(const SbVec3f& point) const
 
 /*!
   Return the distance from \a point to plane. Positive distance means
-  the point is in the plane's half space.
+  the point is in the plane's halfspace.
 
   This method is an extension specific to Coin versus the original SGI
   Inventor API.
@@ -361,7 +362,7 @@ operator ==(const SbPlane& p1, const SbPlane& p2)
 /*!
   \relates SbPlane
 
-  Check the two given planes for unequality.
+  Check the two given planes for inequality.
 */
 int
 operator !=(const SbPlane& p1, const SbPlane& p2)
@@ -370,7 +371,7 @@ operator !=(const SbPlane& p1, const SbPlane& p2)
 }
 
 /*!
-  Dump the state of this object to the \a file stream. Only works in
+  Dump the state of this object to the \a fp file stream. Only works in
   debug version of library, method does nothing in an optimized build.
 */
 void

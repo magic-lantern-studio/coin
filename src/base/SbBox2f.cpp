@@ -34,7 +34,8 @@
   \class SbBox2f SbBox2f.h Inventor/SbBox2f.h
   \brief The SbBox2f class is a 2 dimensional box with floating
   point corner coordinates.
-  \ingroup base
+
+  \ingroup coin_base
 
   This box class is used by many other classes in Coin for data
   exchange and storage. It provides two box corners with floating
@@ -79,6 +80,30 @@
 
   The coordinates of \a min should be less than the coordinates of
   \a max if you want to make a valid box.
+*/
+
+/*!
+  \fn SbBox2f::SbBox2f(const SbBox2d & box)
+
+  Constructs an SbBox2f instance from the value in an SbBox2d instance.
+
+  \since Coin 2.5
+*/
+
+/*!
+  \fn SbBox2f::SbBox2f(const SbBox2s & box)
+
+  Constructs an SbBox2f instance from the value in an SbBox2s instance.
+
+  \since Coin 2.5
+*/
+
+/*!
+  \fn SbBox2f::SbBox2f(const SbBox2i32 & box)
+
+  Constructs an SbBox2f instance from the value in an SbBox2i32 instance.
+
+  \since Coin 2.5
 */
 
 /*!
@@ -186,8 +211,10 @@ SbBox2f::makeEmpty(void)
 /*!
   \fn SbBool SbBox2f::hasArea(void) const
 
-  Check if the box has "positive" area, i.e. the lower left corner is
-  actually lower and more to the left than the other corner point.
+  Check if the box has been correctly specified and by that virtue
+  has "positive" area, i.e. all coordinates of its upper right corner
+  (the maximum point) are greater than the corresponding coordinates 
+  of its lower left corner (the minimum point).
 */
 
 /*!
@@ -201,13 +228,21 @@ SbBox2f::makeEmpty(void)
 /*!
   \fn SbVec2f & SbBox2f::getMin(void)
 
-  Returns a modifiable reference ot the lower left corner of the box.
+  Returns a modifiable reference to the lower left corner of the box.
 
   \sa getOrigin(), getMax().
 */
 
 /*!
   \fn const SbVec2f & SbBox2f::getMax(void) const
+
+  Returns the upper right corner of the box.
+
+  \sa getMin().
+*/
+
+/*!
+  \fn SbVec2f & SbBox2f::getMax(void)
 
   Returns the upper right corner of the box.
 
@@ -261,7 +296,7 @@ SbBox2f::intersect(const SbVec2f & point) const
 }
 
 /*!
-  Check if \a box lies wholly or partly within the boundaries
+  Check if \a box lies entirely or partially within the boundaries
   of this box.
  */
 SbBool
@@ -276,27 +311,45 @@ SbBox2f::intersect(const SbBox2f & box) const
 
 /*!
   Return the point on the box closest to the given point \a p.
+  If the given point equals the center, the center point on
+  the positive X-side is returned.
  */
 SbVec2f
-SbBox2f::getClosestPoint(const SbVec2f & p) const
+SbBox2f::getClosestPoint(const SbVec2f & point) const
 {
-  SbVec2f closest = p;
+  if (isEmpty()) return point;
+
+  float halfwidth = (this->maxpt[0] - this->minpt[0]) / 2.0f;
+  float halfheight = (this->maxpt[1] - this->minpt[1]) / 2.0f;
 
   SbVec2f center = this->getCenter();
-  float devx = closest[0] - center[0];
-  float devy = closest[1] - center[1];
-  float halfwidth = (maxpt[0] - minpt[0]) / 2.0f;
-  float halfheight = (maxpt[1] - minpt[1]) / 2.0f;
+  if (point == center)
+    return SbVec2f(this->maxpt[0], halfheight);
 
-  // Move point to be on the nearest line of the box.
-  if (fabs(devx) > fabs(devy))
-    closest[0] = center[0] + halfwidth * ((devx < 0.0f) ? -1.0f : 1.0f);
-  else
-    closest[1] = center[1] + halfheight * ((devy < 0.0f) ? -1.0f : 1.0f);
+  SbVec2f vec = point - center;
 
-  // Clamp to be inside box.
-  closest[0] = SbMin(SbMax(closest[0], this->minpt[0]), this->maxpt[0]);
-  closest[1] = SbMin(SbMax(closest[1], this->minpt[1]), this->maxpt[1]);
+  SbVec2f absvec;
+  absvec[0] = float(halfwidth > 0.0f ? fabs(vec[0] / halfwidth) : fabs(vec[0]));
+  absvec[1] = float(halfheight > 0.0f ? fabs(vec[1] / halfheight) : fabs(vec[1]));
+
+  SbVec2f closest;
+
+  // Clamp to be on box hull.
+  closest[0] = SbMin(absvec[0], 1.0f);
+  closest[1] = SbMin(absvec[1], 1.0f);
+
+  // Move point to be on the nearest side of the unit box ((-1 -1), (1 1)).
+  if (absvec[0] > absvec[1]) // x-axis
+    closest[0] = 1.0f;
+  else if (absvec[1] > absvec[0]) // y-axis
+    closest[1] = 1.0f;
+  else if (absvec[0] == absvec[1]) // corner
+    closest = SbVec2f(1.0f, 1.0f);
+
+  closest[0] *= (vec[0] < 0.0f) ? -halfwidth : halfwidth;
+  closest[1] *= (vec[1] < 0.0f) ? -halfheight : halfheight;
+
+  closest += center;
 
   return closest;
 }
@@ -332,6 +385,14 @@ SbBox2f::getClosestPoint(const SbVec2f & p) const
 */
 
 /*!
+  \fn SbVec2f SbBox2f::getSize(void) const
+
+  Returns width and height of box as a 2D vector.
+
+  \since Coin 3.0
+*/
+
+/*!
   \fn float SbBox2f::getAspectRatio(void) const
 
   Returns aspect ratio of box, which is defined as box width divided on
@@ -359,11 +420,26 @@ BOOST_AUTO_TEST_CASE(checkSize) {
 
   SbVec2f diff = max - min;
 
-  
   SbBox2f box(min, max);
 
   BOOST_CHECK_MESSAGE(box.getSize() == diff,
                       "Box has incorrect size");
+}
+BOOST_AUTO_TEST_CASE(checkGetClosestPoint) {
+  SbVec2f point(1524, 13794);
+  SbVec2f min(1557, 3308);
+  SbVec2f max(3113, 30157);
 
+  SbBox2f box(min, max);
+  SbVec2f expected(1557, 13794);
+
+  BOOST_CHECK_MESSAGE(box.getClosestPoint(point) == expected,
+                      "Closest point does not fit");
+
+  SbVec2f sizes = box.getSize();
+  SbVec2f expectedCenterQuery(max[0], sizes[1] / 2.0f);
+
+  BOOST_CHECK_MESSAGE(box.getClosestPoint(box.getCenter()) == expectedCenterQuery,
+                      "Closest point for center query does not fit");
 }
 #endif //COIN_TEST_SUITE

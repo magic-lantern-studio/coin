@@ -30,6 +30,13 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
+/*!
+  \class SoProfilerTopKit SoProfilerTopKit.h Inventor/annex/Profiler/nodekits/SoProfilerTopKit.h
+  \brief The SoProfilerTopKit element class is yet to be documented.
+
+  \ingroup coin_profiler
+*/
+
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif // HAVE_CONFIG_H
@@ -39,11 +46,10 @@
 #include <Inventor/annex/Profiler/nodekits/SoProfilerTopKit.h>
 #include "coindefs.h"
 
-#include <boost/intrusive_ptr.hpp>
-
 #include <Inventor/annex/Profiler/engines/SoProfilerTopEngine.h>
 #include <Inventor/annex/Profiler/nodes/SoProfilerStats.h>
 #include <Inventor/annex/Profiler/nodekits/SoScrollingGraphKit.h>
+#include <Inventor/misc/SoRefPtr.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoTranslation.h>
 #include <Inventor/nodes/SoBaseColor.h>
@@ -72,8 +78,8 @@ public:
   void detachFromStats();
   void attachToStats();
 
-  boost::intrusive_ptr<SoCalculator> geometryEngine;
-  boost::intrusive_ptr<SoProfilerTopEngine> topListEngine;
+  SoRefPtr<SoCalculator> geometryEngine;
+  SoRefPtr<SoProfilerTopEngine> topListEngine;
   SoProfilerStats * last_stats;
   SoFieldSensor * stats_sensor;
 };
@@ -159,10 +165,10 @@ SoProfilerTopKit::SoProfilerTopKit(void)
 
   SO_KIT_INIT_INSTANCE();
 
-  PRIVATE(this)->topListEngine = new SoProfilerTopEngine;
+  PRIVATE(this)->topListEngine.reset(new SoProfilerTopEngine);
   PRIVATE(this)->topListEngine->decay.setValue(0.99f);
 
-  PRIVATE(this)->geometryEngine = new SoCalculator;
+  PRIVATE(this)->geometryEngine.reset(new SoCalculator);
 
   const char * expr[] = {
     // A = viewportsize, B = wanted position

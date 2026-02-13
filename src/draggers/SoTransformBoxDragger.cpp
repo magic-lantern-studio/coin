@@ -39,7 +39,8 @@
 /*!
   \class SoTransformBoxDragger SoTransformBoxDragger.h Inventor/draggers/SoTransformBoxDragger.h
   \brief The SoTransformBoxDragger provides a box which can be translated, scaled and rotated.
-  \ingroup draggers
+
+  \ingroup coin_draggers
 
   \DRAGGER_DEFAULT_SCREENSHOT
 
@@ -60,7 +61,7 @@
   For the application programmer's convenience, the Coin library also
   provides a manipulator class called SoTransformBoxManip, which wraps
   the SoTransformBoxDragger into the necessary mechanisms for making
-  direct insertion of this dragger into a scenegraph possible with
+  direct insertion of this dragger into a scene graph possible with
   very little effort.
 
   \sa SoTransformBoxManip
@@ -126,7 +127,9 @@ public:
 SO_KIT_SOURCE(SoTransformBoxDragger);
 
 
-// doc in superclass
+/*!
+  \copydetails SoDragger::initClass(void)
+*/
 void
 SoTransformBoxDragger::initClass(void)
 {
@@ -134,7 +137,7 @@ SoTransformBoxDragger::initClass(void)
 }
 
 // FIXME: document which parts need to be present in the geometry
-// scenegraph, and what role they play in the dragger. 20010913 mortene.
+// scene graph, and what role they play in the dragger. 20010913 mortene.
 /*!
   \DRAGGER_CONSTRUCTOR
 
@@ -266,7 +269,7 @@ SoTransformBoxDragger::SoTransformBoxDragger(void)
                                        static_cast<int>(strlen(TRANSFORMBOXDRAGGER_draggergeometry)));
   }
 
-  SO_KIT_ADD_FIELD(rotation, (SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f)));
+  SO_KIT_ADD_FIELD(rotation, (SbRotation::identity()));
   SO_KIT_ADD_FIELD(translation, (0.0f, 0.0f, 0.0f));
   SO_KIT_ADD_FIELD(scaleFactor, (1.0f, 1.0f, 1.0f));
 
@@ -291,7 +294,7 @@ SoTransformBoxDragger::SoTransformBoxDragger(void)
   rot->rotation = SbRotation(SbVec3f(1.0f, 0.0f, 0.0f), static_cast<float>(M_PI)/2.0f);
   this->rotator2Rot.setDefault(TRUE);
   rot = SO_GET_ANY_PART(this, "rotator3Rot", SoRotation);
-  rot->rotation = SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f);
+  rot->rotation = SbRotation::identity();
   this->rotator3Rot.setDefault(TRUE);
 
   rot = SO_GET_ANY_PART(this, "translator1Rot", SoRotation);

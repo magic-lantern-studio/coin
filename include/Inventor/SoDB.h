@@ -122,7 +122,7 @@ public:
                           SoNode * to, const char * eventin);
 
 private:
-  static SoNode * readAllWrapper(SoInput * input, const SoType & grouptype);
+  static SoGroup * readAllWrapper(SoInput * input, const SoType & grouptype);
 };
 
 #endif // !COIN_SODB_H

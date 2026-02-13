@@ -3,7 +3,7 @@
 /*!
   \class SoSF_Typename_ SoSF_Typename_.h Inventor/fields/SoSF_Typename_.h
   \brief The SoSF_Typename_ class is a container for a single _typename_.
-  \ingroup fields
+  \ingroup coin_fields
 
   This field container stores a pointer to a Coin _typename_. It takes care
   of the necessary functionality for handling copy, import and export
@@ -214,7 +214,7 @@ SoSF_Typename_::countWriteRefs(SoOutput * out) const
 //    - copyFrom() is called (typically from SoFieldData::overlay())
 //    - copyFrom() calls operator=()
 //    - operator=() calls setValue()
-//    - we have a local copy (ie not from SoSubField.h) of setValue()
+//    - we have a local copy (i.e. not from SoSubField.h) of setValue()
 //      that sets up auditing and references the item
 //
 // <mortene@sim.no>

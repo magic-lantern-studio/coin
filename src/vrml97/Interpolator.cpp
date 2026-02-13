@@ -59,7 +59,7 @@
   interpolation will run over. The key values should be monotonically
   non-decreasing.
 
-  The field is inherited from it's declaration in the abstract
+  The field is inherited from its declaration in the abstract
   SoVRMLInterpolator class into a range of different VRML interpolator
   nodes.
 
@@ -73,7 +73,7 @@
   The set_fraction field gets an input signal that triggers a
   calculation of the next value_changed eventOut value.
 
-  The field is inherited from it's declaration in the abstract
+  The field is inherited from its declaration in the abstract
   SoVRMLInterpolator class into a range of different VRML interpolator
   nodes.
 */
@@ -86,6 +86,9 @@
 
 SO_NODEENGINE_ABSTRACT_SOURCE(SoVRMLInterpolator);
 
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLInterpolator::initClass(void) // static
 {
@@ -99,7 +102,7 @@ SoVRMLInterpolator::SoVRMLInterpolator(void) // protected
   SO_VRMLNODE_ADD_EVENT_IN(set_fraction);
 
   // initialize set_fraction to some value, since if set_fraction is
-  // never set, we'll attempt to read an unitialized value when the
+  // never set, we'll attempt to read an uninitialized value when the
   // interpolator is destructed (all engines evaluates when
   // destructed)
   this->set_fraction.enableNotify(FALSE);

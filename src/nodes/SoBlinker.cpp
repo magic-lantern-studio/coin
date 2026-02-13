@@ -33,7 +33,8 @@
 /*!
   \class SoBlinker SoBlinker.h Inventor/nodes/SoBlinker.h
   \brief The SoBlinker class is a cycling switch node.
-  \ingroup nodes
+
+  \ingroup coin_nodes
 
   This switch node cycles its children SoBlinker::speed number of
   times per second. If the node has only one child, it will be cycled
@@ -154,14 +155,16 @@ SoBlinker::~SoBlinker()
   delete PRIVATE(this);
 }
 
-// doc in parent
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoBlinker::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoBlinker, SO_FROM_INVENTOR_1);
 }
 
-// Documented in superclass. Overridden to calculate bbox of all
+// Documented in superclass. Overridden to calculate bounding box of all
 // children.
 void
 SoBlinker::getBoundingBox(SoGetBoundingBoxAction * action)
@@ -184,7 +187,7 @@ SoBlinker::write(SoWriteAction * action)
 
   inherited::write(action);
 
-  // Reenable all connections to/from internal engine. (Only done at
+  // Re-enable all connections to/from internal engine. (Only done at
   // last pass.)
   if (out->getStage() == SoOutput::WRITE)
     this->reconnectInternalEngine();
@@ -235,7 +238,7 @@ SoBlinker::notify(SoNotList * nl)
 
 // FIXME: I _think_ we made a mistake when overriding SoNode::copy()
 // and making it virtual. The special handling we need below could
-// just aswell have been done in an overridden copyContents() method,
+// just as well have been done in an overridden copyContents() method,
 // which is the recommended mechanism for application programmers. But
 // now I think we'll have to support the "virtual-ity" of
 // SoNode::copy(), even though it's confusing to have 2 virtual
@@ -251,7 +254,7 @@ SoBlinker::copy(SbBool copyconnections) const
 
   SoBlinker * cp = (SoBlinker *)inherited::copy(copyconnections);
 
-  // Reenable all connections to/from internal engine.
+  // Re-enable all connections to/from internal engine.
   ((SoBlinker *)this)->reconnectInternalEngine();
 
   // Need to set this explicitly after reconnect, as the internal

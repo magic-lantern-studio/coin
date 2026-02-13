@@ -33,7 +33,8 @@
 /*!
   \class SoGLNormalElement Inventor/elements/SoGLNormalElement.h
   \brief The SoGLNormalElement class is yet to be documented.
-  \ingroup elements
+
+  \ingroup coin_elements
 
   FIXME: write doc.
 */
@@ -52,7 +53,7 @@
 SO_ELEMENT_SOURCE(SoGLNormalElement);
 
 /*!
-  This static method initializes static data for the SoGLNormalElement class.
+  \copydetails SoElement::initClass(void)
 */
 
 void
@@ -62,7 +63,7 @@ SoGLNormalElement::initClass(void)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 
 SoGLNormalElement::~SoGLNormalElement(void)

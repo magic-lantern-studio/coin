@@ -36,7 +36,7 @@
 
   SoProto and SoProtoInstance are mostly internal classes. They're
   designed to read and handle VRML97 PROTOs. However, it's possible to
-  define your protos in C++. You must define your proto in a char
+  define your PROTOs in C++. You must define your PROTO in a char
   array, and read that char array using SoInput::setBuffer() and
   SoDB::readAllVRML(). Example:
 
@@ -61,28 +61,27 @@
   "ColorCube { color 1 0 0 size 2 1 1 }\n";
 
   SoInput in;
-  in.setBuffer((void*) myproto, strlen(myproto));
+  in.setBuffer(myproto, strlen(myproto));
   SoVRMLGroup * protoroot = SoDB::readAllVRML(&in);
 
   \endcode
 
-  Now you can create new instances of the ColorCube proto using
+  Now you can create new instances of the ColorCube PROTO using
   SoProto::findProto() and SoProto::createProtoInstance(). If you want
-  to insert proto instances into your scene graph, you should insert
+  to insert PROTO instances into your scene graph, you should insert
   the node returned from SoProtoInstance::getRootNode().
 
   See
-  http://www.web3d.org/technicalinfo/specifications/ISO-IEC-14772-IS-VRML97WithAmendment1/part1/concepts.html#4.8
+  http://www.web3d.org/documents/specifications/14772/V2.0/part1/concepts.html#4.8
   for more information about PROTOs in VRML97.
 
 */
 
 // *************************************************************************
 
-/*! \file SoProto.h */
 #include <Inventor/misc/SoProto.h>
 
-#include <string.h>
+#include <cstring>
 
 #include <Inventor/C/tidbits.h>
 #include <Inventor/SbName.h>
@@ -147,7 +146,7 @@ soproto_fetchextern_default_cb(SoInput * in,
   }
 
   if (!in->pushFile(filename.getString())) {
-    SoReadError::post(in, "Unable to find EXTERNPROTO file: ``%s''",
+    SoReadError::post(in, "Unable to find EXTERNPROTO file: \"%s\"",
                       filename.getString());
     return NULL;
   }
@@ -170,7 +169,7 @@ soproto_fetchextern_default_cb(SoInput * in,
       if (gotchar) in->putBack(dummy);
     }
 
-    SoReadError::post(in, "Unable to read EXTERNPROTO file: ``%s''",
+    SoReadError::post(in, "Unable to read EXTERNPROTO file: \"%s\"",
                       filename.getString());
     return NULL;
   }
@@ -766,7 +765,7 @@ soproto_find_node(SoNode * root, SbName name, SoSearchAction & sa)
 }
 
 //
-// Used to check for fieldname. Wil first test "<name>", then "set_<name>",
+// Used to check for fieldname. Will first test "<name>", then "set_<name>",
 // and then "<name>_changed".
 //
 static SbName
@@ -788,7 +787,7 @@ soproto_find_fieldname(SoNode * node, const SbName & name)
 }
 
 //
-// Used to check for outputname. Wil first test "<name>", then "set_<name>",
+// Used to check for outputname. Will first test "<name>", then "set_<name>",
 // and then "<name>_changed".
 //
 static SbName
@@ -1000,7 +999,7 @@ SoProto::connectISRefs(SoProtoInstance * inst, SoNode * src, SoNode * dst) const
       if (!eventout) {
 #if COIN_DEBUG
         SoDebugError::postWarning("SoProto::connectISRefs",
-                                  "Destionation field '%s' is not found in node type '%s'. "
+                                  "Destination field '%s' is not found in node type '%s'. "
                                   "Unable to resolve IS reference.",
                                   fieldname.getString(), node->getTypeId().getName().getString());
 #endif // COIN_DEBUG

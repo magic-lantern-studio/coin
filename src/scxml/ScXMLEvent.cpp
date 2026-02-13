@@ -37,7 +37,7 @@
   \brief Base class for events sent to SCXML state machines.
 
   \since Coin 3.0
-  \ingroup scxml
+  \ingroup coin_scxml
 */
 
 #include <cassert>
@@ -85,11 +85,11 @@ ScXMLEvent::~ScXMLEvent(void)
 }
 
 /*!
-  This method is for setting a string that will identifies this particular
+  This method is for setting a string that will identify this particular
   event, having this particular state, and can be used for event matching
   in the SCXML descriptions.
 
-  The string should, according to spec., be a set of tokens consisting
+  The string should, according to the specification, be a set of tokens consisting
   of alphanumeric characters, separated with periods (.). This limitation
   is not enforced by this implementation.
 */
@@ -167,7 +167,8 @@ ScXMLEvent::copyContents(const ScXMLEvent * rhs)
   SbList<const char *> keys;
   size_t numkeys = rhs->getAssociationKeys(keys);
   for (size_t i = 0; i < numkeys; ++i) {
-    this->setAssociation(keys[i], rhs->getAssociation(keys[i]));
+    const char * akey = keys[(int)i];
+    this->setAssociation(akey, rhs->getAssociation(akey));
   }
 }
 

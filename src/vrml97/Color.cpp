@@ -39,7 +39,8 @@
 /*!
   \class SoVRMLColor SoVRMLColor.h Inventor/VRMLnodes/SoVRMLColor.h
   \brief The SoVRMLColor class is used to specify multiple colors for a single shape.
-  \ingroup VRMLnodes
+
+  \ingroup coin_VRMLnodes
 
   \WEB3DCOPYRIGHT
   
@@ -131,7 +132,9 @@ private:
 
 SO_NODE_SOURCE(SoVRMLColor);
 
-// doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLColor::initClass(void) // static
 {

@@ -33,19 +33,20 @@
 /*!
   \class SoExtSelection SoExtSelection.h Inventor/nodes/SoExtSelection.h
   \brief The SoExtSelection class can be used for extended selection functionality.
-  \ingroup nodes
+
+  \ingroup coin_nodes
 
   This class enables you to select geometry by specifying a lasso (a
   polygon) or a rectangle on screen. When objects are selected, you'll
   receive the same callbacks as for the SoSelection node.
 
   The application programmer interface of this class is somewhat
-  complex, due to it's non-trivial functionality. To see an \e
+  complex, due to its non-trivial functionality. To see an \e
   extensive usage example of the SoExtSelection node, we advise you to
   go look at the "extselection" example application in the "nodes/"
   directory of the SoGuiExamples Mercurial repository. Further information and
   links for downloading and building this module should be available at <a
-  href="https://bitbucket.org/Coin3D/soguiexamples">bitbucket.org/Coin3D/soguiexamples</a>.
+  href="https://github.com/coin3d/soguiexamples">github.com/coin3d/soguiexamples</a>.
 
   This node class is an extension versus the original SGI Inventor
   v2.1 API. It is based on the API of VSG (was TGS) Inventor's SoExtSelection,
@@ -68,19 +69,18 @@
     }
   \endcode
 
-  \since VSG Inventor 2.5
+  \since TGS Inventor 2.5
   \since Coin 1.0
 */
 
 // *************************************************************************
 
-/*! \file SoExtSelection.h */
 #include <Inventor/nodes/SoExtSelection.h>
 
-#include <float.h>
-#include <math.h>
-#include <limits.h>
-#include <string.h> // memset()
+#include <cfloat>
+#include <cmath>
+#include <climits>
+#include <cstring> // memset()
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -231,7 +231,7 @@
     drivers. 2002-08-02 handegar.
 
     UPDATE 2004-10-27 mortene: I found a grave overflow error in the
-    calculation of maximumcolorcounter from the values returned fom
+    calculation of maximumcolorcounter from the values returned from
     glGetInteger() -- could the problem mentioned above actually be
     due to this? The explanation given above doesn't seem very
     likely...
@@ -606,7 +606,7 @@ point_in_poly(const SbList <SbVec2s> & coords, const SbVec2s & point)
   return c;
 }
 
-// do a bbox rejection test before calling this method. It's not fast,
+// do a bounding box rejection test before calling this method. It's not fast,
 // but testing will usually (always) be done on polygon vs triangle in
 // which case it should be pretty fast.
 static SbBool
@@ -664,7 +664,7 @@ poly_line_intersect(const SbList <SbVec2s> & poly,
   return FALSE;
 }
 
-// do a bbox rejection test before calling this method
+// do a bounding box rejection test before calling this method
 static SbBool
 poly_tri_intersect(const SbList <SbVec2s> & poly,
                    const SbVec2s & v0,
@@ -701,7 +701,7 @@ test_quad_intersect(const SbList <SbVec2s> & poly,
   return FALSE;
 }
 
-// do a bbox rejection test before calling this method
+// do a bounding box rejection test before calling this method
 static SbBool
 poly_projbox_intersect(const SbList <SbVec2s> & poly,
                        const SbVec2s * projpts)
@@ -820,6 +820,9 @@ SoExtSelection::~SoExtSelection()
 // *************************************************************************
 
 // doc in superclass
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoExtSelection::initClass(void)
 {
@@ -1154,7 +1157,7 @@ SoExtSelection::draw(SoGLRenderAction *action)
           -1, 1);
 
 
-  // Because Mesa 3.4.2 cant properly push & pop GL_CURRENT_BIT, we have to
+  // Because Mesa 3.4.2 can't properly push & pop GL_CURRENT_BIT, we have to
   // save the current color for later.
   GLfloat currentColor[4];
   glGetFloatv(GL_CURRENT_COLOR,currentColor);
@@ -1297,7 +1300,7 @@ SoExtSelection::getLassoCoordsWC (int &COIN_UNUSED_ARG(numCoords))
 }
 
 /*!
-  Returns a pathlist containing selected objects.
+  Returns a path list containing selected objects.
 
   This function is currently just stubbed.
 */
@@ -1530,11 +1533,11 @@ SoExtSelectionP::testShape(SoCallbackAction * action, const SoShape * shape)
 
   SbBool full = FALSE;
   switch (PUBLIC(this)->lassoPolicy.getValue()) {
-  case SoExtSelection::FULL_BBOX:
+  case SoExtSelection::FULL_BBOX: /* fall through intended */
     full = TRUE;
   case SoExtSelection::PART_BBOX:
     return testBBox(action, projmatrix, shape, rectbbox, full);
-  case SoExtSelection::FULL:
+  case SoExtSelection::FULL: /* fall through intended */
     full = TRUE;
   case SoExtSelection::PART:
     return testPrimitives(action, projmatrix, shape, rectbbox, full);
@@ -1566,7 +1569,7 @@ project_pt(const SbMatrix & projmatrix, const SbVec3f & v,
                  (short) SbClamp(normpt[1], -32768.0f, 32767.0f));
 }
 
-// test for intersection between bbox and lasso/rectangle
+// test for intersection between bounding box and lasso/rectangle
 SoCallbackAction::Response
 SoExtSelectionP::testBBox(SoCallbackAction * action,
                           const SbMatrix & projmatrix,
@@ -1811,7 +1814,7 @@ SoExtSelectionP::triangleCB(void * userData,
 
       thisp->addTriangleToOffscreenBuffer(action, v1, v2, v3, thisp->offscreencolorcounteroverflow);
 
-    } else if (thisp->triangleFilterCB && thisp->primcbdata.allshapes) {
+    } else if (thisp->triangleFilterCB) {
 
       // Present accepted triangle to 'user' through a callback.
       if(thisp->triangleFilterCB(thisp->triangleFilterCBData,
@@ -2012,7 +2015,7 @@ SoExtSelectionP::lineSegmentCB(void *userData,
 
       thisp->addLineToOffscreenBuffer(action, v1, v2, thisp->offscreencolorcounteroverflow);
 
-    } else if (thisp->lineFilterCB && thisp->primcbdata.allshapes) {
+    } else if (thisp->lineFilterCB) {
 
       if (thisp->lineFilterCB(thisp->lineFilterCBData,
                               action, v1, v2)) {
@@ -2110,8 +2113,8 @@ SoExtSelectionP::pointCB(void *userData,
   if(!thisp->primcbdata.allshapes){
     // FIXME: what does this value actually represent? (And what's up
     // with the "-1"?) Please explain. 20041028 mortene.
-    const double v = double(thisp->maximumcolorcounter) * thisp->offscreencolorcounterpasses - 1;
-    if (thisp->offscreenskipcounter < v) {
+    const double val = double(thisp->maximumcolorcounter) * thisp->offscreencolorcounterpasses - 1;
+    if (thisp->offscreenskipcounter < val) {
       ++thisp->offscreenskipcounter;
       return;
     }
@@ -2164,7 +2167,7 @@ SoExtSelectionP::pointCB(void *userData,
 
       thisp->addPointToOffscreenBuffer(action, v, thisp->offscreencolorcounteroverflow);
 
-    } else if (thisp->pointFilterCB && thisp->primcbdata.allshapes) {
+    } else if (thisp->pointFilterCB) {
 
       if (thisp->pointFilterCB(thisp->pointFilterCBData, action, v)) {
         // select shape
@@ -2340,9 +2343,9 @@ SoExtSelectionP::offscreenRenderLassoCallback(void * userdata, SoAction * action
   // This flag will be set to TRUE if the tesselatorcallbacks was executed.
   pimpl->lassostencilisdrawed = FALSE;
 
-  // Render all tris to offscreen buffer via a tesselator.
-  SbTesselator tesselator(pimpl->offscreenLassoTesselatorCallback,pimpl);
-  tesselator.beginPolygon();
+  // Render all tris to offscreen buffer via a tessellator.
+  SbTesselator tessellator(pimpl->offscreenLassoTesselatorCallback,pimpl);
+  tessellator.beginPolygon();
 
   int i;
   SbList <SbVec3f> tmplist;
@@ -2351,8 +2354,8 @@ SoExtSelectionP::offscreenRenderLassoCallback(void * userdata, SoAction * action
   }
   const SbVec3f * tmparray = tmplist.getArrayPtr();
   for(i = 0; i < pimpl->runningselection.coords.getLength(); i++)
-    tesselator.addVertex(tmparray[i],(void*)&tmparray[i]);
-  tesselator.endPolygon();
+    tessellator.addVertex(tmparray[i],(void*)&tmparray[i]);
+  tessellator.endPolygon();
 
   glMatrixMode(GL_PROJECTION);
   glPopMatrix();
@@ -2371,7 +2374,7 @@ SoExtSelectionP::offscreenRenderCallback(void * userdata, SoAction * action)
     FIXME: A nice feature could be an option to 'zoom' in on the
     selected area to increase pixel detail in the offscreen
     buffer. This could increase the hitrate to the offscreen-scanner
-    when searching for realy small visible entities. Note that you
+    when searching for really small visible entities. Note that you
     must also deform the stencil polygon accordingly (which can be
     abit tricky i believe). (handegar)
   */
@@ -2389,7 +2392,7 @@ SoExtSelectionP::offscreenRenderCallback(void * userdata, SoAction * action)
     20020802 mortene.
   */
 
-  // Because Mesa 3.4.2 cant properly push & pop GL_CURRENT_BIT, we have to
+  // Because Mesa 3.4.2 can't properly push & pop GL_CURRENT_BIT, we have to
   // save the current color for later.
   GLfloat currentColor[4];
   glGetFloatv(GL_CURRENT_COLOR,currentColor);
@@ -2429,7 +2432,7 @@ SoExtSelectionP::checkOffscreenRendererCapabilities()
   glGetBooleanv(GL_RGBA_MODE, &rgbmode);
   if (!rgbmode) {
     SoDebugError::post("SoExtSelectionP::checkOffscreenRendererCapabilities",
-                       "Couldn't get an RGBA OpenGL context -- can not "
+                       "Couldn't get an RGBA OpenGL context -- cannot "
                        "proceed with VISIBLE_SHAPES selection. Check your "
                        "system for driver errors.");
     return FALSE;
@@ -2615,7 +2618,7 @@ SoExtSelectionP::performSelection(SoHandleEventAction * action)
 
     // Check OpenGL capabilities
     SbBool setupok = this->checkOffscreenRendererCapabilities();
-    // Ai, ai. OpenGL context can not be used with VISIBLE_SHAPE
+    // Ai, ai. OpenGL context cannot be used with VISIBLE_SHAPE
     // selection.  We'll spit out informative error messages within
     // checkOffscreenRendererCapabilities().
     if (!setupok) {
@@ -2751,7 +2754,7 @@ SoExtSelectionP::performSelection(SoHandleEventAction * action)
 }
 
 //
-// avoid an empty viewport bbox (support for a single click and 
+// avoid an empty viewport bounding box (support for a single click and 
 // a 1-pixel-size rectangles/lassos).
 //
 void 

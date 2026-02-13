@@ -39,7 +39,8 @@
 /*!
   \class SoVRMLPixelTexture SoVRMLPixelTexture.h Inventor/VRMLnodes/SoVRMLPixelTexture.h
   \brief The SoVRMLPixelTexture class is used for mapping a texture image onto geometry..
-  \ingroup VRMLnodes
+
+  \ingroup coin_VRMLnodes
 
   \WEB3DCOPYRIGHT
 
@@ -91,8 +92,8 @@
 
 #include <Inventor/VRMLnodes/SoVRMLPixelTexture.h>
 
-#include <assert.h>
-#include <stddef.h>
+#include <cassert>
+#include <cstddef>
 
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/SoInput.h>
@@ -141,7 +142,9 @@ SO_NODE_SOURCE(SoVRMLPixelTexture);
 
 // *************************************************************************
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLPixelTexture::initClass(void)
 {

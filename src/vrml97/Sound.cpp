@@ -224,7 +224,7 @@
 #include <Inventor/VRMLnodes/SoVRMLSound.h>
 #include "coindefs.h"
 
-#include <stddef.h>
+#include <cstddef>
 
 #include <Inventor/VRMLnodes/SoVRMLAudioClip.h>
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
@@ -328,7 +328,9 @@ double SoVRMLSoundP::defaultSleepTime = 0.100; // 100ms
 
 SO_NODE_SOURCE(SoVRMLSound);
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLSound::initClass(void)
 {
@@ -341,7 +343,7 @@ SoVRMLSound::initClass(void)
      www.openal.org is slightly buggy when it comes to buffer
      handling, and for mysterious reasons, if the buffer size is a
      multiple of 4096, everything works almost as it should.  The
-     problem (and this quick-fix) has been aknowledged by the guy in
+     problem (and this quick-fix) has been acknowledged by the guy in
      charge of the Linux version of OpenAL, and it is being worked
      at. 2003-03-10 thammer */
   const char * env = coin_getenv("COIN_SOUND_BUFFER_LENGTH");
@@ -486,7 +488,7 @@ SoVRMLSound::SoVRMLSound(void)
             "manufacturer of "
             "your soundcard for a native OpenAL driver (several soundcard"
             "manufacturers offer this).",
-            openal_wrapper()->runtime ? "run-time" : "link-time");
+            openal_wrapper()->runtime ? "runtime" : "link-time");
           if (openal_wrapper()->runtime) {
             SoDebugError::postInfo("SoVRMLSound::SoVRMLSound",
                                    "To get more debug information, "
@@ -530,8 +532,7 @@ SoVRMLSound::~SoVRMLSound(void)
     PRIVATE(this)->currentAudioClip->unref();
   PRIVATE(this)->currentAudioClip = NULL;
 
-  if (PRIVATE(this)->audioBuffer != NULL)
-    delete[] PRIVATE(this)->audioBuffer;
+  delete[] PRIVATE(this)->audioBuffer;
 
 #ifdef HAVE_SOUND
   assert(!PRIVATE(this)->hasValidAlSource());
@@ -714,7 +715,7 @@ void SoVRMLSound::audioRender(SoAudioRenderAction *action)
   }
 
   if ( PRIVATE(this)->playing &&
-       ( (!isactive) ) || (!SoSoundElement::isPartOfActiveSceneGraph(state))) {
+       ( (!isactive) || (!SoSoundElement::isPartOfActiveSceneGraph(state)) ) ) {
 #ifdef HAVE_THREADS
       PRIVATE(this)->syncmutex.unlock();
 #endif
@@ -725,7 +726,7 @@ void SoVRMLSound::audioRender(SoAudioRenderAction *action)
     return;
   }
 
-  // if we got here then we're either allready playing, or we should be
+  // if we got here then we're either already playing, or we should be
 
   if (!PRIVATE(this)->hasValidAlSource())
     PRIVATE(this)->generateAlSource();
@@ -1195,7 +1196,7 @@ SbBool SoVRMLSoundP::stopPlaying()
 
   /* Note: Rewinding will make sure state is AL_INITIAL, not just
      AL_STOPPED.  This lets us give the user a warning if the source
-     stopped playing because a buffer underrun occured. See
+     stopped playing because a buffer underrun occurred. See
      fillBuffers().  2002-11-07 thammer.  */
 
   openal_wrapper()->alSourceRewind(this->sourceId);
@@ -1498,7 +1499,7 @@ void SoVRMLSoundP::fillBuffers()
          changing ac:isActive.
 
          This also fixes the first deadlock described above, so I'll probably
-         get away with not unlocking syncmutex here afterall.
+         get away with not unlocking syncmutex here after all.
 
          2002-11-18 thammer */
       ret = this->currentAudioClip->read(this->cliphandle,

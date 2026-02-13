@@ -34,14 +34,14 @@
   \class SoProfilerElement SoProfilerElement.h Inventor/annex/Profiler/SoProfilerElement.h
   \brief The SoProfilerElement element class is for registering statistics during scene graph traversals.
 
-  \ingroup profiler
+  \ingroup coin_profiler
 */
 
 // *************************************************************************
 
 #include <Inventor/annex/Profiler/elements/SoProfilerElement.h>
 
-#include <assert.h>
+#include <cassert>
 
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/errors/SoDebugError.h>
@@ -52,6 +52,9 @@
 
 SO_ELEMENT_SOURCE(SoProfilerElement);
 
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoProfilerElement::initClass(void)
 {

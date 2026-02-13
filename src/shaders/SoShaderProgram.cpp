@@ -42,7 +42,7 @@
   shader objects specified there, and attach all objects into a
   program before binding it as the current shader program.
 
-  \ingroup shaders
+  \ingroup coin_shaders
 
   A typical scene graph with shaders will look something like this:
 
@@ -70,7 +70,7 @@
 
   \endcode
 
-  This will render the Cube with the vertex and fragment shaders
+  This will render the cube with the vertex and fragment shaders
   specified in myvertexshader.glsl and myfragmentshader.glsl. Coin
   also supports ARB shaders and Cg shaders (if the Cg library is
   installed). However, we recommend using GLSL since we will focus
@@ -86,7 +86,7 @@
 
   \li coin_light_model - Set to 1 for PHONG, 0 for BASE_COLOR lighting.
 
-  Example scene graph that renders per-fragment OpenGL Phong lighting
+  Example scene graph that renders per fragment OpenGL Phong lighting
   for one light source. The shaders assume the first light source is a
   directional light. This is the case if you open the file in a
   standard examiner viewer.
@@ -201,11 +201,10 @@
 
 */
 
-/*! \file SoShaderProgram.h */
 #include <Inventor/nodes/SoShaderProgram.h>
 #include "coindefs.h"
 
-#include <assert.h>
+#include <cassert>
 
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoSearchAction.h>
@@ -226,7 +225,7 @@ public:
   SoShaderProgramP(SoShaderProgram * ownerptr);
   ~SoShaderProgramP();
 
-  void GLRender(SoGLRenderAction * action);
+  void render(SoState * state);
 
   SoShaderProgramEnableCB * enablecb;
   void * enablecbclosure;
@@ -248,7 +247,9 @@ SO_NODE_SOURCE(SoShaderProgram);
 
 // *************************************************************************
 
-// doc from parent
+/*!
+  \copybrief SoNode::initClass(void)
+*/
 void
 SoShaderProgram::initClass(void)
 {
@@ -287,7 +288,14 @@ SoShaderProgram::~SoShaderProgram()
 void
 SoShaderProgram::GLRender(SoGLRenderAction * action)
 {
-  PRIVATE(this)->GLRender(action);
+  if (!action) return;
+  PRIVATE(this)->render(action->getState());
+}
+
+void
+SoShaderProgram::render(SoState * state)
+{
+  PRIVATE(this)->render(state);
 }
 
 // doc from parent
@@ -348,9 +356,9 @@ SoShaderProgramP::~SoShaderProgramP()
 }
 
 void
-SoShaderProgramP::GLRender(SoGLRenderAction * action)
+SoShaderProgramP::render(SoState * state)
 {
-  SoState *state = action->getState();
+  if (!state) return;
 
   int i, cnt = PUBLIC(this)->shaderObject.getNum();
   if (cnt == 0) {
@@ -370,7 +378,7 @@ SoShaderProgramP::GLRender(SoGLRenderAction * action)
   for (i = 0; i <cnt; i++) {
     SoNode * node = PUBLIC(this)->shaderObject[i];
     if (node->isOfType(SoShaderObject::getClassTypeId())) {
-      ((SoShaderObject *)node)->GLRender(action);
+      ((SoShaderObject *)node)->render(state);
     }
   }
 

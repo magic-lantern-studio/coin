@@ -33,14 +33,15 @@
 /*!
   \class SoIndexedPointSet SoIndexedPointSet.h Inventor/nodes/SoIndexedPointSet.h
   \brief The SoIndexedPointSet class is used to display a set of 3D points.
-  \ingroup nodes
+
+  \ingroup coin_nodes
 
   This node either uses the coordinates currently on the state
-  (typically set up by a leading SoCoordinate3 node in the scenegraph)
+  (typically set up by a leading SoCoordinate3 node in the scene graph)
   or from a SoVertexProperty node attached to this node to render a
   set of 3D points.
 
-  Here's a simple usage example of SoIndexedPointSet in a scenegraph:
+  Here's a simple usage example of SoIndexedPointSet in a scene graph:
 
   \verbatim
   #Inventor V2.1 ascii
@@ -141,10 +142,12 @@ SoIndexedPointSet::SoIndexedPointSet()
 */
 SoIndexedPointSet::~SoIndexedPointSet()
 {
-  if (this->vaindexer) delete this->vaindexer;
+  delete this->vaindexer;
 }
 
-// doc from parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoIndexedPointSet::initClass(void)
 {
@@ -363,7 +366,7 @@ SoIndexedPointSet::GLRender(SoGLRenderAction * action)
     }
 
     if (this->vaindexer) {
-      this->vaindexer->render(sogl_glue_instance(state), vbo, contextid);
+      this->vaindexer->render(state, vbo, contextid);
     }
     UNLOCK_VAINDEXER(this);
     this->finishVertexArray(action, vbo,
@@ -576,10 +579,8 @@ SoIndexedPointSet::notify(SoNotList * list)
   SoField * f = list->getLastField();
   if (f == &this->coordIndex) {
     LOCK_VAINDEXER(this);
-    if (this->vaindexer) {
-      delete this->vaindexer;
-      this->vaindexer = NULL;
-    }
+    delete this->vaindexer;
+    this->vaindexer = NULL;
     UNLOCK_VAINDEXER(this);
   }
   inherited::notify(list);

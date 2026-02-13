@@ -33,7 +33,8 @@
 /*!
   \class SoPerspectiveCamera SoPerspectiveCamera.h Inventor/nodes/SoPerspectiveCamera.h
   \brief The SoPerspectiveCamera class defines a camera node with perspective rendering.
-  \ingroup nodes
+
+  \ingroup coin_nodes
 
   For realistic looking 3D scene, the geometry should be rendered with
   perspective calculations. Use this camera type to accomplish this.
@@ -57,7 +58,7 @@
 
 #include <Inventor/nodes/SoPerspectiveCamera.h>
 
-#include <assert.h>
+#include <cassert>
 
 #include <Inventor/SbSphere.h>
 #include <Inventor/errors/SoDebugError.h>
@@ -70,7 +71,7 @@
   \var SoSFFloat SoPerspectiveCamera::heightAngle
 
   The vertical angle of the viewport, also known as "field of view".
-  Default value is 45° (note: value is specified in radians).
+  Default value is 45 degrees (note: value is specified in radians).
 */
 
 // *************************************************************************
@@ -84,7 +85,7 @@ SoPerspectiveCamera::SoPerspectiveCamera()
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoPerspectiveCamera);
 
-  SO_NODE_ADD_FIELD(heightAngle, (float(M_PI)/4.0f));  // 45°.
+  SO_NODE_ADD_FIELD(heightAngle, (float(M_PI)/4.0f));  // 45 degrees.
 }
 
 /*!
@@ -95,6 +96,9 @@ SoPerspectiveCamera::~SoPerspectiveCamera()
 }
 
 // Doc in superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoPerspectiveCamera::initClass(void)
 {
@@ -144,7 +148,7 @@ SoPerspectiveCamera::viewBoundingBox(const SbBox3f & box, float aspect,
 
   // First, we want to move the camera in such a way that it is
   // pointing straight at the center of the scene bounding box -- but
-  // without modifiying the rotation value (so we can't use
+  // without modifying the rotation value (so we can't use
   // SoCamera::pointAt()).
   SbVec3f cameradirection;
   this->orientation.getValue().multVec(SbVec3f(0, 0, -1), cameradirection);

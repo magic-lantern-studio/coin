@@ -33,7 +33,8 @@
 /*!
   \class SoComposeRotationFromTo SoComposeRotationFromTo.h Inventor/engines/SoComposeRotationFromTo.h
   \brief The SoComposeRotationFromTo class is used to compose rotations based on from and to vectors.
-  \ingroup engines
+
+  \ingroup coin_engines
 */
 
 #include <Inventor/engines/SoComposeRotationFromTo.h>
@@ -73,7 +74,9 @@ SoComposeRotationFromTo::SoComposeRotationFromTo(void)
   SO_ENGINE_ADD_OUTPUT(rotation,SoMFRotation);
 }
 
-// doc in parent
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoComposeRotationFromTo::initClass(void)
 {

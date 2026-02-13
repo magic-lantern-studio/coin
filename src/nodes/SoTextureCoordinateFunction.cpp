@@ -32,8 +32,9 @@
 
 /*!
   \class SoTextureCoordinateFunction SoTextureCoordinateFunction.h Inventor/nodes/SoTextureCoordinateFunction.h
-  \brief The SoTextureCoordinateFunction class is an abstract base class for texture coordinate generating nodes
-  \ingroup nodes
+  \brief The SoTextureCoordinateFunction class is an abstract base class for texture coordinate generating nodes.
+
+  \ingroup coin_nodes
 
   Classes reimplementing SoTextureCoordinateFunction generate texture coordinates
   by projecting object space surface points using some function.
@@ -63,6 +64,9 @@ SoTextureCoordinateFunction::~SoTextureCoordinateFunction()
 }
 
 // doc in super
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoTextureCoordinateFunction::initClass(void)
 {

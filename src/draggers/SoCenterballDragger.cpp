@@ -39,7 +39,8 @@
 /*!
   \class SoCenterballDragger SoCenterballDragger.h Inventor/draggers/SoCenterballDragger.h
   \brief The SoCenterballDragger class is a dragger you can rotate and translate.
-  \ingroup draggers
+
+  \ingroup coin_draggers
 
   \DRAGGER_DEFAULT_SCREENSHOT
 
@@ -107,7 +108,7 @@
   \image html centerballdragger_actionexample.png "CenterBall Dragger Action Shot"
   </center>
 
-  The figure above shows the example scenegraph in a viewer with the nearest cross
+  The figure above shows the example scene graph in a viewer with the nearest cross
   on the centerball dragger selected. Moving the dragger then moves the associated clip plane
   over the geometry (the sphere in this case).
 */
@@ -162,7 +163,9 @@ public:
 
 SO_KIT_SOURCE(SoCenterballDragger);
 
-// doc in superclass
+/*!
+  \copydetails SoDragger::initClass(void)
+*/
 void
 SoCenterballDragger::initClass(void)
 {
@@ -170,7 +173,7 @@ SoCenterballDragger::initClass(void)
 }
 
 // FIXME: document which parts need to be present in the geometry
-// scenegraph, and what role they play in the dragger. 20010913 mortene.
+// scene graph, and what role they play in the dragger. 20010913 mortene.
 /*!
   \DRAGGER_CONSTRUCTOR
 
@@ -271,7 +274,7 @@ SoCenterballDragger::SoCenterballDragger(void)
                                        static_cast<int>(strlen(CENTERBALLDRAGGER_draggergeometry)));
   }
 
-  SO_KIT_ADD_FIELD(rotation, (SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f)));
+  SO_KIT_ADD_FIELD(rotation, (SbRotation::identity()));
   SO_KIT_ADD_FIELD(center, (0.0f, 0.0f, 0.0f));
 
   SO_KIT_INIT_INSTANCE();
@@ -398,7 +401,7 @@ SoCenterballDragger::setSwitches(SoDragger * activechild)
   SoSwitch *sw;
 
   if (activechild == NULL || coin_safe_cast<SoNode *>(activechild) == rotator.getValue()) {
-    // special feedback when rotator is activated/deactiveated
+    // special feedback when rotator is activated/deactivated
     int switchval = activechild != NULL ? 1 : 0;
     sw = SO_GET_ANY_PART(this, "XCenterChanger.translatorSwitch", SoSwitch);
     SoInteractionKit::setSwitchValue(sw, switchval);;
@@ -613,7 +616,7 @@ SoCenterballDragger::kidStartCB(void * d , SoDragger * child)
 
 /*!
   \COININTERNAL
-  Needed to deactive some feedback.
+  Needed to deactivate some feedback.
 */
 void
 SoCenterballDragger::kidFinishCB(void * d, SoDragger * COIN_UNUSED_ARG(child))

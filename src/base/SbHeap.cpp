@@ -33,7 +33,8 @@
 /*!
   \class SbHeap SbHeap.h Inventor/SbHeap.h
   \brief The SbHeap class is a generic heap class.
-  \ingroup base
+
+  \ingroup coin_base
 
   FIXME: write doc
 
@@ -283,8 +284,10 @@ SbHeap::heapify(const int idx)
     tmp = this->heap[idx];
     this->heap[idx] = this->heap[smallest];
     this->heap[smallest] = tmp;
-    if (setindex) setindex(this->heap[idx], idx);
-    if (setindex) setindex(this->heap[smallest], smallest);
+    if (setindex) {
+      setindex(this->heap[idx], idx);
+      setindex(this->heap[smallest], smallest);
+    }
     this->heapify(smallest);
   }
 }

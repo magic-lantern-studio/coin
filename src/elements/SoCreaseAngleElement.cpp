@@ -33,7 +33,8 @@
 /*!
   \class SoCreaseAngleElement Inventor/elements/SoCreaseAngleElement.h
   \brief The SoCreaseAngleElement class stores the crease angle during a scene graph traversal.
-  \ingroup elements
+
+  \ingroup coin_elements
 */
 
 #include <Inventor/elements/SoCreaseAngleElement.h>
@@ -43,7 +44,22 @@
 
 SO_ELEMENT_SOURCE(SoCreaseAngleElement);
 
-// doc from parent
+/*!
+  \fn static SoType SoCreaseAngleElement::getClassTypeId(void)
+
+  This static method returns the class type.
+*/
+
+/*!
+  \fn static int SoCreaseAngleElement::getClassStackIndex(void)
+
+  This static method returns the state stack index for the class.
+*/
+
+/*!
+  This static method initializes static data for the SoCreaseAngleElement class.
+*/
+
 void
 SoCreaseAngleElement::initClass(void)
 {
@@ -51,7 +67,7 @@ SoCreaseAngleElement::initClass(void)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 SoCreaseAngleElement::~SoCreaseAngleElement(void)
 {

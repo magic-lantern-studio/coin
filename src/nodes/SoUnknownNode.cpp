@@ -115,6 +115,9 @@ SoUnknownNode::~SoUnknownNode()
 }
 
 // doc in super
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoUnknownNode::initClass(void)
 {
@@ -143,7 +146,7 @@ SoUnknownNode::readInstance(SoInput * in, unsigned short flags)
 {
   if (SoInputP::debug()) {
     SoDebugError::postInfo("SoUnknownNode::readInstance",
-                           "Reading extension node ``%s'' as SoUnknownNode.",
+                           "Reading extension node \"%s\" as SoUnknownNode.",
                            PRIVATE(this)->classname.getString());
   }
 
@@ -154,7 +157,7 @@ SoUnknownNode::readInstance(SoInput * in, unsigned short flags)
   if (!this->classfielddata->read(in, this, FALSE, notbuiltin)) return FALSE;
 
   if (notbuiltin == FALSE) {
-    SoReadError::post(in, "Node type ``%s'' not recognized.",
+    SoReadError::post(in, "Node type \"%s\" not recognized.",
                       PRIVATE(this)->classname.getString());
     return FALSE;
   }
@@ -207,7 +210,7 @@ SoUnknownNode::readInstance(SoInput * in, unsigned short flags)
     for (i=0; i < this->classfielddata->getNumFields(); i++) {
       const SoField * f = this->classfielddata->getField(this, i);
       if (f->isDefault()) {
-        SoReadError::post(in, "Field ``%s'' in extension node ``%s'' not "
+        SoReadError::post(in, "Field \"%s\" in extension node \"%s\" not "
                           "given any value.",
                           this->classfielddata->getFieldName(i).getString(),
                           PRIVATE(this)->classname.getString());
@@ -348,7 +351,7 @@ SoUnknownNode::copyContents(const SoFieldContainer * from,
     dstfield->fixCopy(copyconnections);
     // handle connections
     if (copyconnections && srcfield->isConnected()) {
-      dstfield->copyConnection(dstfield);
+      dstfield->copyConnection(srcfield);
     }
   }
   if (PRIVATE(src)->privatechildren == NULL) return;

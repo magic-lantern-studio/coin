@@ -32,8 +32,8 @@
 
 #include "io/SoInput_Reader.h"
 
-#include <string.h>
-#include <assert.h>
+#include <cstring>
+#include <cassert>
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
@@ -331,7 +331,7 @@ SoInput_GZFileReader::readBuffer(char * buf, const size_t readlen)
 {
   // FIXME: about the cast; see note about the call to cc_gzm_open()
   // above. 20050525 mortene.
-  int result = cc_zlibglue_gzread(this->gzfp, (void*) buf, (uint32_t)readlen);
+  int result = cc_zlibglue_gzread(this->gzfp, buf, (uint32_t)readlen);
 
   // the signature of this this function was changed to return size_t
   // without checking that gzread() actually returns a signed

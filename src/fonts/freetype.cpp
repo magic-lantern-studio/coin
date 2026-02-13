@@ -30,7 +30,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-/* FIXME: problem reported by Jan Peèiva on coin-dicuss: if there's a
+/* FIXME: problem reported by Jan PeÃ¨iva on coin-dicuss: if there's a
    freetype.dll installed as part of Cygwin, and Coin has been built
    with MSVC (and not Cygwin GCC), trying to use the Cygwin FreeType
    DLL leads to a crash. Should detect this problem and avoid a
@@ -42,17 +42,18 @@
    20050613 mortene. */
 
 #include "coindefs.h"
-#include "fonts/freetype.h"
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif /* HAVE_CONFIG_H */
 
-#include <stdlib.h>
-#include <assert.h>
+#include <cstdlib>
+#include <cassert>
 
 #include "glue/freetype.h"
 #include "glue/GLUWrapper.h"
+
+#include "fonts/freetype.h"
 
 /* ************************************************************************* */
 
@@ -140,7 +141,7 @@ static int flwft_calctessellatorsteps(float complexity);
 /* According to Coin user Ralf Corsepius, at least SunOS4 needs to
    include sys/types.h before netinet/in.h. There have also been a
    problem report for FreeBSD which seems to indicate that the same
-   dependency exists on that platform aswell. */
+   dependency exists on that platform as well. */
 #include <sys/types.h>
 #endif /* HAVE_SYS_TYPES_H */
 
@@ -195,7 +196,7 @@ static flwft_tessellator_t flwft_tessellator;
 /* The _S_IFDIR bitpattern is not in the POSIX standard, but MSVC++
    header files has it. */
  #ifdef _S_IFDIR
- #define S_ISDIR(s) (s & _S_IFDIR)
+ #define S_ISDIR(s) ((s) & _S_IFDIR)
 #else /* Ai. */
  #error Can neither find nor make an S_ISDIR macro to test stat structures.
 #endif /* !_S_IFDIR */
@@ -266,13 +267,13 @@ static FT_Library library;
    file names (in sorted order of priority), then a NULL pointer, then
    a new generic font name, etc.
 */
-static const char * fontfilenames[] = {
+static const char * const fontfilenames[] = {
   /* FIXME: different font _styles_ are just jumbled together below,
      and are not really supported. It will take some work to sort out
      that mess. 20030606 mortene. */
 
   /*
-    Names of some TrueType font files on MS Windows installations.
+    Names of some TrueType font files on Microsoft Windows installations.
 
     FIXME: should provide more information about this -- e.g. is this
     a complete set? Ask Preng why he wrote up exactly these
@@ -445,7 +446,7 @@ cc_flwft_initialize(void)
     }
 #endif /* _WIN32 */
 
-    /* Try current working directory aswell. */
+    /* Try current working directory as well. */
     str = strdup("./");
     assert(str);
     cc_dynarray_append(cc_flwft_globals.fontfiledirs, str);
@@ -911,19 +912,19 @@ cc_flwft_get_bitmap(void * font, unsigned int glyph)
   error = cc_ftglue_FT_Load_Glyph(face, glyph, FT_LOAD_DEFAULT);
   if (error) {
     if (cc_font_debug()) cc_debugerror_post("cc_flwft_get_bitmap",
-					    "FT_Load_Glyph() => error %d",
-					    error);
+                                            "FT_Load_Glyph() => error %d",
+                                            error);
     return NULL;
   }
   error = cc_ftglue_FT_Get_Glyph(face->glyph, &g);
   if (error) {
     if (cc_font_debug()) cc_debugerror_post("cc_flwft_get_bitmap",
-					    "FT_Get_Glyph() => error %d",
-					    error);
+                                            "FT_Get_Glyph() => error %d",
+                                            error);
     return NULL;
   }
 
-  /* render a glyph only if it's in outline format. this won't be the
+  /* render a glyph only if it is in outline format. this won't be the
      case for any of the bitmap font types such as pcf. the variable
      mono needs to be set before the conversion to a 256 gray level
      bitmap in order to propagate the correct format value up the code
@@ -933,8 +934,8 @@ cc_flwft_get_bitmap(void * font, unsigned int glyph)
     error = cc_ftglue_FT_Glyph_To_Bitmap(&g, ft_render_mode_normal, 0, 1);
     if (error) {
       if (cc_font_debug()) cc_debugerror_post("cc_flwft_get_bitmap",
-					      "FT_Glyph_To_Bitmap() => error %d",
-					      error);
+                                              "FT_Glyph_To_Bitmap() => error %d",
+                                              error);
       return NULL;
     }
   }
@@ -943,7 +944,7 @@ cc_flwft_get_bitmap(void * font, unsigned int glyph)
   tfbm = &tfbmg->bitmap;
 
   bm = (struct cc_font_bitmap *) malloc(sizeof(struct cc_font_bitmap));
-  bm->buffer = (unsigned char *) malloc(tfbm->rows * tfbm->pitch);
+  bm->buffer = (unsigned char *) malloc(size_t(tfbm->rows) * size_t(tfbm->pitch));
   bm->bearingX = tfbmg->left;
   bm->bearingY = tfbmg->top;
   bm->advanceX = (int)(face->glyph->advance.x / 64);
@@ -953,7 +954,7 @@ cc_flwft_get_bitmap(void * font, unsigned int glyph)
   bm->pitch = tfbm->pitch;
   bm->mono = mono;
 
-  memcpy(bm->buffer, tfbm->buffer, tfbm->rows * tfbm->pitch);
+  memcpy(bm->buffer, tfbm->buffer, size_t(tfbm->rows) * size_t(tfbm->pitch));
   cc_ftglue_FT_Done_Glyph(g);
 
   return bm;
@@ -1024,10 +1025,10 @@ cc_flwft_get_vector_glyph(void * font, unsigned int glyphindex, float complexity
 
   /* FIXME: investigate if there is a simple way to gather the outline
      from a bitmapped font? 20040925 tamer. */
-  /* in case of a bitmap font fall back to the default font. commonly
+  /* in case of a bitmap font fall back to the default font.  Commonly
      it will already fail and return NULL due to not being able to set
-     another character size for fixed sized fonts. still, rather be
-     robust and catch the unprobable case where the provided bitmap
+     another character size for fixed sized fonts.  Still, rather be
+     robust and catch the improbable case where the provided bitmap
      font could match the flwt_3dfontsize. */
   if (tmp->format == FT_GLYPH_FORMAT_BITMAP) {
     if (cc_font_debug()) {

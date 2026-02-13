@@ -32,10 +32,10 @@
 
 #include "fonts/glyph3d.h"
 
-#include <float.h> /* FLT_MIN */
-#include <string.h>
-#include <assert.h>
-#include <stdio.h>
+#include <cfloat> /* FLT_MIN */
+#include <cstring>
+#include <cassert>
+#include <cstdio>
 
 #include <Inventor/C/basic.h>
 #include <Inventor/C/base/list.h>
@@ -50,8 +50,7 @@
 #include "coindefs.h"
 
 #ifndef COIN_WORKAROUND_NO_USING_STD_FUNCS
-using std::malloc;
-using std::free;
+using namespace std;
 #endif // !COIN_WORKAROUND_NO_USING_STD_FUNCS
 
 /* ********************************************************************** */
@@ -62,10 +61,10 @@ static void glyph3d_calcboundingbox(cc_glyph3d * g);
 
 struct cc_glyph3d {
   struct cc_glyph c; /* "c" for "common" glyph data (2d & 3d). */
-
-  float width; /* FIXME: is this one really in use? 20060109 mortene. */
-  float bbox[4];
   struct cc_font_vector_glyph * vectorglyph;
+
+  float bbox[4];
+  float width; /* FIXME: is this one really in use? 20060109 mortene. */
   SbBool didallocvectorglyph;
 };
 
@@ -146,7 +145,7 @@ cc_glyph3d_ref(uint32_t character, const cc_font_specification * spec)
   cc_string * fonttoload;
   cc_list * glyphlist = NULL;
 
-  /* Beacuse this function is the entry point for glyph3d, the mutex
+  /* because this function is the entry point for glyph3d, the mutex
      is initialized here. */
   if (glyph3d_fonthash_lock == NULL) 
     cc_glyph3d_initialize();
@@ -272,7 +271,7 @@ cc_glyph3d_getcoords(const cc_glyph3d * g)
 {
   const float * ptr = cc_flw_get_vector_glyph_coords(g->vectorglyph);
   if (ptr == NULL) {    
-    assert(g->vectorglyph->vertices && "Default vertices has not been initialized as expected!");
+    assert(g->vectorglyph->vertices && "Default vertices have not been initialized as expected!");
     return g->vectorglyph->vertices;
   }
   return ptr;  
@@ -283,7 +282,7 @@ cc_glyph3d_getfaceindices(const cc_glyph3d * g)
 {
   const int * ptr = cc_flw_get_vector_glyph_faceidx(g->vectorglyph);
   if (ptr == NULL) {      
-    assert(g->vectorglyph->faceindices && "Default face indices has not been initialized as expected!");
+    assert(g->vectorglyph->faceindices && "Default face indices have not been initialized as expected!");
     return g->vectorglyph->faceindices; 
   }
   return ptr;
@@ -294,7 +293,7 @@ cc_glyph3d_getedgeindices(const cc_glyph3d * g)
 {
   const int * ptr = cc_flw_get_vector_glyph_edgeidx(g->vectorglyph);
   if (ptr == NULL) {    
-    assert(g->vectorglyph->edgeindices && "Default edge indices has not been initialized as expected!");
+    assert(g->vectorglyph->edgeindices && "Default edge indices have not been initialized as expected!");
     return g->vectorglyph->edgeindices; 
   }
   return ptr;
@@ -383,7 +382,7 @@ glyph3d_calcboundingbox(cc_glyph3d * g)
     g->bbox[2] = cc_max(coordptr[(*edgeptr)*2], g->bbox[2]);
     g->bbox[3] = cc_max(coordptr[(*edgeptr)*2 + 1], g->bbox[3]);
 
-    *edgeptr++;
+    edgeptr++;
   }
 
 }

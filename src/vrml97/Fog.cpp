@@ -39,7 +39,8 @@
 /*!
   \class SoVRMLFog SoVRMLFog.h Inventor/VRMLnodes/SoVRMLFog.h
   \brief The SoVRMLFog class is used to specify a global scene fog.
-  \ingroup VRMLnodes
+
+  \ingroup coin_VRMLnodes
 
   \WEB3DCOPYRIGHT
 
@@ -121,7 +122,7 @@
 
 #include <Inventor/VRMLnodes/SoVRMLFog.h>
 
-#include <string.h>
+#include <cstring>
 
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/sensors/SoFieldSensor.h>
@@ -164,7 +165,9 @@ public:
 };
 
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLFog::initClass(void)
 {

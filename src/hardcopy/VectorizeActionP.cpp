@@ -65,7 +65,7 @@
 #include <Inventor/elements/SoClipPlaneElement.h>
 #include <Inventor/SbClip.h>
 
-#include <stdlib.h>
+#include <cstdlib>
 
 #define PUBLIC(obj) ((obj)->publ)
 
@@ -740,7 +740,7 @@ SoVectorizeActionP::post_shape_cb(void * COIN_UNUSED_ARG(userdata),
 //
 // Callback which is called before traversing the SoAnnotation node.
 // Needed so that annotated geometry is drawn on top of other
-// geoemtry.
+// geometry.
 //
 SoCallbackAction::Response
 SoVectorizeActionP::pre_anno_cb(void * userdata,

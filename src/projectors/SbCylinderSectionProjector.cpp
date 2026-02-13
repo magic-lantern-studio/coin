@@ -33,7 +33,8 @@
 /*!
   \class SbCylinderSectionProjector SbCylinderSectionProjector.h Inventor/projectors/SbCylinderSectionProjector.h
   \brief The SbCylinderSectionProjector projects 2D points to a sliced cylinder.
-  \ingroup projectors
+
+  \ingroup coin_projectors
 
   The projection cylinder for this class is sliced by a clipping plane
   parallel to its height axis. Projections will be mapped to the
@@ -43,7 +44,7 @@
 */
 
 #include <Inventor/projectors/SbCylinderSectionProjector.h>
-#include <float.h>
+#include <cfloat>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>

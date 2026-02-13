@@ -39,7 +39,8 @@
 /*!
   \class SoShapeKit SoShapeKit.h Inventor/nodekits/SoShapeKit.h
   \brief The SoShapeKit class provides templates to insert what is usually needed for shape nodes.
-  \ingroup nodekits
+
+  \ingroup coin_nodekits
 
   \NODEKIT_PRE_DIAGRAM
 
@@ -167,7 +168,9 @@ SoShapeKit::~SoShapeKit()
 {
 }
 
-// Documented in superclass.
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoShapeKit::initClass(void)
 {

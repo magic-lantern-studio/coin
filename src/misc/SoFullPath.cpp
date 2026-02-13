@@ -31,9 +31,10 @@
 \**************************************************************************/
 
 /*!
-  \class SoFullPath Inventor/SoFullPath.h
+  \class SoFullPath SoFullPath.h Inventor/SoFullPath.h
   \brief The SoFullPath class allows examination of hidden children in paths.
-  \ingroup general
+
+  \ingroup coin_general
 
   SoPath allows only access from the head node to the first node with
   hidden children, but not any further.
@@ -55,7 +56,7 @@
 */
 
 #include <Inventor/SoFullPath.h>
-#include <assert.h>
+#include <cassert>
 
 
 /*!

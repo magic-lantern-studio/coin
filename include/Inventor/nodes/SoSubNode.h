@@ -54,7 +54,7 @@
 
 // *************************************************************************
 
-#include <string.h> /* strcmp used in assert() */
+#include <cstring> /* strcmp used in assert() */
 #include <Inventor/SbBasic.h>
 #include <Inventor/SbName.h>
 #include <Inventor/SoType.h>
@@ -81,7 +81,7 @@ private: \
   static void atexit_cleanup(void); \
   static const SoFieldData ** parentFieldData; \
   static SoFieldData * fieldData; \
-  /* Counts number of instances of subclasses aswell as "direct" */ \
+  /* Counts number of instances of subclasses as well as "direct" */ \
   /* instances from non-abstract classes. */ \
   static unsigned int classinstances
 
@@ -95,7 +95,18 @@ private: \
 // *************************************************************************
 
 #define PRIVATE_NODE_TYPESYSTEM_SOURCE(_class_) \
+ \
+/*! \
+  This static method returns the SoType object associated with \
+  objects of this class. \
+*/ \
 SoType _class_::getClassTypeId(void) { return _class_::classTypeId; } \
+ \
+/*!
+  Returns the type identification of an object derived from a \
+  class inheriting SoBase. This is used for runtime type checking and \
+  "downward" casting. \
+*/ \
 SoType _class_::getTypeId(void) const { return _class_::classTypeId; } \
 SoType _class_::classTypeId STATIC_SOTYPE_INIT
 
@@ -108,6 +119,12 @@ unsigned int _class_::classinstances = 0; \
 const SoFieldData ** _class_::parentFieldData = NULL; \
 SoFieldData * _class_::fieldData = NULL; \
  \
+/*! \
+  \COININTERNAL \
+ \
+  Returns the SoFieldData class which holds information about fields \
+  in this node. \
+ */ \
 const SoFieldData ** \
 _class_::getFieldDataPtr(void) \
 { \

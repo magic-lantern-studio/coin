@@ -39,7 +39,8 @@
 /*!
   \class SoVRMLMovieTexture SoVRMLMovieTexture.h Inventor/VRMLnodes/SoVRMLMovieTexture.h
   \brief The SoVRMLMovieTexture class is used the map movies onto geometry.
-  \ingroup VRMLnodes
+
+  \ingroup coin_VRMLnodes
   
   \WEB3DCOPYRIGHT
 
@@ -179,7 +180,9 @@
 
 SO_NODE_SOURCE(SoVRMLMovieTexture);
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLMovieTexture::initClass(void)
 {

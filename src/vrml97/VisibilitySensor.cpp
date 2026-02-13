@@ -39,7 +39,8 @@
 /*!
   \class SoVRMLVisibilitySensor SoVRMLVisibilitySensor.h Inventor/VRMLnodes/SoVRMLVisibilitySensor.h
   \brief The SoVRMLVisibilitySensor class will generate events based on visibility.
-  \ingroup VRMLnodes
+
+  \ingroup coin_VRMLnodes
 
   \WEB3DCOPYRIGHT
 
@@ -119,17 +120,17 @@
 
 /*!
   \var SoSFTime SoVRMLVisibilitySensor::enterTime
-  An event out that is triggered when the region becomes visible.
+  An eventOut that is triggered when the region becomes visible.
 */
 
 /*!
   \var SoSFTime SoVRMLVisibilitySensor::exitTime
-  An event out that is triggered when the region becomes not visible.
+  An eventOut that is triggered when the region becomes not visible.
 */
 
 /*!
   \var SoSFBool SoVRMLVisibilitySensor::isActive
-  An event out that is generated when the visibility state changes.
+  An eventOut that is generated when the visibility state changes.
 */
 
 #include <Inventor/VRMLnodes/SoVRMLVisibilitySensor.h>
@@ -159,7 +160,9 @@ visibilitysensor_get_current_time(void)
   return SbTime::getTimeOfDay();
 }
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLVisibilitySensor::initClass(void)
 {
@@ -194,18 +197,18 @@ SoVRMLVisibilitySensor::~SoVRMLVisibilitySensor()
 void
 SoVRMLVisibilitySensor::GLRender(SoGLRenderAction * action)
 {
-  SbVec3f c = this->center.getValue();
   SbVec3f s = this->size.getValue();
 
   SbBool wasvisible = this->isActive.getValue();
   SbBool visible = FALSE;
 
   if (s != SbVec3f(0.0f, 0.0f, 0.0f)) {
+    SbVec3f c = this->center.getValue();
     SbBox3f box(c[0]-s[0], c[1]-s[1], c[2]-s[2],
                 c[0]+s[0], c[1]+s[1], c[2]+s[2]);
     if (!SoCullElement::cullTest(action->getState(), box, TRUE)) {
       // FIXME: the SoCullElement cull test only tests if box is outside
-      // one of the planes, and the box might not be culled even if it's
+      // one of the planes, and the box might not be culled even if it is
       // not visible for some cases. pederb, 2002-05-16
       visible = TRUE;
     }

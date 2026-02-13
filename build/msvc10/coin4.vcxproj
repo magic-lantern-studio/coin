@@ -41902,7 +41902,6 @@
     <ClInclude Include="..\..\include\Inventor\C\base\hash.h" />
     <ClInclude Include="..\..\include\Inventor\C\base\heap.h" />
     <ClInclude Include="..\..\include\Inventor\C\base\list.h" />
-    <ClInclude Include="..\..\include\Inventor\C\base\math-undefs.h" />
     <ClInclude Include="..\..\include\Inventor\C\base\memalloc.h" />
     <ClInclude Include="..\..\include\Inventor\C\base\rbptree.h" />
     <ClInclude Include="..\..\include\Inventor\C\base\string.h" />

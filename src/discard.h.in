@@ -126,6 +126,9 @@
 /* define if bcopy() is available */
 #undef HAVE_BCOPY
 
+/* define if the Boost library is available */
+#undef HAVE_BOOST
+
 /* Define to use bzip2 */
 #undef HAVE_BZIP2
 
@@ -255,6 +258,12 @@
 /* define if you have the simage library */
 #undef HAVE_LIBSIMAGE
 
+/* define if localtime_s() is available */
+#undef HAVE_LOCALTIME_S
+
+/* define if localtime_r() is available */
+#undef HAVE_LOCALTIME_R
+
 /* Define to 1 if you have the <mach-o/dyld.h> header file. */
 #undef HAVE_MACH_O_DYLD_H
 
@@ -333,7 +342,7 @@
 /* *EXPERIMENTAL* to use the GLU we've "appropriated" from SGI */
 #undef HAVE_SUPERGLU
 
-/* Define this if you want to use a system installation of expat */
+/* Define this if you want to use the system installation of Expat */
 #undef HAVE_SYSTEM_EXPAT
 
 /* Define to 1 if you have the <sys/param.h> header file. */
@@ -392,6 +401,9 @@
 
 /* define if vsnprintf() is available */
 #undef HAVE_VSNPRINTF
+
+/* define if you have EGL OpenGL bindings */
+#undef HAVE_EGL
 
 /* define if you have WGL Win32 OpenGL bindings */
 #undef HAVE_WGL
@@ -497,6 +509,9 @@
 
 /* Version number of package */
 #undef VERSION
+
+/* Define to extract entropy from /dev/urandom */
+#undef XML_DEV_URANDOM
 
 /* Define to 1 if the X Window System is missing or not being used. */
 #undef X_DISPLAY_MISSING

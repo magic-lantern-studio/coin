@@ -39,7 +39,8 @@
 /*!
   \class SoVRMLIndexedFaceSet SoVRMLIndexedFaceSet.h Inventor/VRMLnodes/SoVRMLIndexedFaceSet.h
   \brief The SoVRMLIndexedFaceSet class is used for representing a generic 3D shape.
-  \ingroup VRMLnodes
+
+  \ingroup coin_VRMLnodes
 
   \WEB3DCOPYRIGHT
 
@@ -295,7 +296,9 @@ SO_NODE_SOURCE(SoVRMLIndexedFaceSet);
 
 // *************************************************************************
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLIndexedFaceSet::initClass(void) // static
 {
@@ -608,7 +611,7 @@ SoVRMLIndexedFaceSet::GLRender(SoGLRenderAction * action)
     }
 
     if (PRIVATE(this)->vaindexer) {
-      PRIVATE(this)->vaindexer->render(sogl_glue_instance(state), dovbo, contextid);
+      PRIVATE(this)->vaindexer->render(state, dovbo, contextid);
     }
     UNLOCK_VAINDEXER(this);
     this->finishVertexArray(action,
@@ -971,10 +974,8 @@ SoVRMLIndexedFaceSet::notify(SoNotList * list)
   if (f == &this->coordIndex) {
     PRIVATE(this)->concavestatus = STATUS_UNKNOWN;
     LOCK_VAINDEXER(this);
-    if (PRIVATE(this)->vaindexer) {
-      delete PRIVATE(this)->vaindexer;
-      PRIVATE(this)->vaindexer = NULL;
-    }
+    delete PRIVATE(this)->vaindexer;
+    PRIVATE(this)->vaindexer = NULL;
     UNLOCK_VAINDEXER(this);
   }
   inherited::notify(list);

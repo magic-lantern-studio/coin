@@ -37,12 +37,12 @@
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <assert.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+#include <cassert>
 
-#include <boost/scoped_array.hpp>
+#include <memory>
 
 #include <coindefs.h>
 #include <Inventor/C/XML/element.h>
@@ -59,16 +59,16 @@
 // #define DEV_DEBUG 1
 
 /*!
-  \page xmlparsing XML Parsing with Coin
+  \page coin_xml_parsing XML Parsing with Coin
 
   For Coin 3.0, we added an XML parser to Coin.  This document describes
   how it can be used for generic purposes.
 
   Why another XML parser, you might ask?  First of all, the XML parser
-  is actually a third-party parser, expat.  Coin needed one, and many
+  is actually a 3rd-party parser, Expat.  Coin needed one, and many
   Coin-dependent projects needed one as well.  We therefore needed to
   expose an API for it.  However, integrating a 3rd-party parser into
-  Coin, we can not expose its API directly, or other projects also
+  Coin, we cannot expose its API directly, or other projects also
   using Expat would get conflicts.  We therefore needed to expose the
   XML API with a unique API, hence the API you see here.  It is based
   on a XML DOM API we use(d) in a couple of other projects, but it has
@@ -111,7 +111,7 @@
   This type is an opaque container object type for an XML document structure,
   and also the interface for configuring the parsing and writing code.
 
-  \ingroup XML
+  \ingroup coin_XML
 */
 
 struct cc_xml_doc {
@@ -248,8 +248,7 @@ cc_xml_doc_expat_character_data_handler_cb(void * userdata, const XML_Char * cda
   assert(elt);
 
   // need a temporary buffer for the cdata to make a nullterminated string.
-  boost::scoped_array<char> buffer;
-  buffer.reset(new char [len + 1]);
+  std::unique_ptr<char[]> buffer(new char [len + 1]);
   memcpy(buffer.get(), cdata, len);
   buffer[len] = '\0';
   cc_xml_elt_set_type_x(elt, COIN_XML_CDATA_TYPE);
@@ -336,7 +335,7 @@ cc_xml_doc_delete_parser_x(cc_xml_doc * doc)
 
   Creates a new cc_xml_doc object that is totally blank.
 
-  \ingroup XML
+  \ingroup coin_XML
   \relates cc_xml_doc
 */
 
@@ -361,7 +360,7 @@ cc_xml_doc_new(void)
 
   Frees up a cc_xml_doc object and all its resources.
 
-  \ingroup XML
+  \ingroup coin_XML
   \relates cc_xml_doc
 */
 
@@ -370,9 +369,9 @@ cc_xml_doc_delete_x(cc_xml_doc * doc)
 {
   assert(doc);
   if (doc->parser) { cc_xml_doc_delete_parser_x(doc); }
-  if (doc->xmlversion) delete [] doc->xmlversion;
-  if (doc->xmlencoding) delete [] doc->xmlencoding;
-  if (doc->filename) delete [] doc->filename;
+  delete [] doc->xmlversion;
+  delete [] doc->xmlencoding;
+  delete [] doc->filename;
   if (doc->root) cc_xml_elt_delete_x(doc->root);
   delete doc;
 }
@@ -389,7 +388,7 @@ cc_xml_doc_delete_x(cc_xml_doc * doc)
   Elements can only be discarded as they are popped - on push they will be
   kept regardless of what the filter callback returns.
 
-  \ingroup XML
+  \ingroup coin_XML
   \relates cc_xml_doc
 */
 
@@ -405,7 +404,7 @@ cc_xml_doc_set_filter_cb_x(cc_xml_doc * doc, cc_xml_filter_cb * cb, void * userd
 
   Returns the set filter callback in the \a cb arg and \a userdata arg.
 
-  \ingroup XML
+  \ingroup coin_XML
   \relates cc_xml_doc
 */
 
@@ -574,10 +573,7 @@ void
 cc_xml_doc_set_filename_x(cc_xml_doc * doc, const char * path)
 {
   assert(doc);
-  if (doc->filename) {
-    delete [] doc->filename;
-    doc->filename = NULL;
-  }
+  delete [] doc->filename;
   doc->filename = cc_xml_strdup(path);
 }
 
@@ -694,7 +690,7 @@ SbBool
 cc_xml_doc_write_to_buffer(const cc_xml_doc * doc, char *& buffer, size_t & bytes)
 {
   assert(doc);
-  bytes = static_cast<int>(cc_xml_doc_calculate_size(doc));
+  bytes = cc_xml_doc_calculate_size(doc);
   buffer = new char [ bytes + 1 ];
 
   size_t bytesleft = bytes;
@@ -702,21 +698,20 @@ cc_xml_doc_write_to_buffer(const cc_xml_doc * doc, char *& buffer, size_t & byte
 
 // macro to advance buffer pointer and decrement bytesleft count
 #define ADVANCE_NUM_BYTES(len)          \
-  do { const int length = (len);        \
+  do { const size_t length = (len);        \
        hereptr += length;               \
        bytesleft -= length; } while (0)
 
 // macro to copy in a string literal and advance pointers
 #define ADVANCE_STRING_LITERAL(str)                \
-  do { static const char strobj[] = str;           \
-       const int strlength = (sizeof(strobj) - 1); \
-       strncpy(hereptr, strobj, strlength);        \
+  do { const size_t strlength = (sizeof(str) - 1); \
+       strcpy(hereptr, str);        \
        ADVANCE_NUM_BYTES(strlength); } while (0)
 
-// macro to copy in a run-time string and advance pointers
+// macro to copy in a runtime string and advance pointers
 #define ADVANCE_STRING(str)                      \
-  do { const int strlength = strlen(str);        \
-       strncpy(hereptr, str, strlength);         \
+  do { const size_t strlength = strlen(str);        \
+       strcpy(hereptr, str);         \
        ADVANCE_NUM_BYTES(strlength); } while (0)
 
   // duplicate block, see cc_xml_doc_calculate_size()
@@ -754,7 +749,7 @@ cc_xml_doc_write_to_file(const cc_xml_doc * doc, const char * path)
   assert(path);;
 
   size_t bufsize = 0;
-  boost::scoped_array<char> buffer;
+  std::unique_ptr<char[]> buffer;
   {
     char * bufptr = NULL;
     if (!cc_xml_doc_write_to_buffer(doc, bufptr, bufsize)) {
@@ -809,9 +804,9 @@ cc_xml_doc_calculate_size(const cc_xml_doc * doc)
 
 // macro to increment bytecount for string literal
 #define ADVANCE_STRING_LITERAL(str) \
-  do { static const char strobj[] = str; bytes += (sizeof(strobj) - 1); } while (0)
+  do { bytes += (sizeof(str) - 1); } while (0)
 
-// macro to increment bytecount for run-time string
+// macro to increment bytecount for runtime string
 #define ADVANCE_STRING(str) \
   do { bytes += strlen(str); } while (0)
 
@@ -883,7 +878,7 @@ cc_xml_doc_handle_parse_warning(const cc_xml_doc * doc, const char * message)
 
 #ifdef COIN_TEST_SUITE
 
-#include <boost/scoped_array.hpp>
+#include <memory>
 #include <Inventor/C/XML/parser.h>
 #include <Inventor/C/XML/path.h>
 
@@ -897,7 +892,7 @@ BOOST_AUTO_TEST_CASE(bufread)
   cc_xml_doc * doc1 = cc_xml_read_buffer(buffer);
   BOOST_CHECK_MESSAGE(doc1 != NULL, "cc_xml_doc_read_buffer() failed");
 
-  boost::scoped_array<char> buffer2;
+  std::unique_ptr<char[]> buffer2;
   size_t bytecount = 0;
   {
     char * bufptr = NULL;

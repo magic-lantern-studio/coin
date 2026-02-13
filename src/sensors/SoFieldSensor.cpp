@@ -33,7 +33,8 @@
 /*!
   \class SoFieldSensor SoFieldSensor.h Inventor/sensors/SoFieldSensor.h
   \brief The SoFieldSensor class detects changes to a field.
-  \ingroup sensors
+
+  \ingroup coin_sensors
 
   Attach a field to a sensor of this type to put it under
   surveillance, so you can act upon changes to the field.
@@ -56,7 +57,7 @@ SoFieldSensor::SoFieldSensor(void)
 
 /*!
   Constructor taking as parameters the sensor callback function and
-  the userdata which will be passed the callback.
+  the userdata which will be passed to the callback.
 
   \sa setFunction(), setData()
  */
@@ -147,11 +148,12 @@ SoFieldSensor::notify(SoNotList * l)
 void
 SoFieldSensor::dyingReference(void)
 {
-  SoFieldContainer * dyingcontainer = this->getAttachedField()->getContainer();
+  SoFieldContainer * dyingcontainer = this->getAttachedField() ?
+    this->getAttachedField()->getContainer() : NULL;
 
   this->invokeDeleteCallback();
 
-  if (this->getAttachedField() != NULL &&
+  if (this->getAttachedField() &&
       this->getAttachedField()->getContainer() == dyingcontainer) {
     // sensor is attached, and to the same field-container
     this->detach();

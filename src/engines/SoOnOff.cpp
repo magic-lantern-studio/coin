@@ -33,7 +33,8 @@
 /*!
   \class SoOnOff SoOnOff.h Inventor/engines/SoOnOff.h
   \brief The SoOnOff engine is a simple on/off switch.
-  \ingroup engines
+
+  \ingroup coin_engines
 */
 
 #include <Inventor/engines/SoOnOff.h>
@@ -89,7 +90,9 @@ SoOnOff::SoOnOff(void)
   this->state = FALSE;
 }
 
-// Documented in superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoOnOff::initClass(void)
 {

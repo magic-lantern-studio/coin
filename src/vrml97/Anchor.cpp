@@ -39,7 +39,8 @@
 /*!
   \class SoVRMLAnchor SoVRMLAnchor.h Inventor/VRMLnodes/SoVRMLAnchor.h
   \brief The SoVRMLAnchor class is used for linking to other URL resources.
-  \ingroup VRMLnodes
+
+  \ingroup coin_VRMLnodes
 
   \WEB3DCOPYRIGHT
 
@@ -114,13 +115,13 @@
   loaded using the default Viewpoint node binding stack rules (see
   VRMLViewpoint).  If the url field is specified in the form
   "#ViewpointName" (i.e. no file name), the Viewpoint node with the
-  given name ("ViewpointName") in the Anchor's run-time name scope(s)
+  given name ("ViewpointName") in the Anchor's runtime name scope(s)
   shall be bound (set_bind TRUE).  The results are undefined if there
-  are multiple Viewpoints with the same name in the Anchor's run-time
+  are multiple Viewpoints with the same name in the Anchor's runtime
   name scope(s). The results are undefined if the Anchor node is not
-  part of any run-time name scope or is part of more than one run-time
-  name scope. See 4.4.6, Run-time name scope, for a description of
-  run-time name scopes. See VRMLViewpoint, for the Viewpoint
+  part of any runtime name scope or is part of more than one runtime
+  name scope. See 4.4.6, Runtime name scope, for a description of
+  runtime name scopes. See VRMLViewpoint, for the Viewpoint
   transition rules that specify how browsers shall interpret the
   transition from the old Viewpoint node to the new one. For example:
 
@@ -182,10 +183,9 @@
   Children bounding box size hint. Default value is (-1, -1, -1).
 */
 
-/*! \file SoVRMLAnchor.h */
 #include <Inventor/VRMLnodes/SoVRMLAnchor.h>
 
-#include <stdlib.h>
+#include <cstdlib>
 
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/misc/SoState.h>
@@ -201,7 +201,9 @@ void * SoVRMLAnchor::userdata;
 
 SO_NODE_SOURCE(SoVRMLAnchor);
 
-// doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLAnchor::initClass(void) // static
 {

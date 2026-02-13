@@ -33,9 +33,10 @@
 /*!
   \class SoFaceSet SoFaceSet.h Inventor/nodes/SoFaceSet.h
   \brief The SoFaceSet class is used to render and organize non-indexed polygonal face data.
-  \ingroup nodes
 
-  Faces are specified using the numVertices field. Coordinates,
+  \ingroup coin_nodes
+
+  Facesets are specified using the numVertices field. Coordinates,
   normals, materials and texture coordinates are fetched in order from
   the current state or from the vertexProperty node if set. For
   example, if numVertices is set to [3, 4, 5, 3], this node would
@@ -93,12 +94,15 @@
 #include <Inventor/caches/SoConvexDataCache.h>
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
+#include <Inventor/elements/SoGLLazyElement.h>
+#include <Inventor/elements/SoGLVBOElement.h>
 
 #ifdef COIN_THREADSAFE
 #include <Inventor/threads/SbRWMutex.h>
 #endif // COIN_THREADSAFE
 
 #include "nodes/SoSubNodeP.h"
+#include "rendering/SoVBO.h"
 #include "rendering/SoGL.h"
 
 // *************************************************************************
@@ -136,7 +140,7 @@ public:
 
 #ifdef COIN_THREADSAFE
   // FIXME: a mutex for every instance seems a bit excessive,
-  // especially since MSWindows might have rather strict limits on the
+  // especially since Microsoft Windows might have rather strict limits on the
   // total amount of mutex resources a process (or even a user) can
   // allocate. so consider making this a class-wide instance instead.
   // -mortene.
@@ -400,7 +404,9 @@ namespace { namespace SoGL { namespace FaceSet {
 
 } } } // namespace
 
-// doc from parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoFaceSet::initClass(void)
 {
@@ -567,18 +573,43 @@ SoFaceSet::GLRender(SoGLRenderAction * action)
       goto glrender_done;
     }
 
+    const uint32_t contextid = action->getCacheContext();
+    int numcoords = coords ? coords->getNum() : 0;
+    SoGLLazyElement* lelem = NULL;
     // check if we can render things using glDrawArrays
-    if (SoGLDriverDatabase::isSupported(sogl_glue_instance(state), SO_GL_VERTEX_ARRAY) &&
-        (PRIVATE(this)->primitivetype == GL_TRIANGLES) ||
-        (PRIVATE(this)->primitivetype == GL_QUADS) &&
-        (nbind != PER_FACE) &&
-        (mbind != PER_FACE) &&
-        !tb.isFunction()) {
+    SbBool dova =
+      SoVBO::shouldRenderAsVertexArrays(state, contextid, numcoords) &&
+      ((PRIVATE(this)->primitivetype == GL_TRIANGLES) ||
+       (PRIVATE(this)->primitivetype == GL_QUADS)) &&
+      (nbind != PER_FACE) &&
+      (mbind != PER_FACE) &&
+      !tb.isFunction() &&
+      SoGLDriverDatabase::isSupported(sogl_glue_instance(state), SO_GL_VERTEX_ARRAY);
+
+    const SoGLVBOElement* vboelem = SoGLVBOElement::getInstance(state);
+    SoVBO* colorvbo = NULL;
+
+    if (dova && (mbind != OVERALL)) {
+      dova = FALSE;
+      if (mbind == PER_VERTEX) {
+        lelem = (SoGLLazyElement*)SoLazyElement::getInstance(state);
+        colorvbo = vboelem->getColorVBO();
+        if (colorvbo) dova = TRUE;
+        else {
+          // we might be able to do VA-rendering, but need to check the
+          // diffuse color type first.
+          if (!lelem->isPacked() && lelem->getNumTransparencies() <= 1) {
+            dova = TRUE;
+          }
+        }
+      }
+    }
+    if (dova) {
       SbBool dovbo = this->startVertexArray(action,
                                             coords,
                                             nbind == PER_VERTEX ? normals : NULL,
                                             doTextures,
-                                            (mbind == PER_VERTEX));
+                                            mbind == PER_VERTEX);
       int numprimitives = this->numVertices.getNum();
       if (PRIVATE(this)->primitivetype == GL_TRIANGLES) numprimitives *= 3;
       else numprimitives *= 4; // quads
@@ -713,7 +744,7 @@ SbBool
 SoFaceSet::generateDefaultNormals(SoState * /* state */,
                                   SoNormalBundle * /* nb */)
 {
-  // Normals are genereted directly in normal cache for this shape.
+  // Normals are generated directly in normal cache for this shape.
   return FALSE;
 }
 

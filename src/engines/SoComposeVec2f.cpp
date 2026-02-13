@@ -33,7 +33,8 @@
 /*!
   \class SoComposeVec2f SoComposeVec2f.h Inventor/engines/SoComposeVec2f.h
   \brief The SoComposeVec2f class is used to compose 2D vectors from two floats.
-  \ingroup engines
+
+  \ingroup coin_engines
 */
 
 #include <Inventor/engines/SoComposeVec2f.h>
@@ -69,7 +70,9 @@ SoComposeVec2f::SoComposeVec2f(void)
   SO_ENGINE_ADD_OUTPUT(vector,SoMFVec2f);
 }
 
-// Documented in superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoComposeVec2f::initClass(void)
 {

@@ -38,7 +38,7 @@
 //
 //  Comments about 3ds files: Structure of the 3ds files is well known
 //  (http://www.cyberloonies.com/3dsftk.html). However, it is often hard to
-//  understand what is the informations in 3ds file about and how to
+//  understand what is the information in 3ds file about and how to
 //  interpret them. For example, texture coordinates are not always
 //  represented by OpenGL texture coordinates, and I can't find out
 //  what is their meaning.
@@ -314,7 +314,7 @@ struct tagMaterial;
 struct tagContext;
 
 
-typedef struct {
+typedef struct tagVertex {
   SbVec3f point;
   SbVec2f texturePoint;
   SbList<tagFace*> faceList;
@@ -369,7 +369,7 @@ namespace DefaultFaceGroup {
   static SoIndexedTriangleStripSet* createSoIndexedTriStripSet_i(tagContext *con);
 }
 
-typedef struct {
+typedef struct tagEdge {
   SbList<Face*> faceList;
 } Edge;
 
@@ -793,7 +793,7 @@ CHUNK(LoadNamedObject)
 
   if (con->cObj) {
     // set object name
-    if (con->loadObjNames && strlen(con->objectName) > 0)
+    if (con->loadObjNames && con->objectName[0] != '\0')
       con->cObj->setName(con->objectName);
 
     // add cObj to the main scene graph
@@ -1086,7 +1086,7 @@ CHUNK(LoadFaceArray)
     if (flags != 7 && coin_debug_3ds() >= 2)
       SoDebugError::postWarning("LoadFaceArray",
                                 "Non-standard face flags: %x, investigate it.\n", flags);
-    con->faceList[i].init(con, a,b,c,flags); // vertex ordering is counter-clockwise.
+    con->faceList[i].init(con, a,b,c,flags); // vertex ordering is counterclockwise.
 
     if (!con->minMaxValid) {
       con->minMaxValid = TRUE;
@@ -1353,7 +1353,7 @@ CHUNK(LoadShininess)
   FULLHEADER;
 
   if (coin_debug_3ds() >= 4)
-    SoDebugError::postInfo("LoadMatShininesst",
+    SoDebugError::postInfo("LoadMatShininess",
                            "Begin");
 
   con->cColorFloat = 0.f;
@@ -1467,7 +1467,7 @@ CHUNK(LoadMapUScale)
   HEADER;
 
   if (coin_debug_3ds() >= 4)
-    SoDebugError::postInfo("LoadMatUScale",
+    SoDebugError::postInfo("LoadMapUScale",
                            "Begin");
 
   con->s >> con->cMat->uscale;
@@ -1554,7 +1554,7 @@ CHUNK(LoadIntPercentage)
   HEADER;
 
   if (coin_debug_3ds() >= 4)
-    SoDebugError::postInfo("LoadIntPerscentage",
+    SoDebugError::postInfo("LoadIntPercentage",
                            "Begin");
 
   int16_t i;
@@ -1570,7 +1570,7 @@ CHUNK(LoadFloatPercentage)
   HEADER;
 
   if (coin_debug_3ds() >= 4)
-    SoDebugError::postInfo("LoadFloatPersentage",
+    SoDebugError::postInfo("LoadFloatPercentage",
                            "Begin");
 
   con->s >> (con->cColorFloat);

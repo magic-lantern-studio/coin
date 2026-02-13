@@ -33,7 +33,8 @@
 /*!
   \class SoDecomposeRotation SoDecomposeRotation.h Inventor/engines/SoDecomposeRotation.h
   \brief The SoDecomposeRotation class is used to decompose a rotation into angle and axis.
-  \ingroup engines
+
+  \ingroup coin_engines
 */
 
 #include <Inventor/engines/SoDecomposeRotation.h>
@@ -71,7 +72,9 @@ SoDecomposeRotation::SoDecomposeRotation()
   SO_ENGINE_ADD_OUTPUT(angle, SoMFFloat);
 }
 
-// Documented in superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoDecomposeRotation::initClass()
 {

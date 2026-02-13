@@ -33,22 +33,28 @@
 #include <Inventor/nodes/SoTexture.h>
 
 /*!
-  SoTexture SoTexture.h Inventor/nodes/SoTexture.h
+  \class SoTexture SoTexture.h Inventor/nodes/SoTexture.h
   \brief Common base class for texture nodes.
 
-  \ingroup nodes
+  \ingroup coin_nodes
   \COIN_CLASS_EXTENSION
   \since Coin 3.0
 */
 
 SO_NODE_ABSTRACT_SOURCE(SoTexture);
 
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoTexture::initClass(void)
 {
   SO_NODE_INIT_ABSTRACT_CLASS(SoTexture, SoNode, Node);
 }
 
+/*!
+  This static method cleans up static data of the SoTexture class.
+*/
 void
 SoTexture::cleanupClass(void)
 {

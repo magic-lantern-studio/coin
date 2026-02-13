@@ -39,7 +39,8 @@
 /*!
   \class SoVRMLInline SoVRMLInline.h Inventor/VRMLnodes/SoVRMLInline.h
   \brief The SoVRMLInline class is used to insert VRML files into a scene.
-  \ingroup VRMLnodes
+
+  \ingroup coin_VRMLnodes
 
   \WEB3DCOPYRIGHT
   
@@ -123,11 +124,10 @@
   Always display bounding box.
 */
 
-/*! \file SoVRMLInline.h */
 #include <Inventor/VRMLnodes/SoVRMLInline.h>
 #include "coindefs.h"
 
-#include <stdlib.h>
+#include <cstdlib>
 
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/nodes/SoSeparator.h>
@@ -177,7 +177,9 @@ sovrmlinline_cleanup(void)
 
 SO_NODE_SOURCE(SoVRMLInline);
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLInline::initClass(void)
 {
@@ -273,7 +275,7 @@ SoVRMLInline::requestURLData(void)
 }
 
 /*!
-  Returns TRUE if the URL data has been requested.
+  Returns TRUE if the URL data have been requested.
 */
 SbBool
 SoVRMLInline::isURLDataRequested(void) const
@@ -282,7 +284,7 @@ SoVRMLInline::isURLDataRequested(void) const
 }
 
 /*!
-  Returns TRUE if the data has been loaded.
+  Returns TRUE if the data have been loaded.
 */
 SbBool
 SoVRMLInline::isURLDataHere(void) const
@@ -313,7 +315,7 @@ SoVRMLInline::setChildData(SoNode * urldata)
 }
 
 /*!
-  Returns the child data (the scene loaded from the url).
+  Returns the child data (the scene loaded from the URL).
 */
 SoNode *
 SoVRMLInline::getChildData(void) const
@@ -381,7 +383,7 @@ SoVRMLInline::setReadAsSoFile(SbBool enable)
 }
 
 /*!
-  Returns whether Inline nodes is read as SoFile nodes.
+  Returns whether Inline nodes are read as SoFile nodes.
 */
 SbBool
 SoVRMLInline::getReadAsSoFile(void)
@@ -661,7 +663,7 @@ SoVRMLInline::readLocalFile(SoInput * in)
 
     // Note that we handle this differently than Inventor, which lets
     // the whole import fail.
-    SoReadError::post(in, "Unable to read Inline file: ``%s''",
+    SoReadError::post(in, "Unable to read Inline file: \"%s\"",
                       filename.getString());
   }
 

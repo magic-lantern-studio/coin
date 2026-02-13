@@ -39,7 +39,8 @@
 /*!
   \class SoVRMLPositionInterpolator SoVRMLPositionInterpolator.h Inventor/VRMLnodes/SoVRMLPositionInterpolator.h
   \brief The SoVRMLPositionInterpolator class is used to interpolate 3D points.
-  \ingroup VRMLnodes
+
+  \ingroup coin_VRMLnodes
 
   \WEB3DCOPYRIGHT
 
@@ -78,7 +79,9 @@
 
 SO_NODEENGINE_SOURCE(SoVRMLPositionInterpolator);
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLPositionInterpolator::initClass(void) // static
 {

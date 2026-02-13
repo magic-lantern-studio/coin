@@ -39,7 +39,8 @@
 /*!
   \class SoVRMLBillboard SoVRMLBillboard.h Inventor/VRMLnodes/SoVRMLBillboard.h
   \brief The SoVRMLBillboard class is used for rotating geometry towards the viewpoint.
-  \ingroup VRMLnodes
+
+  \ingroup coin_VRMLnodes
 
   \WEB3DCOPYRIGHT
 
@@ -168,8 +169,8 @@
 
 #include <Inventor/VRMLnodes/SoVRMLBillboard.h>
 
-#include <math.h>
-#include <float.h>
+#include <cmath>
+#include <cfloat>
 
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/actions/SoSearchAction.h>
@@ -199,7 +200,9 @@ SO_NODE_SOURCE(SoVRMLBillboard);
 
 // *************************************************************************
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLBillboard::initClass(void)
 {
@@ -469,9 +472,9 @@ SoVRMLBillboard::computeRotation(SbMatrix const & invMM, SbViewVolume const & vv
     right = up.cross(look);
     up = look.cross(right);
   } else { 
-    // The VRML97 spec calls for rotating the local z-axis of the
+    // The VRML97 spec calls for rotating the local Z-axis of the
     // billboard to face the viewer, pivoting around the axis of
-    // rotation. If the axis of rotation is the z axis, this angle
+    // rotation. If the axis of rotation is the Z-axis, this angle
     // will be zero, and no rotation can happen. We don't actually
     // bother to compute this angle at all, but set up = rotaxis and
     // use cross products from there to construct the rotation matrix.

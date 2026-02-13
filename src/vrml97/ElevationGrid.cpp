@@ -39,7 +39,8 @@
 /*!
   \class SoVRMLElevationGrid SoVRMLElevationGrid.h Inventor/VRMLnodes/SoVRMLElevationGrid.h
   \brief The SoVRMLElevationGrid class is used to represent elevation grids.
-  \ingroup VRMLnodes
+
+  \ingroup coin_VRMLnodes
 
   \WEB3DCOPYRIGHT
 
@@ -271,7 +272,7 @@
 #include <Inventor/VRMLnodes/SoVRMLElevationGrid.h>
 #include "coindefs.h"
 
-#include <float.h>
+#include <cfloat>
 
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -334,7 +335,9 @@ SO_NODE_SOURCE(SoVRMLElevationGrid);
 
 // *************************************************************************
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLElevationGrid::initClass(void)
 {

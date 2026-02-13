@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class SoRenderManager Inventor/SoRenderManager.h
+  \class SoRenderManager SoRenderManager.h Inventor/SoRenderManager.h
   \brief The SoRenderManager class is used for controlling the rendering of a scene graph.
 
   You can use this class to configure things like clipping planes,
@@ -47,8 +47,18 @@
   \since Coin 3.0
 */
 
-/*! \file SoRenderManager.h */
 #include <Inventor/SoRenderManager.h>
+#include <Inventor/elements/SoLinePatternElement.h>
+#include <Inventor/elements/SoLineWidthElement.h>
+#include <Inventor/elements/SoDrawStyleElement.h>
+#include <Inventor/elements/SoLightModelElement.h>
+#include <Inventor/elements/SoMaterialBindingElement.h>
+#include <Inventor/elements/SoPolygonOffsetElement.h>
+#include <Inventor/elements/SoOverrideElement.h>
+#include <Inventor/elements/SoTextureQualityElement.h>
+#include <Inventor/elements/SoTextureOverrideElement.h>
+#include <Inventor/elements/SoComplexityTypeElement.h>
+#include <Inventor/elements/SoLazyElement.h>
 
 #include <algorithm>
 //FIXME:Need this include early, since including it via SoRenderManagerP.h will cause problems for cygwin. Don't understand the root cause BFG 20090629
@@ -79,7 +89,7 @@
 #include "misc/AudioTools.h"
 #include "coindefs.h"
 
-#if BOOST_WORKAROUND(COIN_MSVC, <= COIN_MSVC_6_0_VERSION)
+#if COIN_WORKAROUND(COIN_MSVC, <= COIN_MSVC_6_0_VERSION)
 // symbol length truncation
 #pragma warning(disable:4786)
 #endif // VC6.0
@@ -95,7 +105,7 @@
 /*!
   \var SoRenderManager::RenderMode SoRenderManager::AS_IS
 
-  Render primitives as they are described in the scenegraph.
+  Render primitives as they are described in the scene graph.
 */
 
 /*!
@@ -130,9 +140,15 @@
 */
 
 /*!
+  \var SoRenderManager::RenderMode SoRenderManager::SHADED_HIDDEN_LINES
+
+  Render dashed hidden lines with solid visible lines using three-pass rendering approach.
+*/
+
+/*!
   \enum SoRenderManager::StereoMode
 
-  Manages how to render steroscopic images.
+  Manages how to render stereoscopic images.
 */
 
 /*!
@@ -144,10 +160,10 @@
 /*!
   \var SoRenderManager::StereoMode SoRenderManager::ANAGLYPH
 
-  Anaglyph rendering is used to provide a steroscopic 3D effect, when
+  Anaglyph rendering is used to provide a stereoscopic 3D effect, when
   viewed with 3D glasses. The image is made up of two color layers
   which are superimposed on each other, and appears as 3 dimensional
-  when viewed through corresponding colored filters(glases)
+  when viewed through corresponding colored filters (glasses)
 */
 
 /*!
@@ -167,7 +183,7 @@
   \var SoRenderManager::StereoMode SoRenderManager::INTERLEAVED_ROWS
 
   Render every second row as left and right image. If rendered with a
-  polarized projector, polarized filters kan be used to give a 3D
+  polarized projector, polarized filters can be used to give a 3D
   effect.
 */
 
@@ -175,7 +191,7 @@
   \var SoRenderManager::StereoMode SoRenderManager::INTERLEAVED_COLUMNS
 
   Render every second column as left and right image. If rendered with
-  a polarized projector, polarized filters kan be used to give a 3D
+  a polarized projector, polarized filters can be used to give a 3D
   effect.
 */
 
@@ -219,7 +235,7 @@
 /*!
   \var SoRenderManager::AutoClippingStrategy SoRenderManager::VARIABLE_NEAR_PLANE
 
-  Variable adjustment of the nearplane relative to the camera.
+  Variable adjustment of the near plane relative to the camera.
 */
 
 #define PRIVATE(p) (p->pimpl)
@@ -272,9 +288,9 @@ SoRenderManager::SoRenderManager(void)
   PRIVATE(this)->glaction = new SoGLRenderAction(SbViewportRegion(400, 400));
   PRIVATE(this)->audiorenderaction = new SoAudioRenderAction;
 
-  PRIVATE(this)->clipsensor =
-    new SoNodeSensor(SoRenderManagerP::updateClippingPlanesCB, PRIVATE(this));
-  PRIVATE(this)->clipsensor->setPriority(this->getRedrawPriority() - 1);
+  PRIVATE(this)->clipsensor = NULL;
+  //  new SoNodeSensor(SoRenderManagerP::updateClippingPlanesCB, PRIVATE(this));
+  //PRIVATE(this)->clipsensor->setPriority(this->getRedrawPriority() - 1);
 
 }
 
@@ -287,8 +303,8 @@ SoRenderManager::~SoRenderManager()
 
   if (PRIVATE(this)->deleteglaction) delete PRIVATE(this)->glaction;
   if (PRIVATE(this)->deleteaudiorenderaction) delete PRIVATE(this)->audiorenderaction;
-  if (PRIVATE(this)->rootsensor) delete PRIVATE(this)->rootsensor;
-  if (PRIVATE(this)->redrawshot) delete PRIVATE(this)->redrawshot;
+  delete PRIVATE(this)->rootsensor;
+  delete PRIVATE(this)->redrawshot;
 
   if (PRIVATE(this)->superimpositions != NULL) {
     while (PRIVATE(this)->superimpositions->getLength() > 0) {
@@ -297,7 +313,7 @@ SoRenderManager::~SoRenderManager()
     delete PRIVATE(this)->superimpositions;
   }
 
-  delete PRIVATE(this)->clipsensor;
+  //delete PRIVATE(this)->clipsensor;
 
   if (PRIVATE(this)->scene)
     PRIVATE(this)->scene->unref();
@@ -309,7 +325,7 @@ SoRenderManager::~SoRenderManager()
 /*!
   Set the node which is top of the scene graph we're managing.  The \a
   sceneroot node reference count will be increased by 1, and any
-  previously set scene graph top node will have it's reference count
+  previously set scene graph top node will have its reference count
   decreased by 1.
 
   \sa getSceneGraph()
@@ -317,7 +333,7 @@ SoRenderManager::~SoRenderManager()
 void
 SoRenderManager::setSceneGraph(SoNode * const sceneroot)
 {
-  this->detachClipSensor();
+  //this->detachClipSensor();
   this->detachRootSensor();
   // Don't unref() until after we've set up the new root, in case the
   // old root == the new sceneroot. (Just to be that bit more robust.)
@@ -328,7 +344,7 @@ SoRenderManager::setSceneGraph(SoNode * const sceneroot)
   if (PRIVATE(this)->scene) {
     PRIVATE(this)->scene->ref();
     this->attachRootSensor(PRIVATE(this)->scene);
-    this->attachClipSensor(PRIVATE(this)->scene);
+    //this->attachClipSensor(PRIVATE(this)->scene);
   }
   
   if (oldroot) oldroot->unref();
@@ -386,7 +402,7 @@ SoRenderManager::nodesensorCB(void * data, SoSensor * /* sensor */)
 }
 
 /*!
-  Attaches this SoRenderManagers rootsensor to a scene
+  Attaches this SoRenderManagers root sensor to a scene
 
   \param[in] sceneroot scene to attach to
 
@@ -427,35 +443,35 @@ SoRenderManager::detachRootSensor(void)
 
   \param[in] sceneroot scene to attach to
 
-  \deprecated Will not be available in Coin 4
+  \deprecated Will not be available in Coin 5
 */
 void
 SoRenderManager::attachClipSensor(SoNode * const sceneroot)
 {
-  PRIVATE(this)->clipsensor->attach(sceneroot);
-  if (PRIVATE(this)->autoclipping != SoRenderManager::NO_AUTO_CLIPPING) {
-    PRIVATE(this)->clipsensor->schedule();
-  }
+  //PRIVATE(this)->clipsensor->attach(sceneroot);
+  //if (PRIVATE(this)->autoclipping != SoRenderManager::NO_AUTO_CLIPPING) {
+  //  PRIVATE(this)->clipsensor->schedule();
+  //}
 }
 
 /*
   Detaches the clipsensor from all tracked scenes
 
-  \deprecated Will not be available in Coin 4
+  \deprecated Will not be available in Coin 5
 */
 void
 SoRenderManager::detachClipSensor(void)
 {
-  if (PRIVATE(this)->clipsensor->isScheduled()) {
-    PRIVATE(this)->clipsensor->unschedule();
-  }
-  if (PRIVATE(this)->clipsensor->getAttachedNode()) {
-    PRIVATE(this)->clipsensor->detach();
-  }
+  //if (PRIVATE(this)->clipsensor->isScheduled()) {
+  //  PRIVATE(this)->clipsensor->unschedule();
+  //}
+  //if (PRIVATE(this)->clipsensor->getAttachedNode()) {
+  //  PRIVATE(this)->clipsensor->detach();
+  //}
 }
 
 /*!
-  Clears buffers with the backgroundcolor set correctly
+  Clears buffers with the background color set correctly
   
   \param[in] color Set to \c TRUE if color buffer should be cleared
   \param[in] depth Set to \c TRUE if depth buffer should be cleared
@@ -645,9 +661,9 @@ SoRenderManager::render(const SbBool clearwindow, const SbBool clearzbuffer)
 /*!
   \copydetails SoRenderManager::render(const SbBool clearwindow, const SbBool clearzbuffer)
 
-  \param[in] initmatrices if true, the projection and modelview
-  matrices are reset to identity
-  \param[in] action Renders with a user supplied action
+  \param[in] initmatrices If set to \c TRUE, the projection and modelview
+  matrices are reset to identity.
+  \param[in] action Renders with a user supplied action.
 */
 void
 SoRenderManager::render(SoGLRenderAction * action,
@@ -687,10 +703,10 @@ SoRenderManager::render(SoGLRenderAction * action,
 /*!
   Convenience function for \ref SoRenderManager::renderScene
 
-  \param[in] action Renders with a user supplied action
+  \param[in] action Renders with a user supplied action.
 
-  \param[in] initmatrices if true, the projection and modelview
-  matrices are reset to identity
+  \param[in] initmatrices If set to \c TRUE, the projection and modelview
+  matrices are reset to identity.
 
   \param[in] clearwindow If set to \c TRUE, clear the rendering buffer
   before drawing.
@@ -715,10 +731,10 @@ SoRenderManager::actuallyRender(SoGLRenderAction * action,
     glLoadIdentity();
   }
 
-  // If there has been changes in the scene graph leading to a node
+  // If there have been changes in the scene graph leading to a node
   // sensor detect and schedule before we've gotten around to serving
   // the current redraw -- remove it. This will prevent infinite loops
-  // in the case of scenegraph modifications between a nodesensor
+  // in the case of scene graph modifications between a node sensor
   // trigger and SoRenderManager::render() actually being called. It
   // will also help us avoid "double redraws" at expose events.
   PRIVATE(this)->lock();
@@ -730,7 +746,7 @@ SoRenderManager::actuallyRender(SoGLRenderAction * action,
     PRIVATE(this)->rootsensor->unschedule();
   }
   PRIVATE(this)->unlock();
-  // Apply the SoGLRenderAction to the scenegraph root.
+  // Apply the SoGLRenderAction to the scene graph root.
   if (PRIVATE(this)->scene) {
     this->renderScene(action, PRIVATE(this)->scene, (uint32_t) mask);
   }
@@ -780,6 +796,11 @@ SoRenderManager::renderScene( SoGLRenderAction * action,
     // This callback is removed again in the prerendercb function
     action->addPreRenderCallback(this->prerendercb, (void*) (uintptr_t) clearmask);
   }
+
+  if (PRIVATE(this)->autoclipping != SoRenderManager::NO_AUTO_CLIPPING) {
+    PRIVATE(this)->setClippingPlanes();
+  }
+
   action->apply(scene);
 }
 
@@ -837,7 +858,7 @@ SoRenderManager::renderSingle(SoGLRenderAction * action,
       SoOverrideElement::setMaterialBindingOverride(state, node, TRUE);
       this->actuallyRender(action, initmatrices, FALSE, FALSE);
 
-      // reenable draw masks
+      // re-enable draw masks
       glColorMask(GL_TRUE,GL_TRUE,GL_TRUE,GL_TRUE);
       SoPolygonOffsetElement::set(state, node, 0.0f, 0.0f,
                                   SoPolygonOffsetElement::FILLED, FALSE);
@@ -845,6 +866,56 @@ SoRenderManager::renderSingle(SoGLRenderAction * action,
       SoOverrideElement::setDrawStyleOverride(state, node, TRUE);
       SoOverrideElement::setMaterialBindingOverride(state, node, FALSE);
       this->actuallyRender(action, initmatrices, FALSE, FALSE);
+    }
+    break;
+  case SoRenderManager::SHADED_HIDDEN_LINES:
+    {
+      // three-pass approach, faces first, visible edges as solid lines
+      // and then hidden lines as dashed lines
+
+      // pass 1
+      SoDrawStyleElement::set(state, node, SoDrawStyleElement::FILLED);
+      SoLightModelElement::set(state, node, SoLightModelElement::PHONG);
+      SoPolygonOffsetElement::set(state, node, 1.0f, 1.0f,
+                                  SoPolygonOffsetElement::FILLED, TRUE);
+      SoOverrideElement::setDrawStyleOverride(state, node, TRUE);
+      SoOverrideElement::setLightModelOverride(state, node, TRUE);
+      SoOverrideElement::setPolygonOffsetOverride(state, node, TRUE);
+      
+      // render all faces
+      this->actuallyRender(action, initmatrices, clearwindow, clearzbuffer);
+
+      // pass 2
+      SoDrawStyleElement::set(state, node, SoDrawStyleElement::LINES);
+      SoPolygonOffsetElement::set(state, node, 0.0f, 0.0f,
+                                  SoPolygonOffsetElement::FILLED, FALSE);
+      SoOverrideElement::setDrawStyleOverride(state, node, TRUE);
+      SoOverrideElement::setPolygonOffsetOverride(state, node, TRUE);
+      
+      // sanity checks
+      glDisable(GL_LINE_STIPPLE);
+      glDepthMask(GL_FALSE);
+      glDepthFunc(GL_LEQUAL);
+
+      // render visible edges as solid ones
+      this->actuallyRender(action, initmatrices, FALSE, FALSE);
+      
+      // pass 3
+      glDepthFunc(GL_GREATER);
+      SoLineWidthElement::set(state, node, 1.0f);
+      SoOverrideElement::setLineWidthOverride(state, node, TRUE);
+      glLineWidth(1.0f);
+      glEnable(GL_LINE_STIPPLE);
+      glLineStipple(2, 0xF0F0); // dashed line
+      
+      // render hidden edges as dashed lines
+      this->actuallyRender(action, initmatrices, FALSE, FALSE);
+
+      // Restore OpenGL state
+      glDisable(GL_LINE_STIPPLE);
+      glDepthMask(GL_TRUE);
+      glDepthFunc(GL_LEQUAL);
+      glLineWidth(1.0f);
     }
     break;
   case SoRenderManager::WIREFRAME_OVERLAY:
@@ -980,24 +1051,24 @@ SoRenderManager::setAutoClipping(AutoClippingStrategy autoclipping)
 {
   PRIVATE(this)->autoclipping = autoclipping;
 
-  if (PRIVATE(this)->scene) {
-    switch (autoclipping) {
-    case SoRenderManager::NO_AUTO_CLIPPING:
-      this->detachClipSensor();
-      break;
-    case SoRenderManager::FIXED_NEAR_PLANE:
-    case SoRenderManager::VARIABLE_NEAR_PLANE:
-      if (!PRIVATE(this)->clipsensor->getAttachedNode()) {
-        PRIVATE(this)->clipsensor->attach(PRIVATE(this)->scene);
-      }
-      PRIVATE(this)->clipsensor->schedule();
-      break;
-    }
-  }
+  //if (PRIVATE(this)->scene) {
+  //  switch (autoclipping) {
+  //  case SoRenderManager::NO_AUTO_CLIPPING:
+  //    this->detachClipSensor();
+  //    break;
+  //  case SoRenderManager::FIXED_NEAR_PLANE:
+  //  case SoRenderManager::VARIABLE_NEAR_PLANE:
+  //    if (!PRIVATE(this)->clipsensor->getAttachedNode()) {
+  //      PRIVATE(this)->clipsensor->attach(PRIVATE(this)->scene);
+  //    }
+  //    PRIVATE(this)->clipsensor->schedule();
+  //    break;
+  //  }
+  //}
 }
 
 /*!
-  Initializes stencilbuffers for interleaved stereo
+  Initializes stencil buffers for interleaved stereo
 */
 void
 SoRenderManager::initStencilBufferForInterleavedStereo(void)
@@ -1096,7 +1167,7 @@ SoRenderManager::initStencilBufferForInterleavedStereo(void)
 }
 
 /*!
-  Reinitialize after parameters affecting the OpenGL context has
+  Reinitialize after parameters affecting the OpenGL context have
   changed.
 */
 void
@@ -1108,7 +1179,7 @@ SoRenderManager::reinitialize(void)
 /*!
   Redraw at first opportunity as system becomes idle.
 
-  Multiple calls to this method before an actual redraw has taken
+  Multiple calls to this method before an actual redraw have taken
   place will only result in a single redraw of the scene.
 */
 void
@@ -1130,7 +1201,7 @@ SoRenderManager::scheduleRedraw(void)
   Update window size of our SoGLRenderAction's viewport settings.
 
   Note that this will \e only change the information about window
-  dimensions, the actual viewport size and origin (ie the rectangle
+  dimensions, the actual viewport size and origin (i.e. the rectangle
   which redraws are confined to) will stay the same.
 
   \sa setViewportRegion()
@@ -1232,7 +1303,7 @@ SoRenderManager::setViewportRegion(const SbViewportRegion & newregion)
 }
 
 /*!
-  Returns current viewport region used by the renderaction and the
+  Returns current viewport region used by the render action and the
   event handling.
 
   \sa setViewportRegion()
@@ -1284,9 +1355,9 @@ SoRenderManager::getOverlayColor(void) const
 
 /*!
   Set index of background color in the color lookup table if rendering
-  in colorindex mode.
+  in color index mode.
 
-  Note: colorindex mode is not supported yet in Coin.
+  Note: color index mode is not supported yet in Coin.
  */
 void
 SoRenderManager::setBackgroundIndex(const int index)
@@ -1295,7 +1366,7 @@ SoRenderManager::setBackgroundIndex(const int index)
 }
 
 /*!
-  Returns index of colormap for background filling.
+  Returns index of color map for background filling.
 
   \sa setBackgroundIndex()
  */
@@ -1306,8 +1377,8 @@ SoRenderManager::getBackgroundIndex(void) const
 }
 
 /*!
-  Turn RGB truecolor mode on or off. If you turn truecolor mode off,
-  colorindex mode will be used instead.
+  Turn RGB true color mode on or off. If you turn true color mode off,
+  color index mode will be used instead.
 */
 void
 SoRenderManager::setRGBMode(const SbBool yes)
@@ -1325,7 +1396,7 @@ SoRenderManager::isRGBMode(void) const
 }
 
 /*!
-  Tell the scenemanager that double buffering is used
+  Tell the scene manager that double buffering is used
  */
 void
 SoRenderManager::setDoubleBuffer(const SbBool enable)
@@ -1334,7 +1405,7 @@ SoRenderManager::setDoubleBuffer(const SbBool enable)
 }
 
 /*!
-  returns if the scenemanager is double buffered
+  returns if the scene manager is double buffered
  */
 SbBool
 SoRenderManager::isDoubleBuffer(void) const
@@ -1365,7 +1436,7 @@ SoRenderManager::activate(void)
 }
 
 /*!
-  Deactive rendering and event handling.
+  Deactivate rendering and event handling.
  */
 void
 SoRenderManager::deactivate(void)
@@ -1533,7 +1604,7 @@ SoRenderManager::getGLRenderAction(void) const
 }
 
 /*!
-  This method returns the current autoclipping strategy.
+  This method returns the current auto clipping strategy.
 
   \sa setAutoClipping
 */
@@ -1545,7 +1616,7 @@ SoRenderManager::getAutoClipping(void) const
 }
 
 /*!
-  When the SoRenderManager::FIXED_NEAR_PLANE autoclipping strategy is
+  When the SoRenderManager::FIXED_NEAR_PLANE auto clipping strategy is
   used, you set the value of the near plane distance with this method.
 
   \sa setAutoClipping, getNearPlaneValue, SoRenderManager::AutoClippingStrategy
@@ -1559,7 +1630,7 @@ SoRenderManager::setNearPlaneValue(float value)
 
 /*!
   This method returns the near plane distance value that will be used
-  when the SoRenderManager::FIXED_NEAR_PLANE autoclipping strategy is used.
+  when the SoRenderManager::FIXED_NEAR_PLANE auto clipping strategy is used.
 
   Default value is 0.6.
 
@@ -1681,7 +1752,7 @@ SoRenderManager::enableRealTimeUpdate(const SbBool flag)
 }
 
 /*!
-  Returns whether or not we automatically notifies everything
+  Returns whether or not we automatically notify everything
   connected to the \c realTime field after a redraw.
  */
 SbBool
@@ -1705,7 +1776,7 @@ SoRenderManager::addPreRenderCallback(SoRenderManagerRenderCB * cb, void * data)
 
 
 /*!
-  Removes a prerendercallback.
+  Removes a pre render callback.
 
   \pre The tuple (cb, data) must exactly match an earlier call to
   SoRenderManager::addPreRenderCallback
@@ -1741,7 +1812,7 @@ SoRenderManager::addPostRenderCallback(SoRenderManagerRenderCB * cb, void * data
 }
 
 /*!
-  Removes a postrendercallback.
+  Removes a post render callback.
 
   \pre The tuple (cb, data) must exactly match an earlier call to
   SoRenderManager::addPostRenderCallback

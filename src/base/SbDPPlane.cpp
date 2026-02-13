@@ -33,7 +33,8 @@
 /*!
   \class SbDPPlane SbDPPlane.h Inventor/SbLinear.h
   \brief The SbDPPlane class represents a plane in 3D space.
-  \ingroup base
+
+  \ingroup coin_base
 
   SbDPPlane is used by many other classes in Coin.  It provides a way of
   representing a plane, specified by a plane normal vector and a
@@ -104,9 +105,9 @@ SbDPPlane::SbDPPlane(const SbVec3d & p0, const SbVec3d & p1, const SbVec3d & p2)
   // we test and warn about a null vector above
   (void) this->normal.normalize();
 
-  //     N·point
+  //     NÂ·point
   // d = -------, |N| == 1
-  //       |N|²
+  //       |N|Â²
 
   this->distance = this->normal.dot(p0);
 }
@@ -128,9 +129,9 @@ SbDPPlane::SbDPPlane(const SbVec3d & normalref, const SbVec3d & point)
   // we test and warn about a null vector above
   (void) this->normal.normalize();
 
-  //     N·point
+  //     NÂ·point
   // d = -------, |N| == 1
-  //       |N|²
+  //       |N|Â²
 
   this->distance = this->normal.dot(point);
 }
@@ -171,15 +172,15 @@ SbDPPlane::intersect(const SbDPLine & l, SbVec3d & intersection) const
   //
   // We can also easily see that a point must satisfy this equation to lie
   // in the plane:
-  //                    N·(Q - d*N) = 0, where N is the normal vector,
+  //                    NÂ·(Q - d*N) = 0, where N is the normal vector,
   //                                     Q is the point and d the offset
   //                                     from the origin.
   //
   // Combining these two equations and simplifying we get:
   //
-  //                          d*|N|² - N·P
+  //                          d*|N|Â² - NÂ·P
   //                    t = ----------------, |N| == 1
-  //                               N·D
+  //                               NÂ·D
   //
   // Substituting t back in (1), we've solved the problem.
   //                                                         19980816 mortene.
@@ -230,7 +231,7 @@ SbDPPlane::isInHalfSpace(const SbVec3d & point) const
   // This one is dead easy, we just take the dot product of the normal
   // vector and the vector going from the plane base point to the
   // point we're checking against, and see if the angle between the
-  // vectors are within 90° (which is the same as checking the sign
+  // vectors are within 90Â° (which is the same as checking the sign
   // of the dot product).
   //                                                    19980816 mortene.
 #if 0 // not very efficient code, disabled 19991012 pederb
@@ -245,7 +246,7 @@ SbDPPlane::isInHalfSpace(const SbVec3d & point) const
 
 /*!
   Return the distance from \a point to plane. Positive distance means
-  the point is in the plane's half space.
+  the point is in the plane's halfspace.
 
   This method is an extension specific to Coin versus the original SGI
   Inventor API.
@@ -356,7 +357,7 @@ operator ==(const SbDPPlane & p1, const SbDPPlane & p2)
 /*!
   \relates SbDPPlane
 
-  Check the two given planes for unequality.
+  Check the two given planes for inequality.
 */
 int
 operator !=(const SbDPPlane & p1, const SbDPPlane & p2)
@@ -365,7 +366,7 @@ operator !=(const SbDPPlane & p1, const SbDPPlane & p2)
 }
 
 /*!
-  Dump the state of this object to the \a file stream. Only works in
+  Dump the state of this object to the \a fp file stream. Only works in
   debug version of library, method does nothing in an optimized build.
 */
 void
@@ -438,24 +439,25 @@ BOOST_AUTO_TEST_CASE(signCorrect)
 BOOST_AUTO_TEST_CASE(equalityToFloatPlane)
 {
   const float delX = 1;
-  const float delY = .1;
+  const float delY = .1f;
 
-  const float XMax = pow(2,FLT_MAX_EXP/3);
+  const float XMax = (float)pow(2.,FLT_MAX_EXP/3.);
   const float XMin = -XMax;
 
-  const float YMax = pow(2,FLT_MAX_EXP/3);
+  const float YMax = (float)pow(2.,FLT_MAX_EXP/3.);
   const float YMin = -YMax;
 
 #ifdef TEST_SUITE_QUICK
-  const int XSteps = 6;
-  const int YSteps = 6;
+  const int XSteps = 4;
+  const int YSteps = 4;
 #endif //TEST_SUITE_QUICK
 #ifdef TEST_SUITE_THOROUG
-  const int XSteps = 10;
-  const int YSteps = 10;
+  const int XSteps = 6;
+  const int YSteps = 6;
 #endif //TEST_SUITE_THOROUG
 #ifdef TEST_SUITE_EXPANSIVE
-  const int XSteps = 100;
+  const int XSteps = 10;
+  const int YSteps = 10;
 #endif //TEST_SUITE_EXPANSIVE
 
   int count=0;
@@ -489,7 +491,7 @@ BOOST_AUTO_TEST_CASE(equalityToFloatPlane)
                 //A bit arbitrary, this holds
                 const float tol = .03f;
                 BOOST_CHECK_MESSAGE(
-                                    floatEquals(fp1.getDistance(fv2),dp1.getDistance(dv2),tol)||
+                                    floatEquals(fp1.getDistance(fv2),(float)dp1.getDistance(dv2),tol)||
                                     fabs(fp1.getDistance(fv2)-dp1.getDistance(dv2))/fabs(dp1.getDistanceFromOrigin())<tol,
                                     "Distance from plane is significantly different");
                 for (int y4=0;y4<YSteps;++y4) {

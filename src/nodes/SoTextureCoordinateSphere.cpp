@@ -32,8 +32,9 @@
 
 /*!
   \class SoTextureCoordinateSphere include/Inventor/nodes/SoTextureCoordinateSphere.h
-  \brief The SoTextureCoordinateSphere class autogenerates spheremapped texture coordinated for shapes.
-  \ingroup nodes
+  \brief The SoTextureCoordinateSphere class generates sphere mapped texture coordinates for shapes.
+
+  \ingroup coin_nodes
 
   <b>FILE FORMAT/DEFAULTS:</b>
   \code
@@ -103,7 +104,7 @@ public:
   SoTextureCoordinateSphereP(SoTextureCoordinateSphere * texturenode)
     : master(texturenode) { }
 
-  SbVec4f calculateTextureCoordinate(SbVec3f point, SbVec3f n);
+  SbVec4f calculateTextureCoordinate(const SbVec3f & point, const SbVec3f & n);
 
   so_texcoordsphere_data * so_texcoord_get_data() {
     so_texcoordsphere_data * data = NULL;
@@ -150,6 +151,9 @@ SoTextureCoordinateSphere::~SoTextureCoordinateSphere()
 }
 
 // Documented in superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoTextureCoordinateSphere::initClass(void)
 {
@@ -205,7 +209,7 @@ textureCoordinateSphereCallback(void * userdata,
 }
 
 SbVec4f
-SoTextureCoordinateSphereP::calculateTextureCoordinate(SbVec3f point, SbVec3f COIN_UNUSED_ARG(n))
+SoTextureCoordinateSphereP::calculateTextureCoordinate(const SbVec3f & point, const SbVec3f & COIN_UNUSED_ARG(n))
 {
 
   // FIXME: This way of mapping will always lead to artifacts in the

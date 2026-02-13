@@ -33,7 +33,8 @@
 /*!
   \class SoGLCoordinateElement Inventor/elements/SoGLCoordinateElement.h
   \brief The SoGLCoordinateElement class is yet to be documented.
-  \ingroup elements
+
+  \ingroup coin_elements
 
   FIXME: write doc.
 */
@@ -51,10 +52,8 @@
 SO_ELEMENT_SOURCE(SoGLCoordinateElement);
 
 /*!
-  This static method initializes static data for the SoGLCoordinateElement
-  class.
+  \copydetails SoElement::initClass(void)
 */
-
 void
 SoGLCoordinateElement::initClass(void)
 {
@@ -62,9 +61,8 @@ SoGLCoordinateElement::initClass(void)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
-
 SoGLCoordinateElement::~SoGLCoordinateElement(void)
 {
 }
