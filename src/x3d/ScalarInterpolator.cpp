@@ -1,0 +1,127 @@
+/**************************************************************************\
+ * Copyright (c) Kongsberg Oil & Gas Technologies AS
+ * All rights reserved.
+ * 
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are
+ * met:
+ * 
+ * Redistributions of source code must retain the above copyright notice,
+ * this list of conditions and the following disclaimer.
+ * 
+ * Redistributions in binary form must reproduce the above copyright
+ * notice, this list of conditions and the following disclaimer in the
+ * documentation and/or other materials provided with the distribution.
+ * 
+ * Neither the name of the copyright holder nor the names of its
+ * contributors may be used to endorse or promote products derived from
+ * this software without specific prior written permission.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+ * HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+\**************************************************************************/
+
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_X3D
+
+/*!
+  \class SoX3DScalarInterpolator SoX3DScalarInterpolator.h Inventor/X3Dnodes/SoX3DScalarInterpolator.h
+  \brief The SoX3DScalarInterpolator class is used to interpolate scalar values.
+
+  \ingroup coin_X3Dnodes
+  
+  \verbatim
+  ScalarInterpolator {
+    eventIn      SFFloat set_fraction         # (-inf, inf)
+    exposedField MFFloat key           []     # (-inf, inf)
+    exposedField MFFloat keyValue      []     # (-inf, inf)
+    eventOut     SFFloat value_changed
+  }
+  \endverbatim
+
+  This node linearly interpolates among a list of SFFloat values. This
+  interpolator is appropriate for any parameter defined using a single
+  floating point value. Examples include width, radius, and intensity
+  fields. The keyValue field shall contain exactly as many numbers as
+  there are keyframes in the key field.  A more detailed discussion of
+  interpolators is available in 4.6.8, Interpolator nodes
+  (<http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-X3D/part1/concepts.html#4.6.8>).
+   
+*/
+
+/*!
+  \var SoMFFloat SoX3DScalarInterpolator::keyValue
+  The keyValue vector.
+*/
+
+/*!
+  \var SoEngineOutput SoX3DScalarInterpolator::value_changed
+  The eventOut which is sent every time the interpolator has calculated a new value.
+*/
+
+#include <Inventor/X3Dnodes/SoX3DScalarInterpolator.h>
+
+#include <Inventor/X3Dnodes/SoX3DMacros.h>
+
+#include "engines/SoSubNodeEngineP.h"
+
+SO_NODEENGINE_SOURCE(SoX3DScalarInterpolator);
+
+/*!
+  \copydetails SoNode::initClass(void)
+*/
+void
+SoX3DScalarInterpolator::initClass(void) // static
+{
+  SO_NODEENGINE_INTERNAL_INIT_CLASS(SoX3DScalarInterpolator);
+}
+
+/*!
+  Constructor.
+*/
+SoX3DScalarInterpolator::SoX3DScalarInterpolator(void)
+{
+  SO_NODEENGINE_INTERNAL_CONSTRUCTOR(SoX3DScalarInterpolator);
+
+  SO_X3DNODE_ADD_EMPTY_EXPOSED_MFIELD(keyValue);
+  SO_NODEENGINE_ADD_OUTPUT(value_changed, SoSFFloat);
+}
+
+/*!
+  Destructor.
+*/
+SoX3DScalarInterpolator::~SoX3DScalarInterpolator()
+{
+}
+
+// Doc in parent
+void
+SoX3DScalarInterpolator::evaluate(void)
+{
+  float interp;
+  int idx = this->getKeyValueIndex(interp, this->keyValue.getNum());
+  if (idx < 0) return;
+
+  const float * v = this->keyValue.getValues(0);
+
+  float v0 = v[idx];
+  if (interp > 0.0f) {
+    float v1 = v[idx+1];
+    v0 = v0 + (v1-v0)*interp;
+  }
+  SO_ENGINE_OUTPUT(value_changed, SoSFFloat, setValue(v0));
+}
+
+#endif // HAVE_X3D
