@@ -30,8 +30,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifndef COIN_SOVRMLAUDIOCLIP_H
-#define COIN_SOVRMLAUDIOCLIP_H
+#ifndef COIN_SOX3DAUDIOCLIP_H
+#define COIN_SOX3DAUDIOCLIP_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
@@ -43,28 +43,28 @@
 #include <Inventor/lists/SbStringList.h>
 #include <Inventor/SbTime.h>
 
-class SoVRMLAudioClipP;
+class SoX3DAudioClipP;
 
-class COIN_DLL_API SoVRMLAudioClip : public SoNode
+class COIN_DLL_API SoX3DAudioClip : public SoNode
 {
   typedef SoNode inherited;
-  SO_NODE_HEADER(SoVRMLAudioClip);
+  SO_NODE_HEADER(SoX3DAudioClip);
 
 public:
   typedef void *open_func(const SbStringList &url, 
-                            SoVRMLAudioClip *clip, void *userdataptr);
+                            SoX3DAudioClip *clip, void *userdataptr);
   typedef size_t read_func(void *datasource, 
                              void *buffer, int numframes, int &channels,
-                             SoVRMLAudioClip *clip, void *userdataptr);
+                             SoX3DAudioClip *clip, void *userdataptr);
   typedef int seek_func(void *datasource, long offset, int whence,
-                          SoVRMLAudioClip *clip, void *userdataptr);
+                          SoX3DAudioClip *clip, void *userdataptr);
   typedef long tell_func(void *datasource,
-                         SoVRMLAudioClip *clip, void *userdataptr);
+                         SoX3DAudioClip *clip, void *userdataptr);
   typedef int close_func(void *datasource,
-                         SoVRMLAudioClip *clip, void *userdataptr);
+                         SoX3DAudioClip *clip, void *userdataptr);
   
   static void initClass(void);
-  SoVRMLAudioClip(void);
+  SoX3DAudioClip(void);
 
   SoSFString description;
   SoSFBool loop;
@@ -96,13 +96,13 @@ public:
                     tell_func *tellcb, close_func *closecb, void *userdataptr);
 
 protected:
-  virtual ~SoVRMLAudioClip();
+  virtual ~SoX3DAudioClip();
   SoSFTime duration_changed; // eventOut
   SoSFBool isActive;         // eventOut
 
 private:
-  SoVRMLAudioClipP *pimpl;
-  friend class SoVRMLAudioClipP;
+  SoX3DAudioClipP *pimpl;
+  friend class SoX3DAudioClipP;
 };
 
-#endif // ! COIN_SOVRMLAUDIOCLIP_H
+#endif // ! COIN_SOX3DAUDIOCLIP_H

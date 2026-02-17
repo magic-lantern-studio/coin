@@ -30,26 +30,26 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifndef COIN_SOVRMLTEXT_H
-#define COIN_SOVRMLTEXT_H
+#ifndef COIN_SOX3DTEXT_H
+#define COIN_SOX3DTEXT_H
 
 #include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/VRMLnodes/SoVRMLGeometry.h>
+#include <Inventor/X3Dnodes/SoX3DGeometry.h>
 #include <Inventor/fields/SoMFString.h>
 #include <Inventor/fields/SoSFNode.h>
 #include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/fields/SoMFFloat.h>
 
-class SoVRMLTextP;
+class SoX3DTextP;
 
-class COIN_DLL_API SoVRMLText : public SoVRMLGeometry
+class COIN_DLL_API SoX3DText : public SoX3DGeometry
 {
-  typedef SoVRMLGeometry inherited;
-  SO_NODE_HEADER(SoVRMLText);
+  typedef SoX3DGeometry inherited;
+  SO_NODE_HEADER(SoX3DText);
 
 public:
   static void initClass(void);
-  SoVRMLText(void);
+  SoX3DText(void);
 
   SoMFString string;
   SoSFNode fontStyle;
@@ -69,7 +69,7 @@ public:
   virtual SoChildList * getChildren(void) const;
 
 protected:
-  virtual ~SoVRMLText();
+  virtual ~SoX3DText();
 
   virtual void computeBBox(SoAction * action,
                             SbBox3f & box, SbVec3f & center);
@@ -77,9 +77,9 @@ protected:
   SoChildList * children;
 
 private:
-  SoVRMLTextP * pimpl;
-  friend class SoVRMLTextP;
+  SoX3DTextP * pimpl;
+  friend class SoX3DTextP;
 
 };
 
-#endif // ! COIN_SOVRMLTEXT_H
+#endif // ! COIN_SOX3DTEXT_H

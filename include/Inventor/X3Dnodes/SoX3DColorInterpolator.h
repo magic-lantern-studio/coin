@@ -30,33 +30,33 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifndef COIN_SOVRMLCOLORINTERPOLATOR_H
-#define COIN_SOVRMLCOLORINTERPOLATOR_H
+#ifndef COIN_SOX3DCOLORINTERPOLATOR_H
+#define COIN_SOX3DCOLORINTERPOLATOR_H
 
 #include <Inventor/engines/SoSubNodeEngine.h>
-#include <Inventor/VRMLnodes/SoVRMLInterpolator.h>
+#include <Inventor/X3Dnodes/SoX3DInterpolator.h>
 #include <Inventor/fields/SoMFFloat.h>
 #include <Inventor/fields/SoMFColor.h>
 #include <Inventor/fields/SoSFColor.h>
 #include <Inventor/fields/SoSFFloat.h>
 
-class COIN_DLL_API SoVRMLColorInterpolator : public SoVRMLInterpolator
+class COIN_DLL_API SoX3DColorInterpolator : public SoX3DInterpolator
 {
-  typedef SoVRMLInterpolator inherited;
-  SO_NODEENGINE_HEADER(SoVRMLColorInterpolator);
+  typedef SoX3DInterpolator inherited;
+  SO_NODEENGINE_HEADER(SoX3DColorInterpolator);
 
 public:
   static void initClass(void);
-  SoVRMLColorInterpolator(void);
+  SoX3DColorInterpolator(void);
 
   SoMFColor keyValue;
   SoEngineOutput value_changed; // (SoSFColor)
 
 protected:
-  virtual ~SoVRMLColorInterpolator();
+  virtual ~SoX3DColorInterpolator();
 
 private:
   virtual void evaluate(void);
-}; // class SoVRMLColorInterpolator
+}; // class SoX3DColorInterpolator
 
-#endif // ! COIN_SOVRMLCOLORINTERPOLATOR_H
+#endif // ! COIN_SOX3DCOLORINTERPOLATOR_H

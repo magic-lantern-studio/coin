@@ -30,8 +30,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifndef COIN_SOVRMLTIMESENSOR_H
-#define COIN_SOVRMLTIMESENSOR_H
+#ifndef COIN_SOX3DTIMESENSOR_H
+#define COIN_SOX3DTIMESENSOR_H
 
 #include <Inventor/engines/SoNodeEngine.h>
 #include <Inventor/engines/SoSubNodeEngine.h>
@@ -42,14 +42,14 @@
 
 class SoSensor;
 
-class COIN_DLL_API SoVRMLTimeSensor : public SoNodeEngine
+class COIN_DLL_API SoX3DTimeSensor : public SoNodeEngine
 {
   typedef SoNodeEngine inherited;
-  SO_NODEENGINE_HEADER(SoVRMLTimeSensor);
+  SO_NODEENGINE_HEADER(SoX3DTimeSensor);
 
 public:
   static void initClass(void);
-  SoVRMLTimeSensor(void);
+  SoX3DTimeSensor(void);
 
   SoSFTime cycleInterval;
   SoSFBool enabled;
@@ -67,13 +67,13 @@ public:
   SoEngineOutput time; // (SoSFTime)
 
 protected:
-  virtual ~SoVRMLTimeSensor();
+  virtual ~SoX3DTimeSensor();
   virtual void inputChanged(SoField * whichInput);
 
 private:
   virtual void evaluate(void);
   SoSFTime timeIn;
-  class SoVRMLTimeSensorP * pimpl;
-}; // class SoVRMLTimeSensor
+  class SoX3DTimeSensorP * pimpl;
+}; // class SoX3DTimeSensor
 
-#endif // ! COIN_SOVRMLTIMESENSOR_H
+#endif // ! COIN_SOX3DTIMESENSOR_H

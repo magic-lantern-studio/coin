@@ -30,34 +30,34 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifndef COIN_SOVRMLIMAGETEXTURE_H
-#define COIN_SOVRMLIMAGETEXTURE_H
+#ifndef COIN_SOX3DIMAGETEXTURE_H
+#define COIN_SOX3DIMAGETEXTURE_H
 
 #include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/VRMLnodes/SoVRMLTexture.h>
+#include <Inventor/X3Dnodes/SoX3DTexture.h>
 #include <Inventor/fields/SoMFString.h>
 #include <Inventor/SbImage.h>
 
-class SoVRMLImageTexture;
+class SoX3DImageTexture;
 class SoSensor;
 class SbImage;
 
-typedef SbBool VRMLPrequalifyFileCallback(const SbString &, void *,
-                                          SoVRMLImageTexture *);
+typedef SbBool X3DPrequalifyFileCallback(const SbString &, void *,
+                                          SoX3DImageTexture *);
 
-class COIN_DLL_API SoVRMLImageTexture : public SoVRMLTexture
+class COIN_DLL_API SoX3DImageTexture : public SoX3DTexture
 {
-  typedef SoVRMLTexture inherited;
-  SO_NODE_HEADER(SoVRMLImageTexture);
+  typedef SoX3DTexture inherited;
+  SO_NODE_HEADER(SoX3DImageTexture);
 
 public:
   static void initClass(void);
-  SoVRMLImageTexture(void);
+  SoX3DImageTexture(void);
 
   SoMFString url;
 
   static void setDelayFetchURL(const SbBool onoff);
-  static void setPrequalifyFileCallBack(VRMLPrequalifyFileCallback * cb,
+  static void setPrequalifyFileCallBack(X3DPrequalifyFileCallback * cb,
                                         void * closure);
   void allowPrequalifyFile(SbBool enable);
 
@@ -72,7 +72,7 @@ public:
   static void setImageDataMaxAge(const uint32_t maxage);
 
 protected:
-  virtual ~SoVRMLImageTexture();
+  virtual ~SoX3DImageTexture();
 
   virtual SbBool readInstance(SoInput * in, unsigned short flags);
   int getReadStatus(void) const;
@@ -82,15 +82,15 @@ private:
 
   SbBool readImage(const SbString & filename);
   SbBool loadUrl(void);
-  class SoVRMLImageTextureP * pimpl;
+  class SoX3DImageTextureP * pimpl;
   static void urlSensorCB(void *, SoSensor *);
   static void glimage_callback(void * closure);
   static SbBool image_read_cb(const SbString &, SbImage *, void *);
   static void read_thread(void * closure);
   static SbBool default_prequalify_cb(const SbString & url,  void * closure, 
-                                      SoVRMLImageTexture * node);
+                                      SoX3DImageTexture * node);
   static void oneshot_readimage_cb(void *, SoSensor *);
 
-}; // class SoVRMLImageTexture
+}; // class SoX3DImageTexture
 
-#endif // ! COIN_SOVRMLIMAGETEXTURE_H
+#endif // ! COIN_SOX3DIMAGETEXTURE_H

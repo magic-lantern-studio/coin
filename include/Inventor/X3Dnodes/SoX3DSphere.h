@@ -30,21 +30,21 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifndef COIN_SOVRMLSPHERE_H
-#define COIN_SOVRMLSPHERE_H
+#ifndef COIN_SOX3DSPHERE_H
+#define COIN_SOX3DSPHERE_H
 
 #include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/VRMLnodes/SoVRMLGeometry.h>
+#include <Inventor/X3Dnodes/SoX3DGeometry.h>
 #include <Inventor/fields/SoSFFloat.h>
 
-class COIN_DLL_API SoVRMLSphere : public SoVRMLGeometry
+class COIN_DLL_API SoX3DSphere : public SoX3DGeometry
 {
-  typedef SoVRMLGeometry inherited;
-  SO_NODE_HEADER(SoVRMLSphere);
+  typedef SoX3DGeometry inherited;
+  SO_NODE_HEADER(SoX3DSphere);
 
 public:
   static void initClass(void);
-  SoVRMLSphere(void);
+  SoX3DSphere(void);
 
   SoSFFloat radius;
 
@@ -53,12 +53,12 @@ public:
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
 
 protected:
-  virtual ~SoVRMLSphere();
+  virtual ~SoX3DSphere();
 
   virtual void generatePrimitives(SoAction * action);
   virtual void computeBBox(SoAction * action,
                            SbBox3f & box, SbVec3f & center);
 
-}; // class SoVRMLSphere
+}; // class SoX3DSphere
 
-#endif // ! COIN_SOVRMLSPHERE_H
+#endif // ! COIN_SOX3DSPHERE_H

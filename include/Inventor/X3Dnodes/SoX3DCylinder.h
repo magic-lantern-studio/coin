@@ -30,22 +30,22 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifndef COIN_SOVRMLCYLINDER_H
-#define COIN_SOVRMLCYLINDER_H
+#ifndef COIN_SOX3DCYLINDER_H
+#define COIN_SOX3DCYLINDER_H
 
 #include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/VRMLnodes/SoVRMLGeometry.h>
+#include <Inventor/X3Dnodes/SoX3DGeometry.h>
 #include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/fields/SoSFBool.h>
 
-class COIN_DLL_API SoVRMLCylinder : public SoVRMLGeometry
+class COIN_DLL_API SoX3DCylinder : public SoX3DGeometry
 {
-  typedef SoVRMLGeometry inherited;
-  SO_NODE_HEADER(SoVRMLCylinder);
+  typedef SoX3DGeometry inherited;
+  SO_NODE_HEADER(SoX3DCylinder);
 
 public:
   static void initClass(void);
-  SoVRMLCylinder(void);
+  SoX3DCylinder(void);
 
   SoSFFloat radius;
   SoSFFloat height;
@@ -58,12 +58,12 @@ public:
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
 
 protected:
-  virtual ~SoVRMLCylinder();
+  virtual ~SoX3DCylinder();
 
   virtual void generatePrimitives(SoAction * action);
   virtual void computeBBox(SoAction * action, SbBox3f & box,
                            SbVec3f & center);
 
-}; // class SoVRMLCylinder
+}; // class SoX3DCylinder
 
-#endif // ! COIN_SOVRMLCYLINDER_H
+#endif // ! COIN_SOX3DCYLINDER_H

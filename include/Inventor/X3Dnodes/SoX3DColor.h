@@ -30,23 +30,23 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifndef COIN_SOVRMLCOLOR_H
-#define COIN_SOVRMLCOLOR_H
+#ifndef COIN_SOX3DCOLOR_H
+#define COIN_SOX3DCOLOR_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/fields/SoMFColor.h>
 
-class SoVRMLColorP;
+class SoX3DColorP;
 
-class COIN_DLL_API SoVRMLColor : public SoNode
+class COIN_DLL_API SoX3DColor : public SoNode
 {
   typedef SoNode inherited;
-  SO_NODE_HEADER(SoVRMLColor);
+  SO_NODE_HEADER(SoX3DColor);
 
 public:
   static void initClass(void);
-  SoVRMLColor(void);
+  SoX3DColor(void);
 
   SoMFColor color;
 
@@ -55,10 +55,10 @@ public:
   virtual void callback(SoCallbackAction * action);
 
 protected:
-  virtual ~SoVRMLColor();
+  virtual ~SoX3DColor();
 
 private:
-  SoVRMLColorP * pimpl;
-}; // class SoVRMLColor
+  SoX3DColorP * pimpl;
+}; // class SoX3DColor
 
-#endif // ! COIN_SOVRMLCOLOR_H
+#endif // ! COIN_SOX3DCOLOR_H

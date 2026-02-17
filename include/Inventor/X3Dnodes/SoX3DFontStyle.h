@@ -30,8 +30,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifndef COIN_SOVRMLFONTSTYLE_H
-#define COIN_SOVRMLFONTSTYLE_H
+#ifndef COIN_SOX3DFONTSTYLE_H
+#define COIN_SOX3DFONTSTYLE_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
@@ -45,16 +45,16 @@
 #include <Inventor/actions/SoCallbackAction.h>
 #endif // !COIN_INTERNAL
 
-class SoVRMLFontStyleP;
+class SoX3DFontStyleP;
 
-class COIN_DLL_API SoVRMLFontStyle : public SoNode
+class COIN_DLL_API SoX3DFontStyle : public SoNode
 {
   typedef SoNode inherited;
-  SO_NODE_HEADER(SoVRMLFontStyle);
+  SO_NODE_HEADER(SoX3DFontStyle);
 
 public:
   static void initClass(void);
-  SoVRMLFontStyle(void);
+  SoX3DFontStyle(void);
 
   enum Family {
     SERIF,
@@ -89,10 +89,10 @@ public:
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
 
 protected:
-  virtual ~SoVRMLFontStyle();
+  virtual ~SoX3DFontStyle();
 
 private:
-  SoVRMLFontStyleP * pimpl;
+  SoX3DFontStyleP * pimpl;
 };
 
-#endif // ! COIN_SOVRMLFONTSTYLE_H
+#endif // ! COIN_SOX3DFONTSTYLE_H

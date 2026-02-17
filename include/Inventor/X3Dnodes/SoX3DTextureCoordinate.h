@@ -30,23 +30,23 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifndef COIN_SOVRMLTEXTURECOORDINATE_H
-#define COIN_SOVRMLTEXTURECOORDINATE_H
+#ifndef COIN_SOX3DTEXTURECOORDINATE_H
+#define COIN_SOX3DTEXTURECOORDINATE_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/fields/SoMFVec2f.h>
 
-class SoVRMLTextureCoordinateP;
+class SoX3DTextureCoordinateP;
 
-class COIN_DLL_API SoVRMLTextureCoordinate : public SoNode
+class COIN_DLL_API SoX3DTextureCoordinate : public SoNode
 {
   typedef SoNode inherited;
-  SO_NODE_HEADER(SoVRMLTextureCoordinate);
+  SO_NODE_HEADER(SoX3DTextureCoordinate);
 
 public:
   static void initClass(void);
-  SoVRMLTextureCoordinate(void);
+  SoX3DTextureCoordinate(void);
 
   SoMFVec2f point;
 
@@ -57,10 +57,10 @@ public:
   virtual void getPrimitiveCount( SoGetPrimitiveCountAction * action );
 
  protected:
-  virtual ~SoVRMLTextureCoordinate();
+  virtual ~SoX3DTextureCoordinate();
  private:
-  SoVRMLTextureCoordinateP * pimpl;
+  SoX3DTextureCoordinateP * pimpl;
 
-}; // class SoVRMLTextureCoordinate
+}; // class SoX3DTextureCoordinate
 
-#endif // ! COIN_SOVRMLTEXTURECOORDINATE_H
+#endif // ! COIN_SOX3DTEXTURECOORDINATE_H

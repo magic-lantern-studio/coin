@@ -30,26 +30,26 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifndef COIN_SOVRMLGROUP_H
-#define COIN_SOVRMLGROUP_H
+#ifndef COIN_SOX3DGROUP_H
+#define COIN_SOX3DGROUP_H
 
 #include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/VRMLnodes/SoVRMLParent.h>
+#include <Inventor/X3Dnodes/SoX3DParent.h>
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/fields/SoSFVec3f.h>
 
 class SoState;
-class SoVRMLGroupP;
+class SoX3DGroupP;
 
-class COIN_DLL_API SoVRMLGroup : public SoVRMLParent
+class COIN_DLL_API SoX3DGroup : public SoX3DParent
 {
-  typedef SoVRMLParent inherited;
-  SO_NODE_HEADER(SoVRMLGroup);
+  typedef SoX3DParent inherited;
+  SO_NODE_HEADER(SoX3DGroup);
 
 public:
   static void initClass(void);
-  SoVRMLGroup(void);
-  SoVRMLGroup(int numChildren);
+  SoX3DGroup(void);
+  SoX3DGroup(int numChildren);
 
   enum CacheEnabled {
     OFF,
@@ -85,18 +85,18 @@ public:
   virtual void notify(SoNotList * list);
 
 protected:
-  virtual ~SoVRMLGroup();
+  virtual ~SoX3DGroup();
 
   virtual SbBool cullTest(SoState * state);
 
   static int numRenderCaches;
 
 private:
-  SoVRMLGroupP * pimpl;
+  SoX3DGroupP * pimpl;
 
   SbBool cullTestNoPush(SoState * state);
   void commonConstructor(void);
 
-}; // class SoVRMLGroup
+}; // class SoX3DGroup
 
-#endif // ! COIN_SOVRMLGROUP_H
+#endif // ! COIN_SOX3DGROUP_H

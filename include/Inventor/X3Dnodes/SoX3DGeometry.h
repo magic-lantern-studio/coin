@@ -30,18 +30,18 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifndef COIN_SOVRMLGEOMETRY_H
-#define COIN_SOVRMLGEOMETRY_H
+#ifndef COIN_SOX3DGEOMETRY_H
+#define COIN_SOX3DGEOMETRY_H
 
 #include <Inventor/nodes/SoShape.h>
 #include <Inventor/nodes/SoSubNode.h>
 
-class SoVRMLGeometryP;
+class SoX3DGeometryP;
 
-class COIN_DLL_API SoVRMLGeometry : public SoShape
+class COIN_DLL_API SoX3DGeometry : public SoShape
 {
   typedef SoShape inherited;
-  SO_NODE_ABSTRACT_HEADER(SoVRMLGeometry);
+  SO_NODE_ABSTRACT_HEADER(SoX3DGeometry);
 
 public:
   static void initClass(void);
@@ -50,8 +50,8 @@ public:
   virtual void copyContents(const SoFieldContainer * from, SbBool copyConn);
 
 protected:
-  SoVRMLGeometry(void);
-  virtual ~SoVRMLGeometry();
+  SoX3DGeometry(void);
+  virtual ~SoX3DGeometry();
 
   void setupShapeHints(SoState * state, const SbBool ccw, const SbBool solid);
   virtual SbBool shouldGLRender(SoGLRenderAction * action);
@@ -59,7 +59,7 @@ protected:
   virtual void notify(SoNotList * list);
 
 private:
-  SoVRMLGeometryP * pimpl;
+  SoX3DGeometryP * pimpl;
 };
 
-#endif // ! COIN_SOVRMLGEOMETRY_H
+#endif // ! COIN_SOX3DGEOMETRY_H

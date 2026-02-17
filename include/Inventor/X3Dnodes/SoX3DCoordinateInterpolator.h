@@ -30,33 +30,33 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifndef COIN_SOVRMLCOORDINATEINTERPOLATOR_H
-#define COIN_SOVRMLCOORDINATEINTERPOLATOR_H
+#ifndef COIN_SOX3DCOORDINATEINTERPOLATOR_H
+#define COIN_SOX3DCOORDINATEINTERPOLATOR_H
 
 #include <Inventor/engines/SoSubNodeEngine.h>
-#include <Inventor/VRMLnodes/SoVRMLInterpolator.h>
+#include <Inventor/X3Dnodes/SoX3DInterpolator.h>
 #include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/fields/SoMFFloat.h>
 #include <Inventor/fields/SoMFVec3f.h>
 
-class COIN_DLL_API SoVRMLCoordinateInterpolator : public SoVRMLInterpolator
+class COIN_DLL_API SoX3DCoordinateInterpolator : public SoX3DInterpolator
 {
-  typedef SoVRMLInterpolator inherited;
-  SO_NODEENGINE_HEADER(SoVRMLCoordinateInterpolator);
+  typedef SoX3DInterpolator inherited;
+  SO_NODEENGINE_HEADER(SoX3DCoordinateInterpolator);
 
 public:
   static void initClass(void);
-  SoVRMLCoordinateInterpolator(void);
+  SoX3DCoordinateInterpolator(void);
 
   SoMFVec3f keyValue;
   SoEngineOutput value_changed; // (SoMFVec3f)
 
 protected:
-  virtual ~SoVRMLCoordinateInterpolator();
+  virtual ~SoX3DCoordinateInterpolator();
 private:
   virtual void evaluate(void);
-  class SoVRMLCoordinateInterpolatorP * pimpl;
+  class SoX3DCoordinateInterpolatorP * pimpl;
 
-}; // class SoVRMLCoordinateInterpolator
+}; // class SoX3DCoordinateInterpolator
 
-#endif // ! COIN_SOVRMLCOORDINATEINTERPOLATOR_H
+#endif // ! COIN_SOX3DCOORDINATEINTERPOLATOR_H

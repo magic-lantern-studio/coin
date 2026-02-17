@@ -30,22 +30,22 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifndef COIN_SOVRMLCYLINDERSENSOR_H
-#define COIN_SOVRMLCYLINDERSENSOR_H
+#ifndef COIN_SOX3DCYLINDERSENSOR_H
+#define COIN_SOX3DCYLINDERSENSOR_H
 
 #include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/VRMLnodes/SoVRMLDragSensor.h>
+#include <Inventor/X3Dnodes/SoX3DDragSensor.h>
 #include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/fields/SoSFRotation.h>
 
-class COIN_DLL_API SoVRMLCylinderSensor : public SoVRMLDragSensor
+class COIN_DLL_API SoX3DCylinderSensor : public SoX3DDragSensor
 {
-  typedef SoVRMLDragSensor inherited;
-  SO_NODE_HEADER(SoVRMLCylinderSensor);
+  typedef SoX3DDragSensor inherited;
+  SO_NODE_HEADER(SoX3DCylinderSensor);
 
 public:
   static void initClass(void);
-  SoVRMLCylinderSensor(void);
+  SoX3DCylinderSensor(void);
 
   SoSFFloat diskAngle;
   SoSFFloat maxAngle;
@@ -59,11 +59,11 @@ protected:
   virtual void drag(void);
   virtual void dragFinish(void);
 
-  virtual ~SoVRMLCylinderSensor();
+  virtual ~SoX3DCylinderSensor();
 
 private:
   static float findAngle(const SbRotation & rot);
   class SbCylinderProjector * cylinderproj;
 };
 
-#endif // ! COIN_SOVRMLCYLINDERSENSOR_H
+#endif // ! COIN_SOX3DCYLINDERSENSOR_H

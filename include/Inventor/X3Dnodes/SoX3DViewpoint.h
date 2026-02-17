@@ -30,8 +30,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifndef COIN_SOVRMLVIEWPOINT_H
-#define COIN_SOVRMLVIEWPOINT_H
+#ifndef COIN_SOX3DVIEWPOINT_H
+#define COIN_SOX3DVIEWPOINT_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
@@ -42,16 +42,16 @@
 #include <Inventor/fields/SoSFString.h>
 #include <Inventor/fields/SoSFRotation.h>
 
-class SoVRMLViewpointP;
+class SoX3DViewpointP;
 
-class COIN_DLL_API SoVRMLViewpoint : public SoNode
+class COIN_DLL_API SoX3DViewpoint : public SoNode
 {
   typedef SoNode inherited;
-  SO_NODE_HEADER(SoVRMLViewpoint);
+  SO_NODE_HEADER(SoX3DViewpoint);
 
 public:
   static void initClass(void);
-  SoVRMLViewpoint(void);
+  SoX3DViewpoint(void);
 
   SoSFVec3f position;
   SoSFRotation orientation;
@@ -62,13 +62,13 @@ public:
   virtual void GLRender(SoGLRenderAction * action);
 
 protected:
-  virtual ~SoVRMLViewpoint();
+  virtual ~SoX3DViewpoint();
   SoSFBool set_bind;
   SoSFTime bindTime;
   SoSFBool isBound;
 
 private:
-  SoVRMLViewpointP * pimpl;
+  SoX3DViewpointP * pimpl;
 };
 
-#endif // ! COIN_SOVRMLVIEWPOINT_H
+#endif // ! COIN_SOX3DVIEWPOINT_H

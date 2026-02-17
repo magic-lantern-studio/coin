@@ -30,8 +30,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifndef COIN_SOVRMLNAVIGATIONINFO_H
-#define COIN_SOVRMLNAVIGATIONINFO_H
+#ifndef COIN_SOX3DNAVIGATIONINFO_H
+#define COIN_SOX3DNAVIGATIONINFO_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
@@ -40,16 +40,16 @@
 #include <Inventor/fields/SoMFFloat.h>
 #include <Inventor/fields/SoSFBool.h>
 
-class SoVRMLNavigationInfoP;
+class SoX3DNavigationInfoP;
 
-class COIN_DLL_API SoVRMLNavigationInfo : public SoNode
+class COIN_DLL_API SoX3DNavigationInfo : public SoNode
 {
   typedef SoNode inherited;
-  SO_NODE_HEADER(SoVRMLNavigationInfo);
+  SO_NODE_HEADER(SoX3DNavigationInfo);
 
 public:
   static void initClass(void);
-  SoVRMLNavigationInfo(void);
+  SoX3DNavigationInfo(void);
 
   SoMFString type;
   SoSFFloat speed;
@@ -60,13 +60,13 @@ public:
   virtual void GLRender( SoGLRenderAction * action );
 
 protected:
-  virtual ~SoVRMLNavigationInfo();
+  virtual ~SoX3DNavigationInfo();
 
   SoSFBool set_bind;
   SoSFBool isBound;
 
 private:
-  SoVRMLNavigationInfoP * pimpl;
+  SoX3DNavigationInfoP * pimpl;
 };
 
-#endif // ! COIN_SOVRMLNAVIGATIONINFO_H
+#endif // ! COIN_SOX3DNAVIGATIONINFO_H

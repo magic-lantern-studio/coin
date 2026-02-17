@@ -30,8 +30,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifndef COIN_SOVRMLBACKGROUND_H
-#define COIN_SOVRMLBACKGROUND_H
+#ifndef COIN_SOX3DBACKGROUND_H
+#define COIN_SOX3DBACKGROUND_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
@@ -40,16 +40,16 @@
 #include <Inventor/fields/SoMFString.h>
 #include <Inventor/fields/SoSFBool.h>
 
-class SoVRMLBackgroundP;
+class SoX3DBackgroundP;
 
-class COIN_DLL_API SoVRMLBackground : public SoNode
+class COIN_DLL_API SoX3DBackground : public SoNode
 {
   typedef SoNode inherited;
-  SO_NODE_HEADER(SoVRMLBackground);
+  SO_NODE_HEADER(SoX3DBackground);
 
 public:
   static void initClass(void);
-  SoVRMLBackground(void);
+  SoX3DBackground(void);
 
   SoMFColor groundColor;
   SoMFFloat groundAngle;
@@ -66,14 +66,14 @@ public:
 
 protected:
   virtual SbBool readInstance(SoInput * in, unsigned short flags);
-  virtual ~SoVRMLBackground();
+  virtual ~SoX3DBackground();
 
   SoSFBool set_bind; // eventIn
   SoSFBool isBound;  // eventOut
 
 private:
-  SoVRMLBackgroundP * pimpl;
+  SoX3DBackgroundP * pimpl;
 
 };
 
-#endif // ! COIN_SOVRMLBACKGROUND_H
+#endif // ! COIN_SOX3DBACKGROUND_H

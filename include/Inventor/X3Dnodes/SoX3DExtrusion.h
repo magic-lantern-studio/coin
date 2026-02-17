@@ -30,25 +30,25 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifndef COIN_SOVRMLEXTRUSION_H
-#define COIN_SOVRMLEXTRUSION_H
+#ifndef COIN_SOX3DEXTRUSION_H
+#define COIN_SOX3DEXTRUSION_H
 
 #include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/VRMLnodes/SoVRMLGeometry.h>
+#include <Inventor/X3Dnodes/SoX3DGeometry.h>
 #include <Inventor/fields/SoSFBool.h>
 #include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/fields/SoMFVec2f.h>
 #include <Inventor/fields/SoMFVec3f.h>
 #include <Inventor/fields/SoMFRotation.h>
 
-class COIN_DLL_API SoVRMLExtrusion : public SoVRMLGeometry
+class COIN_DLL_API SoX3DExtrusion : public SoX3DGeometry
 {
-  typedef SoVRMLGeometry inherited;
-  SO_NODE_HEADER(SoVRMLExtrusion);
+  typedef SoX3DGeometry inherited;
+  SO_NODE_HEADER(SoX3DExtrusion);
 
 public:
   static void initClass(void);
-  SoVRMLExtrusion(void);
+  SoX3DExtrusion(void);
 
   SoSFBool beginCap;
   SoSFBool ccw;
@@ -67,7 +67,7 @@ public:
                            SbBox3f & bbox, SbVec3f & center);
 
 protected:
-  virtual ~SoVRMLExtrusion();
+  virtual ~SoX3DExtrusion();
 
   virtual void notify(SoNotList * list);
   virtual void generatePrimitives( SoAction * action );
@@ -79,7 +79,7 @@ protected:
                                           SoPickedPoint * pp);
 private:
   void updateCache(void);
-  class SoVRMLExtrusionP * pimpl;
-}; // class SoVRMLExtrusion
+  class SoX3DExtrusionP * pimpl;
+}; // class SoX3DExtrusion
 
-#endif // ! COIN_SOVRMLEXTRUSION_H
+#endif // ! COIN_SOX3DEXTRUSION_H

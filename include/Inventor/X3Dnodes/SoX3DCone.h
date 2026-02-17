@@ -30,22 +30,22 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifndef COIN_SOVRMLCONE_H
-#define COIN_SOVRMLCONE_H
+#ifndef COIN_SOX3DCONE_H
+#define COIN_SOX3DCONE_H
 
 #include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/VRMLnodes/SoVRMLGeometry.h>
+#include <Inventor/X3Dnodes/SoX3DGeometry.h>
 #include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/fields/SoSFBool.h>
 
-class COIN_DLL_API SoVRMLCone : public SoVRMLGeometry
+class COIN_DLL_API SoX3DCone : public SoX3DGeometry
 {
-  typedef SoVRMLGeometry inherited;
-  SO_NODE_HEADER(SoVRMLCone);
+  typedef SoX3DGeometry inherited;
+  SO_NODE_HEADER(SoX3DCone);
 
 public:
   static void initClass(void);
-  SoVRMLCone(void);
+  SoX3DCone(void);
 
   SoSFFloat bottomRadius;
   SoSFFloat height;
@@ -57,12 +57,12 @@ public:
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
 
 protected:
-  virtual ~SoVRMLCone();
+  virtual ~SoX3DCone();
 
   virtual void generatePrimitives(SoAction * action);
   virtual void computeBBox(SoAction * action,
                            SbBox3f & box, SbVec3f & center);
 
-}; // class SoVRMLCone
+}; // class SoX3DCone
 
-#endif // ! COIN_SOVRMLCONE_H
+#endif // ! COIN_SOX3DCONE_H

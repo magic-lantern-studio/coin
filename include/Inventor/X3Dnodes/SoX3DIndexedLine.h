@@ -30,17 +30,17 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifndef COIN_SOVRMLINDEXEDLINE_H
-#define COIN_SOVRMLINDEXEDLINE_H
+#ifndef COIN_SOX3DINDEXEDLINE_H
+#define COIN_SOX3DINDEXEDLINE_H
 
 #include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/VRMLnodes/SoVRMLVertexLine.h>
+#include <Inventor/X3Dnodes/SoX3DVertexLine.h>
 #include <Inventor/fields/SoMFInt32.h>
 
-class COIN_DLL_API SoVRMLIndexedLine : public SoVRMLVertexLine
+class COIN_DLL_API SoX3DIndexedLine : public SoX3DVertexLine
 {
-  typedef SoVRMLVertexLine inherited;
-  SO_NODE_ABSTRACT_HEADER(SoVRMLIndexedLine);
+  typedef SoX3DVertexLine inherited;
+  SO_NODE_ABSTRACT_HEADER(SoX3DIndexedLine);
 
 public:
   static void initClass(void);
@@ -49,8 +49,8 @@ public:
   SoMFInt32 colorIndex;
 
 protected:
-  SoVRMLIndexedLine(void);
-  virtual ~SoVRMLIndexedLine();
+  SoX3DIndexedLine(void);
+  virtual ~SoX3DIndexedLine();
 
   virtual void computeBBox(SoAction * action,
                            SbBox3f & box, SbVec3f & center);
@@ -61,6 +61,6 @@ protected:
 
   virtual void notify( SoNotList * list );
 
-}; // class SoVRMLIndexedLine
+}; // class SoX3DIndexedLine
 
-#endif // ! COIN_SOVRMLINDEXEDLINE_H
+#endif // ! COIN_SOX3DINDEXEDLINE_H

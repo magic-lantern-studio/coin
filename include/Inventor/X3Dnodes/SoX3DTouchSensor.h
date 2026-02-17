@@ -30,8 +30,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifndef COIN_SOVRMLTOUCHSENSOR_H
-#define COIN_SOVRMLTOUCHSENSOR_H
+#ifndef COIN_SOX3DTOUCHSENSOR_H
+#define COIN_SOX3DTOUCHSENSOR_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoSFBool.h>
@@ -39,14 +39,14 @@
 #include <Inventor/fields/SoSFVec2f.h>
 #include <Inventor/fields/SoSFTime.h>
 
-class COIN_DLL_API SoVRMLTouchSensor : public SoNode
+class COIN_DLL_API SoX3DTouchSensor : public SoNode
 {
   typedef SoNode inherited;
-  SO_NODE_HEADER(SoVRMLTouchSensor);
+  SO_NODE_HEADER(SoX3DTouchSensor);
 
 public:
   static void initClass(void);
-  SoVRMLTouchSensor(void);
+  SoX3DTouchSensor(void);
 
   SoSFBool enabled;
   SoSFVec3f hitNormal_changed;
@@ -60,12 +60,12 @@ public:
   virtual void handleEvent(SoHandleEventAction * action);
 
 protected:
-  virtual ~SoVRMLTouchSensor();
+  virtual ~SoX3DTouchSensor();
 
   virtual void notify(SoNotList * list);
 
 private:
   SbBool isactive;
-}; // class SoVRMLTouchSensor
+}; // class SoX3DTouchSensor
 
-#endif // ! COIN_SOVRMLTOUCHSENSOR_H
+#endif // ! COIN_SOX3DTOUCHSENSOR_H

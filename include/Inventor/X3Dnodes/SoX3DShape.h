@@ -30,23 +30,23 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifndef COIN_SOVRMLSHAPE_H
-#define COIN_SOVRMLSHAPE_H
+#ifndef COIN_SOX3DSHAPE_H
+#define COIN_SOX3DSHAPE_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoSFNode.h>
 #include <Inventor/fields/SoSFEnum.h>
 
-class SoVRMLShapeP;
+class SoX3DShapeP;
 
-class COIN_DLL_API SoVRMLShape : public SoNode
+class COIN_DLL_API SoX3DShape : public SoNode
 {
   typedef SoNode inherited;
-  SO_NODE_HEADER(SoVRMLShape);
+  SO_NODE_HEADER(SoX3DShape);
 
 public:
   static void initClass(void);
-  SoVRMLShape(void);
+  SoX3DShape(void);
 
   enum CacheEnabled {
     OFF,
@@ -79,11 +79,11 @@ public:
   virtual void copyContents(const SoFieldContainer * from, SbBool copyConn);
 
 protected:
-  virtual ~SoVRMLShape();
+  virtual ~SoX3DShape();
 
 private:
-  SoVRMLShapeP * pimpl;
+  SoX3DShapeP * pimpl;
 
-}; // class SoVRMLShape
+}; // class SoX3DShape
 
-#endif // ! COIN_SOVRMLSHAPE_H
+#endif // ! COIN_SOX3DSHAPE_H

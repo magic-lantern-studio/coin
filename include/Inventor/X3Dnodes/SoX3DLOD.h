@@ -30,8 +30,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifndef COIN_SOVRMLLOD_H
-#define COIN_SOVRMLLOD_H
+#ifndef COIN_SOX3DLOD_H
+#define COIN_SOX3DLOD_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoGroup.h>
@@ -39,17 +39,17 @@
 #include <Inventor/fields/SoSFVec3f.h>
 #include <Inventor/fields/SoMFNode.h>
 
-class SoVRMLLODP;
+class SoX3DLODP;
 
-class COIN_DLL_API SoVRMLLOD : public SoGroup
+class COIN_DLL_API SoX3DLOD : public SoGroup
 {
   typedef SoGroup inherited;
-  SO_NODE_HEADER(SoVRMLLOD);
+  SO_NODE_HEADER(SoX3DLOD);
 
 public:
   static void initClass(void);
-  SoVRMLLOD(void);
-  SoVRMLLOD(int levels);
+  SoX3DLOD(void);
+  SoX3DLOD(int levels);
 
   SoMFFloat range;
   SoSFVec3f center;
@@ -95,7 +95,7 @@ public:
   virtual SoChildList * getChildren(void) const;
 
 protected:
-  virtual ~SoVRMLLOD();
+  virtual ~SoX3DLOD();
 
   virtual void notify(SoNotList * list);
   virtual SbBool readInstance(SoInput * in, unsigned short flags);
@@ -105,8 +105,8 @@ protected:
 
 private:
   void commonConstructor(void);
-  SoVRMLLODP * pimpl;
-  friend class SoVRMLLODP;
-}; // class SoVRMLLOD
+  SoX3DLODP * pimpl;
+  friend class SoX3DLODP;
+}; // class SoX3DLOD
 
-#endif // ! COIN_SOVRMLLOD_H
+#endif // ! COIN_SOX3DLOD_H

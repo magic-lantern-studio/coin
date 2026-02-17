@@ -30,11 +30,11 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifndef COIN_SOVRMLELEVATIONGRID_H
-#define COIN_SOVRMLELEVATIONGRID_H
+#ifndef COIN_SOX3DELEVATIONGRID_H
+#define COIN_SOX3DELEVATIONGRID_H
 
 #include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/VRMLnodes/SoVRMLGeometry.h>
+#include <Inventor/X3Dnodes/SoX3DGeometry.h>
 #include <Inventor/fields/SoSFBool.h>
 #include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/fields/SoSFInt32.h>
@@ -45,16 +45,16 @@
 
 class SoChildList;
 
-class SoVRMLElevationGridP;
+class SoX3DElevationGridP;
 
-class COIN_DLL_API SoVRMLElevationGrid : public SoVRMLGeometry
+class COIN_DLL_API SoX3DElevationGrid : public SoX3DGeometry
 {
-  typedef SoVRMLGeometry inherited;
-  SO_NODE_HEADER(SoVRMLElevationGrid);
+  typedef SoX3DGeometry inherited;
+  SO_NODE_HEADER(SoX3DElevationGrid);
 
 public:
   static void initClass(void);
-  SoVRMLElevationGrid(void);
+  SoX3DElevationGrid(void);
 
   SoSFBool ccw;
   SoSFBool solid;
@@ -75,7 +75,7 @@ public:
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
 
 protected:
-  virtual ~SoVRMLElevationGrid(void);
+  virtual ~SoX3DElevationGrid(void);
 
   virtual void notify(SoNotList * list);
   virtual void generatePrimitives( SoAction * action );
@@ -83,7 +83,7 @@ protected:
                            SbVec3f & center);
 
 private:
-  friend class SoVRMLElevationGridP;
+  friend class SoX3DElevationGridP;
 
   enum Binding {
     OVERALL,
@@ -96,8 +96,8 @@ private:
 
   const SbVec3f * updateNormalCache(Binding & nbind);
 
-  SoVRMLElevationGridP * pimpl;
+  SoX3DElevationGridP * pimpl;
 
-}; // class SoVRMLElevationGrid
+}; // class SoX3DElevationGrid
 
-#endif // ! COIN_SOVRMLELEVATIONGRID_H
+#endif // ! COIN_SOX3DELEVATIONGRID_H

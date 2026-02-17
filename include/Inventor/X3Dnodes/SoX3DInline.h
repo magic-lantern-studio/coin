@@ -30,8 +30,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifndef COIN_SOVRMLINLINE_H
-#define COIN_SOVRMLINLINE_H
+#ifndef COIN_SOX3DINLINE_H
+#define COIN_SOX3DINLINE_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
@@ -43,21 +43,21 @@
 #endif // !COIN_INTERNAL
 
 class SbColor;
-class SoVRMLInline;
-class SoVRMLInlineP;
+class SoX3DInline;
+class SoX3DInlineP;
 class SoGroup;
 class SoSensor;
 
-typedef void SoVRMLInlineFetchURLCB(const SbString &, void *, SoVRMLInline *);
+typedef void SoX3DInlineFetchURLCB(const SbString &, void *, SoX3DInline *);
 
-class COIN_DLL_API SoVRMLInline : public SoNode
+class COIN_DLL_API SoX3DInline : public SoNode
 {
   typedef SoNode inherited;
-  SO_NODE_HEADER(SoVRMLInline);
+  SO_NODE_HEADER(SoX3DInline);
 
 public:
   static void initClass(void);
-  SoVRMLInline(void);
+  SoX3DInline(void);
 
   enum BboxVisibility {
     NEVER,
@@ -81,7 +81,7 @@ public:
   void setChildData(SoNode * urlData);
   SoNode * getChildData(void) const;
 
-  static void setFetchURLCallBack(SoVRMLInlineFetchURLCB * f, void * closure);
+  static void setFetchURLCallBack(SoX3DInlineFetchURLCB * f, void * closure);
   static void setBoundingBoxVisibility(BboxVisibility b);
   static BboxVisibility getBoundingBoxVisibility(void);
   static void setBoundingBoxColor(SbColor & color);
@@ -101,7 +101,7 @@ public:
   virtual SoChildList * getChildren(void) const;
 
 protected:
-  virtual ~SoVRMLInline();
+  virtual ~SoX3DInline();
 
 private:
   virtual void addBoundingBoxChild(SbVec3f center, SbVec3f size);
@@ -111,7 +111,7 @@ private:
 
   static void urlFieldModified(void * userdata, SoSensor * sensor);
 
-  SoVRMLInlineP * pimpl;
+  SoX3DInlineP * pimpl;
 };
 
-#endif // ! COIN_SOVRMLINLINE_H
+#endif // ! COIN_SOX3DINLINE_H

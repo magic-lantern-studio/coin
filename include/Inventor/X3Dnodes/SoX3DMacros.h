@@ -30,51 +30,51 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifndef COIN_SOVRMLMACROS_H
-#define COIN_SOVRMLMACROS_H
+#ifndef COIN_SOX3DMACROS_H
+#define COIN_SOX3DMACROS_H
 
 #include <Inventor/nodes/SoSubNode.h>
 
-#define SO_VRMLNODE_INTERNAL_CONSTRUCTOR(_class_) \
+#define SO_X3DNODE_INTERNAL_CONSTRUCTOR(_class_) \
   SO_NODE_INTERNAL_CONSTRUCTOR(_class_); \
-  this->setNodeType(SoNode::VRML2);
+  this->setNodeType(SoNode::X3D2);
 
-#define SO_VRMLNODE_ADD_EVENT_IN(_field_) \
+#define SO_X3DNODE_ADD_EVENT_IN(_field_) \
   do { \
     this->_field_.setFieldType(SoField::EVENTIN_FIELD); \
     this->_field_.setContainer(this); \
     fieldData->addField(this, SO__QUOTE(_field_), &this->_field_);\
   } WHILE_0
 
-#define SO_VRMLNODE_ADD_EVENT_OUT(_field_) \
+#define SO_X3DNODE_ADD_EVENT_OUT(_field_) \
   do { \
     this->_field_.setFieldType(SoField::EVENTOUT_FIELD); \
     this->_field_.setContainer(this); \
     fieldData->addField(this, SO__QUOTE(_field_), &this->_field_);\
   } WHILE_0
 
-#define SO_VRMLNODE_ADD_EMPTY_EXPOSED_MFIELD(_field_) \
+#define SO_X3DNODE_ADD_EMPTY_EXPOSED_MFIELD(_field_) \
   do { \
     this->_field_.setFieldType(SoField::EXPOSED_FIELD); \
     this->_field_.setContainer(this); \
     fieldData->addField(this, SO__QUOTE(_field_), &this->_field_);\
   } WHILE_0
 
-#define SO_VRMLNODE_ADD_EMPTY_MFIELD(_field_) \
+#define SO_X3DNODE_ADD_EMPTY_MFIELD(_field_) \
   do { \
     this->_field_.setContainer(this); \
     fieldData->addField(this, SO__QUOTE(_field_), &this->_field_);\
   } WHILE_0
 
 
-#define SO_VRMLNODE_ADD_FIELD(_field_, _defaultval_) \
+#define SO_X3DNODE_ADD_FIELD(_field_, _defaultval_) \
   SO_NODE_ADD_FIELD(_field_, _defaultval_)
 
-#define SO_VRMLNODE_ADD_EXPOSED_FIELD(_field_, _defaultval_) \
+#define SO_X3DNODE_ADD_EXPOSED_FIELD(_field_, _defaultval_) \
   this->_field_.setFieldType(SoField::EXPOSED_FIELD); \
   SO_NODE_ADD_FIELD(_field_, _defaultval_)
 
-#define SO_VRML97_NODE_TYPE (SoNode::VRML2|SoNode::COIN_2_0)
+#define SO_X3D_NODE_TYPE (SoNode::X3D2|SoNode::COIN_2_0)
 
 
-#endif // COIN_SOVRMLMACROS_H
+#endif // COIN_SOX3DMACROS_H

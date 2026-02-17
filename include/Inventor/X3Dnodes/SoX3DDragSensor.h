@@ -30,11 +30,11 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifndef COIN_SOVRMLDRAGSENSOR_H
-#define COIN_SOVRMLDRAGSENSOR_H
+#ifndef COIN_SOX3DDRAGSENSOR_H
+#define COIN_SOX3DDRAGSENSOR_H
 
 #include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/VRMLnodes/SoVRMLSensor.h>
+#include <Inventor/X3Dnodes/SoX3DSensor.h>
 #include <Inventor/fields/SoSFVec3f.h>
 #include <Inventor/SbVec2s.h>
 #include <Inventor/SbVec2f.h>
@@ -43,10 +43,10 @@
 
 class SbMatrix;
 
-class COIN_DLL_API SoVRMLDragSensor : public SoVRMLSensor {
-  typedef SoVRMLSensor inherited;
+class COIN_DLL_API SoX3DDragSensor : public SoX3DSensor {
+  typedef SoX3DSensor inherited;
 
-  SO_NODE_ABSTRACT_HEADER(SoVRMLDragSensor);
+  SO_NODE_ABSTRACT_HEADER(SoX3DDragSensor);
 
 public:
   SoSFVec3f trackPoint_changed;
@@ -62,8 +62,8 @@ protected:
   virtual void drag(void) = 0;
   virtual void dragFinish(void) = 0;
 
-  SoVRMLDragSensor(void);
-  virtual ~SoVRMLDragSensor();
+  SoX3DDragSensor(void);
+  virtual ~SoX3DDragSensor();
 
   const SbVec3f & getLocalStartingPoint(void) const;
   const SbMatrix & getLocalToWorldMatrix(void) const;
@@ -81,4 +81,4 @@ private:
   SbViewVolume viewvolume;
 };
 
-#endif // ! COIN_SOVRMLDRAGSENSOR_H
+#endif // ! COIN_SOX3DDRAGSENSOR_H

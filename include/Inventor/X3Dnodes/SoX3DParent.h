@@ -30,20 +30,20 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifndef COIN_SOVRMLPARENT_H
-#define COIN_SOVRMLPARENT_H
+#ifndef COIN_SOX3DPARENT_H
+#define COIN_SOX3DPARENT_H
 
 #include <Inventor/nodes/SoGroup.h>
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoMFNode.h>
 
-class SoVRMLParentP;
+class SoX3DParentP;
 class SoSensor;
 
-class COIN_DLL_API SoVRMLParent : public SoGroup
+class COIN_DLL_API SoX3DParent : public SoGroup
 {
   typedef SoGroup inherited;
-  SO_NODE_ABSTRACT_HEADER(SoVRMLParent);
+  SO_NODE_ABSTRACT_HEADER(SoX3DParent);
 
 public:
   static void initClass(void);
@@ -74,9 +74,9 @@ public:
                               SoChildList & cl);
 
 protected:
-  SoVRMLParent(void);
-  SoVRMLParent(int approxchildren);
-  virtual ~SoVRMLParent();
+  SoX3DParent(void);
+  SoX3DParent(int approxchildren);
+  virtual ~SoX3DParent();
 
   SoMFNode addChildren;
   SoMFNode removeChildren;
@@ -92,7 +92,7 @@ private:
   void processRemoveChildren(void);
   SoFieldData * makeWriteData(void);
   
-  SoVRMLParentP * pimpl;
-}; // class SoVRMLParent
+  SoX3DParentP * pimpl;
+}; // class SoX3DParent
 
-#endif // ! COIN_SOVRMLPARENT_H
+#endif // ! COIN_SOX3DPARENT_H

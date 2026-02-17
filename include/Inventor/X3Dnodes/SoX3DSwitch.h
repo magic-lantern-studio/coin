@@ -30,8 +30,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifndef COIN_SOVRMLSWITCH_H
-#define COIN_SOVRMLSWITCH_H
+#ifndef COIN_SOX3DSWITCH_H
+#define COIN_SOX3DSWITCH_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoGroup.h>
@@ -47,17 +47,17 @@
 #define SO_SWITCH_INHERIT  (-2)
 #define SO_SWITCH_ALL      (-3)
 
-class SoVRMLSwitchP;
+class SoX3DSwitchP;
 
-class COIN_DLL_API SoVRMLSwitch : public SoGroup
+class COIN_DLL_API SoX3DSwitch : public SoGroup
 {
   typedef SoGroup inherited;
-  SO_NODE_HEADER(SoVRMLSwitch);
+  SO_NODE_HEADER(SoX3DSwitch);
 
 public:
   static void initClass(void);
-  SoVRMLSwitch(void);
-  SoVRMLSwitch( int choices);
+  SoX3DSwitch(void);
+  SoX3DSwitch( int choices);
 
   SoMFNode choice;
   SoSFInt32 whichChoice;
@@ -99,7 +99,7 @@ public:
   virtual SoChildList * getChildren(void) const;
 
 protected:
-  virtual ~SoVRMLSwitch(void);
+  virtual ~SoX3DSwitch(void);
 
   virtual void notify(SoNotList * list);
   virtual SbBool readInstance(SoInput * in, unsigned short flags);
@@ -107,8 +107,8 @@ protected:
 
 private:
   void commonConstructor(void);
-  SoVRMLSwitchP * pimpl;
-  friend class SoVRMLSwitchP;
-}; // class SoVRMLSwitch
+  SoX3DSwitchP * pimpl;
+  friend class SoX3DSwitchP;
+}; // class SoX3DSwitch
 
-#endif // ! COIN_SOVRMLSWITCH_H
+#endif // ! COIN_SOX3DSWITCH_H

@@ -30,28 +30,28 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifndef COIN_SOVRMLPOINTSET_H
-#define COIN_SOVRMLPOINTSET_H
+#ifndef COIN_SOX3DPOINTSET_H
+#define COIN_SOX3DPOINTSET_H
 
 #include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/VRMLnodes/SoVRMLVertexPoint.h>
+#include <Inventor/X3Dnodes/SoX3DVertexPoint.h>
 
 
-class COIN_DLL_API SoVRMLPointSet : public SoVRMLVertexPoint
+class COIN_DLL_API SoX3DPointSet : public SoX3DVertexPoint
 {
-  typedef SoVRMLVertexPoint inherited;
-  SO_NODE_HEADER(SoVRMLPointSet);
+  typedef SoX3DVertexPoint inherited;
+  SO_NODE_HEADER(SoX3DPointSet);
 
 public:
   static void initClass(void);
-  SoVRMLPointSet(void);
+  SoX3DPointSet(void);
 
   virtual void GLRender(SoGLRenderAction * action);
   virtual void getBoundingBox(SoGetBoundingBoxAction * action);
 
 protected:
-  virtual ~SoVRMLPointSet();
+  virtual ~SoX3DPointSet();
   virtual void generatePrimitives(SoAction * action);
-}; // class SoVRMLPointSet
+}; // class SoX3DPointSet
 
-#endif // ! COIN_SOVRMLPOINTSET_H
+#endif // ! COIN_SOX3DPOINTSET_H

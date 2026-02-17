@@ -30,23 +30,23 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifndef COIN_SOVRMLNORMAL_H
-#define COIN_SOVRMLNORMAL_H
+#ifndef COIN_SOX3DNORMAL_H
+#define COIN_SOX3DNORMAL_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/fields/SoMFVec3f.h>
 
-class SoVRMLNormalP;
+class SoX3DNormalP;
 
-class COIN_DLL_API SoVRMLNormal : public SoNode
+class COIN_DLL_API SoX3DNormal : public SoNode
 {
   typedef SoNode inherited;
-  SO_NODE_HEADER(SoVRMLNormal);
+  SO_NODE_HEADER(SoX3DNormal);
 
 public:
   static void initClass(void);
-  SoVRMLNormal(void);
+  SoX3DNormal(void);
 
   SoMFVec3f vector;
 
@@ -57,10 +57,10 @@ public:
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
 
  protected:
-  virtual ~SoVRMLNormal();
+  virtual ~SoX3DNormal();
 
  private:
-  SoVRMLNormalP * pimpl;
-}; // class SoVRMLNormal
+  SoX3DNormalP * pimpl;
+}; // class SoX3DNormal
 
-#endif // ! COIN_SOVRMLNORMAL_H
+#endif // ! COIN_SOX3DNORMAL_H

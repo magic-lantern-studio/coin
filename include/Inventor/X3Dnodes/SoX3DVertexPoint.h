@@ -30,19 +30,19 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifndef COIN_SOVRMLVERTEXPOINT_H
-#define COIN_SOVRMLVERTEXPOINT_H
+#ifndef COIN_SOX3DVERTEXPOINT_H
+#define COIN_SOX3DVERTEXPOINT_H
 
 #include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/VRMLnodes/SoVRMLGeometry.h>
+#include <Inventor/X3Dnodes/SoX3DGeometry.h>
 #include <Inventor/fields/SoSFNode.h>
 #include <Inventor/fields/SoSFBool.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
 
-class COIN_DLL_API SoVRMLVertexPoint : public SoVRMLGeometry
+class COIN_DLL_API SoX3DVertexPoint : public SoX3DGeometry
 {
-  typedef SoVRMLGeometry inherited;
-  SO_NODE_ABSTRACT_HEADER(SoVRMLVertexPoint);
+  typedef SoX3DGeometry inherited;
+  SO_NODE_ABSTRACT_HEADER(SoX3DVertexPoint);
 
 public:
   static void initClass(void);
@@ -60,12 +60,12 @@ public:
   virtual void notify(SoNotList * list);
 
 protected:
-  SoVRMLVertexPoint(void);
-  virtual ~SoVRMLVertexPoint();
+  SoX3DVertexPoint(void);
+  virtual ~SoX3DVertexPoint();
 
   virtual SbBool shouldGLRender(SoGLRenderAction * action);
   virtual void computeBBox(SoAction * action, SbBox3f & box,
                            SbVec3f & center);
-}; // class SoVRMLVertexPoint
+}; // class SoX3DVertexPoint
 
-#endif // ! COIN_SOVRMLVERTEXPOINT_H
+#endif // ! COIN_SOX3DVERTEXPOINT_H

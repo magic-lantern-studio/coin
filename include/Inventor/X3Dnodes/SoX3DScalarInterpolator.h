@@ -30,32 +30,32 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifndef COIN_SOVRMLSCALARINTERPOLATOR_H
-#define COIN_SOVRMLSCALARINTERPOLATOR_H
+#ifndef COIN_SOX3DSCALARINTERPOLATOR_H
+#define COIN_SOX3DSCALARINTERPOLATOR_H
 
 #include <Inventor/engines/SoSubNodeEngine.h>
-#include <Inventor/VRMLnodes/SoVRMLInterpolator.h>
+#include <Inventor/X3Dnodes/SoX3DInterpolator.h>
 #include <Inventor/fields/SoMFFloat.h>
 #include <Inventor/fields/SoSFFloat.h>
 
-class COIN_DLL_API SoVRMLScalarInterpolator : public SoVRMLInterpolator
+class COIN_DLL_API SoX3DScalarInterpolator : public SoX3DInterpolator
 {
-  typedef SoVRMLInterpolator inherited;
-  SO_NODEENGINE_HEADER(SoVRMLScalarInterpolator);
+  typedef SoX3DInterpolator inherited;
+  SO_NODEENGINE_HEADER(SoX3DScalarInterpolator);
 
 public:
   static void initClass(void);
-  SoVRMLScalarInterpolator(void);
+  SoX3DScalarInterpolator(void);
 
   SoMFFloat keyValue;
   SoEngineOutput value_changed; // (SoSFFloat)
 
 protected:
-  virtual ~SoVRMLScalarInterpolator();
+  virtual ~SoX3DScalarInterpolator();
 
 private:
   virtual void evaluate(void);
 
-}; // class SoVRMLScalarInterpolator
+}; // class SoX3DScalarInterpolator
 
-#endif // ! COIN_SOVRMLSCALARINTERPOLATOR_H
+#endif // ! COIN_SOX3DSCALARINTERPOLATOR_H

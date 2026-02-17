@@ -30,34 +30,34 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifndef COIN_SOVRMLORIENTATIONINTERPOLATOR_H
-#define COIN_SOVRMLORIENTATIONINTERPOLATOR_H
+#ifndef COIN_SOX3DORIENTATIONINTERPOLATOR_H
+#define COIN_SOX3DORIENTATIONINTERPOLATOR_H
 
 #include <Inventor/engines/SoSubNodeEngine.h>
-#include <Inventor/VRMLnodes/SoVRMLInterpolator.h>
+#include <Inventor/X3Dnodes/SoX3DInterpolator.h>
 #include <Inventor/fields/SoMFFloat.h>
 #include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/fields/SoMFRotation.h>
 #include <Inventor/fields/SoSFRotation.h>
 
-class COIN_DLL_API SoVRMLOrientationInterpolator : public SoVRMLInterpolator
+class COIN_DLL_API SoX3DOrientationInterpolator : public SoX3DInterpolator
 {
-  typedef SoVRMLInterpolator inherited;
-  SO_NODEENGINE_HEADER(SoVRMLOrientationInterpolator);
+  typedef SoX3DInterpolator inherited;
+  SO_NODEENGINE_HEADER(SoX3DOrientationInterpolator);
 
 public:
   static void initClass(void);
-  SoVRMLOrientationInterpolator(void);
+  SoX3DOrientationInterpolator(void);
 
   SoMFRotation keyValue;
   SoEngineOutput value_changed; // (SoSFRotaion)
 
 protected:
-  virtual ~SoVRMLOrientationInterpolator(void);
+  virtual ~SoX3DOrientationInterpolator(void);
 
 private:
   virtual void evaluate(void);
 
-}; // class SoVRMLOrientationInterpolator
+}; // class SoX3DOrientationInterpolator
 
-#endif // ! COIN_SOVRMLORIENTATIONINTERPOLATOR_H
+#endif // ! COIN_SOX3DORIENTATIONINTERPOLATOR_H

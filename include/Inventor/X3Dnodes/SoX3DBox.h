@@ -30,21 +30,21 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifndef COIN_SOVRMLBOX_H
-#define COIN_SOVRMLBOX_H
+#ifndef COIN_SOX3DBOX_H
+#define COIN_SOX3DBOX_H
 
 #include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/VRMLnodes/SoVRMLGeometry.h>
+#include <Inventor/X3Dnodes/SoX3DGeometry.h>
 #include <Inventor/fields/SoSFVec3f.h>
 
-class COIN_DLL_API SoVRMLBox : public SoVRMLGeometry
+class COIN_DLL_API SoX3DBox : public SoX3DGeometry
 {
-  typedef SoVRMLGeometry inherited;
-  SO_NODE_HEADER(SoVRMLBox);
+  typedef SoX3DGeometry inherited;
+  SO_NODE_HEADER(SoX3DBox);
 
 public:
   static void initClass(void);
-  SoVRMLBox(void);
+  SoX3DBox(void);
 
   SoSFVec3f size;
 
@@ -53,11 +53,11 @@ public:
   virtual void getPrimitiveCount( SoGetPrimitiveCountAction * action );
 
 protected:
-  virtual ~SoVRMLBox();
+  virtual ~SoX3DBox();
 
   virtual void generatePrimitives( SoAction * action );
   virtual void computeBBox( SoAction * action, SbBox3f & box,
                             SbVec3f & center );
-}; // class SoVRMLBox
+}; // class SoX3DBox
 
-#endif // ! COIN_SOVRMLBOX_H
+#endif // ! COIN_SOX3DBOX_H

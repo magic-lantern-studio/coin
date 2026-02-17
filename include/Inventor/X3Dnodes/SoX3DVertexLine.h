@@ -30,18 +30,18 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifndef COIN_SOVRMLVERTEXLINE_H
-#define COIN_SOVRMLVERTEXLINE_H
+#ifndef COIN_SOX3DVERTEXLINE_H
+#define COIN_SOX3DVERTEXLINE_H
 
 #include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/VRMLnodes/SoVRMLGeometry.h>
+#include <Inventor/X3Dnodes/SoX3DGeometry.h>
 #include <Inventor/fields/SoSFNode.h>
 #include <Inventor/fields/SoSFBool.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
 
-class COIN_DLL_API SoVRMLVertexLine : public SoVRMLGeometry  {
-  typedef SoVRMLGeometry inherited;
-  SO_NODE_ABSTRACT_HEADER(SoVRMLVertexLine);
+class COIN_DLL_API SoX3DVertexLine : public SoX3DGeometry  {
+  typedef SoX3DGeometry inherited;
+  SO_NODE_ABSTRACT_HEADER(SoX3DVertexLine);
 
 public:
   static void initClass(void);
@@ -59,11 +59,11 @@ public:
   virtual void notify(SoNotList * list);
 
 protected:
-  SoVRMLVertexLine(void);
-  virtual ~SoVRMLVertexLine();
+  SoX3DVertexLine(void);
+  virtual ~SoX3DVertexLine();
 
   virtual SbBool shouldGLRender(SoGLRenderAction * action);
 
-}; // class SoVRMLVertexLine
+}; // class SoX3DVertexLine
 
-#endif // ! COIN_SOVRMLVERTEXLINE_H
+#endif // ! COIN_SOX3DVERTEXLINE_H

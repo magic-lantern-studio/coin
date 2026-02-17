@@ -30,10 +30,10 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifndef COIN_SOVRMLBILLBOARD_H
-#define COIN_SOVRMLBILLBOARD_H
+#ifndef COIN_SOX3DBILLBOARD_H
+#define COIN_SOX3DBILLBOARD_H
 
-#include <Inventor/VRMLnodes/SoVRMLParent.h>
+#include <Inventor/X3Dnodes/SoX3DParent.h>
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoSFVec3f.h>
 
@@ -42,15 +42,15 @@ class SoState;
 class SbViewVolume;
 class SbMatrix;
 
-class COIN_DLL_API SoVRMLBillboard : public SoVRMLParent
+class COIN_DLL_API SoX3DBillboard : public SoX3DParent
 {
-  typedef SoVRMLParent inherited;
-  SO_NODE_HEADER(SoVRMLBillboard);
+  typedef SoX3DParent inherited;
+  SO_NODE_HEADER(SoX3DBillboard);
 
 public:
   static void initClass(void);
-  SoVRMLBillboard(void);
-  SoVRMLBillboard( int numchildren );
+  SoX3DBillboard(void);
+  SoX3DBillboard( int numchildren );
 
   SoSFVec3f axisOfRotation;
   SoSFVec3f bboxCenter;
@@ -71,12 +71,12 @@ public:
   virtual void notify(SoNotList * list);
 
 protected:
-  virtual ~SoVRMLBillboard();
+  virtual ~SoX3DBillboard();
 
 private:
   SbRotation computeRotation(SbMatrix const & invMM, SbViewVolume const & vv) const;
   void performRotation(SoState * state) const;
-  class SoVRMLBillboardP * pimpl;
+  class SoX3DBillboardP * pimpl;
 };
 
-#endif // ! COIN_SOVRMLBILLBOARD_H
+#endif // ! COIN_SOX3DBILLBOARD_H

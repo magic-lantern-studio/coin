@@ -30,17 +30,17 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifndef COIN_SOVRMLTEXTURE_H
-#define COIN_SOVRMLTEXTURE_H
+#ifndef COIN_SOX3DTEXTURE_H
+#define COIN_SOX3DTEXTURE_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/fields/SoSFBool.h>
 
-class COIN_DLL_API SoVRMLTexture : public SoNode
+class COIN_DLL_API SoX3DTexture : public SoNode
 {
   typedef SoNode inherited;
-  SO_NODE_ABSTRACT_HEADER(SoVRMLTexture);
+  SO_NODE_ABSTRACT_HEADER(SoX3DTexture);
 
 public:
   static void initClass(void);
@@ -51,9 +51,9 @@ public:
   virtual void GLRender( SoGLRenderAction * action );
 
 protected:
-  SoVRMLTexture(void);
-  virtual ~SoVRMLTexture();
+  SoX3DTexture(void);
+  virtual ~SoX3DTexture();
 
-}; // class SoVRMLTexture
+}; // class SoX3DTexture
 
-#endif // ! COIN_SOVRMLTEXTURE_H
+#endif // ! COIN_SOX3DTEXTURE_H

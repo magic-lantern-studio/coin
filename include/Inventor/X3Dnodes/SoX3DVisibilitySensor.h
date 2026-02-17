@@ -30,8 +30,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifndef COIN_SOVRMLVISIBILITYSENSOR_H
-#define COIN_SOVRMLVISIBILITYSENSOR_H
+#ifndef COIN_SOX3DVISIBILITYSENSOR_H
+#define COIN_SOX3DVISIBILITYSENSOR_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
@@ -39,14 +39,14 @@
 #include <Inventor/fields/SoSFBool.h>
 #include <Inventor/fields/SoSFVec3f.h>
 
-class COIN_DLL_API SoVRMLVisibilitySensor : public SoNode
+class COIN_DLL_API SoX3DVisibilitySensor : public SoNode
 {
   typedef SoNode inherited;
-  SO_NODE_HEADER(SoVRMLVisibilitySensor);
+  SO_NODE_HEADER(SoX3DVisibilitySensor);
 
 public:
   static void initClass(void);
-  SoVRMLVisibilitySensor(void);
+  SoX3DVisibilitySensor(void);
 
   SoSFVec3f center;
   SoSFVec3f size;
@@ -59,8 +59,8 @@ public:
   virtual void GLRender( SoGLRenderAction * action );
 
 protected:
-  virtual ~SoVRMLVisibilitySensor();
+  virtual ~SoX3DVisibilitySensor();
 
 };
 
-#endif // ! COIN_SOVRMLVISIBILITYSENSOR_H
+#endif // ! COIN_SOX3DVISIBILITYSENSOR_H

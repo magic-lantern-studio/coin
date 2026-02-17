@@ -30,38 +30,38 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifndef COIN_SOVRMLINDEXEDLINESET_H
-#define COIN_SOVRMLINDEXEDLINESET_H
+#ifndef COIN_SOX3DINDEXEDLINESET_H
+#define COIN_SOX3DINDEXEDLINESET_H
 
 #include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/VRMLnodes/SoVRMLIndexedLine.h>
+#include <Inventor/X3Dnodes/SoX3DIndexedLine.h>
 
 #ifndef SO_END_LINE_INDEX // also defined in SoIndexedLineSet.h
 #define SO_END_LINE_INDEX (-1)
 #endif // !SO_END_LINE_INDEX
 
-class SoVRMLIndexedLineSetP;
+class SoX3DIndexedLineSetP;
 
-class COIN_DLL_API SoVRMLIndexedLineSet : public SoVRMLIndexedLine
+class COIN_DLL_API SoX3DIndexedLineSet : public SoX3DIndexedLine
 {
-  typedef SoVRMLIndexedLine inherited;
-  SO_NODE_HEADER(SoVRMLIndexedLineSet);
+  typedef SoX3DIndexedLine inherited;
+  SO_NODE_HEADER(SoX3DIndexedLineSet);
 
 public:
   static void initClass(void);
-  SoVRMLIndexedLineSet(void);
+  SoX3DIndexedLineSet(void);
 
   virtual void GLRender(SoGLRenderAction * action);
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
   virtual void getBoundingBox(SoGetBoundingBoxAction * action);
 
  protected:
-  virtual ~SoVRMLIndexedLineSet();
+  virtual ~SoX3DIndexedLineSet();
   virtual void generatePrimitives(SoAction * action);
   virtual void notify(SoNotList * list);
 
  private:
-  SoVRMLIndexedLineSetP * pimpl;
+  SoX3DIndexedLineSetP * pimpl;
 };
 
-#endif // ! COIN_SOVRMLINDEXEDLINESET_H
+#endif // ! COIN_SOX3DINDEXEDLINESET_H

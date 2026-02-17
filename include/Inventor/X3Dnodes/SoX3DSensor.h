@@ -30,16 +30,16 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifndef COIN_SOVRMLSENSOR_H
-#define COIN_SOVRMLSENSOR_H
+#ifndef COIN_SOX3DSENSOR_H
+#define COIN_SOX3DSENSOR_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoSFBool.h>
 
-class COIN_DLL_API SoVRMLSensor : public SoNode {
+class COIN_DLL_API SoX3DSensor : public SoNode {
   typedef SoNode inherited;
   
-  SO_NODE_ABSTRACT_HEADER(SoVRMLSensor);
+  SO_NODE_ABSTRACT_HEADER(SoX3DSensor);
   
 public:
   SoSFBool isActive;
@@ -49,8 +49,8 @@ public:
 
 protected:
 
-  SoVRMLSensor(void);
-  virtual ~SoVRMLSensor();
+  SoX3DSensor(void);
+  virtual ~SoX3DSensor();
 };
 
-#endif // ! COIN_SOVRMLSENSOR_H
+#endif // ! COIN_SOX3DSENSOR_H

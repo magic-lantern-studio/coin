@@ -30,23 +30,23 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifndef COIN_SOVRMLCOORDINATE_H
-#define COIN_SOVRMLCOORDINATE_H
+#ifndef COIN_SOX3DCOORDINATE_H
+#define COIN_SOX3DCOORDINATE_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/fields/SoMFVec3f.h>
 
-class SoVRMLCoordinateP;
+class SoX3DCoordinateP;
 
-class COIN_DLL_API SoVRMLCoordinate : public SoNode
+class COIN_DLL_API SoX3DCoordinate : public SoNode
 {
   typedef SoNode inherited;
-  SO_NODE_HEADER(SoVRMLCoordinate);
+  SO_NODE_HEADER(SoX3DCoordinate);
 
 public:
   static void initClass(void);
-  SoVRMLCoordinate(void);
+  SoX3DCoordinate(void);
 
   SoMFVec3f point;
 
@@ -57,10 +57,10 @@ public:
   virtual void pick( SoPickAction * action );
 
  protected:
-  virtual ~SoVRMLCoordinate();
+  virtual ~SoX3DCoordinate();
 
  private:
-  SoVRMLCoordinateP * pimpl;
-}; // class SoVRMLCoordinate
+  SoX3DCoordinateP * pimpl;
+}; // class SoX3DCoordinate
 
-#endif // ! COIN_SOVRMLCOORDINATE_H
+#endif // ! COIN_SOX3DCOORDINATE_H

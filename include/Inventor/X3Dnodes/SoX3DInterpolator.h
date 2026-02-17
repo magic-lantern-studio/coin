@@ -30,8 +30,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifndef COIN_SOVRMLINTERPOLATOR_H
-#define COIN_SOVRMLINTERPOLATOR_H
+#ifndef COIN_SOX3DINTERPOLATOR_H
+#define COIN_SOX3DINTERPOLATOR_H
 
 #include <Inventor/engines/SoNodeEngine.h>
 #include <Inventor/engines/SoSubNodeEngine.h>
@@ -39,10 +39,10 @@
 #include <Inventor/fields/SoMFFloat.h>
 #include <Inventor/engines/SoEngineOutput.h>
 
-class COIN_DLL_API SoVRMLInterpolator : public SoNodeEngine {
+class COIN_DLL_API SoX3DInterpolator : public SoNodeEngine {
   typedef SoNodeEngine inherited;
 
-  SO_NODEENGINE_ABSTRACT_HEADER(SoVRMLInterpolator);
+  SO_NODEENGINE_ABSTRACT_HEADER(SoX3DInterpolator);
 
 public:
   SoMFFloat key;
@@ -54,8 +54,8 @@ protected:
   
   int getKeyValueIndex(float & interp, int numvalues);
 
-  SoVRMLInterpolator(void);
-  virtual ~SoVRMLInterpolator();
+  SoX3DInterpolator(void);
+  virtual ~SoX3DInterpolator();
 };
 
-#endif // ! COIN_SOVRMLINTERPOLATOR_H
+#endif // ! COIN_SOX3DINTERPOLATOR_H

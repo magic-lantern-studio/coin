@@ -30,8 +30,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifndef COIN_SOVRMLTEXTURETRANSFORM_H
-#define COIN_SOVRMLTEXTURETRANSFORM_H
+#ifndef COIN_SOX3DTEXTURETRANSFORM_H
+#define COIN_SOX3DTEXTURETRANSFORM_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
@@ -40,14 +40,14 @@
 
 class SbMatrix;
 
-class COIN_DLL_API SoVRMLTextureTransform : public SoNode
+class COIN_DLL_API SoX3DTextureTransform : public SoNode
 {
   typedef SoNode inherited;
-  SO_NODE_HEADER(SoVRMLTextureTransform);
+  SO_NODE_HEADER(SoX3DTextureTransform);
 
 public:
   static void initClass(void);
-  SoVRMLTextureTransform(void);
+  SoX3DTextureTransform(void);
 
   SoSFVec2f translation;
   SoSFFloat rotation;
@@ -61,11 +61,11 @@ public:
   virtual void pick( SoPickAction * action );
 
 protected:
-  virtual ~SoVRMLTextureTransform();
+  virtual ~SoX3DTextureTransform();
 
 private:
   void makeMatrix(SbMatrix & mat) const;
 
-}; // class SoVRMLTextureTransform
+}; // class SoX3DTextureTransform
 
-#endif // ! COIN_SOVRMLTEXTURETRANSFORM_H
+#endif // ! COIN_SOX3DTEXTURETRANSFORM_H

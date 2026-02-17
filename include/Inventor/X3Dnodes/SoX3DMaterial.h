@@ -30,24 +30,24 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifndef COIN_SOVRMLMATERIAL_H
-#define COIN_SOVRMLMATERIAL_H
+#ifndef COIN_SOX3DMATERIAL_H
+#define COIN_SOX3DMATERIAL_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/fields/SoSFColor.h>
 #include <Inventor/fields/SoSFFloat.h>
 
-class SoVRMLMaterialP;
+class SoX3DMaterialP;
 
-class COIN_DLL_API SoVRMLMaterial : public SoNode
+class COIN_DLL_API SoX3DMaterial : public SoNode
 {
   typedef SoNode inherited;
-  SO_NODE_HEADER(SoVRMLMaterial);
+  SO_NODE_HEADER(SoX3DMaterial);
 
 public:
   static void initClass(void);
-  SoVRMLMaterial(void);
+  SoX3DMaterial(void);
 
   SoSFColor diffuseColor;
   SoSFFloat ambientIntensity;
@@ -61,10 +61,10 @@ public:
   virtual void callback(SoCallbackAction * action);
 
 protected:
-  virtual ~SoVRMLMaterial();
+  virtual ~SoX3DMaterial();
 
 private:
-  SoVRMLMaterialP * pimpl;
-}; // class SoVRMLMaterial
+  SoX3DMaterialP * pimpl;
+}; // class SoX3DMaterial
 
-#endif // ! COIN_SOVRMLMATERIAL_H
+#endif // ! COIN_SOX3DMATERIAL_H

@@ -30,26 +30,26 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifndef COIN_SOVRMLSCRIPT_H
-#define COIN_SOVRMLSCRIPT_H
+#ifndef COIN_SOX3DSCRIPT_H
+#define COIN_SOX3DSCRIPT_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoSFBool.h>
 #include <Inventor/fields/SoMFString.h>
 
-class SoVRMLScript;
-class SoVRMLScriptP;
+class SoX3DScript;
+class SoX3DScriptP;
 class SoSensor;
 
-typedef void SoVRMLScriptEvaluateCB(void * closure, SoVRMLScript * node);
+typedef void SoX3DScriptEvaluateCB(void * closure, SoX3DScript * node);
 
-class COIN_DLL_API SoVRMLScript : public SoNode
+class COIN_DLL_API SoX3DScript : public SoNode
 {
   typedef SoNode inherited;
 
 public:
   static void initClass(void);
-  SoVRMLScript(void);
+  SoX3DScript(void);
 
   static SoType getClassTypeId(void);
   virtual SoType getTypeId(void) const;
@@ -66,11 +66,11 @@ public:
   virtual void handleEvent(SoHandleEventAction * action);
   virtual void write(SoWriteAction * action);
 
-  static void setScriptEvaluateCB(SoVRMLScriptEvaluateCB * cb,
+  static void setScriptEvaluateCB(SoX3DScriptEvaluateCB * cb,
                                   void * closure);
 
 protected:
-  virtual ~SoVRMLScript();
+  virtual ~SoX3DScript();
   virtual void copyContents(const SoFieldContainer * from, SbBool copyconn);
   virtual void notify(SoNotList * list);
 private:
@@ -84,8 +84,8 @@ private:
 
   static void eval_cb(void * data, SoSensor *);
   void initFieldData(void);
-  SoVRMLScriptP * pimpl;
-  friend class SoVRMLScriptP;
-}; // class SoVRMLScript
+  SoX3DScriptP * pimpl;
+  friend class SoX3DScriptP;
+}; // class SoX3DScript
 
-#endif // ! COIN_SOVRMLSCRIPT_H
+#endif // ! COIN_SOX3DSCRIPT_H

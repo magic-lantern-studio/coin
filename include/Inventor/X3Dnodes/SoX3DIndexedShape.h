@@ -30,17 +30,17 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifndef COIN_SOVRMLINDEXEDSHAPE_H
-#define COIN_SOVRMLINDEXEDSHAPE_H
+#ifndef COIN_SOX3DINDEXEDSHAPE_H
+#define COIN_SOX3DINDEXEDSHAPE_H
 
 #include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/VRMLnodes/SoVRMLVertexShape.h>
+#include <Inventor/X3Dnodes/SoX3DVertexShape.h>
 #include <Inventor/fields/SoMFInt32.h>
 
-class COIN_DLL_API SoVRMLIndexedShape : public SoVRMLVertexShape
+class COIN_DLL_API SoX3DIndexedShape : public SoX3DVertexShape
 {
-  typedef SoVRMLVertexShape inherited;
-  SO_NODE_ABSTRACT_HEADER(SoVRMLIndexedShape);
+  typedef SoX3DVertexShape inherited;
+  SO_NODE_ABSTRACT_HEADER(SoX3DIndexedShape);
 
 public:
   static void initClass(void);
@@ -51,8 +51,8 @@ public:
   SoMFInt32 texCoordIndex;
 
 protected:
-  SoVRMLIndexedShape(void);
-  virtual ~SoVRMLIndexedShape();
+  SoX3DIndexedShape(void);
+  virtual ~SoX3DIndexedShape();
 
   virtual void notify(SoNotList * list);
   virtual void computeBBox(SoAction * action,
@@ -71,4 +71,4 @@ protected:
 
 };
 
-#endif // ! COIN_SOVRMLINDEXEDSHAPE_H
+#endif // ! COIN_SOX3DINDEXEDSHAPE_H

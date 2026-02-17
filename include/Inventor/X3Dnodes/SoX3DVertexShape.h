@@ -30,11 +30,11 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifndef COIN_SOVRMLVERTEXSHAPE_H
-#define COIN_SOVRMLVERTEXSHAPE_H
+#ifndef COIN_SOX3DVERTEXSHAPE_H
+#define COIN_SOX3DVERTEXSHAPE_H
 
 #include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/VRMLnodes/SoVRMLGeometry.h>
+#include <Inventor/X3Dnodes/SoX3DGeometry.h>
 #include <Inventor/fields/SoSFNode.h>
 #include <Inventor/fields/SoSFBool.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
@@ -43,12 +43,12 @@ class SoNormalCache;
 class SoNormalBundle;
 class SoState;
 class SoCoordinateElement;
-class SoVRMLVertexShapeP;
+class SoX3DVertexShapeP;
 
-class COIN_DLL_API SoVRMLVertexShape : public SoVRMLGeometry
+class COIN_DLL_API SoX3DVertexShape : public SoX3DGeometry
 {
-  typedef SoVRMLGeometry inherited;
-  SO_NODE_ABSTRACT_HEADER(SoVRMLVertexShape);
+  typedef SoX3DGeometry inherited;
+  SO_NODE_ABSTRACT_HEADER(SoX3DVertexShape);
 
 public:
   static void initClass(void);
@@ -82,8 +82,8 @@ public:
   virtual void notify(SoNotList * list);
 
 protected:
-  SoVRMLVertexShape(void);
-  virtual ~SoVRMLVertexShape();
+  SoX3DVertexShape(void);
+  virtual ~SoX3DVertexShape();
 
   virtual SbBool shouldGLRender(SoGLRenderAction * action);
 
@@ -104,7 +104,7 @@ private:
   void writeLockNormalCache(void);
   void writeUnlockNormalCache(void);
   
-  SoVRMLVertexShapeP * pimpl;
-}; // class SoVRMLVertexShape
+  SoX3DVertexShapeP * pimpl;
+}; // class SoX3DVertexShape
 
-#endif // ! COIN_SOVRMLVERTEXSHAPE_H
+#endif // ! COIN_SOX3DVERTEXSHAPE_H

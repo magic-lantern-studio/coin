@@ -30,22 +30,22 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifndef COIN_SOVRMLPLANESENSOR_H
-#define COIN_SOVRMLPLANESENSOR_H
+#ifndef COIN_SOX3DPLANESENSOR_H
+#define COIN_SOX3DPLANESENSOR_H
 
 #include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/VRMLnodes/SoVRMLDragSensor.h>
+#include <Inventor/X3Dnodes/SoX3DDragSensor.h>
 #include <Inventor/fields/SoSFVec2f.h>
 #include <Inventor/fields/SoSFVec3f.h>
 
-class COIN_DLL_API SoVRMLPlaneSensor : public SoVRMLDragSensor
+class COIN_DLL_API SoX3DPlaneSensor : public SoX3DDragSensor
 {
-  typedef SoVRMLDragSensor inherited;
-  SO_NODE_HEADER(SoVRMLPlaneSensor);
+  typedef SoX3DDragSensor inherited;
+  SO_NODE_HEADER(SoX3DPlaneSensor);
 
 public:
   static void initClass(void);
-  SoVRMLPlaneSensor(void);
+  SoX3DPlaneSensor(void);
 
   SoSFVec2f minPosition;
   SoSFVec2f maxPosition;
@@ -58,10 +58,10 @@ protected:
   virtual void drag(void);
   virtual void dragFinish(void);
 
-  virtual ~SoVRMLPlaneSensor();
+  virtual ~SoX3DPlaneSensor();
 
 private:
   class SbPlaneProjector * planeproj;
 };
 
-#endif // ! COIN_SOVRMLPLANESENSOR_H
+#endif // ! COIN_SOX3DPLANESENSOR_H

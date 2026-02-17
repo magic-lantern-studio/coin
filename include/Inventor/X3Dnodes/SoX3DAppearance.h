@@ -30,24 +30,24 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifndef COIN_SOVRMLAPPEARANCE_H
-#define COIN_SOVRMLAPPEARANCE_H
+#ifndef COIN_SOX3DAPPEARANCE_H
+#define COIN_SOX3DAPPEARANCE_H
 
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoSFNode.h>
 
-class SoVRMLAppearanceP;
+class SoX3DAppearanceP;
 
-class COIN_DLL_API SoVRMLAppearance : public SoNode
+class COIN_DLL_API SoX3DAppearance : public SoNode
 {
   typedef SoNode inherited;
-  SO_NODE_HEADER(SoVRMLAppearance);
+  SO_NODE_HEADER(SoX3DAppearance);
 
 public:
   static void initClass(void);
 
-  SoVRMLAppearance(void);
+  SoX3DAppearance(void);
 
   SoSFNode material;
   SoSFNode texture;
@@ -63,10 +63,10 @@ public:
   virtual void copyContents(const SoFieldContainer * from, SbBool copyConn);
 
 protected:
-  virtual ~SoVRMLAppearance();
+  virtual ~SoX3DAppearance();
 
 private:
-  SoVRMLAppearanceP * pimpl;
-}; // class SoVRMLAppearance
+  SoX3DAppearanceP * pimpl;
+}; // class SoX3DAppearance
 
-#endif // ! COIN_SOVRMLAPPEARANCE_H
+#endif // ! COIN_SOX3DAPPEARANCE_H

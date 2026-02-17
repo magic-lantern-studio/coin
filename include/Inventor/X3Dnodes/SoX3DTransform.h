@@ -30,23 +30,23 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifndef COIN_SOVRMLTRANSFORM_H
-#define COIN_SOVRMLTRANSFORM_H
+#ifndef COIN_SOX3DTRANSFORM_H
+#define COIN_SOX3DTRANSFORM_H
 
 #include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/VRMLnodes/SoVRMLGroup.h>
+#include <Inventor/X3Dnodes/SoX3DGroup.h>
 #include <Inventor/fields/SoSFVec3f.h>
 #include <Inventor/fields/SoSFRotation.h>
 
-class COIN_DLL_API SoVRMLTransform : public SoVRMLGroup
+class COIN_DLL_API SoX3DTransform : public SoX3DGroup
 {
-  typedef SoVRMLGroup inherited;
-  SO_NODE_HEADER(SoVRMLTransform);
+  typedef SoX3DGroup inherited;
+  SO_NODE_HEADER(SoX3DTransform);
 
 public:
   static void initClass(void);
-  SoVRMLTransform(void);
-  SoVRMLTransform(int children);
+  SoX3DTransform(void);
+  SoX3DTransform(int children);
 
   SoSFVec3f translation;
   SoSFRotation rotation;
@@ -62,8 +62,8 @@ public:
   void multLeft(const SbMatrix & matrix);
   void multRight(const SbMatrix & matrix);
 
-  void combineLeft(SoVRMLTransform * leftnode);
-  void combineRight(SoVRMLTransform * rightnode);
+  void combineLeft(SoX3DTransform * leftnode);
+  void combineRight(SoX3DTransform * rightnode);
 
   void setMatrix(const SbMatrix & matrix);
 
@@ -83,11 +83,11 @@ public:
   virtual void notify(SoNotList * list);
 
 protected:
-  virtual ~SoVRMLTransform();
+  virtual ~SoX3DTransform();
 
 private:
   void commonConstructor(void);
   void applyMatrix(SoState * state);
-}; // class SoVRMLTransform
+}; // class SoX3DTransform
 
-#endif // ! COIN_SOVRMLTRANSFORM_H
+#endif // ! COIN_SOX3DTRANSFORM_H

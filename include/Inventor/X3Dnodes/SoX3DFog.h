@@ -30,8 +30,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifndef COIN_SOVRMLFOG_H
-#define COIN_SOVRMLFOG_H
+#ifndef COIN_SOX3DFOG_H
+#define COIN_SOX3DFOG_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
@@ -40,16 +40,16 @@
 #include <Inventor/fields/SoSFColor.h>
 #include <Inventor/fields/SoSFBool.h>
 
-class SoVRMLFogP;
+class SoX3DFogP;
 
-class COIN_DLL_API SoVRMLFog : public SoNode
+class COIN_DLL_API SoX3DFog : public SoNode
 {
   typedef SoNode inherited;
-  SO_NODE_HEADER(SoVRMLFog);
+  SO_NODE_HEADER(SoX3DFog);
 
 public:
   static void initClass(void);
-  SoVRMLFog(void);
+  SoX3DFog(void);
 
   SoSFString fogType;
   SoSFFloat visibilityRange;
@@ -61,10 +61,10 @@ protected:
   SoSFBool set_bind;
   SoSFBool isBound;
 
-  virtual ~SoVRMLFog();
+  virtual ~SoX3DFog();
 
 private:
-  SoVRMLFogP * pimpl;
+  SoX3DFogP * pimpl;
 };
 
-#endif // ! COIN_SOVRMLFOG_H
+#endif // ! COIN_SOX3DFOG_H

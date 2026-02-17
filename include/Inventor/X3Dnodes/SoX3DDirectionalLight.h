@@ -30,29 +30,29 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifndef COIN_SOVRMLDIRECTIONALLIGHT_H
-#define COIN_SOVRMLDIRECTIONALLIGHT_H
+#ifndef COIN_SOX3DDIRECTIONALLIGHT_H
+#define COIN_SOX3DDIRECTIONALLIGHT_H
 
 #include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/VRMLnodes/SoVRMLLight.h>
+#include <Inventor/X3Dnodes/SoX3DLight.h>
 #include <Inventor/fields/SoSFVec3f.h>
 
-class COIN_DLL_API SoVRMLDirectionalLight : public SoVRMLLight
+class COIN_DLL_API SoX3DDirectionalLight : public SoX3DLight
 {
-  typedef SoVRMLLight inherited;
-  SO_NODE_HEADER(SoVRMLDirectionalLight);
+  typedef SoX3DLight inherited;
+  SO_NODE_HEADER(SoX3DDirectionalLight);
 
 public:
   static void initClass(void);
-  SoVRMLDirectionalLight(void);
+  SoX3DDirectionalLight(void);
 
   SoSFVec3f direction;
 
   virtual void GLRender( SoGLRenderAction * action );
 
 protected:
-  virtual ~SoVRMLDirectionalLight();
+  virtual ~SoX3DDirectionalLight();
 
-}; // class SoVRMLDirectionalLight
+}; // class SoX3DDirectionalLight
 
-#endif // ! COIN_SOVRMLDIRECTIONALLIGHT_H
+#endif // ! COIN_SOX3DDIRECTIONALLIGHT_H

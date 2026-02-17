@@ -30,33 +30,33 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifndef COIN_SOVRMLNORMALINTERPOLATOR_H
-#define COIN_SOVRMLNORMALINTERPOLATOR_H
+#ifndef COIN_SOX3DNORMALINTERPOLATOR_H
+#define COIN_SOX3DNORMALINTERPOLATOR_H
 
 #include <Inventor/engines/SoSubNodeEngine.h>
-#include <Inventor/VRMLnodes/SoVRMLInterpolator.h>
+#include <Inventor/X3Dnodes/SoX3DInterpolator.h>
 #include <Inventor/fields/SoMFFloat.h>
 #include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/fields/SoMFVec3f.h>
 
-class COIN_DLL_API SoVRMLNormalInterpolator : public SoVRMLInterpolator
+class COIN_DLL_API SoX3DNormalInterpolator : public SoX3DInterpolator
 {
-  typedef SoVRMLInterpolator inherited;
-  SO_NODEENGINE_HEADER(SoVRMLNormalInterpolator);
+  typedef SoX3DInterpolator inherited;
+  SO_NODEENGINE_HEADER(SoX3DNormalInterpolator);
 
 public:
   static void initClass(void);
-  SoVRMLNormalInterpolator(void);
+  SoX3DNormalInterpolator(void);
 
   SoMFVec3f keyValue;
   SoEngineOutput value_changed; // (SoMFVec3f)
 
 protected:
-  virtual ~SoVRMLNormalInterpolator();
+  virtual ~SoX3DNormalInterpolator();
 private:
   virtual void evaluate(void);
 
-  class SoVRMLNormalInterpolatorP * pimpl;
+  class SoX3DNormalInterpolatorP * pimpl;
 };
 
-#endif // ! COIN_SOVRMLNORMALINTERPOLATOR_H
+#endif // ! COIN_SOX3DNORMALINTERPOLATOR_H

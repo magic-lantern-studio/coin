@@ -30,23 +30,23 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifndef COIN_SOVRMLPIXELTEXTURE_H
-#define COIN_SOVRMLPIXELTEXTURE_H
+#ifndef COIN_SOX3DPIXELTEXTURE_H
+#define COIN_SOX3DPIXELTEXTURE_H
 
 #include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/VRMLnodes/SoVRMLTexture.h>
+#include <Inventor/X3Dnodes/SoX3DTexture.h>
 #include <Inventor/fields/SoSFImage.h>
 
-class SoVRMLPixelTextureP;
+class SoX3DPixelTextureP;
 
-class COIN_DLL_API SoVRMLPixelTexture : public SoVRMLTexture
+class COIN_DLL_API SoX3DPixelTexture : public SoX3DTexture
 {
-  typedef SoVRMLTexture inherited;
-  SO_NODE_HEADER(SoVRMLPixelTexture);
+  typedef SoX3DTexture inherited;
+  SO_NODE_HEADER(SoX3DPixelTexture);
 
 public:
   static void initClass(void);
-  SoVRMLPixelTexture(void);
+  SoX3DPixelTexture(void);
 
   SoSFImage image;
 
@@ -56,14 +56,14 @@ public:
   virtual void rayPick(SoRayPickAction * action);
 
 protected:
-  virtual ~SoVRMLPixelTexture();
+  virtual ~SoX3DPixelTexture();
 
   virtual SbBool readInstance( SoInput * in, unsigned short flags );
   virtual void notify(SoNotList * list);
 
 
 private:
-  SoVRMLPixelTextureP * pimpl;
-}; // class SoVRMLPixelTexture
+  SoX3DPixelTextureP * pimpl;
+}; // class SoX3DPixelTexture
 
-#endif // ! COIN_SOVRMLPIXELTEXTURE_H
+#endif // ! COIN_SOX3DPIXELTEXTURE_H

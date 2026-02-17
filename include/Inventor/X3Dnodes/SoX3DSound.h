@@ -30,8 +30,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifndef COIN_SOVRMLSOUND_H
-#define COIN_SOVRMLSOUND_H
+#ifndef COIN_SOX3DSOUND_H
+#define COIN_SOX3DSOUND_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoSFNode.h>
@@ -40,17 +40,17 @@
 #include <Inventor/fields/SoSFVec3f.h>
 #include <Inventor/SbTime.h>
 
-class SoVRMLSoundP;
+class SoX3DSoundP;
 class SoPath;
 
-class COIN_DLL_API SoVRMLSound : public SoNode
+class COIN_DLL_API SoX3DSound : public SoNode
 {
   typedef SoNode inherited;
-  SO_NODE_HEADER(SoVRMLSound);
+  SO_NODE_HEADER(SoX3DSound);
 
 public:
   static void initClass(void);
-  SoVRMLSound(void);
+  SoX3DSound(void);
 
   SoSFNode source;
   SoSFFloat intensity;
@@ -83,11 +83,11 @@ public:
   virtual void audioRender(SoAudioRenderAction *action);
 
 protected:
-  virtual ~SoVRMLSound(void);
+  virtual ~SoX3DSound(void);
 
 private:
-  SoVRMLSoundP *pimpl;
-  friend class SoVRMLSoundP;
+  SoX3DSoundP *pimpl;
+  friend class SoX3DSoundP;
 };
 
-#endif // ! COIN_SOVRMLSOUND_H
+#endif // ! COIN_SOX3DSOUND_H

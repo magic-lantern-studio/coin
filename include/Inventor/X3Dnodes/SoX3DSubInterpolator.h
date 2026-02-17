@@ -30,8 +30,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifndef COIN_SOVRMLSUBINTERPOLATOR_H
-#define COIN_SOVRMLSUBINTERPOLATOR_H
+#ifndef COIN_SOX3DSUBINTERPOLATOR_H
+#define COIN_SOX3DSUBINTERPOLATOR_H
 
 #include <Inventor/nodes/SoSubNode.h>
 
@@ -72,4 +72,4 @@
 
 #define SO_INTERPOLATOR_OUTPUT(outputName, outputType, method)
 
-#endif // ! COIN_SOVRMLSUBINTERPOLATOR_H
+#endif // ! COIN_SOX3DSUBINTERPOLATOR_H

@@ -30,26 +30,26 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifndef COIN_SOVRMLCOLLISION_H
-#define COIN_SOVRMLCOLLISION_H
+#ifndef COIN_SOX3DCOLLISION_H
+#define COIN_SOX3DCOLLISION_H
 
-#include <Inventor/VRMLnodes/SoVRMLGroup.h>
+#include <Inventor/X3Dnodes/SoX3DGroup.h>
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoSFBool.h>
 #include <Inventor/fields/SoSFNode.h>
 #include <Inventor/fields/SoSFTime.h>
 
-class SoVRMLCollisionP;
+class SoX3DCollisionP;
 
-class COIN_DLL_API SoVRMLCollision : public SoVRMLGroup
+class COIN_DLL_API SoX3DCollision : public SoX3DGroup
 {
-  typedef SoVRMLGroup inherited;
-  SO_NODE_HEADER(SoVRMLCollision);
+  typedef SoX3DGroup inherited;
+  SO_NODE_HEADER(SoX3DCollision);
 
 public:
   static void initClass(void);
-  SoVRMLCollision(void);
-  SoVRMLCollision(int numchildren);
+  SoX3DCollision(void);
+  SoX3DCollision(int numchildren);
 
   SoSFBool collide;
   SoSFNode proxy;
@@ -60,11 +60,11 @@ public:
   virtual void notify(SoNotList * list);
 
 protected:
-  virtual ~SoVRMLCollision();
+  virtual ~SoX3DCollision();
 
 private:
   void commonConstructor(void);
-  SoVRMLCollisionP * pimpl;
+  SoX3DCollisionP * pimpl;
 };
 
-#endif // ! COIN_SOVRMLCOLLISION_H
+#endif // ! COIN_SOX3DCOLLISION_H

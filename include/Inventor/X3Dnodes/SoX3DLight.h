@@ -30,8 +30,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifndef COIN_SOVRMLLIGHT_H
-#define COIN_SOVRMLLIGHT_H
+#ifndef COIN_SOX3DLIGHT_H
+#define COIN_SOX3DLIGHT_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
@@ -39,10 +39,10 @@
 #include <Inventor/fields/SoSFColor.h>
 #include <Inventor/fields/SoSFFloat.h>
 
-class COIN_DLL_API SoVRMLLight : public SoNode
+class COIN_DLL_API SoX3DLight : public SoNode
 {
   typedef SoNode inherited;
-  SO_NODE_ABSTRACT_HEADER(SoVRMLLight);
+  SO_NODE_ABSTRACT_HEADER(SoX3DLight);
 
 public:
   static void initClass(void);
@@ -55,9 +55,9 @@ public:
   virtual void GLRender(SoGLRenderAction * action);
 
 protected:
-  SoVRMLLight(void);
-  virtual ~SoVRMLLight();
+  SoX3DLight(void);
+  virtual ~SoX3DLight();
 
-}; // class SoVRMLLight
+}; // class SoX3DLight
 
-#endif // ! COIN_SOVRMLLIGHT_H
+#endif // ! COIN_SOX3DLIGHT_H

@@ -30,24 +30,24 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifndef COIN_SOVRMLSPHERESENSOR_H
-#define COIN_SOVRMLSPHERESENSOR_H
+#ifndef COIN_SOX3DSPHERESENSOR_H
+#define COIN_SOX3DSPHERESENSOR_H
 
 #include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/VRMLnodes/SoVRMLDragSensor.h>
+#include <Inventor/X3Dnodes/SoX3DDragSensor.h>
 #include <Inventor/fields/SoSFRotation.h>
 #include <Inventor/fields/SoSFVec3f.h>
 
 class SbSphereProjector;
 
-class COIN_DLL_API SoVRMLSphereSensor : public SoVRMLDragSensor
+class COIN_DLL_API SoX3DSphereSensor : public SoX3DDragSensor
 {
-  typedef SoVRMLDragSensor inherited;
-  SO_NODE_HEADER(SoVRMLSphereSensor);
+  typedef SoX3DDragSensor inherited;
+  SO_NODE_HEADER(SoX3DSphereSensor);
 
 public:
   static void initClass(void);
-  SoVRMLSphereSensor(void);
+  SoX3DSphereSensor(void);
 
   SoSFRotation offset;
   SoSFRotation rotation_changed;
@@ -58,7 +58,7 @@ protected:
   virtual void drag(void);
   virtual void dragFinish(void);
 
-  virtual ~SoVRMLSphereSensor();
+  virtual ~SoX3DSphereSensor();
 
 private:
 
@@ -67,4 +67,4 @@ private:
   SbRotation prevrotation;
 };
 
-#endif // ! COIN_SOVRMLSPHERESENSOR_H
+#endif // ! COIN_SOX3DSPHERESENSOR_H

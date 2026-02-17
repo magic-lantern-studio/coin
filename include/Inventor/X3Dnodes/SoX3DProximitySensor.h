@@ -30,8 +30,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifndef COIN_SOVRMLPROXIMITYSENSOR_H
-#define COIN_SOVRMLPROXIMITYSENSOR_H
+#ifndef COIN_SOX3DPROXIMITYSENSOR_H
+#define COIN_SOX3DPROXIMITYSENSOR_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
@@ -40,14 +40,14 @@
 #include <Inventor/fields/SoSFTime.h>
 #include <Inventor/fields/SoSFRotation.h>
 
-class COIN_DLL_API SoVRMLProximitySensor : public SoNode
+class COIN_DLL_API SoX3DProximitySensor : public SoNode
 {
   typedef SoNode inherited;
-  SO_NODE_HEADER(SoVRMLProximitySensor);
+  SO_NODE_HEADER(SoX3DProximitySensor);
 
 public:
   static void initClass(void);
-  SoVRMLProximitySensor(void);
+  SoX3DProximitySensor(void);
 
   SoSFVec3f center;
   SoSFVec3f size;
@@ -68,11 +68,11 @@ public:
   virtual void getBoundingBox(SoGetBoundingBoxAction * action);
 
 protected:
-  virtual ~SoVRMLProximitySensor();
+  virtual ~SoX3DProximitySensor();
 
   virtual void notify(SoNotList * list);
 
 private:
 };
 
-#endif // ! COIN_SOVRMLPROXIMITYSENSOR_H
+#endif // ! COIN_SOX3DPROXIMITYSENSOR_H

@@ -30,29 +30,29 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifndef COIN_SOVRMLWORLDINFO_H
-#define COIN_SOVRMLWORLDINFO_H
+#ifndef COIN_SOX3DWORLDINFO_H
+#define COIN_SOX3DWORLDINFO_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/fields/SoMFString.h>
 #include <Inventor/fields/SoSFString.h>
 
-class COIN_DLL_API SoVRMLWorldInfo : public SoNode
+class COIN_DLL_API SoX3DWorldInfo : public SoNode
 {
   typedef SoNode inherited;
-  SO_NODE_HEADER(SoVRMLWorldInfo);
+  SO_NODE_HEADER(SoX3DWorldInfo);
 
 public:
   static void initClass(void);
-  SoVRMLWorldInfo(void);
+  SoX3DWorldInfo(void);
 
   SoSFString title;
   SoMFString info;
 
 protected:
-  virtual ~SoVRMLWorldInfo();
+  virtual ~SoX3DWorldInfo();
 
-}; // class SoVRMLWorldInfo
+}; // class SoX3DWorldInfo
 
-#endif // ! COIN_SOVRMLWORLDINFO_H
+#endif // ! COIN_SOX3DWORLDINFO_H

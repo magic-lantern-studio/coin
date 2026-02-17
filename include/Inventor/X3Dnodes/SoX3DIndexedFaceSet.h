@@ -30,11 +30,11 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifndef COIN_SOVRMLINDEXEDFACESET_H
-#define COIN_SOVRMLINDEXEDFACESET_H
+#ifndef COIN_SOX3DINDEXEDFACESET_H
+#define COIN_SOX3DINDEXEDFACESET_H
 
 #include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/VRMLnodes/SoVRMLIndexedShape.h>
+#include <Inventor/X3Dnodes/SoX3DIndexedShape.h>
 #include <Inventor/fields/SoSFBool.h>
 #include <Inventor/fields/SoSFFloat.h>
 
@@ -42,16 +42,16 @@
 #define SO_END_FACE_INDEX (-1)
 #endif // !SO_END_FACE_INDEX
 
-class SoVRMLIndexedFaceSetP;
+class SoX3DIndexedFaceSetP;
 
-class COIN_DLL_API SoVRMLIndexedFaceSet : public SoVRMLIndexedShape
+class COIN_DLL_API SoX3DIndexedFaceSet : public SoX3DIndexedShape
 {
-  typedef SoVRMLIndexedShape inherited;
-  SO_NODE_HEADER(SoVRMLIndexedFaceSet);
+  typedef SoX3DIndexedShape inherited;
+  SO_NODE_HEADER(SoX3DIndexedFaceSet);
 
 public:
   static void initClass(void);
-  SoVRMLIndexedFaceSet(void);
+  SoX3DIndexedFaceSet(void);
 
   SoSFBool ccw;
   SoSFBool solid;
@@ -65,7 +65,7 @@ public:
   virtual SbBool generateDefaultNormals(SoState * state, SoNormalCache * nc);
 
 protected:
-  virtual ~SoVRMLIndexedFaceSet();
+  virtual ~SoX3DIndexedFaceSet();
 
   virtual void generatePrimitives( SoAction * action );
 
@@ -91,7 +91,7 @@ private:
                         const int32_t * nindices, 
                         const SbBool normalsfromcache);
   
-  SoVRMLIndexedFaceSetP * pimpl;
+  SoX3DIndexedFaceSetP * pimpl;
 };
 
-#endif // ! COIN_SOVRMLINDEXEDFACESET_H
+#endif // ! COIN_SOX3DINDEXEDFACESET_H

@@ -30,22 +30,22 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifndef COIN_SOVRMLSPOTLIGHT_H
-#define COIN_SOVRMLSPOTLIGHT_H
+#ifndef COIN_SOX3DSPOTLIGHT_H
+#define COIN_SOX3DSPOTLIGHT_H
 
 #include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/VRMLnodes/SoVRMLLight.h>
+#include <Inventor/X3Dnodes/SoX3DLight.h>
 #include <Inventor/fields/SoSFVec3f.h>
 #include <Inventor/fields/SoSFFloat.h>
 
-class COIN_DLL_API SoVRMLSpotLight : public SoVRMLLight
+class COIN_DLL_API SoX3DSpotLight : public SoX3DLight
 {
-  typedef SoVRMLLight inherited;
-  SO_NODE_HEADER(SoVRMLSpotLight);
+  typedef SoX3DLight inherited;
+  SO_NODE_HEADER(SoX3DSpotLight);
 
 public:
   static void initClass(void);
-  SoVRMLSpotLight(void);
+  SoX3DSpotLight(void);
 
   SoSFVec3f location;
   SoSFVec3f direction;
@@ -57,8 +57,8 @@ public:
   virtual void GLRender( SoGLRenderAction * action );
 
 protected:
-  virtual ~SoVRMLSpotLight();
+  virtual ~SoX3DSpotLight();
 
-}; // class SoVRMLSpotLight
+}; // class SoX3DSpotLight
 
-#endif // ! COIN_SOVRMLSPOTLIGHT_H
+#endif // ! COIN_SOX3DSPOTLIGHT_H

@@ -30,8 +30,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifndef COIN_SOVRML_H
-#define COIN_SOVRML_H
+#ifndef COIN_SOX3DL_H
+#define COIN_SOX3DL_H
 
 #include <Inventor/SbBasic.h>
 
@@ -39,10 +39,10 @@
 extern "C" {
 #endif
 
-void COIN_DLL_API so_vrml_init(void);
+void COIN_DLL_API so_x3d_init(void);
 
 #ifdef __cplusplus
 };
 #endif
 
-#endif // COIN_SOVRML_H
+#endif // COIN_SOX3DL_H

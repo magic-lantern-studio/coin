@@ -30,11 +30,11 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifndef COIN_SOVRMLMOVIETEXTURE_H
-#define COIN_SOVRMLMOVIETEXTURE_H
+#ifndef COIN_SOX3DMOVIETEXTURE_H
+#define COIN_SOX3DMOVIETEXTURE_H
 
 #include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/VRMLnodes/SoVRMLTexture.h>
+#include <Inventor/X3Dnodes/SoX3DTexture.h>
 #include <Inventor/fields/SoSFBool.h>
 #include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/fields/SoSFTime.h>
@@ -42,16 +42,16 @@
 #include <Inventor/fields/SoMFEnum.h>
 #include <Inventor/fields/SoSFColor.h>
 
-class SoVRMLMovieTextureP;
+class SoX3DMovieTextureP;
 
-class COIN_DLL_API SoVRMLMovieTexture : public SoVRMLTexture
+class COIN_DLL_API SoX3DMovieTexture : public SoX3DTexture
 {
-  typedef SoVRMLTexture inherited;
-  SO_NODE_HEADER(SoVRMLMovieTexture);
+  typedef SoX3DTexture inherited;
+  SO_NODE_HEADER(SoX3DMovieTexture);
 
 public:
   static void initClass(void);
-  SoVRMLMovieTexture(void);
+  SoX3DMovieTexture(void);
 
   SoSFBool loop;
   SoSFFloat speed;
@@ -70,10 +70,10 @@ public:
   virtual void GLRender( SoGLRenderAction * action );
 
 protected:
-  virtual ~SoVRMLMovieTexture();
+  virtual ~SoX3DMovieTexture();
 
 private:
-  SoVRMLMovieTextureP * pimpl;
+  SoX3DMovieTextureP * pimpl;
 };
 
-#endif // ! COIN_SOVRMLMOVIETEXTURE_H
+#endif // ! COIN_SOX3DMOVIETEXTURE_H

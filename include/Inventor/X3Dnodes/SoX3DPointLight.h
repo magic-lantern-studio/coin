@@ -30,22 +30,22 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifndef COIN_SOVRMLPOINTLIGHT_H
-#define COIN_SOVRMLPOINTLIGHT_H
+#ifndef COIN_SOX3DPOINTLIGHT_H
+#define COIN_SOX3DPOINTLIGHT_H
 
 #include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/VRMLnodes/SoVRMLLight.h>
+#include <Inventor/X3Dnodes/SoX3DLight.h>
 #include <Inventor/fields/SoSFVec3f.h>
 #include <Inventor/fields/SoSFFloat.h>
 
-class COIN_DLL_API SoVRMLPointLight : public SoVRMLLight
+class COIN_DLL_API SoX3DPointLight : public SoX3DLight
 {
-  typedef SoVRMLLight inherited;
-  SO_NODE_HEADER(SoVRMLPointLight);
+  typedef SoX3DLight inherited;
+  SO_NODE_HEADER(SoX3DPointLight);
 
 public:
   static void initClass(void);
-  SoVRMLPointLight(void);
+  SoX3DPointLight(void);
 
   SoSFVec3f location;
   SoSFFloat radius;
@@ -54,8 +54,8 @@ public:
   virtual void GLRender( SoGLRenderAction * action );
 
 protected:
-  virtual ~SoVRMLPointLight();
+  virtual ~SoX3DPointLight();
 
-}; // class SoVRMLPointLight
+}; // class SoX3DPointLight
 
-#endif // ! COIN_SOVRMLPOINTLIGHT_H
+#endif // ! COIN_SOX3DPOINTLIGHT_H

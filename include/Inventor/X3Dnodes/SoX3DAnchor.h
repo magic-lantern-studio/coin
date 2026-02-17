@@ -30,29 +30,29 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifndef COIN_SOVRMLANCHOR_H
-#define COIN_SOVRMLANCHOR_H
+#ifndef COIN_SOX3DANCHOR_H
+#define COIN_SOX3DANCHOR_H
 
-#include <Inventor/VRMLnodes/SoVRMLParent.h>
+#include <Inventor/X3Dnodes/SoX3DParent.h>
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoMFString.h>
 #include <Inventor/fields/SoSFString.h>
 #include <Inventor/fields/SoSFVec3f.h>
 
-class SoVRMLAnchor;
-class SoVRMLAnchorP;
+class SoX3DAnchor;
+class SoX3DAnchorP;
 
-typedef void SoVRMLAnchorCB( const SbString &, void *,  SoVRMLAnchor *);
+typedef void SoX3DAnchorCB( const SbString &, void *,  SoX3DAnchor *);
 
-class COIN_DLL_API SoVRMLAnchor : public SoVRMLParent
+class COIN_DLL_API SoX3DAnchor : public SoX3DParent
 {
-  typedef SoVRMLParent inherited;
-  SO_NODE_HEADER(SoVRMLAnchor);
+  typedef SoX3DParent inherited;
+  SO_NODE_HEADER(SoX3DAnchor);
 
 public:
   static void initClass(void);
 
-  SoVRMLAnchor(void);
+  SoX3DAnchor(void);
   SoMFString url;
   SoSFString description;
   SoMFString parameter;
@@ -60,18 +60,18 @@ public:
   SoSFVec3f bboxCenter;
   SoSFVec3f bboxSize;
 
-  static void setFetchURLCallBack(SoVRMLAnchorCB *, void * closure);
+  static void setFetchURLCallBack(SoX3DAnchorCB *, void * closure);
 
   virtual void handleEvent(SoHandleEventAction * action);
 
 protected:
-  virtual ~SoVRMLAnchor();
+  virtual ~SoX3DAnchor();
 
 private:
-  static SoVRMLAnchorCB * fetchurlcb;
+  static SoX3DAnchorCB * fetchurlcb;
   static void * userdata;
 
-  SoVRMLAnchorP * pimpl;
+  SoX3DAnchorP * pimpl;
 };
 
-#endif // ! COIN_SOVRMLANCHOR_H
+#endif // ! COIN_SOX3DANCHOR_H
