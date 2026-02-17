@@ -1,5 +1,5 @@
 
-SUBDIRS = C VRMLnodes XML actions annex bundles caches collision details \
+SUBDIRS = C VRMLnodes X3Dnodes XML actions annex bundles caches collision details \
           draggers elements engines errors events fields lists lock manips \
           misc navigation nodekits nodes projectors sensors system threads \
           tools scxml
