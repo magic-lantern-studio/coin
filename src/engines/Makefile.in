@@ -63,7 +63,7 @@ am__engines_lst_SOURCES_DIST = SoBoolOperation.cpp SoCalculator.cpp \
 	SoConcatenate.cpp SoConvertAll.cpp SoCounter.cpp \
 	SoDecomposeMatrix.cpp SoDecomposeRotation.cpp \
 	SoDecomposeVec2f.cpp SoDecomposeVec3f.cpp SoDecomposeVec4f.cpp \
-	SoElapsedTime.cpp SoEngine.cpp SoEngineOutput.cpp \
+	SoElapsedTime.cpp SoEngine.cpp SoEngineOutput.cpp SoX3DEngineOutput.cpp \
 	SoFieldConverter.cpp SoGate.cpp SoInterpolate.cpp \
 	SoInterpolateFloat.cpp SoInterpolateRotation.cpp \
 	SoInterpolateVec2f.cpp SoInterpolateVec3f.cpp \
@@ -81,7 +81,7 @@ am__objects_1 = SoBoolOperation.$(OBJEXT) SoCalculator.$(OBJEXT) \
 	SoDecomposeMatrix.$(OBJEXT) SoDecomposeRotation.$(OBJEXT) \
 	SoDecomposeVec2f.$(OBJEXT) SoDecomposeVec3f.$(OBJEXT) \
 	SoDecomposeVec4f.$(OBJEXT) SoElapsedTime.$(OBJEXT) \
-	SoEngine.$(OBJEXT) SoEngineOutput.$(OBJEXT) \
+	SoEngine.$(OBJEXT) SoEngineOutput.$(OBJEXT) SoX3DEngineOutput.$(OBJEXT) \
 	SoFieldConverter.$(OBJEXT) SoGate.$(OBJEXT) \
 	SoInterpolate.$(OBJEXT) SoInterpolateFloat.$(OBJEXT) \
 	SoInterpolateRotation.$(OBJEXT) SoInterpolateVec2f.$(OBJEXT) \
@@ -105,7 +105,7 @@ am__EXTRA_engines_lst_SOURCES_DIST = SoSubEngineP.h SoConvertAll.h \
 	SoConcatenate.cpp SoConvertAll.cpp SoCounter.cpp \
 	SoDecomposeMatrix.cpp SoDecomposeRotation.cpp \
 	SoDecomposeVec2f.cpp SoDecomposeVec3f.cpp SoDecomposeVec4f.cpp \
-	SoElapsedTime.cpp SoEngine.cpp SoEngineOutput.cpp \
+	SoElapsedTime.cpp SoEngine.cpp SoEngineOutput.cpp SoX3DEngineOutput.cpp \
 	SoFieldConverter.cpp SoGate.cpp SoInterpolate.cpp \
 	SoInterpolateFloat.cpp SoInterpolateRotation.cpp \
 	SoInterpolateVec2f.cpp SoInterpolateVec3f.cpp \
@@ -126,7 +126,7 @@ am__libengines_la_SOURCES_DIST = SoBoolOperation.cpp SoCalculator.cpp \
 	SoConcatenate.cpp SoConvertAll.cpp SoCounter.cpp \
 	SoDecomposeMatrix.cpp SoDecomposeRotation.cpp \
 	SoDecomposeVec2f.cpp SoDecomposeVec3f.cpp SoDecomposeVec4f.cpp \
-	SoElapsedTime.cpp SoEngine.cpp SoEngineOutput.cpp \
+	SoElapsedTime.cpp SoEngine.cpp SoEngineOutput.cpp SoX3DEngineOutput.cpp \
 	SoFieldConverter.cpp SoGate.cpp SoInterpolate.cpp \
 	SoInterpolateFloat.cpp SoInterpolateRotation.cpp \
 	SoInterpolateVec2f.cpp SoInterpolateVec3f.cpp \
@@ -141,7 +141,7 @@ am__objects_6 = SoBoolOperation.lo SoCalculator.lo SoComposeMatrix.lo \
 	SoComputeBoundingBox.lo SoConcatenate.lo SoConvertAll.lo \
 	SoCounter.lo SoDecomposeMatrix.lo SoDecomposeRotation.lo \
 	SoDecomposeVec2f.lo SoDecomposeVec3f.lo SoDecomposeVec4f.lo \
-	SoElapsedTime.lo SoEngine.lo SoEngineOutput.lo \
+	SoElapsedTime.lo SoEngine.lo SoEngineOutput.lo SoX3DEngineOutput.lo \
 	SoFieldConverter.lo SoGate.lo SoInterpolate.lo \
 	SoInterpolateFloat.lo SoInterpolateRotation.lo \
 	SoInterpolateVec2f.lo SoInterpolateVec3f.lo \
@@ -162,7 +162,7 @@ am__EXTRA_libengines_la_SOURCES_DIST = SoSubEngineP.h SoConvertAll.h \
 	SoConcatenate.cpp SoConvertAll.cpp SoCounter.cpp \
 	SoDecomposeMatrix.cpp SoDecomposeRotation.cpp \
 	SoDecomposeVec2f.cpp SoDecomposeVec3f.cpp SoDecomposeVec4f.cpp \
-	SoElapsedTime.cpp SoEngine.cpp SoEngineOutput.cpp \
+	SoElapsedTime.cpp SoEngine.cpp SoEngineOutput.cpp SoX3DEngineOutput.cpp \
 	SoFieldConverter.cpp SoGate.cpp SoInterpolate.cpp \
 	SoInterpolateFloat.cpp SoInterpolateRotation.cpp \
 	SoInterpolateVec2f.cpp SoInterpolateVec3f.cpp \
@@ -180,7 +180,7 @@ am__libengines@SUFFIX@LINKHACK_la_SOURCES_DIST = SoBoolOperation.cpp \
 	SoConcatenate.cpp SoConvertAll.cpp SoCounter.cpp \
 	SoDecomposeMatrix.cpp SoDecomposeRotation.cpp \
 	SoDecomposeVec2f.cpp SoDecomposeVec3f.cpp SoDecomposeVec4f.cpp \
-	SoElapsedTime.cpp SoEngine.cpp SoEngineOutput.cpp \
+	SoElapsedTime.cpp SoEngine.cpp SoEngineOutput.cpp SoX3DEngineOutput.cpp \
 	SoFieldConverter.cpp SoGate.cpp SoInterpolate.cpp \
 	SoInterpolateFloat.cpp SoInterpolateRotation.cpp \
 	SoInterpolateVec2f.cpp SoInterpolateVec3f.cpp \
@@ -199,7 +199,7 @@ am__EXTRA_libengines@SUFFIX@LINKHACK_la_SOURCES_DIST = SoSubEngineP.h \
 	SoConcatenate.cpp SoConvertAll.cpp SoCounter.cpp \
 	SoDecomposeMatrix.cpp SoDecomposeRotation.cpp \
 	SoDecomposeVec2f.cpp SoDecomposeVec3f.cpp SoDecomposeVec4f.cpp \
-	SoElapsedTime.cpp SoEngine.cpp SoEngineOutput.cpp \
+	SoElapsedTime.cpp SoEngine.cpp SoEngineOutput.cpp SoX3DEngineOutput.cpp \
 	SoFieldConverter.cpp SoGate.cpp SoInterpolate.cpp \
 	SoInterpolateFloat.cpp SoInterpolateRotation.cpp \
 	SoInterpolateVec2f.cpp SoInterpolateVec3f.cpp \
@@ -250,6 +250,8 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/SoEngine.Plo ./$(DEPDIR)/SoEngine.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoEngineOutput.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoEngineOutput.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoX3DEngineOutput.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoX3DEngineOutput.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoFieldConverter.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoFieldConverter.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoGate.Plo ./$(DEPDIR)/SoGate.Po \
@@ -587,6 +589,7 @@ RegularSources = \
 	SoElapsedTime.cpp \
 	SoEngine.cpp \
 	SoEngineOutput.cpp \
+	SoX3DEngineOutput.cpp \
 	SoFieldConverter.cpp \
 	SoGate.cpp \
 	SoInterpolate.cpp \
@@ -804,6 +807,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoEngine.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoEngineOutput.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoEngineOutput.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoX3DEngineOutput.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoX3DEngineOutput.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoFieldConverter.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoFieldConverter.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGate.Plo@am__quote@

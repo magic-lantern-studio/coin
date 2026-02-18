@@ -22,6 +22,7 @@ RegularSources = \
 	SoElapsedTime.cpp \
 	SoEngine.cpp \
 	SoEngineOutput.cpp \
+	SoX3DEngineOutput.cpp \
 	SoFieldConverter.cpp \
 	SoGate.cpp \
 	SoInterpolate.cpp \

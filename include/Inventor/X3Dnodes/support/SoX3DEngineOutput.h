@@ -30,42 +30,50 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#include "SoBoolOperation.cpp"
-#include "SoCalculator.cpp"
-#include "SoComposeMatrix.cpp"
-#include "SoComposeRotation.cpp"
-#include "SoComposeRotationFromTo.cpp"
-#include "SoComposeVec2f.cpp"
-#include "SoComposeVec3f.cpp"
-#include "SoComposeVec4f.cpp"
-#include "SoComputeBoundingBox.cpp"
-#include "SoConcatenate.cpp"
-#include "SoConvertAll.cpp"
-#include "SoCounter.cpp"
-#include "SoDecomposeMatrix.cpp"
-#include "SoDecomposeRotation.cpp"
-#include "SoDecomposeVec2f.cpp"
-#include "SoDecomposeVec3f.cpp"
-#include "SoDecomposeVec4f.cpp"
-#include "SoElapsedTime.cpp"
-#include "SoEngine.cpp"
-#include "SoEngineOutput.cpp"
-#include "SoX3DEngineOutput.cpp"
-#include "SoFieldConverter.cpp"
-#include "SoGate.cpp"
-#include "SoInterpolate.cpp"
-#include "SoInterpolateFloat.cpp"
-#include "SoInterpolateRotation.cpp"
-#include "SoInterpolateVec2f.cpp"
-#include "SoInterpolateVec3f.cpp"
-#include "SoInterpolateVec4f.cpp"
-#include "SoOnOff.cpp"
-#include "SoOneShot.cpp"
-#include "SoOutputData.cpp"
-#include "SoSelectOne.cpp"
-#include "SoTimeCounter.cpp"
-#include "SoTransformVec3f.cpp"
-#include "SoTriggerAny.cpp"
-#include "SoNodeEngine.cpp"
-#include "SoTexture2Convert.cpp"
-#include "SoHeightMapToNormalMap.cpp"
+#ifndef COIN_SOENGINEOUTPUT_H
+#define COIN_SOENGINEOUTPUT_H
+
+#include <Inventor/SoType.h>
+#include <Inventor/lists/SoFieldList.h>
+#include <Inventor/lists/SbList.h>
+
+class SoNotList;
+class SoFieldContainer;
+class SoEngine;
+class SoNodeEngine;
+
+class COIN_DLL_API SoEngineOutput {
+public:
+  SoEngineOutput(void);
+  virtual ~SoEngineOutput(void);
+
+  SoType getConnectionType(void) const;
+  int getForwardConnections(SoFieldList & fl) const;
+  void enable(const SbBool flag);
+  SbBool isEnabled(void) const;
+  SoEngine * getContainer(void) const;
+  SoNodeEngine * getNodeContainer(void) const;
+  SbBool isNodeEngineOutput(void) const;
+
+  void setContainer(SoEngine * engine);
+  void setNodeContainer(SoNodeEngine * nodeengine);
+  void addConnection(SoField * f);
+  void removeConnection(SoField * f);
+  int getNumConnections(void) const;
+  SoField * operator[](int i) const;
+
+  void prepareToWrite(void) const;
+  void doneWriting(void) const;
+
+  void touchSlaves(SoNotList * nl, SbBool donotify);
+
+  SoFieldContainer * getFieldContainer(void);
+
+private:
+  SbBool enabled;
+  SoEngine * container; // FIXME: change to SoFieldContainer pointer
+  SoFieldList slaves;
+  SbList<SbBool> fieldnotiflist;
+};
+
+#endif // !COIN_SOENGINEOUTPUT_H
