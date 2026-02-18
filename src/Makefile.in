@@ -76,7 +76,7 @@ coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_DEPENDENCIES =  \
 	collision/collision.lst hardcopy/hardcopy.lst \
 	threads/threads.lst shaders/shaders.lst shadows/shadows.lst \
 	geo/geo.lst foreignfiles/foreignfiles.lst xml/xml.lst \
-	xml/expat/expat.lst profiler/profiler.lst vrml97/vrml97.lst \
+	xml/expat/expat.lst profiler/profiler.lst vrml97/vrml97.lst x3d/x3d.lst \
 	scxml/scxml.lst soscxml/soscxml.lst $(am__DEPENDENCIES_1)
 am__coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES_DIST = tidbits.cpp \
 	actions/all-actions-cpp.cpp base/all-base-cpp.cpp \
@@ -99,7 +99,7 @@ am__coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES_DIST = tidbits.cpp \
 	shadows/all-shadows-cpp.cpp geo/all-geo-cpp.cpp \
 	foreignfiles/all-foreignfiles-cpp.cpp xml/all-xml-cpp.cpp \
 	xml/expat/all-expat-c.c profiler/all-profiler-cpp.cpp \
-	vrml97/all-vrml97-cpp.cpp scxml/all-scxml-cpp.cpp \
+	vrml97/all-vrml97-cpp.cpp x3d/all-x3d-cpp.cpp scxml/all-scxml-cpp.cpp \
 	soscxml/all-soscxml-cpp.cpp
 @MAC_FRAMEWORK_FALSE@am__objects_1 = tidbits.$(OBJEXT)
 @MAC_FRAMEWORK_TRUE@am__objects_1 = all-actions-cpp.$(OBJEXT) \
@@ -141,6 +141,7 @@ am__coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES_DIST = tidbits.cpp \
 @MAC_FRAMEWORK_TRUE@	all-expat-c.$(OBJEXT) \
 @MAC_FRAMEWORK_TRUE@	all-profiler-cpp.$(OBJEXT) \
 @MAC_FRAMEWORK_TRUE@	all-vrml97-cpp.$(OBJEXT) \
+@MAC_FRAMEWORK_TRUE@	all-x3d-cpp.$(OBJEXT) \
 @MAC_FRAMEWORK_TRUE@	all-scxml-cpp.$(OBJEXT) \
 @MAC_FRAMEWORK_TRUE@	all-soscxml-cpp.$(OBJEXT) \
 @MAC_FRAMEWORK_TRUE@	tidbits.$(OBJEXT)
@@ -188,6 +189,7 @@ LTLIBRARIES = $(lib_LTLIBRARIES)
 @HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	xml/expat/libexpat.la \
 @HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	profiler/libprofiler.la \
 @HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	vrml97/libvrml97.la \
+@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	x3d/libx3d.la \
 @HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	scxml/libscxml.la \
 @HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	soscxml/libsoscxml.la \
 @HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	$(am__DEPENDENCIES_2)
@@ -212,7 +214,7 @@ am__libCoin@SUFFIX@_la_SOURCES_DIST = tidbits.cpp \
 	shadows/all-shadows-cpp.cpp geo/all-geo-cpp.cpp \
 	foreignfiles/all-foreignfiles-cpp.cpp xml/all-xml-cpp.cpp \
 	xml/expat/all-expat-c.c profiler/all-profiler-cpp.cpp \
-	vrml97/all-vrml97-cpp.cpp scxml/all-scxml-cpp.cpp \
+	vrml97/all-vrml97-cpp.cpp x3d/all-x3d-cpp.cpp scxml/all-scxml-cpp.cpp \
 	soscxml/all-soscxml-cpp.cpp
 @MAC_FRAMEWORK_FALSE@am__objects_3 = tidbits.lo
 @MAC_FRAMEWORK_TRUE@am__objects_3 = all-actions-cpp.lo all-base-cpp.lo \
@@ -234,7 +236,7 @@ am__libCoin@SUFFIX@_la_SOURCES_DIST = tidbits.cpp \
 @MAC_FRAMEWORK_TRUE@	all-shadows-cpp.lo all-geo-cpp.lo \
 @MAC_FRAMEWORK_TRUE@	all-foreignfiles-cpp.lo all-xml-cpp.lo \
 @MAC_FRAMEWORK_TRUE@	all-expat-c.lo all-profiler-cpp.lo \
-@MAC_FRAMEWORK_TRUE@	all-vrml97-cpp.lo all-scxml-cpp.lo \
+@MAC_FRAMEWORK_TRUE@	all-vrml97-cpp.lo all-x3d-cpp.lo all-scxml-cpp.lo \
 @MAC_FRAMEWORK_TRUE@	all-soscxml-cpp.lo tidbits.lo
 am_libCoin@SUFFIX@_la_OBJECTS = $(am__objects_3)
 libCoin@SUFFIX@_la_OBJECTS = $(am_libCoin@SUFFIX@_la_OBJECTS)
@@ -320,6 +322,8 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/all-upgraders-cpp.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/all-vrml97-cpp.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/all-vrml97-cpp.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/all-x3d-cpp.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/all-x3d-cpp.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/all-xml-cpp.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/all-xml-cpp.Po ./$(DEPDIR)/tidbits.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/tidbits.Po
@@ -361,7 +365,7 @@ DIST_SUBDIRS = extensions xml actions base bundles caches details \
 	draggers elements engines errors events fields fonts glue io \
 	manips misc rendering lists nodekits navigation nodes \
 	shapenodes projectors sensors upgraders 3ds collision hardcopy \
-	shadows geo threads shaders profiler vrml97 foreignfiles scxml \
+	shadows geo threads shaders profiler vrml97 x3d foreignfiles scxml \
 	soscxml doc .
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 ACLOCAL = @ACLOCAL@
@@ -464,6 +468,7 @@ HAVE_SUPERGLU = @HAVE_SUPERGLU@
 HAVE_THREADS = @HAVE_THREADS@
 HAVE_THREADSAFE = @HAVE_THREADSAFE@
 HAVE_VRML97 = @HAVE_VRML97@
+HAVE_X3D = @HAVE_X3D@
 INSTALL_DATA = @INSTALL_DATA@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
 INSTALL_SCRIPT = @INSTALL_SCRIPT@
@@ -637,7 +642,7 @@ ExtraIncludeDirs = -I$(top_srcdir)/include/Inventor/annex -I$(top_builddir)
 @MAC_FRAMEWORK_FALSE@	engines errors events fields fonts glue io manips misc rendering lists nodekits \
 @MAC_FRAMEWORK_FALSE@	navigation nodes shapenodes projectors sensors upgraders \
 @MAC_FRAMEWORK_FALSE@	3ds collision hardcopy shadows geo threads shaders profiler \
-@MAC_FRAMEWORK_FALSE@	vrml97 foreignfiles scxml soscxml doc .
+@MAC_FRAMEWORK_FALSE@	vrml97 x3d foreignfiles scxml soscxml doc .
 
 
 # **************************************************************************
@@ -666,7 +671,8 @@ DEFAULT_INCLUDES = -I$(top_builddir)/include -I$(top_srcdir)/include -I$(top_bui
 @HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	shaders/libshaders.la shadows/libshadows.la geo/libgeo.la       \
 @HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	foreignfiles/libforeignfiles.la xml/libxml.la                   \
 @HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	xml/expat/libexpat.la profiler/libprofiler.la                   \
-@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	vrml97/libvrml97.la scxml/libscxml.la soscxml/libsoscxml.la $(SUPERGLULIBADD)
+@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	vrml97/libvrml97.la x3d/libx3d.la scxml/libscxml.la soscxml/libsoscxml.la $(SUPERGLULIBADD)
+
 
 @HACKING_DYNAMIC_MODULES_TRUE@@MAC_FRAMEWORK_FALSE@libCoin@SUFFIX@_la_LIBADD = 
 
@@ -718,6 +724,7 @@ DEFAULT_INCLUDES = -I$(top_builddir)/include -I$(top_srcdir)/include -I$(top_bui
 @MAC_FRAMEWORK_TRUE@	xml/expat/all-expat-c.c \
 @MAC_FRAMEWORK_TRUE@	profiler/all-profiler-cpp.cpp \
 @MAC_FRAMEWORK_TRUE@	vrml97/all-vrml97-cpp.cpp \
+@MAC_FRAMEWORK_TRUE@	x3d/all-x3d-cpp.cpp \
 @MAC_FRAMEWORK_TRUE@	scxml/all-scxml-cpp.cpp \
 @MAC_FRAMEWORK_TRUE@	soscxml/all-soscxml-cpp.cpp \
 @MAC_FRAMEWORK_TRUE@	tidbits.cpp
@@ -744,7 +751,7 @@ coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD = actions/actions.lst       \
 	threads/threads.lst shaders/shaders.lst shadows/shadows.lst     \
 	geo/geo.lst foreignfiles/foreignfiles.lst xml/xml.lst           \
 	xml/expat/expat.lst profiler/profiler.lst vrml97/vrml97.lst     \
-	scxml/scxml.lst soscxml/soscxml.lst $(SUPERGLULSTADD)
+	x3d/x3d.lst scxml/scxml.lst soscxml/soscxml.lst $(SUPERGLULSTADD)
 
 @MACOSX_10_2FF_FALSE@LibtoolLinkArgs = -no-undefined
 @MACOSX_10_2FF_TRUE@@MACOSX_USE_DYNAMIC_LOOKUP_FALSE@LibtoolLinkArgs = -no-undefined -Wl,-twolevel_namespace -Wl,-undefined,error -Wl,-prebind -Wl,-seg1addr,0x3f000000 -Wl,-headerpad_max_install_names 
@@ -971,6 +978,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-upgraders-cpp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-vrml97-cpp.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-vrml97-cpp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-x3d-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-x3d-cpp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-xml-cpp.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-xml-cpp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tidbits.Plo@am__quote@
@@ -2348,7 +2357,7 @@ install-symlinks:
 	    actions base bundles caches details draggers elements engines \
 	    errors events fields fonts glue io manips misc lists nodekits \
 	    nodes navigation shapenodes projectors sensors upgraders 3ds \
-	    collision hardcopy threads shaders shadows geo xml vrml97 \
+	    collision hardcopy threads shaders shadows geo xml vrml97 x3d \
 	    foreignfiles ; do \
               (cd $$dir; $(MAKE) install-symlinks;) \
         done ; 
@@ -2396,6 +2405,7 @@ uninstall-local:
 	  "$$baseincdir/threads" \
 	  "$$baseincdir/upgraders" \
 	  "$$baseincdir/VRMLnodes" \
+	  "$$baseincdir/X3Dnodes" \
 	  "$$baseincdir/MPEG" \
 	  "$$baseincdir/C/XML" \
 	  "$$baseincdir/C/base" \

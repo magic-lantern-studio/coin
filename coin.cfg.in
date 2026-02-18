@@ -17,6 +17,7 @@ compiler="@COIN_COMPILER@"
 objext="@OBJEXT@"
 have_3ds_import=@HAVE_3DS_IMPORT_CAPABILITIES@
 have_vrml97=@HAVE_VRML97@
+have_x3d=@HAVE_X3D@
 have_sound=@HAVE_SOUND@
 have_superglu=@HAVE_SUPERGLU@
 have_threads=@HAVE_THREADS@

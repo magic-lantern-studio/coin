@@ -96,7 +96,7 @@ source_group("Header Files\\Inventor\\sensors"                   REGULAR_EXPRESS
 source_group("Header Files\\Inventor\\system"                    REGULAR_EXPRESSION ".*/include/Inventor/system/.*[.]h")
 source_group("Header Files\\Inventor\\threads"                   REGULAR_EXPRESSION ".*/include/Inventor/threads/.*[.]h")
 source_group("Header Files\\Inventor\\VRMLnodes"                 REGULAR_EXPRESSION ".*/include/Inventor/VRMLnodes/.*[.]h")
-source_group("Header Files\\Inventor\\X3Dnodes"                 REGULAR_EXPRESSION ".*/include/Inventor/X3Dnodes/.*[.]h")
+source_group("Header Files\\Inventor\\X3Dnodes"                  REGULAR_EXPRESSION ".*/include/Inventor/X3Dnodes/.*[.]h")
 
 source_group("Source Files\\3ds"                       REGULAR_EXPRESSION ".*/src/3ds/.*[.](h|c|cpp)")
 source_group("Source Files\\actions"                   REGULAR_EXPRESSION ".*/src/actions/.*[.](h|c|cpp)")
@@ -138,7 +138,7 @@ source_group("Source Files\\system"                    REGULAR_EXPRESSION ".*/sr
 source_group("Source Files\\threads"                   REGULAR_EXPRESSION ".*/src/threads/.*[.](h|c|cpp)")
 source_group("Source Files\\upgraders"                 REGULAR_EXPRESSION ".*/src/upgraders/.*[.](h|c|cpp)")
 source_group("Source Files\\vrml97"                    REGULAR_EXPRESSION ".*/src/vrml97/.*[.](h|c|cpp)")
-source_group("Source Files\\x3d"                    REGULAR_EXPRESSION ".*/src/x3d/.*[.](h|c|cpp)")
+source_group("Source Files\\x3d"                       REGULAR_EXPRESSION ".*/src/x3d/.*[.](h|c|cpp)")
 source_group("Source Files\\xml"                       REGULAR_EXPRESSION ".*/src/xml/.*[.](h|c|cpp)")
 source_group("Source Files\\xml\\expat"                REGULAR_EXPRESSION ".*/src/xml/expat/.*[.](h|c|cpp)")
 

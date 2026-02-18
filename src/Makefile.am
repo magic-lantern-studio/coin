@@ -296,6 +296,7 @@ uninstall-local:
 	  "$$baseincdir/threads" \
 	  "$$baseincdir/upgraders" \
 	  "$$baseincdir/VRMLnodes" \
+	  "$$baseincdir/X3Dnodes" \
 	  "$$baseincdir/MPEG" \
 	  "$$baseincdir/C/XML" \
 	  "$$baseincdir/C/base" \

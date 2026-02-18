@@ -24,6 +24,20 @@
 #undef HAVE_VRML97
 
 /***************************************************************************
+ * HAVE_X3D
+ *
+ * If you want to disable X3D support in Coin, do not set this define.
+ *
+ * The reason to disable this is mostly to avoid compiling a lot of code
+ * that causes the Coin library to grow considerably if you need a
+ * particularly small version of Coin.
+ *
+ * Default is to have X3D support enabled.
+ */
+
+#undef HAVE_X3D
+
+/***************************************************************************
  * HAVE_NODEKITS
  *
  * If you want to disable nodekits in Coin, do not set this define.

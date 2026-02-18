@@ -20,6 +20,7 @@ Cflags: -I${includedir} @COIN_EXTRA_CFLAGS@ @COIN_EXTRA_CPPFLAGS@
 
 have_3ds_import=@FEAT_HAVE_3DS@
 have_vrml97=@FEAT_HAVE_VRML97@
+have_x3d=@FEAT_HAVE_X3D@
 have_sound=@FEAT_HAVE_SOUND@
 have_superglu=@FEAT_HAVE_SUPERGLU@
 have_threads=@FEAT_HAVE_THREADS@
