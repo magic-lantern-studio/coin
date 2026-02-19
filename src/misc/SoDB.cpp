@@ -1624,13 +1624,13 @@ SoDB::createRoute(SoNode * fromnode, const char * eventout,
   SoEngineOutput * output = NULL;
   SoX3DEngineOutput * x3doutput = NULL;
   if (from == NULL) {
-	if (fromnode->isOfType(SoNodeEngine::getClassTypeId())) {
+    if (fromnode->isOfType(SoNodeEngine::getClassTypeId())) {
        output = ((SoNodeEngine*) fromnode)->getOutput(fromfieldname);
 #ifdef HAVE_X3D
-	} else if  (fromnode->isOfType(SoX3DNodeEngine::getClassTypeId())) {
+    } else if  (fromnode->isOfType(SoX3DNodeEngine::getClassTypeId())) {
        x3doutput = ((SoX3DNodeEngine*) fromnode)->getOutput(fromfieldname);
 #endif // HAVE_X3D
-	}
+    }
   }
 
   if (to && (from || output || x3doutput)) {
@@ -1648,9 +1648,9 @@ SoDB::createRoute(SoNode * fromnode, const char * eventout,
     // Check if we're already connected.
     SoFieldList fl;
     if (from) from->getForwardConnections(fl);
-	else if (output) output->getForwardConnections(fl);
+    else if (output) output->getForwardConnections(fl);
 #ifdef HAVE_X3D
-	else x3doutput->getForwardConnections (fl);
+    else x3doutput->getForwardConnections (fl);
 #endif // HAVE_X3D
     int idx = fl.find(to);
     if (idx != -1) {
@@ -1666,11 +1666,11 @@ SoDB::createRoute(SoNode * fromnode, const char * eventout,
 
     // Check that there exists a field converter, if one is needed.
     SoType totype = to->getTypeId();
-	SoType fromtype = SoType::badType ();
-	if (from) fromtype = from->getTypeId();
-	else if (output) fromtype = output->getConnectionType();
+    SoType fromtype = SoType::badType ();
+    if (from) fromtype = from->getTypeId();
+    else if (output) fromtype = output->getConnectionType();
 #ifdef HAVE_X3D
-	else fromtype = x3doutput->getConnectionType();
+    else fromtype = x3doutput->getConnectionType();
 #endif // HAVE_X3D
     if (totype != fromtype) {
       SoType convtype = SoDB::getConverter(fromtype, totype);
@@ -1694,7 +1694,7 @@ SoDB::createRoute(SoNode * fromnode, const char * eventout,
     if (from) ok = to->connectFrom(from, notnotify, append);
     else if (output) ok = to->connectFrom(output, notnotify, append);
 #ifdef HAVE_X3D
-	else ok = to->connectFrom(x3doutput, notnotify, append);
+    else ok = to->connectFrom(x3doutput, notnotify, append);
 #endif // HAVE_X3D
     // Both known possible failure points are caught above.
     assert(ok && "unexpected connection error");

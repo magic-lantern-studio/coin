@@ -30,8 +30,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifndef COIN_SOENGINEOUTPUT_H
-#define COIN_SOENGINEOUTPUT_H
+#ifndef COIN_SOX3DENGINEOUTPUT_H
+#define COIN_SOX3DENGINEOUTPUT_H
 
 #include <Inventor/SoType.h>
 #include <Inventor/lists/SoFieldList.h>
@@ -42,10 +42,10 @@ class SoFieldContainer;
 class SoEngine;
 class SoNodeEngine;
 
-class COIN_DLL_API SoEngineOutput {
+class COIN_DLL_API SoX3DEngineOutput {
 public:
-  SoEngineOutput(void);
-  virtual ~SoEngineOutput(void);
+  SoX3DEngineOutput(void);
+  virtual ~SoX3DEngineOutput(void);
 
   SoType getConnectionType(void) const;
   int getForwardConnections(SoFieldList & fl) const;
@@ -76,4 +76,4 @@ private:
   SbList<SbBool> fieldnotiflist;
 };
 
-#endif // !COIN_SOENGINEOUTPUT_H
+#endif // !COIN_SOX3DENGINEOUTPUT_H
