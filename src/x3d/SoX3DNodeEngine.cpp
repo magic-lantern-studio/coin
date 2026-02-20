@@ -30,39 +30,70 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifndef COIN_SOX3DCOLOR_H
-#define COIN_SOX3DCOLOR_H
+/*!
+  \class SoX3DNodeEngine SoX3DNodeEngine.h Inventor/engines/SoX3DNodeEngine.h
+  \brief The SoX3DNodeEngine class is a timer that runs for a configurable time and then stops.
 
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/nodes/SoNode.h>
-#include <Inventor/fields/SoMFColor.h>
-#include <Inventor/fields/SoSFNode.h>
+  \ingroup coin_engines
+*/
 
-class SoX3DColorP;
+#include <Inventor/X3Dnodes/SoX3DNodeEngine.h>
+#include <Inventor/lists/SoEngineOutputList.h>
+#include <Inventor/SoDB.h>
 
-class COIN_DLL_API SoX3DColor : public SoNode
+#include <Inventor/fields/SoSFFloat.h>
+
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
+
+#include "engines/SoSubEngineP.h"
+
+
+SO_ENGINE_SOURCE(SoX3DNodeEngine);
+
+/*!
+  \copybrief SoBase::initClass(void)
+*/
+void
+SoX3DNodeEngine::initClass(void)
 {
-  typedef SoNode inherited;
-  SO_NODE_HEADER(SoX3DColor);
+  SO_ENGINE_INTERNAL_INIT_CLASS(SoX3DNodeEngine);
+}
 
-public:
-  static void initClass(void);
-  SoX3DColor(void);
+/*!
+  Default constructor.
+*/
+SoX3DNodeEngine::SoX3DNodeEngine(void)
+{
+  SO_ENGINE_INTERNAL_CONSTRUCTOR(SoX3DNodeEngine);
+}
 
-  SoMFColor color;
+/*!
+  Destructor is protected to avoid explicit destruction.
+*/
+SoX3DNodeEngine::~SoX3DNodeEngine()
+{
+}
 
-  SoSFNode  metadata;
+// Documented in superclass.
+void
+SoX3DNodeEngine::writeInstance(SoOutput * out)
+{
+  inherited::writeInstance(out);
+}
 
-  virtual void doAction(SoAction * action);
-  virtual void GLRender(SoGLRenderAction * action);
-  virtual void callback(SoCallbackAction * action);
+/*!
+  Returns the output with name \a outputname, or \c NULL if no such
+  output exists.
+*/
+SoX3DEngineOutput *
+SoX3DNodeEngine::getOutput(const SbName & outputname) const
+{
+  return NULL;
+}
 
-protected:
-  virtual ~SoX3DColor();
-
-private:
-  SoX3DColorP * pimpl;
-
-}; // class SoX3DColor
-
-#endif // ! COIN_SOX3DCOLOR_H
+void
+SoX3DNodeEngine::evaluate()
+{
+}

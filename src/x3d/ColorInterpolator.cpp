@@ -49,6 +49,7 @@
     eventIn      SFFloat set_fraction        # (-inf, inf)
     exposedField MFFloat key           []    # (-inf, inf)
     exposedField MFColor keyValue      []    # [0,1]
+    exposedField SFNode  metadata      NULL
     eventOut     SFColor value_changed
   }
   \endverbatim
@@ -59,14 +60,10 @@
   field. The keyValue field and value_changed events are defined in
   RGB colour space. A linear interpolation using the value of
   set_fraction as input is performed in HSV space (see 
-  http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-X3D/part1/bibliography.html#[FOLE]
+  https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/bibliography.html#[FOLEY])
   for description of RGB and HSV colour spaces). The results are undefined
   when interpolating between two consecutive keys with complementary
-  hues.  
-
-  4.6.8, Interpolator nodes
-  (<http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-X3D/part1/concepts.html#4.6.8>), 
-  contains a detailed discussion of interpolators.
+  hues.
 
 */
 
@@ -80,6 +77,12 @@
   \var SoEngineOutput SoX3DColorInterpolator::value_changed
   The eventOut color.
 */
+
+/*!
+  \var SoSFNode SoX3DColorInterpolator::metadata
+  Can contain an SoX3DMetadataObject. Is NULL by default.
+*/
+
 
 #include <Inventor/X3Dnodes/SoX3DColorInterpolator.h>
 
@@ -106,6 +109,7 @@ SoX3DColorInterpolator::SoX3DColorInterpolator(void)
   SO_NODEENGINE_INTERNAL_CONSTRUCTOR(SoX3DColorInterpolator);
 
   SO_X3DNODE_ADD_EMPTY_EXPOSED_MFIELD(keyValue);
+  SO_X3DNODE_ADD_EXPOSED_FIELD(metadata, (NULL));
   SO_NODEENGINE_ADD_OUTPUT(value_changed, SoSFColor);
 }
 

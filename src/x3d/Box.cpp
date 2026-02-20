@@ -46,7 +46,9 @@
 
   \verbatim
   Box {
-    field    SFVec3f size  2 2 2        # (0, inf)
+    exposedField SFNode  metadata NULL
+    field        SFVec3f size     2 2 2        # (0, inf)
+    field        SFBool  solid    TRUE
   }
   \endverbatim
 
@@ -58,8 +60,8 @@
   Figure 6.2 illustrates the Box node.
 
   <center>
-  <img src="http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-X3D/Images/box.gif">
-  Figure 6.2
+  <img src="https://www.web3d.org/documents/specifications/19775-1/V3.0/Images/box.gif">
+  Figure 13.1 - Box node
   </center>
 
   Textures are applied individually to each face of the box. On the
@@ -75,15 +77,28 @@
   the view up direction, the texture is mapped onto the face with the
   same orientation as if the image were displayed normally in
   2D. SoX3DTextureTransform affects the texture coordinates of the
-  Box.  The Box node's geometry requires outside faces only. When
-  viewed from the inside the results are undefined.
+  Box (see 18.4.8 TextureTransform).
 
+  The solid field determines whether the box is visible when viewed from the inside. 11.2.3 Common geometry fields provides a complete description of the solid field.  
+*/
+
+/*!
+  \var SoSFNode SoX3DBox::metadata
+
+  Can contain an SoX3DMetadataObject. Is NULL by default.
 */
 
 /*!
   \var SoX3DBox::size
 
   Box size vector. Default value is (2,2,2).
+*/
+
+/*!
+  \var SoX3DBox::solid
+
+  Determines whether the Box is visible when viewed from the inside.
+  Default value is TRUE.
 */
 
 #include <Inventor/X3Dnodes/SoX3DBox.h>
@@ -121,7 +136,9 @@ SoX3DBox::SoX3DBox(void)
 {
   SO_X3DNODE_INTERNAL_CONSTRUCTOR(SoX3DBox);
 
+  SO_X3DNODE_ADD_EXPOSED_FIELD(metadata, (NULL));
   SO_X3DNODE_ADD_FIELD(size, (2.0f, 2.0f, 2.0f));
+  SO_X3DNODE_ADD_FIELD(solid, (TRUE));
 }
 
 /*!

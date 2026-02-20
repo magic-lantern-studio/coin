@@ -46,13 +46,16 @@
 
   \verbatim
   CylinderSensor {
-    exposedField SFBool     autoOffset TRUE
-    exposedField SFFloat    diskAngle  0.262       # (0,/2)
-    exposedField SFBool     enabled    TRUE
-    exposedField SFFloat    maxAngle   -1          # [-2,2]
-    exposedField SFFloat    minAngle   0           # [-2,2]
-    exposedField SFFloat    offset     0           # (-inf, inf)
+    exposedField SFBool     autoOffset    TRUE
+    exposedField SFString   description   ""
+    exposedField SFFloat    diskAngle     0.262       # (0, pi/2)
+    exposedField SFBool     enabled       TRUE
+    exposedField SFFloat    maxAngle      -1          # [-2pi, 2pi]
+    exposedField SFNode     metadata      NULL
+    exposedField SFFloat    minAngle      0           # [-2pi, 2pi]
+    exposedField SFFloat    offset        0           # (-inf, inf)
     eventOut     SFBool     isActive
+    eventOut     SFBool     isOver
     eventOut     SFRotation rotation_changed
     eventOut     SFVec3f    trackPoint_changed
   }
@@ -74,9 +77,9 @@
 
   A CylinderSensor node generates events when the pointing device is
   activated while the pointer is indicating any descendent geometry
-  nodes of the sensor's parent group. See 4.6.7.5, Activating and
-  manipulating sensors
-  (<http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-X3D/part1/concepts.html#4.6.7.5>),
+  nodes of the sensor's parent group. See 20.2.3, Activating and
+  manipulating pointing deevice sensors
+  (<https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/components/pointingsensor.html#Activatingandmanipulating>),
   for more details on using the pointing device to activate the
   CylinderSensor.
 
@@ -98,8 +101,8 @@
   reflect the unclamped drag position on the surface of this disk.
   When the pointing device is deactivated and autoOffset is TRUE,
   offset is set to the last value of rotation_changed and an
-  offset_changed event is generated. See 4.6.7.4, Drag sensors
-  (<http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-X3D/part1/concepts.html#4.6.7.4>),
+  offset_changed event is generated. See 20.2.2, Drag sensors
+  (<https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/components/pointingsensor.html#DragSensors>),
   for a more general description of autoOffset and offset fields.
  
   If the initial acute angle between the bearing vector and the local
@@ -116,9 +119,9 @@
   reflect the unclamped drag position on the surface of the invisible
   cylinder. When the pointing device is deactivated and autoOffset is
   TRUE, offset is set to the last rotation angle and an offset_changed
-  event is generated.  More details are available in 4.6.7.4, Drag
+  event is generated.  More details are available in 20.2.2, Drag
   sensors
-  (<http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-X3D/part1/concepts.html#4.6.7.4>).
+  (<https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/components/pointingsensor.html#DragSensors>).
 
   When the sensor generates an isActive TRUE event, it grabs all
   further motion events from the pointing device until it is released
@@ -143,19 +146,22 @@
   variety of ways (e.g., clamp all values to the cylinder and
   continuing to rotate as the point is dragged away from the
   cylinder). Each movement of the pointing device while isActive is
-  TRUE generates trackPoint_changed and rotation_changed events.  The
-  minAngle and maxAngle fields clamp rotation_changed events to a
+  TRUE generates trackPoint_changed and rotation_changed events.
+
+  The minAngle and maxAngle fields clamp rotation_changed events to a
   range of values. If minAngle is greater than maxAngle,
-  rotation_changed events are not clamped. 
+  rotation_changed events are not clamped. The minAngle and maxAngle fields
+  are restricted to the range [-2pi, 2pi].
 
-  The minAngle and maxAngle fields are restricted to the range [-2,
-  2].  More information about this behaviour is described in 4.6.7.3,
-  Pointing-device sensors, 4.6.7.4, Drag sensors
-  (<http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-X3D/part1/concepts.html#4.6.7.4>),
-  and 4.6.7.5
-  (<http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-X3D/part1/concepts.html#4.6.7.5>),
-  Activating and manipulating sensors.
+  More information about this behaviour is described in 20.2 Concepts
+ (https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/components/pointingsensor.html#Concepts).
 
+*/
+
+/*!
+  \var SoSFString SoX3DAnchor::description
+
+  The textual description of the URL.
 */
 
 /*!
@@ -181,6 +187,16 @@
 /*!
   \var SoSFRotation SoX3DCylinderSensor::rotation_changed
   This eventOut is signaled during sensor interaction.
+*/
+
+/*!
+  \var SoSFRotation SoX3DCylinderSensor::trackPoint_changed
+  This eventOut is signaled during sensor interaction.
+*/
+
+/*!
+  \var SoSFNode SoX3DCylinderSensor::metadata
+  Can contain an SoX3DMetadataObject. Is NULL by default.
 */
 
 #include <Inventor/X3Dnodes/SoX3DCylinderSensor.h>
@@ -210,11 +226,14 @@ SoX3DCylinderSensor::SoX3DCylinderSensor(void)
 {
   SO_X3DNODE_INTERNAL_CONSTRUCTOR(SoX3DCylinderSensor);
 
+  SO_X3DNODE_ADD_EXPOSED_FIELD(description, (""));
   SO_X3DNODE_ADD_EXPOSED_FIELD(diskAngle, (0.262f));
   SO_X3DNODE_ADD_EXPOSED_FIELD(maxAngle, (-1.0f));
+  SO_X3DNODE_ADD_EXPOSED_FIELD(metadata, (NULL));
   SO_X3DNODE_ADD_EXPOSED_FIELD(minAngle, (0.0f));
   SO_X3DNODE_ADD_EXPOSED_FIELD(offset, (0.0f));
   SO_X3DNODE_ADD_EVENT_OUT(rotation_changed);
+  SO_X3DNODE_ADD_EVENT_OUT(trackPoint_changed);
 
   this->cylinderproj = new SbCylinderPlaneProjector();
 }
@@ -227,7 +246,7 @@ SoX3DCylinderSensor::~SoX3DCylinderSensor()
   delete this->cylinderproj;
 }
 
-// Doc in parent
+// doc in parent
 SbBool
 SoX3DCylinderSensor::dragStart(void)
 {
@@ -243,7 +262,7 @@ SoX3DCylinderSensor::dragStart(void)
   return FALSE;
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DCylinderSensor::drag(void)
 {
@@ -257,7 +276,7 @@ SoX3DCylinderSensor::drag(void)
   this->rotation_changed = rot * SbRotation(SbVec3f(0.0f, 1.0f, 0.0f), this->offset.getValue());
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DCylinderSensor::dragFinish(void)
 {

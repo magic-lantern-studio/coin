@@ -37,6 +37,7 @@
 #include <Inventor/X3Dnodes/SoX3DGeometry.h>
 #include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/fields/SoSFBool.h>
+#include <Inventor/fields/SoSFNode.h>
 
 class COIN_DLL_API SoX3DCone : public SoX3DGeometry
 {
@@ -49,8 +50,11 @@ public:
 
   SoSFFloat bottomRadius;
   SoSFFloat height;
-  SoSFBool side;
-  SoSFBool bottom;
+  SoSFBool  side;
+  SoSFBool  bottom;
+  SoSFBool  solid;
+
+  SoSFNode  metadata;
 
   virtual void GLRender(SoGLRenderAction * action);
   virtual void rayPick(SoRayPickAction * action);

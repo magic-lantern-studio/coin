@@ -68,6 +68,11 @@ set(COIN_X3D_FILES
 	VisibilitySensor.cpp
 	WorldInfo.cpp
 	JS_X3DClasses.cpp
+	X3DNode.cpp
+	X3DBoundedObject.cpp
+	X3DAppearanceNode.cpp
+	X3DAppearanceChildNode.cpp
+	SoX3DNodeEngine.cpp
 )
 
 # Files excluded from public API documentation, included in complete documentation.
@@ -75,6 +80,7 @@ set(COIN_X3D_INTERNAL_FILES
 	JS_X3DClasses.h
 	JS_X3DClasses.cpp
 	SoX3DSubInterpolatorP.h
+	SoX3DNodeEngine.h
 )
 
 # build library

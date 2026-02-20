@@ -49,6 +49,7 @@
     eventIn      SFFloat set_fraction        # (-inf, inf)
     exposedField MFFloat key           []    # (-inf, inf)
     exposedField MFVec3f keyValue      []    # (-inf, inf)
+    exposedField SFNode  metadata      NULL
     eventOut     MFVec3f value_changed
   }
   \endverbatim
@@ -57,11 +58,15 @@
   number of coordinates in the keyValue field shall be an integer
   multiple of the number of keyframes in the key field. That integer
   multiple defines how many coordinates will be contained in the
-  value_changed events.  4.6.8, Interpolator nodes
-  (<http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-X3D/part1/concepts.html#4.6.8>),
-  contains a more detailed discussion of interpolators.
+  value_changed events.
 
 */
+
+/*!
+  \var SoSFNode SoX3DCoordinateInterpolator::metadata
+  Can contain an SoX3DMetadataObject. Is NULL by default.
+*/
+
 #include <Inventor/X3Dnodes/SoX3DCoordinateInterpolator.h>
 
 #include <Inventor/X3Dnodes/SoX3DMacros.h>
@@ -99,6 +104,7 @@ SoX3DCoordinateInterpolator::SoX3DCoordinateInterpolator(void)
   SO_NODEENGINE_INTERNAL_CONSTRUCTOR(SoX3DCoordinateInterpolator);
 
   SO_X3DNODE_ADD_EMPTY_EXPOSED_MFIELD(keyValue);
+  SO_X3DNODE_ADD_EXPOSED_FIELD(metadata, (NULL));
   SO_NODEENGINE_ADD_OUTPUT(value_changed, SoMFVec3f);
 }
 

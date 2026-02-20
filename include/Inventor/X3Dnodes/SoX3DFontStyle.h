@@ -39,6 +39,7 @@
 #include <Inventor/fields/SoSFBool.h>
 #include <Inventor/fields/SoMFString.h>
 #include <Inventor/fields/SoSFString.h>
+#include <Inventor/fields/SoSFNode.h>
 #include <Inventor/SbString.h>
 
 #ifndef COIN_INTERNAL
@@ -69,15 +70,17 @@ public:
     BOLDITALIC = 0x3
   };
 
-  SoSFFloat size;
+  SoSFFloat  size;
   SoMFString family;
   SoMFString style;
-  SoSFBool horizontal;
-  SoSFBool leftToRight;
-  SoSFBool topToBottom;
+  SoSFBool   horizontal;
+  SoSFBool   leftToRight;
+  SoSFBool   topToBottom;
   SoSFString language;
   SoMFString justify;
-  SoSFFloat spacing;
+  SoSFFloat  spacing;
+
+  SoSFNode   metadata;
 
   SbString getFontName(void);
 
@@ -93,6 +96,7 @@ protected:
 
 private:
   SoX3DFontStyleP * pimpl;
+
 };
 
 #endif // ! COIN_SOX3DFONTSTYLE_H

@@ -45,17 +45,18 @@
   \WEB3DCOPYRIGHT
 
   \verbatim
+
   Anchor {
     eventIn      MFNode   addChildren
     eventIn      MFNode   removeChildren
     exposedField MFNode   children        []
     exposedField SFString description     ""
+    exposedField SFNode   metadata        NULL
     exposedField MFString parameter       []
     exposedField MFString url             []
     field        SFVec3f  bboxCenter      0 0 0     # (-inf, inf)
     field        SFVec3f  bboxSize        -1 -1 -1  # (0, inf) or -1,-1,-1
   }
-
   \endverbatim
 
   The Anchor grouping node retrieves the content of a URL when the
@@ -65,24 +66,27 @@
   when the parameter field, described below, alters this
   behaviour). If non-X3D data is retrieved, the browser shall
   determine how to handle that data; typically, it will be passed to
-  an appropriate non-X3D browser.  Exactly how a user activates
+  an appropriate non-X3D browser.
+
+  Exactly how a user activates
   geometry contained by the Anchor node depends on the pointing device
   and is determined by the X3D browser. Typically, clicking with the
   pointing device will result in the new scene replacing the current
   scene. An Anchor node with an empty url does nothing when its
   children are chosen. A description of how multiple Anchors and
   pointing-device sensors are resolved on activation is contained in
-  4.6.7, Sensor nodes
-  (<http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-X3D/part1/concepts.html#4.6.7>).
+  20.2, Concepts (<https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/components/pointingsensor.html#Concepts>).
 
   More details on the children, addChildren, and removeChildren fields
-  and eventIns can be found in 4.6.5, Grouping and children nodes
-  (<http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-X3D/part1/concepts.html#4.6.5>).
+  can be found in 10.2, Concepts
+  (<https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/components/group.html#Concepts>).
 
   The description field in the Anchor node specifies a textual
   description of the Anchor node. This may be used by browser-specific
   user interfaces that wish to present users with more detailed
-  information about the Anchor.  The parameter exposed field may be
+  information about the Anchor.
+
+  The parameter exposed field may be
   used to supply any additional information to be interpreted by the
   browser. Each string shall consist of "keyword=value" pairs. For
   example, some browsers allow the specification of a 'target' for a
@@ -103,7 +107,7 @@
 
   \verbatim
   Anchor {
-    url "http://www.school.edu/vrml/someScene.wrl#OverView"
+    url "http://www.school.edu/X3D/someScene.wrl#OverView"
     children  Shape { geometry Box {} }
   }
   \endverbatim
@@ -113,20 +117,21 @@
   when the Anchor node's geometry (Box) is activated. If the named
   Viewpoint node is not found in the X3D file, the X3D file is
   loaded using the default Viewpoint node binding stack rules (see
-  X3DViewpoint).  If the url field is specified in the form
+  X3DViewpoint).
+
+  If the url field is specified in the form
   "#ViewpointName" (i.e. no file name), the Viewpoint node with the
   given name ("ViewpointName") in the Anchor's runtime name scope(s)
   shall be bound (set_bind TRUE).  The results are undefined if there
   are multiple Viewpoints with the same name in the Anchor's runtime
   name scope(s). The results are undefined if the Anchor node is not
   part of any runtime name scope or is part of more than one runtime
-  name scope. See 4.4.6, Runtime name scope, for a description of
+  name scope. See 4.4.7, Run-time name scope, for a description of
   runtime name scopes. See X3DViewpoint, for the Viewpoint
   transition rules that specify how browsers shall interpret the
   transition from the old Viewpoint node to the new one. For example:
 
   \verbatim
-
   Anchor {
     url "#Doorway"
     children Shape {
@@ -137,10 +142,12 @@
 
   binds the viewer to the viewpoint defined by the "Doorway" viewpoint
   in the current world when the sphere is activated. In this case, if
-  the Viewpoint is not found, no action occurs on activation.  More
-  details on the url field are contained in 4.5, X3D and the World
+  the Viewpoint is not found, no action occurs on activation.
+
+  More details on the url field are contained in 9.2.1, X3D and the World
   Wide Web
-  (<http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-X3D/part1/concepts.html#4.5>).
+  (<https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/concepts.html#URLs>).
+  
   The bboxCenter and bboxSize fields specify a bounding box
   that encloses the Anchor's children. This is a hint that may be used
   for optimization purposes. The results are undefined if the
@@ -148,25 +155,31 @@
   the children at any time.  The default bboxSize value, (-1, -1, -1),
   implies that the bounding box is not specified and if needed shall
   be calculated by the browser. More details on the bboxCenter and
-  bboxSize fields can be found in 4.6.4, Bounding boxes
-  (<http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-X3D/part1/concepts.html#4.6.4>).
+  bboxSize fields can be found in 10.2.2, Bounding boxes
+  (<https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/components/group.html#Boundingboxes>).
 
 */
 
 /*!
-  \var SoX3DAnchor::url
+  \var SoMFString SoX3DAnchor::url
 
-  The URL string.
+  The URL or URN string.
 */
 
 /*!
-  \var SoX3DAnchor::description
+  \var SoSFString SoX3DAnchor::description
 
   The textual description of the URL.
 */
 
 /*!
-  \var SoX3DAnchor::parameter
+  \var SoSFNode SoX3DAnchor::metadata
+
+  Can contain an SoX3DMetadataObject. Is NULL by default.
+*/
+
+/*!
+  \var SoMFString SoX3DAnchor::parameter
 
   May be used to supply additional information to the browser.
 
@@ -174,7 +187,7 @@
 */
 
 /*!
-  \var SoX3DAnchor::bboxCenter
+  \var SoSFVec3f SoX3DAnchor::bboxCenter
   Children bounding box hint center. Default value is (0, 0, 0).
 */
 
@@ -222,6 +235,7 @@ SoX3DAnchor::SoX3DAnchor(void)
 
   SO_X3DNODE_ADD_EMPTY_EXPOSED_MFIELD(url);
   SO_X3DNODE_ADD_EXPOSED_FIELD(description, (""));
+  SO_X3DNODE_ADD_EXPOSED_FIELD(metadata, (NULL));
   SO_X3DNODE_ADD_EMPTY_EXPOSED_MFIELD(parameter);
 
   SO_X3DNODE_ADD_FIELD(bboxCenter, (0.0f, 0.0f, 0.0f));

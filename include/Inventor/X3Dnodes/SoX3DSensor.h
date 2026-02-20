@@ -44,13 +44,14 @@ class COIN_DLL_API SoX3DSensor : public SoNode {
 public:
   SoSFBool isActive;
   SoSFBool enabled;
+  SoSFBool isOver;
 
   static void initClass(void);
 
 protected:
-
   SoX3DSensor(void);
   virtual ~SoX3DSensor();
+
 };
 
 #endif // ! COIN_SOX3DSENSOR_H

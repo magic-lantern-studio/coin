@@ -46,7 +46,8 @@
   
   \verbatim
   Color {
-    exposedField MFColor color  []         # [0,1]
+    exposedField MFColor color    []         # [0,1]
+    exposedField SFNode  metadata NULL
   }
   \endverbatim
 
@@ -58,13 +59,20 @@
   IndexedFaceSet. A Material node is used to specify the overall
   material parameters of lit geometry. If both a Material node and a
   Color node are specified for a geometric shape, the colours shall
-  replace the diffuse component of the material.  RGB or RGBA textures
+  replace the diffuse component of the material.
+
+  RGB or RGBA textures
   take precedence over colours; specifying both an RGB or RGBA texture
   and a Color node for geometric shape will result in the Color node
-  being ignored. Details on lighting equations can be found in 4.14,
+  being ignored. Details on lighting equations can be found in 17.2.2,
   Lighting model
-  (<http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-X3D/part1/concepts.html#4.14>).
+  (<https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/components/lighting.html#Lightingmodel>).
 
+*/
+
+/*!
+  \var SoSFNode SoX3DColor::metadata
+  Can contain an SoX3DMetadataObject. Is NULL by default.
 */
 
 /*!
@@ -149,6 +157,7 @@ SoX3DColor::SoX3DColor(void)
   PRIVATE(this) = new SoX3DColorP;
   SO_X3DNODE_INTERNAL_CONSTRUCTOR(SoX3DColor);
 
+  SO_X3DNODE_ADD_EXPOSED_FIELD(metadata, (NULL));
   SO_X3DNODE_ADD_EMPTY_EXPOSED_MFIELD(color);
 }
 
@@ -160,7 +169,7 @@ SoX3DColor::~SoX3DColor() // virtual, protected
   delete PRIVATE(this);
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DColor::doAction(SoAction * action)
 {
@@ -201,14 +210,14 @@ SoX3DColor::doAction(SoAction * action)
   }
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DColor::GLRender(SoGLRenderAction * action)
 {
   SoX3DColor::doAction((SoAction*) action);
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DColor::callback(SoCallbackAction * action)
 {

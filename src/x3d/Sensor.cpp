@@ -65,6 +65,8 @@ SoX3DSensor::SoX3DSensor(void)
   SO_X3DNODE_ADD_EVENT_OUT(isActive);
   // DragSensor reads from this field. Initialize it.
   this->isActive = FALSE;
+  SO_X3DNODE_ADD_EVENT_OUT(isOver);
+  this->isOver = FALSE;
   SO_X3DNODE_ADD_EXPOSED_FIELD(enabled, (TRUE));
 }
 

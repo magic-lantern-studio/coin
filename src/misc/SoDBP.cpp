@@ -188,6 +188,18 @@ SoDBP::is3dsFile(SoInput * in)
   return TRUE;
 }
 
+#ifdef HAVE_X3D
+SbBool
+SoDBP::isXMLFile(SoInput * in)
+{
+  if (in->getNumBytesRead() > 0) { return FALSE; }
+  if (in->getHeader().getLength() > 0) { return FALSE; }
+
+  // ToDo: read just the first part of the X3D file to determine format.
+  return FALSE;
+}
+#endif // HAVE_X3D
+
 #if defined(HAVE_WINDLL_RUNTIME_BINDING) && defined(HAVE_TLHELP32_H)
 
 #ifdef HAVE_WINDOWS_H
@@ -288,6 +300,25 @@ SoDBP::read3DSFile(SoInput * in)
   return NULL;
 }
 
+#ifdef HAVE_X3D
+SoSeparator *
+SoDBP::readXMLFile(SoInput * in)
+{
+  assert(SoDBP::isXMLFile(in));
+
+  SoSeparator * b;
+  // ToDo: Read in the file. If the routine returns TRUE, then return
+  // the root of the scene graph that was constructed by the read file
+  // routine. Otherwise return NULL.
+  
+  SoDebugError::postWarning("SoDB::read",
+                            "It seems like the input file is in X3D "
+                            "format, but this configuration of Coin was "
+                            "built without support for that file format.");
+
+  return NULL;
+}
+#endif // HAVE_X3D
 
 void
 SoDBP::progress(const SbName & itemid,

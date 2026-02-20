@@ -38,6 +38,7 @@
 #include <Inventor/fields/SoMFString.h>
 #include <Inventor/fields/SoSFString.h>
 #include <Inventor/fields/SoSFVec3f.h>
+#include <Inventor/fields/SoSFNode.h>
 
 class SoX3DAnchor;
 class SoX3DAnchorP;
@@ -59,6 +60,8 @@ public:
 
   SoSFVec3f bboxCenter;
   SoSFVec3f bboxSize;
+
+  SoSFNode metadata;
 
   static void setFetchURLCallBack(SoX3DAnchorCB *, void * closure);
 

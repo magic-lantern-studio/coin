@@ -37,7 +37,7 @@
 
 #define SO_X3DNODE_INTERNAL_CONSTRUCTOR(_class_) \
   SO_NODE_INTERNAL_CONSTRUCTOR(_class_); \
-  this->setNodeType(SoNode::X3D2);
+  this->setNodeType(SoNode::X3D);
 
 #define SO_X3DNODE_ADD_EVENT_IN(_field_) \
   do { \
@@ -66,7 +66,6 @@
     fieldData->addField(this, SO__QUOTE(_field_), &this->_field_);\
   } WHILE_0
 
-
 #define SO_X3DNODE_ADD_FIELD(_field_, _defaultval_) \
   SO_NODE_ADD_FIELD(_field_, _defaultval_)
 
@@ -74,7 +73,6 @@
   this->_field_.setFieldType(SoField::EXPOSED_FIELD); \
   SO_NODE_ADD_FIELD(_field_, _defaultval_)
 
-#define SO_X3D_NODE_TYPE (SoNode::X3D2|SoNode::COIN_2_0)
-
+#define SO_X3D_NODE_TYPE (SoNode::X3D|SoNode::COIN_4_0)
 
 #endif // COIN_SOX3DMACROS_H

@@ -39,6 +39,8 @@
 #include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/fields/SoSFColor.h>
 #include <Inventor/fields/SoSFBool.h>
+#include <Inventor/fields/SoSFTime.h>
+#include <Inventor/fields/SoSFNode.h>
 
 class SoX3DFogP;
 
@@ -52,19 +54,23 @@ public:
   SoX3DFog(void);
 
   SoSFString fogType;
-  SoSFFloat visibilityRange;
-  SoSFColor color;
+  SoSFFloat  visibilityRange;
+  SoSFColor  color;
+
+  SoSFNode   metadata;
 
   virtual void GLRender( SoGLRenderAction * action );
 
 protected:
   SoSFBool set_bind;
   SoSFBool isBound;
+  SoSFTime bindTime;
 
   virtual ~SoX3DFog();
 
 private:
   SoX3DFogP * pimpl;
+  
 };
 
 #endif // ! COIN_SOX3DFOG_H

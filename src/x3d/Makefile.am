@@ -69,7 +69,11 @@ RegularSources = \
 	VisibilitySensor.cpp \
 	WorldInfo.cpp \
 	\
-	JS_X3DClasses.cpp
+	JS_X3DClasses.cpp \
+	X3DNode.cpp \
+	X3DBoundedObject.cpp \
+	X3DAppearanceNode.cpp \
+	X3DAppearanceChildNode.cpp
 
 LinkHackSources = \
 	all-x3d-cpp.cpp

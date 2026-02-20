@@ -378,7 +378,7 @@ SoDB::init(void)
   SoDB::registerHeader(SbString("#VRML V2.0 utf8"), FALSE, 2.1f,
                        NULL, NULL, NULL);
 
-  // FIXME: Similar to above thees are really only valid if the HAVE_X3D
+  // FIXME: Similar to above these are really only valid if the HAVE_X3D
   // define is in place. If it's not, we should register the header in
   // a way so that we spit out a /specific/ warning about why X3D is not
   // supported in the configuration of the compiled libCoin. 20141214 RHW.
@@ -641,7 +641,9 @@ SoDB::read(SoInput * in, SoNode *& rootnode)
   }
 #endif // HAVE_X3D
 
-  // allow engines at the top level of a file
+  // The input is neither a 3DS file or a X3D file. Continue processing.
+
+  // Allow engines at the top level of a file.
   do {
     if (!SoDB::read(in, baseptr)) return FALSE;
     if (!baseptr) return TRUE; // eof
@@ -1290,7 +1292,7 @@ SoDB::readAllWrapper(SoInput * in, const SoType & grouptype)
   if (!valid && SoDBP::isXMLFile(in)) {
     return SoDBP::readXMLFile(in);
   }
-#endif
+#endif // HAVE_X3D
 
   if (!valid) {
     SoReadError::post(in, "Not a valid Inventor file.");

@@ -38,6 +38,7 @@
 #include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/fields/SoMFFloat.h>
 #include <Inventor/fields/SoMFVec3f.h>
+#include <Inventor/fields/SoSFNode.h>
 
 class COIN_DLL_API SoX3DCoordinateInterpolator : public SoX3DInterpolator
 {
@@ -48,11 +49,13 @@ public:
   static void initClass(void);
   SoX3DCoordinateInterpolator(void);
 
-  SoMFVec3f keyValue;
+  SoMFVec3f      keyValue;
+  SoSFNode       metadata;
   SoEngineOutput value_changed; // (SoMFVec3f)
 
 protected:
   virtual ~SoX3DCoordinateInterpolator();
+
 private:
   virtual void evaluate(void);
   class SoX3DCoordinateInterpolatorP * pimpl;

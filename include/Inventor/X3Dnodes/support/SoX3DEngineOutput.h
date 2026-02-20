@@ -33,47 +33,14 @@
 #ifndef COIN_SOX3DENGINEOUTPUT_H
 #define COIN_SOX3DENGINEOUTPUT_H
 
-#include <Inventor/SoType.h>
-#include <Inventor/lists/SoFieldList.h>
-#include <Inventor/lists/SbList.h>
+#include <Inventor/engines/SoEngineOutput.h>
 
-class SoNotList;
-class SoFieldContainer;
-class SoEngine;
-class SoNodeEngine;
-
-class COIN_DLL_API SoX3DEngineOutput {
+class COIN_DLL_API SoX3DEngineOutput : public SoEngineOutput
+{
 public:
   SoX3DEngineOutput(void);
   virtual ~SoX3DEngineOutput(void);
 
-  SoType getConnectionType(void) const;
-  int getForwardConnections(SoFieldList & fl) const;
-  void enable(const SbBool flag);
-  SbBool isEnabled(void) const;
-  SoEngine * getContainer(void) const;
-  SoNodeEngine * getNodeContainer(void) const;
-  SbBool isNodeEngineOutput(void) const;
-
-  void setContainer(SoEngine * engine);
-  void setNodeContainer(SoNodeEngine * nodeengine);
-  void addConnection(SoField * f);
-  void removeConnection(SoField * f);
-  int getNumConnections(void) const;
-  SoField * operator[](int i) const;
-
-  void prepareToWrite(void) const;
-  void doneWriting(void) const;
-
-  void touchSlaves(SoNotList * nl, SbBool donotify);
-
-  SoFieldContainer * getFieldContainer(void);
-
-private:
-  SbBool enabled;
-  SoEngine * container; // FIXME: change to SoFieldContainer pointer
-  SoFieldList slaves;
-  SbList<SbBool> fieldnotiflist;
 };
 
 #endif // !COIN_SOX3DENGINEOUTPUT_H

@@ -48,6 +48,7 @@
   ElevationGrid {
     eventIn      MFFloat  set_height
     exposedField SFNode   color             NULL
+    exposedField SFNode   metadata          NULL
     exposedField SFNode   normal            NULL
     exposedField SFNode   texCoord          NULL
     field        MFFloat  height            []      # (-inf,inf)
@@ -122,8 +123,7 @@
     height[(i+1)+(j+1)×xDimension] and height[i+(j+1)×xDimension] 
   \endverbatim
   
-  If
-  colorPerVertex is TRUE and the color field is not NULL, the color
+  If colorPerVertex is TRUE and the color field is not NULL, the color
   field shall specify a Color node containing at least xDimension ×
   zDimension colours, one for each vertex, ordered as follows:
 
@@ -139,7 +139,7 @@
   for the ElevationGrid node. If the normal field is NULL, the browser
   shall automatically generate normals, using the creaseAngle field to
   determine if and how normals are smoothed across the surface (see
-  4.6.3.5, Crease angle field). 
+  11.2.3, Common geometry fields). 
 
   The normalPerVertex field determines whether normals are applied to
   each vertex or each quadrilateral of the ElevationGrid node
@@ -189,16 +189,20 @@
     defined by height[i+j×xDimension] 
   \endverbatim
 
-  The ccw, solid, and creaseAngle fields are described in 4.6.3,
-  Shapes and geometry.  By default, the quadrilaterals are defined
+  The ccw, solid, and creaseAngle fields are described in 11.2.3,
+  Common geometry fields.
+
+  By default, the quadrilaterals are defined
   with a counterclockwise ordering.  Hence, the Y-component of the
   normal is positive. Setting the ccw field to FALSE reverses the
   normal direction. Backface culling is enabled when the solid field
-  is TRUE.  See Figure 6.5 for a depiction of the ElevationGrid node.
+  is TRUE.
+
+  See Figure 13.4 for a depiction of the ElevationGrid node.
 
   <center>
-  <img src="http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-X3D/Images/ElevationGrid.gif">
-  Figure 6.5
+  <img src="https://www.web3d.org/documents/specifications/19775-1/V3.0/Images/ElevationGrid.gif">
+  Figure 13.4 - ElevationGrid node
   </center>
 
 */
@@ -267,6 +271,12 @@
 /*!
   \var SoSFBool SoX3DElevationGrid::normalPerVertex
   Specifies whether normals should be applied per vertex. Default value is TRUE.
+*/
+
+/*!
+  \var SoSFNode SoX3DElevationGrid::metadata
+
+  Can contain an SoX3DMetadataObject. Is NULL by default.
 */
 
 #include <Inventor/X3Dnodes/SoX3DElevationGrid.h>
@@ -364,6 +374,7 @@ SoX3DElevationGrid::SoX3DElevationGrid(void)
   SO_X3DNODE_ADD_EXPOSED_FIELD(texCoord, (NULL));
   SO_X3DNODE_ADD_EXPOSED_FIELD(normal, (NULL));
   SO_X3DNODE_ADD_EXPOSED_FIELD(color, (NULL));
+  SO_X3DNODE_ADD_EXPOSED_FIELD(metadata, (NULL));
   SO_X3DNODE_ADD_FIELD(colorPerVertex, (TRUE));
   SO_X3DNODE_ADD_FIELD(normalPerVertex, (TRUE));
 }
@@ -376,7 +387,7 @@ SoX3DElevationGrid::~SoX3DElevationGrid(void)
   delete PRIVATE(this);
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DElevationGrid::GLRender(SoGLRenderAction * action)
 {
@@ -628,7 +639,7 @@ SoX3DElevationGrid::GLRender(SoGLRenderAction * action)
   state->pop();
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DElevationGrid::rayPick(SoRayPickAction * action)
 {
@@ -636,7 +647,7 @@ SoX3DElevationGrid::rayPick(SoRayPickAction * action)
   inherited::rayPick(action);
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DElevationGrid::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
@@ -645,7 +656,7 @@ SoX3DElevationGrid::getPrimitiveCount(SoGetPrimitiveCountAction * action)
   }
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DElevationGrid::computeBBox(SoAction * COIN_UNUSED_ARG(action),
                                  SbBox3f & bbox,
@@ -673,7 +684,7 @@ SoX3DElevationGrid::computeBBox(SoAction * COIN_UNUSED_ARG(action),
   center = bbox.getCenter();
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DElevationGrid::generatePrimitives(SoAction * action)
 {
@@ -884,7 +895,7 @@ SoX3DElevationGrid::findNormalBinding(void) const
   return binding;
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DElevationGrid::notify(SoNotList * list)
 {

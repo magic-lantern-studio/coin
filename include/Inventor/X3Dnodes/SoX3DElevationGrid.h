@@ -70,6 +70,8 @@ public:
   SoSFBool colorPerVertex;
   SoSFBool normalPerVertex;
 
+  SoSFNode metadata;
+
   virtual void GLRender(SoGLRenderAction * action);
   virtual void rayPick(SoRayPickAction * action);
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);

@@ -73,7 +73,15 @@ PublicHeaders = \
 	SoX3DVertexShape.h \
 	SoX3DViewpoint.h \
 	SoX3DVisibilitySensor.h \
-	SoX3DWorldInfo.h
+	SoX3DWorldInfo.h \
+	\
+	SoX3DBoundedObject.h \
+	SoX3DNode.h \
+	SoX3DAppearanceNode.h \
+	SoX3DAppearanchChildNode.h \
+	SoX3DNodeEngine.h \
+	SoX3DChildNode.h
+
 PrivateHeaders =
 ObsoleteHeaders =
 

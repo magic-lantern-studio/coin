@@ -51,14 +51,15 @@
     exposedField SFVec3f direction         0 0 -1   # (-inf,inf)
     exposedField SFFloat intensity         1        # [0,1]
     exposedField SFBool  on                TRUE
+    exposedField SFNode  metadata          NULL
   }
   \endverbatim
 
   The DirectionalLight node defines a directional light source that
   illuminates along rays parallel to a given 3-dimensional vector. A
   description of the ambientIntensity, color, intensity, and on fields
-  is in 4.6.6, Light sources
-  (<http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-X3D/part1/concepts.html#4.6.6>).
+  is in 17.2.1, Light sources
+  (<https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/components/lighting.html#Lightsourcesemantics>).
 
   The direction field specifies the direction vector of the
   illumination emanating from the light source in the local coordinate
@@ -67,16 +68,24 @@
   objects in its enclosing parent group.  The light may illuminate
   everything within this coordinate system, including all children and
   descendants of its parent group. The accumulated transformations of
-  the parent nodes affect the light.  DirectionalLight nodes do not
+  the parent nodes affect the light.
+
+  DirectionalLight nodes do not
   attenuate with distance. A precise description of X3D's lighting
-  equations is contained in 4.14, Lighting model
-  (<http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-X3D/part1/concepts.html#4.6.14>).
+  equations is contained in 17.2.2, Lighting model
+  (<https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/components/lighting.html#Lightingmodel>).
   
 */
 
 /*!
   \var SoSFVec3f SoX3DDirectionalLight::direction
   The light direction.
+*/
+
+/*!
+  \var SoSFNode SoX3DAnchor::metadata
+
+  Can contain an SoX3DMetadataObject. Is NULL by default.
 */
 
 #include <Inventor/X3Dnodes/SoX3DDirectionalLight.h>
@@ -113,6 +122,7 @@ SoX3DDirectionalLight::SoX3DDirectionalLight(void)
   SO_X3DNODE_INTERNAL_CONSTRUCTOR(SoX3DDirectionalLight);
 
   SO_X3DNODE_ADD_EXPOSED_FIELD(direction, (0.0f, 0.0f, -1.0f));
+  SO_X3DNODE_ADD_EXPOSED_FIELD(metadata, (NULL));
 }
 
 /*!
@@ -122,7 +132,7 @@ SoX3DDirectionalLight::~SoX3DDirectionalLight()
 {
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DDirectionalLight::GLRender(SoGLRenderAction * action)
 {

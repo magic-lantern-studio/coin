@@ -44,11 +44,6 @@
   sensor nodes, plus some common functions for these. Since this is an
   abstract "helper" class, it does not represent an actual node from
   the X3D specification, so don't use it as such.
-
-  For more information, a detailed discussion of drag sensors is
-  available in section 4.6.7.4 of the X3D specification:
-
-  <http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-X3D/part1/concepts.html#4.6.7.4>.
 */
 
 #include <Inventor/X3Dnodes/SoX3DDragSensor.h>
@@ -85,6 +80,7 @@
 
   Called when dragger is selected (picked) by the user.
 */
+
 /*!
   \fn void SoX3DDragSensor::drag(void)
 
@@ -92,6 +88,7 @@
 
   Called when user drags the mouse after picking the dragger.
 */
+
 /*!
   \fn void SoX3DDragSensor::dragFinish(void)
 
@@ -131,7 +128,7 @@ SoX3DDragSensor::~SoX3DDragSensor()
 {
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DDragSensor::handleEvent(SoHandleEventAction * action)
 {

@@ -79,6 +79,7 @@ private:
   SbVec2s mousepos;
   SbVec2f normpos;
   SbViewVolume viewvolume;
+
 };
 
 #endif // ! COIN_SOX3DDRAGSENSOR_H

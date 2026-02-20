@@ -35,8 +35,11 @@
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/X3Dnodes/SoX3DDragSensor.h>
+#include <Inventor/fields/SoSFString.h>
 #include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/fields/SoSFRotation.h>
+#include <Inventor/fields/SoSFVec3f.h>
+#include <Inventor/fields/SoSFNode.h>
 
 class COIN_DLL_API SoX3DCylinderSensor : public SoX3DDragSensor
 {
@@ -47,23 +50,28 @@ public:
   static void initClass(void);
   SoX3DCylinderSensor(void);
 
-  SoSFFloat diskAngle;
-  SoSFFloat maxAngle;
-  SoSFFloat minAngle;
-  SoSFFloat offset;
+  SoSFString   description;
+  SoSFFloat    diskAngle;
+  SoSFFloat    maxAngle;
+  SoSFFloat    minAngle;
+  SoSFFloat    offset;
   SoSFRotation rotation_changed;
+  SoSFVec3f    trackPoint_changed;
+
+  SoSFNode     metadata;
 
 protected:
 
   virtual SbBool dragStart(void);
-  virtual void drag(void);
-  virtual void dragFinish(void);
+  virtual void   drag(void);
+  virtual void   dragFinish(void);
 
   virtual ~SoX3DCylinderSensor();
 
 private:
   static float findAngle(const SbRotation & rot);
   class SbCylinderProjector * cylinderproj;
+
 };
 
 #endif // ! COIN_SOX3DCYLINDERSENSOR_H

@@ -47,30 +47,44 @@
   \verbatim
 
   Appearance {
-    exposedField SFNode material          NULL
-    exposedField SFNode texture           NULL
-    exposedField SFNode textureTransform  NULL
+    SFNode [in,out] fillProperties    NULL  [FillProperties]
+    SFNode [in,out] lineProperties    NULL  [LinePropertes]
+    SFNode [in,out] material          NULL  [X3DMaterialNode]
+    SFNode [in,out] metadata          NULL  [X3DMetadataObject]
+    SFNode [in,out] texture           NULL  [X3DTextureNode]
+    SFNode [in,out] textureTransform  NULL  [X3DTextureTransformNode]
   }
   \endverbatim
 
   The Appearance node specifies the visual properties of geometry. The
   value for each of the fields in this node may be NULL. However, if
   the field is non-NULL, it shall contain one node of the appropriate
-  type.  The material field, if specified, shall contain a X3DMaterial
+  type.
+
+  The material field, if specified, shall contain a X3DMaterial
   node. If the material field is NULL or unspecified, lighting is off
   (all lights are ignored during rendering of the object that
   references this Appearance) and the unlit object color is (1, 1,
-  1). Details of the X3D lighting model are in 4.14, Lighting model
-  (<http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-X3D/part1/concepts.html#4.14>).
+  1). Details of the X3D lighting model are in 17, Lighting component
+  (<https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/components/lighting.html#[PART8]>).
 
-  The texture field, if specified, shall contain one of the various
-  types of texture nodes (X3DImageTexture, X3DMovieTexture, or
-  X3DPixelTexture).  If the texture node is NULL or the texture field
-  is unspecified, the object that references this Appearance is not
-  textured.  The textureTransform field, if specified, shall contain a
-  X3DTextureTransform node. If the textureTransform is NULL or
-  unspecified, the textureTransform field has no effect.
+  The texture field, if specified, shall contain one of the various types of texture nodes (see 18 Texturing component). If the texture node is NULL or the texture field is unspecified, the object that references this Appearance is not textured.
 
+  The textureTransform field, if specified, shall contain a TextureTransform node as defined in 18.4.8 TextureTransform. If the textureTransform is NULL or unspecified, the textureTransform field has no effect.
+
+  The lineProperties field, if specified, shall contain a LineProperties node as specified in 12.4.3 LineProperties. If lineProperties is NULL or unspecified, the lineProperties field has no effect.
+
+  The fillProperties field, if specified, shall contain a FillProperties node as specified in 12.4.2 FillProperties. If fillProperties is NULL or unspecified, the fillProperties field has no effect.
+*/
+
+/*!
+  \var SoSFNode SoX3DAppearance::fillProperties
+  Is NULL by default.
+*/
+
+/*!
+  \var SoSFNode SoX3DAppearance::lineProperties
+  Is NULL by default.
 */
 
 /*!
@@ -79,8 +93,13 @@
 */
 
 /*!
+  \var SoSFNode SoX3DAppearance::metadata
+  Can contain an SoX3DMetadataObject. Is NULL by default.
+*/
+
+/*!
   \var SoSFNode SoX3DAppearance::texture
-  Can contain a texture node. Is NULL by default.
+  Can contain a SoX3DTexture node. Is NULL by default.
 */
 
 /*!
@@ -137,7 +156,7 @@ SO_NODE_SOURCE(SoX3DAppearance);
 // *************************************************************************
 
 /*!
-  \copydetails SoNode::initClass(void)
+  \copydetails SoX3DAppearanceNode::initClass(void)
 */
 void
 SoX3DAppearance::initClass(void)
@@ -149,6 +168,7 @@ SoX3DAppearance::initClass(void)
   Constructor.
 */
 SoX3DAppearance::SoX3DAppearance(void)
+  : SoX3DAppearanceNode()
 {
   PRIVATE(this) = new SoX3DAppearanceP;
   // supply a NULL-pointer as parent, since notifications will be
@@ -158,6 +178,8 @@ SoX3DAppearance::SoX3DAppearance(void)
 
   SO_X3DNODE_INTERNAL_CONSTRUCTOR(SoX3DAppearance);
 
+  SO_X3DNODE_ADD_EXPOSED_FIELD(fillProperties, (NULL));
+  SO_X3DNODE_ADD_EXPOSED_FIELD(lineProperties, (NULL));
   SO_X3DNODE_ADD_EXPOSED_FIELD(material, (NULL));
   SO_X3DNODE_ADD_EXPOSED_FIELD(texture, (NULL));
   SO_X3DNODE_ADD_EXPOSED_FIELD(textureTransform, (NULL));

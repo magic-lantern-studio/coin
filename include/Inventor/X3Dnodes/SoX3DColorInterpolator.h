@@ -39,6 +39,7 @@
 #include <Inventor/fields/SoMFColor.h>
 #include <Inventor/fields/SoSFColor.h>
 #include <Inventor/fields/SoSFFloat.h>
+#include <Inventor/fields/SoSFNode.h>
 
 class COIN_DLL_API SoX3DColorInterpolator : public SoX3DInterpolator
 {
@@ -50,6 +51,9 @@ public:
   SoX3DColorInterpolator(void);
 
   SoMFColor keyValue;
+
+  SoSFNode  metadata;
+  
   SoEngineOutput value_changed; // (SoSFColor)
 
 protected:
@@ -57,6 +61,7 @@ protected:
 
 private:
   virtual void evaluate(void);
+
 }; // class SoX3DColorInterpolator
 
 #endif // ! COIN_SOX3DCOLORINTERPOLATOR_H

@@ -46,10 +46,12 @@
 
   \verbatim
   Cone {
-    field     SFFloat   bottomRadius 1        # (0, inf)
-    field     SFFloat   height       2        # (0, inf)
-    field     SFBool    side         TRUE
-    field     SFBool    bottom       TRUE
+    exposedField  SFNode    metadata     NULL
+    field         SFBool    bottom       TRUE
+    field         SFFloat   bottomRadius 1        # (0, inf)
+    field         SFFloat   height       2        # (0, inf)
+    field         SFBool    side         TRUE
+    field         SFBool    solid        TRUE
   }
   \endverbatim
 
@@ -64,8 +66,8 @@
   node.
 
   <center>
-  <img src="http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-X3D/Images/cone.gif">
-  Figure 6.3
+  <img src="https://www.web3d.org/documents/specifications/19775-1/V3.0/Images/cone.gif">
+  Figure 13.2 - Cone node
   </center>
 
   The side field specifies whether sides of the cone are created and
@@ -73,7 +75,9 @@
   created. A value of TRUE specifies that this part of the cone
   exists, while a value of FALSE specifies that this part does not
   exist (not rendered or eligible for collision or sensor intersection
-  tests).  When a texture is applied to the sides of the cone, the
+  tests).
+
+  When a texture is applied to the sides of the cone, the
   texture wraps counterclockwise (from above) starting at the back of
   the cone. The texture has a vertical seam at the back in the X=0
   plane, from the apex (0, height/2, 0) to the point (0, -height/2, -
@@ -84,9 +88,13 @@
   -Z-axis. SoX3DTextureTransform affects the texture coordinates of
   the Cone.
 
-  The Cone geometry requires outside faces only. When viewed from the
-  inside the results are undefined.
+  The solid field determines whether the cone is visible when viewed from the inside. 11.2.3 Common geometry fields provides a complete description of the solid field.
 
+*/
+
+/*!
+  \var SoSFNode SoX3DCone::metadata
+  Can contain an SoX3DMetadataObject. Is NULL by default.
 */
 
 /*!
@@ -107,6 +115,11 @@
 /*!
   \var SoSFBool SoX3DCone::bottom
   Enable/disable the cone bottom. Default value is TRUE.
+*/
+
+/*!
+  \var SoSFBool SoX3DCone::solid
+  Determines whether the cone is visible from the inside. Default value is TRUE.
 */
 
 #include <Inventor/X3Dnodes/SoX3DCone.h>
@@ -148,11 +161,12 @@ SoX3DCone::SoX3DCone(void)
 {
   SO_X3DNODE_INTERNAL_CONSTRUCTOR(SoX3DCone);
 
+  SO_X3DNODE_ADD_EXPOSED_FIELD(metadata, (NULL));
+  SO_X3DNODE_ADD_FIELD(bottom, (TRUE));
   SO_X3DNODE_ADD_FIELD(bottomRadius, (1.0f));
   SO_X3DNODE_ADD_FIELD(height, (2.0f));
-
   SO_X3DNODE_ADD_FIELD(side, (TRUE));
-  SO_X3DNODE_ADD_FIELD(bottom, (TRUE));
+  SO_X3DNODE_ADD_FIELD(solid, (TRUE));
 }
 
 /*!
@@ -162,7 +176,7 @@ SoX3DCone::~SoX3DCone()
 {
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DCone::GLRender(SoGLRenderAction * action)
 {
@@ -197,7 +211,7 @@ SoX3DCone::GLRender(SoGLRenderAction * action)
                    flags, state);
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DCone::rayPick(SoRayPickAction * action)
 {
@@ -212,7 +226,7 @@ SoX3DCone::rayPick(SoRayPickAction * action)
                    flags, this, action);
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DCone::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
@@ -229,7 +243,7 @@ SoX3DCone::getPrimitiveCount(SoGetPrimitiveCountAction * action)
   }
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DCone::generatePrimitives(SoAction * action)
 {
@@ -247,7 +261,7 @@ SoX3DCone::generatePrimitives(SoAction * action)
                       action);
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DCone::computeBBox(SoAction * COIN_UNUSED_ARG(action),
                         SbBox3f & box,

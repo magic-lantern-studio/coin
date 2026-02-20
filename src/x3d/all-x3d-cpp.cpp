@@ -104,5 +104,9 @@
 #include "x3d/VisibilitySensor.cpp"
 #include "x3d/WorldInfo.cpp"
 #include "x3d/JS_X3DClasses.cpp"
+#include "x3d/X3DNode.cpp"
+#include "x3d/X3DBoundedObject.cpp"
+#include "x3d/X3DAppearanceNode.cpp"
+#include "x3d/X3DAppearanceChildNode.cpp"
 
 #endif // HAVE_X3D

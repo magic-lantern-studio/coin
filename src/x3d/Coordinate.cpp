@@ -45,14 +45,17 @@
   \WEB3DCOPYRIGHT
 
   \verbatim
-  Coordinate { 
-    exposedField MFVec3f point  []      # (-inf, inf) 
+  Coordinate {
+    exposedField SFNode  metadata  NULL
+    exposedField MFVec3f point     []      # (-inf, inf) 
   }
   \endverbatim
  
   This node defines a set of 3D coordinates to be used in the coord
   field of vertex-based geometry nodes including SoX3DIndexedFaceSet,
-  SoX3DIndexedLineSet, and SoX3DPointSet.
+  SoX3DIndexedLineSet, SoX3DIndexedTriangleFanSet, SoX3DIndexedTriangleSet,
+  SoX3DIndexedTriangleStripSet, SoX3DPointSet, SoX3DTriangleFanSet,
+  SoX3DTriangleSet, and SoX3DTriangleStripSet.
 
 */
 
@@ -60,6 +63,12 @@
   \var SoMFVec3f SoX3DCoordinate::point
   The coordinates. Empty by default.
 */
+
+/*!
+  \var SoSFNode SoX3DCoordinate::metadata
+  Can contain an SoX3DMetadataObject. Is NULL by default.
+*/
+
 
 #include <Inventor/X3Dnodes/SoX3DCoordinate.h>
 
@@ -100,6 +109,7 @@ SoX3DCoordinate::SoX3DCoordinate(void)
   PRIVATE(this) = new SoX3DCoordinateP;
   SO_X3DNODE_INTERNAL_CONSTRUCTOR(SoX3DCoordinate);
 
+  SO_X3DNODE_ADD_EXPOSED_FIELD(metadata, (NULL));
   SO_X3DNODE_ADD_EMPTY_EXPOSED_MFIELD(point);
 }
 
@@ -111,7 +121,7 @@ SoX3DCoordinate::~SoX3DCoordinate()
   delete PRIVATE(this);
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DCoordinate::doAction(SoAction * action)
 {
@@ -119,7 +129,7 @@ SoX3DCoordinate::doAction(SoAction * action)
                             point.getNum(), point.getValues(0));
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DCoordinate::GLRender(SoGLRenderAction * action)
 {
@@ -156,14 +166,14 @@ SoX3DCoordinate::GLRender(SoGLRenderAction * action)
 
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DCoordinate::getBoundingBox(SoGetBoundingBoxAction * action)
 {
   SoX3DCoordinate::doAction((SoAction*) action);
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DCoordinate::callback(SoCallbackAction * action)
 {
@@ -178,4 +188,5 @@ SoX3DCoordinate::pick(SoPickAction * action)
 }
 
 #undef PRIVATE
+
 #endif // HAVE_X3D

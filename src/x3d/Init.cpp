@@ -40,7 +40,7 @@
 #include <Inventor/X3Dnodes/SoX3DNodes.h>
 
 void
-so_vrml_init(void)
+so_x3d_init(void)
 {
   SoX3DGeometry::initClass();
   SoX3DVertexPoint::initClass();

@@ -46,20 +46,21 @@
 
   \verbatim
   Extrusion {
-    eventIn MFVec2f    set_crossSection
-    eventIn MFRotation set_orientation
-    eventIn MFVec2f    set_scale
-    eventIn MFVec3f    set_spine
-    field   SFBool     beginCap         TRUE
-    field   SFBool     ccw              TRUE
-    field   SFBool     convex           TRUE
-    field   SFFloat    creaseAngle      0                # [0,inf)
-    field   MFVec2f    crossSection     [ 1 1, 1 -1, -1 -1, -1 1, 1  1 ]    # (-inf,inf)
-    field   SFBool     endCap           TRUE
-    field   MFRotation orientation      0 0 1 0          # [-1,1],(-inf,inf)
-    field   MFVec2f    scale            1 1              # (0,inf)
-    field   SFBool     solid            TRUE
-    field   MFVec3f    spine            [ 0 0 0, 0 1 0 ] # (-inf,inf)
+    eventIn       MFVec2f    set_crossSection
+    eventIn       MFRotation set_orientation
+    eventIn       MFVec2f    set_scale
+    eventIn       MFVec3f    set_spine
+    exposedField  SFNode     metadata         NULL
+    field         SFBool     beginCap         TRUE
+    field         SFBool     ccw              TRUE
+    field         SFBool     convex           TRUE
+    field         SFFloat    creaseAngle      0                # [0,inf)
+    field         MFVec2f    crossSection     [ 1 1, 1 -1, -1 -1, -1 1, 1  1 ]    # (-inf,inf)
+    field         SFBool     endCap           TRUE
+    field         MFRotation orientation      0 0 1 0          # [-1,1],(-inf,inf)
+    field         MFVec2f    scale            1 1              # (0,inf)
+    field         SFBool     solid            TRUE
+    field         MFVec3f    spine            [ 0 0 0, 0 1 0 ] # (-inf,inf)
   }
   \endverbatim
 
@@ -68,8 +69,9 @@
   The Extrusion node specifies geometric shapes based on a two
   dimensional cross-section extruded along a three dimensional spine
   in the local coordinate system. The cross-section can be scaled and
-  rotated at each spine point to produce a wide variety of shapes.  An
-  Extrusion node is defined by:
+  rotated at each spine point to produce a wide variety of shapes.
+
+  An Extrusion node is defined by:
 
   \li a 2D crossSection piecewise linear curve (described as a series
   of connected vertices);
@@ -101,15 +103,15 @@
   at which the cross-section is placed. This is known as the
   spine-aligned cross-section plane (SCP), and is designed to provide
   a smooth transition from one spine segment to the next (see Figure
-  6.6). The SCP is then rotated by the corresponding orientation
+  13.5). The SCP is then rotated by the corresponding orientation
   value. This rotation is performed relative to the SCP. For example,
   to impart twist in the cross- section, a rotation about the Y-axis
   (0 1 0) would be used. Other orientations are valid and rotate the
   cross-section out of the SCP.
 
   <center>
-  <img src="http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-X3D/Images/Extrusion.gif">
-  Figure 6.6
+  <img src="https://www.web3d.org/documents/specifications/19775-1/V3.0/Images/Extrusion.gif">
+  Figure 13.5 - Spine-aligned cross-section plane at a spine point.
   </center>
 
   The SCP is computed by first computing its Y-axis and Z-axis, then
@@ -174,7 +176,9 @@
 
   If the three points used in computing the Z-axis are collinear, the
   cross-product is zero so the value from the previous point is used
-  instead.  If the Z-axis of the first point is undefined (because the
+  instead.
+
+  If the Z-axis of the first point is undefined (because the
   spine is not closed and the first two spine segments are collinear)
   then the Z-axis for the first spine point with a defined Z-axis is
   used.
@@ -182,7 +186,9 @@
   If the entire spine is collinear, the SCP is computed by finding the
   rotation of a vector along the positive Y-axis (v1) to the vector
   formed by the spine points (v2). The Y=0 plane is then rotated by
-  this value.  If two points are coincident, they both have the same
+  this value.
+
+  If two points are coincident, they both have the same
   SCP. If each point has a different orientation value, then the
   surface is constructed by connecting edges of the cross-sections as
   normal. This is useful in creating revolved surfaces.
@@ -262,15 +268,17 @@
   \endverbatim
 
   in that order. By default, normals for the sides are generated as
-  described in 4.6.3, Shapes and geometry
-  (<http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-X3D/part1/concepts.html#4.6.3>).
+  described in 13.2.2, Shapes and geometry nodes
+  (<https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/components/geometry3D.html#Shapeandgeometry>).
 
   For instance, a circular crossSection with counterclockwise
   ordering and the default spine form a cylinder. With solid TRUE and
   ccw TRUE, the cylinder is visible from the outside. Changing ccw to
-  FALSE makes it visible from the inside.  The ccw, solid, convex, and
-  creaseAngle fields are described in 4.6.3, Shapes and geometry
-  (<http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-X3D/part1/concepts.html#4.6.3>).
+  FALSE makes it visible from the inside.
+
+  The ccw, solid, convex, and
+  creaseAngle fields are described in 11.2.3, Common geometry nodes
+  (<https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/components/rendering.html#CommonGeometryFields>).
 
 */
 
@@ -323,6 +331,12 @@
 /*!
   SoMFVec3f SoX3DExtrusion::spine
   The spine points.
+*/
+
+/*!
+  \var SoSFNode SoX3DAnchor::metadata
+
+  Can contain an SoX3DMetadataObject. Is NULL by default.
 */
 
 #include <Inventor/X3Dnodes/SoX3DExtrusion.h>
@@ -496,6 +510,7 @@ SoX3DExtrusion::SoX3DExtrusion(void)
 
   SO_X3DNODE_INTERNAL_CONSTRUCTOR(SoX3DExtrusion);
 
+  SO_X3DNODE_ADD_EXPOSED_FIELD(metadata, (NULL));
   SO_X3DNODE_ADD_FIELD(beginCap, (TRUE));
   SO_X3DNODE_ADD_FIELD(endCap, (TRUE));
   SO_X3DNODE_ADD_FIELD(solid, (TRUE));

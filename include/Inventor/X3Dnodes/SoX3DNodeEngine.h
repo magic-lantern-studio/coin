@@ -30,39 +30,31 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifndef COIN_SOX3DCOLOR_H
-#define COIN_SOX3DCOLOR_H
+#ifndef COIN_SOX3DNODEENGINE_H
+#define COIN_SOX3DNODEENGINE_H
 
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/nodes/SoNode.h>
-#include <Inventor/fields/SoMFColor.h>
-#include <Inventor/fields/SoSFNode.h>
+#include <Inventor/engines/SoSubEngine.h>
+#include <Inventor/X3Dnodes/support/SoX3DEngineOutput.h>
 
-class SoX3DColorP;
 
-class COIN_DLL_API SoX3DColor : public SoNode
-{
-  typedef SoNode inherited;
-  SO_NODE_HEADER(SoX3DColor);
+class COIN_DLL_API SoX3DNodeEngine : public SoEngine {
+  typedef SoEngine inherited;
+  SO_ENGINE_HEADER(SoX3DNodeEngine);
 
 public:
   static void initClass(void);
-  SoX3DColor(void);
+  SoX3DNodeEngine(void);
 
-  SoMFColor color;
-
-  SoSFNode  metadata;
-
-  virtual void doAction(SoAction * action);
-  virtual void GLRender(SoGLRenderAction * action);
-  virtual void callback(SoCallbackAction * action);
+  SoX3DEngineOutput * getOutput(const SbName & outputname) const;
 
 protected:
-  virtual ~SoX3DColor();
+  virtual ~SoX3DNodeEngine(void);
+
+  virtual void evaluate(void);
 
 private:
-  SoX3DColorP * pimpl;
+  virtual void writeInstance(SoOutput * out);
 
-}; // class SoX3DColor
+};
 
-#endif // ! COIN_SOX3DCOLOR_H
+#endif // !COIN_SOX3DNODENGINE_H

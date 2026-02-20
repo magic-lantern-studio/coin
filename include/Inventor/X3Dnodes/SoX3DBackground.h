@@ -39,6 +39,8 @@
 #include <Inventor/fields/SoMFFloat.h>
 #include <Inventor/fields/SoMFString.h>
 #include <Inventor/fields/SoSFBool.h>
+#include <Inventor/fields/SoSFTime.h>
+#include <Inventor/fields/SoSFNode.h>
 
 class SoX3DBackgroundP;
 
@@ -51,16 +53,18 @@ public:
   static void initClass(void);
   SoX3DBackground(void);
 
-  SoMFColor groundColor;
-  SoMFFloat groundAngle;
-  SoMFColor skyColor;
-  SoMFFloat skyAngle;
+  SoMFColor  groundColor;
+  SoMFFloat  groundAngle;
+  SoMFColor  skyColor;
+  SoMFFloat  skyAngle;
   SoMFString backUrl;
   SoMFString bottomUrl;
   SoMFString frontUrl;
   SoMFString leftUrl;
   SoMFString rightUrl;
   SoMFString topUrl;
+
+  SoSFNode   metadata;
 
   virtual void GLRender( SoGLRenderAction * action );
 
@@ -69,6 +73,7 @@ protected:
   virtual ~SoX3DBackground();
 
   SoSFBool set_bind; // eventIn
+  SoSFTime bindTime; // eventOut
   SoSFBool isBound;  // eventOut
 
 private:

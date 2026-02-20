@@ -38,6 +38,8 @@
 #include <Inventor/fields/SoSFBool.h>
 #include <Inventor/fields/SoSFNode.h>
 #include <Inventor/fields/SoSFTime.h>
+#include <Inventor/fields/SoSFVec3f.h>
+#include <Inventor/fields/SoSFNode.h>
 
 class SoX3DCollisionP;
 
@@ -51,9 +53,15 @@ public:
   SoX3DCollision(void);
   SoX3DCollision(int numchildren);
 
-  SoSFBool collide;
-  SoSFNode proxy;
-  SoSFTime collideTime;
+  SoSFBool  enabled;
+  SoSFNode  proxy;
+  SoSFVec3f bboxCenter;
+  SoSFVec3f bboxSize;
+  
+  SoSFTime collideTime;  // eventOut
+  SoSFBool isActive;     // eventOut
+
+  SoSFNode metadata;
 
   virtual void GLRender(SoGLRenderAction * action);
 
@@ -65,6 +73,7 @@ protected:
 private:
   void commonConstructor(void);
   SoX3DCollisionP * pimpl;
+
 };
 
 #endif // ! COIN_SOX3DCOLLISION_H

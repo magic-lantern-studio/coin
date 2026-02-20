@@ -96,6 +96,10 @@ public:
 
   static SbBool is3dsFile(SoInput * in);
   static SoSeparator * read3DSFile(SoInput * in);
+#ifdef HAVE_X3D
+  static SbBool isXMLFile(SoInput * in);
+  static SoSeparator * readXMLFile(SoInput * in);  
+#endif // HAVE_X3D 
 
   static void progress(const SbName & itemid,
                        float fraction,

@@ -36,6 +36,7 @@
 #include <Inventor/X3Dnodes/SoX3DParent.h>
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoSFVec3f.h>
+#include <Inventor/fields/SoSFNode.h>
 
 class SbRotation;
 class SoState;
@@ -55,6 +56,8 @@ public:
   SoSFVec3f axisOfRotation;
   SoSFVec3f bboxCenter;
   SoSFVec3f bboxSize;
+
+  SoSFNode  metadata;
 
   virtual void doAction(SoAction * action);
   virtual void callback(SoCallbackAction * action);

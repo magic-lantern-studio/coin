@@ -33,15 +33,15 @@
 #ifndef COIN_SOX3DAPPEARANCE_H
 #define COIN_SOX3DAPPEARANCE_H
 
-#include <Inventor/nodes/SoNode.h>
+#include <Inventor/X3Dnodes/SoX3DAppearanceNode.h>
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoSFNode.h>
 
 class SoX3DAppearanceP;
 
-class COIN_DLL_API SoX3DAppearance : public SoNode
+class COIN_DLL_API SoX3DAppearance : public SoX3DAppearanceNode
 {
-  typedef SoNode inherited;
+  typedef SoX3DAppearanceNode inherited;
   SO_NODE_HEADER(SoX3DAppearance);
 
 public:
@@ -52,7 +52,10 @@ public:
   SoSFNode material;
   SoSFNode texture;
   SoSFNode textureTransform;
-  
+
+  SoSFNode fillProperties;
+  SoSFNode lineProperties;
+
   virtual void doAction(SoAction * action);
   virtual void callback(SoCallbackAction * action);
   virtual void GLRender(SoGLRenderAction * action);
@@ -67,6 +70,7 @@ protected:
 
 private:
   SoX3DAppearanceP * pimpl;
+
 }; // class SoX3DAppearance
 
 #endif // ! COIN_SOX3DAPPEARANCE_H

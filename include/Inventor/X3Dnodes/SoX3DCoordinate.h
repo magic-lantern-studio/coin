@@ -36,6 +36,7 @@
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/fields/SoMFVec3f.h>
+#include <Inventor/fields/SoSFNode.h>
 
 class SoX3DCoordinateP;
 
@@ -50,6 +51,8 @@ public:
 
   SoMFVec3f point;
 
+  SoSFNode  metadata;
+
   virtual void doAction( SoAction * action );
   virtual void GLRender( SoGLRenderAction * action );
   virtual void getBoundingBox( SoGetBoundingBoxAction * action );
@@ -61,6 +64,7 @@ public:
 
  private:
   SoX3DCoordinateP * pimpl;
+
 }; // class SoX3DCoordinate
 
 #endif // ! COIN_SOX3DCOORDINATE_H

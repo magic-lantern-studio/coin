@@ -68,6 +68,29 @@
     this->isBuiltIn = TRUE; \
   } while (0)
 
+#ifdef HAVE_X3D
+
+#define SO_NODEENGINE_INTERNAL_INIT_CLASS(_class_) \
+  do { \
+    const char * classname = SO__QUOTE(_class_); \
+    PRIVATE_COMMON_NODEENGINE_INIT_CODE(_class_, &classname[2], &_class_::createInstance, inherited); \
+    SoNode::setCompatibilityTypes(_class_::getClassTypeId(), SO_X3D_NODE_TYPE); \
+    coin_atexit((coin_atexit_f*)_class_::atexit_cleanupnodeengine, CC_ATEXIT_NORMAL); \
+    coin_atexit((coin_atexit_f*)_class_::atexit_cleanup, CC_ATEXIT_NORMAL); \
+  } while (0)
+
+
+#define SO_NODEENGINE_INTERNAL_INIT_ABSTRACT_CLASS(_class_) \
+  do { \
+    const char * classname = SO__QUOTE(_class_); \
+    PRIVATE_COMMON_NODEENGINE_INIT_CODE(_class_, &classname[2], NULL, inherited); \
+    SoNode::setCompatibilityTypes(_class_::getClassTypeId(), SO_X3D_NODE_TYPE); \
+    coin_atexit((coin_atexit_f*)_class_::atexit_cleanupnodeengine, CC_ATEXIT_NORMAL); \
+    coin_atexit((coin_atexit_f*)_class_::atexit_cleanup, CC_ATEXIT_NORMAL); \
+  } while (0)
+
+#else
+
 #define SO_NODEENGINE_INTERNAL_INIT_CLASS(_class_) \
   do { \
     const char * classname = SO__QUOTE(_class_); \
@@ -87,5 +110,6 @@
     coin_atexit((coin_atexit_f*)_class_::atexit_cleanup, CC_ATEXIT_NORMAL); \
   } while (0)
 
+#endif // ! HAVE_X3D
 
 #endif // COIN_SOSUBNODEENGINEP_H

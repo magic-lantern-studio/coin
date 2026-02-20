@@ -50,6 +50,7 @@
     eventIn      MFNode   removeChildren
     exposedField SFVec3f  axisOfRotation 0 1 0     # (-inf, inf)
     exposedField MFNode   children       []
+    exposedField SFNode   metadata
     field        SFVec3f  bboxCenter     0 0 0     # (-inf, inf)
     field        SFVec3f  bboxSize       -1 -1 -1  # (0, inf) or -1,-1,-1
   }
@@ -58,9 +59,13 @@
   The Billboard node is a grouping node which modifies its coordinate
   system so that the Billboard node's local Z-axis turns to point at
   the viewer.  The Billboard node has children which may be other
-  children nodes.  The axisOfRotation field specifies which axis to
+  children nodes.
+
+  The axisOfRotation field specifies which axis to
   use to perform the rotation. This axis is defined in the local
-  coordinate system.  When the axisOfRotation field is not (0, 0, 0),
+  coordinate system.
+
+  When the axisOfRotation field is not (0, 0, 0),
   the following steps describe how to rotate the billboard to face the
   viewer:
 
@@ -95,12 +100,18 @@
   rotation of the billboard is undefined. For example, if the
   axisOfRotation is set to (0,1,0) (Y-axis) and the viewer flies over
   the billboard and peers directly down the Y-axis, the results are
-  undefined.  Multiple instances of Billboard nodes (DEF/USE) operate
+  undefined.
+
+  Multiple instances of Billboard nodes (DEF/USE) operate
   as expected: each instance rotates in its unique coordinate system
-  to face the viewer.  Subclause 4.6.5, Grouping and children nodes
-  (<http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-X3D/part1/concepts.html#4.6.5>),
+  to face the viewer.
+
+  Subclause 10.2.1, Grouping and children node types
+  (<https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/components/group.html#Groupingandchildrennodes>),
   provides a description of the children, addChildren, and
-  removeChildren fields and eventIns.  The bboxCenter and bboxSize
+  removeChildren fields and eventIns.
+
+  The bboxCenter and bboxSize
   fields specify a bounding box that encloses the Billboard node's
   children. This is a hint that may be used for optimization
   purposes. The results are undefined if the specified bounding box is
@@ -108,43 +119,10 @@
   default bboxSize value, (-1, -1, -1), implies that the bounding box
   is not specified and if needed shall be calculated by the browser. A
   description of the bboxCenter and bboxSize fields is contained in
-  4.6.4, Bounding boxes
-  (<http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-X3D/part1/concepts.html#4.6.4>),
+  10.2.2, Bounding boxes
+  (<https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/components/group.html#Boundingboxes>),
 
   \ENDWEB3D
-
-  The following example X3D scene is a simple illustration of how
-  SoX3DBillboard::axisOfRotation constrains rotation around the given
-  vector:
-
-  \verbatim
-  #X3D V2.0 utf8
-  
-  Transform {
-     translation -2 0 0
-     children [
-        Billboard {
-          children [ Box { } ]
-        }
-     ]
-  }
-  
-  Transform {
-     translation 2 0 0
-     children [
-        Billboard {
-          axisOfRotation 0 1 0
-          children [ Box { } ]
-        }
-     ]
-  }
-  
-  Transform {
-     translation 0 -2 0
-     children [ Box { size 10 0.1 10 } ]
-  }
-  \endverbatim
-
 */
 
 // *************************************************************************
@@ -164,6 +142,13 @@
   \var SoSFVec3f SoX3DBillboard::bboxSize
   The bounding box size hint. Default value is (-1, -1, -1).
 */
+
+/*!
+  \var SoSFNode SoX3DBillboard::metadata
+
+  Can contain an SoX3DMetadataObject. Is NULL by default.
+*/
+
 
 // *************************************************************************
 
@@ -217,6 +202,7 @@ SoX3DBillboard::SoX3DBillboard(void)
   SO_X3DNODE_INTERNAL_CONSTRUCTOR(SoX3DBillboard);
 
   SO_X3DNODE_ADD_EXPOSED_FIELD(axisOfRotation, (0.0f, 0.0f, 0.0f));
+  SO_X3DNODE_ADD_FIELD(metadata, (NULL));
   SO_X3DNODE_ADD_FIELD(bboxCenter, (0.0f, 0.0f, 0.0f));
   SO_X3DNODE_ADD_FIELD(bboxSize, (-1.0f, -1.0f, -1.0f));
 }
@@ -238,7 +224,7 @@ SoX3DBillboard::~SoX3DBillboard()
 
 // *************************************************************************
 
-// Doc in parent
+// doc in parent
 void
 SoX3DBillboard::doAction(SoAction * action)
 {
@@ -249,14 +235,14 @@ SoX3DBillboard::doAction(SoAction * action)
   state->pop();
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DBillboard::callback(SoCallbackAction * action)
 {
   SoX3DBillboard::doAction((SoAction*) action);
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DBillboard::GLRender(SoGLRenderAction * action)
 {
@@ -274,7 +260,7 @@ SoX3DBillboard::GLRender(SoGLRenderAction * action)
   }
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DBillboard::getBoundingBox(SoGetBoundingBoxAction * action)
 {
@@ -306,14 +292,14 @@ SoX3DBillboard::getMatrix(SoGetMatrixAction * action)
   state->pop();
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DBillboard::pick(SoPickAction * action)
 {
   SoX3DBillboard::doAction((SoAction*) action);
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DBillboard::search(SoSearchAction * action)
 {
@@ -322,7 +308,7 @@ SoX3DBillboard::search(SoSearchAction * action)
   SoGroup::doAction(action);
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DBillboard::GLRenderBelowPath(SoGLRenderAction * action)
 {
@@ -374,7 +360,7 @@ SoX3DBillboard::GLRenderBelowPath(SoGLRenderAction * action)
   state->pop();
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DBillboard::GLRenderInPath(SoGLRenderAction * action )
 {
@@ -425,14 +411,14 @@ SoX3DBillboard::GLRenderInPath(SoGLRenderAction * action )
   }
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DBillboard::GLRenderOffPath(SoGLRenderAction * COIN_UNUSED_ARG(action))
 {
   // do nothing
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DBillboard::notify(SoNotList * list)
 {

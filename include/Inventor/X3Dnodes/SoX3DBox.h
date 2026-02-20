@@ -36,6 +36,8 @@
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/X3Dnodes/SoX3DGeometry.h>
 #include <Inventor/fields/SoSFVec3f.h>
+#include <Inventor/fields/SoSFBool.h>
+#include <Inventor/fields/SoSFNode.h>
 
 class COIN_DLL_API SoX3DBox : public SoX3DGeometry
 {
@@ -47,6 +49,9 @@ public:
   SoX3DBox(void);
 
   SoSFVec3f size;
+  SoSFBool  solid;
+
+  SoSFNode  metadata;
 
   virtual void GLRender(SoGLRenderAction * action);
   virtual void rayPick(SoRayPickAction * action);

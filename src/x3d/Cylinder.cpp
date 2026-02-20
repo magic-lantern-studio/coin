@@ -46,11 +46,13 @@
 
   \verbatim
   Cylinder {
-    field    SFBool    bottom  TRUE
-    field    SFFloat   height  2         # (0,)
-    field    SFFloat   radius  1         # (0,)
-    field    SFBool    side    TRUE
-    field    SFBool    top     TRUE
+    exposedField SFNode    metadata        NULL
+    field        SFBool    bottom          TRUE
+    field        SFFloat   height          2         # (0, inf)
+    field        SFFloat   radius          1         # (0, inf)
+    field        SFBool    side            TRUE
+    field        SFBool    solid           TRUE
+    field        SFBool    top             TRUE
   }
   \endverbatim
 
@@ -60,7 +62,7 @@
   in all three dimensions. The radius field specifies the radius of
   the cylinder and the height field specifies the height of the
   cylinder along the central axis. Both radius and height shall be
-  greater than zero. Figure 6.4 illustrates the Cylinder node.
+  greater than zero. Figure 13.3 illustrates the Cylinder node.
 
   The cylinder has three parts: the side, the top (Y = +height/2) and
   the bottom (Y = -height/2).  Each part has an associated SFBool
@@ -70,10 +72,9 @@
   activation).
 
   <center>
-  <img src="http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-X3D/Images/cylinder.gif">
-  Figure 6.4
+  <img src="https://www.web3d.org/documents/specifications/19775-1/V3.0/Images/cylinder.gif">
+  Figure 13.3 - Cylinder node
   </center>
-
 
   When a texture is applied to a cylinder, it is applied differently
   to the sides, top, and bottom. On the sides, the texture wraps
@@ -86,9 +87,14 @@
   and the bottom texture appears right side up when the top of the
   cylinder is tilted toward the -Z-axis. SoX3DTextureTransform
   affects the texture coordinates of the Cylinder node.  The Cylinder
-  node's geometry requires outside faces only. When viewed from the
-  inside the results are undefined.
+  node's geometry requires outside faces only.
 
+  The solid field determines whether the cylinder is visible when viewed from the inside. 11.2.3 Common geometry fields provides a complete description of the solid field.
+*/
+
+/*!
+  \var SoSFNode SoX3DCone::metadata
+  Can contain an SoX3DMetadataObject. Is NULL by default.
 */
 
 /*!
@@ -115,6 +121,12 @@
   \var SoSFBool SoX3DCylinder::bottom
   Enable/disable the cylinder bottom. Default value is TRUE.
 */
+
+/*!
+  \var SoSFBool SoX3DCylinder::solid
+  Determines whether the cylinder is visible from the inside. Default value is TRUE.
+*/
+
 
 #include <Inventor/X3Dnodes/SoX3DCylinder.h>
 #include "coindefs.h"
@@ -157,11 +169,14 @@ SoX3DCylinder::SoX3DCylinder(void)
 {
   SO_X3DNODE_INTERNAL_CONSTRUCTOR(SoX3DCylinder);
 
-  SO_X3DNODE_ADD_FIELD(radius, (1.0f));
-  SO_X3DNODE_ADD_FIELD(height, (2.0f));
-  SO_X3DNODE_ADD_FIELD(side, (TRUE));
-  SO_X3DNODE_ADD_FIELD(top, (TRUE));
+  SO_X3DNODE_ADD_EXPOSED_FIELD(metadata, (NULL));
   SO_X3DNODE_ADD_FIELD(bottom, (TRUE));
+  SO_X3DNODE_ADD_FIELD(height, (2.0f));
+  SO_X3DNODE_ADD_FIELD(radius, (1.0f));
+  SO_X3DNODE_ADD_FIELD(side, (TRUE));
+  SO_X3DNODE_ADD_FIELD(solid, (TRUE));
+  SO_X3DNODE_ADD_FIELD(top, (TRUE));
+
 }
 
 /*!
@@ -171,7 +186,7 @@ SoX3DCylinder::~SoX3DCylinder()
 {
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DCylinder::GLRender(SoGLRenderAction * action)
 {
@@ -208,7 +223,7 @@ SoX3DCylinder::GLRender(SoGLRenderAction * action)
                        flags, state);
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DCylinder::rayPick(SoRayPickAction * action)
 {
@@ -225,7 +240,7 @@ SoX3DCylinder::rayPick(SoRayPickAction * action)
                        this, action);
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DCylinder::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
@@ -245,7 +260,7 @@ SoX3DCylinder::getPrimitiveCount(SoGetPrimitiveCountAction * action)
   }
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DCylinder::generatePrimitives(SoAction * action)
 {
@@ -264,7 +279,7 @@ SoX3DCylinder::generatePrimitives(SoAction * action)
                           action);
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DCylinder::computeBBox(SoAction * COIN_UNUSED_ARG(action),
                             SbBox3f & box,

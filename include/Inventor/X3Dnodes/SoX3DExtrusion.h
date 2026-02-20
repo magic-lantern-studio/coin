@@ -40,6 +40,7 @@
 #include <Inventor/fields/SoMFVec2f.h>
 #include <Inventor/fields/SoMFVec3f.h>
 #include <Inventor/fields/SoMFRotation.h>
+#include <Inventor/fields/SoSFNode.h>
 
 class COIN_DLL_API SoX3DExtrusion : public SoX3DGeometry
 {
@@ -61,6 +62,8 @@ public:
   SoSFBool solid;
   SoMFVec3f spine;
 
+  SoSFNode metadata;
+
   virtual void GLRender(SoGLRenderAction * action);
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
   virtual void computeBBox(SoAction * action,
@@ -80,6 +83,7 @@ protected:
 private:
   void updateCache(void);
   class SoX3DExtrusionP * pimpl;
+
 }; // class SoX3DExtrusion
 
 #endif // ! COIN_SOX3DEXTRUSION_H

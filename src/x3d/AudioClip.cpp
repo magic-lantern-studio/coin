@@ -54,38 +54,44 @@
   AudioClip {
     exposedField   SFString description      ""
     exposedField   SFBool   loop             FALSE
+    exposedField   SFNode   metadata         NULL
+    exposedField   SFTime   pauseTime        0          # (-inf, inf)
     exposedField   SFFloat  pitch            1.0        # (0, inf)
+    exposedField   SFTime   resumeTime       0          # (-inf, inf)
     exposedField   SFTime   startTime        0          # (-inf, inf)
     exposedField   SFTime   stopTime         0          # (-inf, inf)
     exposedField   MFString url              []
     eventOut       SFTime   duration_changed
+    eventOut       SFTime   elapsedTime
     eventOut       SFBool   isActive
+    eventOut       SFBool   isPaused
   }
   \endverbatim
 
   An AudioClip node specifies audio data that can be referenced by
-  Sound nodes.  The description field specifies a textual description
+  Sound nodes.
+
+  The description field specifies a textual description
   of the audio source. A browser is not required to display the
   description field but may choose to do so in addition to playing the
-  sound.  The url field specifies the URL from which the sound is
+  sound.
+
+  The url field specifies the URL from which the sound is
   loaded.  Browsers shall support at least the wavefile format in
-  uncompressed PCM format (see
-  http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-X3D/part1/bibliography.html#[WAV]).
+  uncompressed PCM format (see https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/bibliography.html#[WAV]
+  ).
   It is recommended that browsers also support the MIDI file type 1
   sound format
-  (see http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-X3D/part1/references.html#[MIDI]);
+  (see https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/references.html#[MIDI])
+  and the MP3 compressed format (see 2.[I11172-1]).
   MIDI files are presumed to use the
-  General MIDI patch set. Subclause 4.5, X3D and the World Wide Web
-  (<http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-X3D/part1/concepts.html#4.5>),
+  General MIDI patch set. https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/components/networking.html#URLs
   contains details on the url field. The results are undefined when no
   URLs refer to supported data types.
 
-  The loop, startTime, and stopTime exposedFields and the isActive
-  eventOut, and their effects on the AudioClip node, are discussed in
-  detail in 4.6.9, Time-dependent nodes
-  (<http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-X3D/part1/concepts.html#4.6.9>).
-  The "cycle" of an AudioClip is the length of time in seconds for one
-  playing of the audio at the specified pitch.  The pitch field
+  The loop, pauseTime, resumeTime, startTime, and stopTime inputOutput fields and the elapsedTime, isActive, and isPaused outputOnly fields, and their effects on the AudioClip node, are discussed in detail in 8 Time component (https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/components/time.html). The "cycle" of an AudioClip is the length of time in seconds for one playing of the audio at the specified pitch.
+
+  The pitch field
   specifies a multiplier for the rate at which sampled sound is
   played. Values for the pitch field shall be greater than
   zero. Changing the pitch field affects both the pitch and playback
@@ -108,14 +114,19 @@
   yet loaded or the value is unavailable for some reason. A
   duration_changed event shall be generated if the AudioClip node is
   loaded when the X3D file is read or the AudioClip node is added to
-  the scene graph.  The isActive eventOut may be used by other nodes
+  the scene graph.
+
+  The isActive eventOut may be used by other nodes
   to determine if the clip is currently active. If an AudioClip is
   active, it shall be playing the sound corresponding to the sound
   time (i.e., in the sound's local time system with sample 0 at time
   0):
+  
   \verbatim
   t = (now - startTime) modulo (duration / pitch)
-  \endverbatim */
+  \endverbatim
+
+*/
 
 /*!
   \var SoSFString SoX3DAudioClip::description
@@ -128,12 +139,27 @@
 */
 
 /*!
+  \var SoSFNode SoX3DAudioClip::metadata
+  Can contain an SoX3DMetadataObject. Is NULL by default.
+*/
+
+/*!
+  \var SoSFTime SoX3DAnchor::pauseTime
+  Specifies the pause time. The default value is 0.
+*/
+
+/*!
   \var SoSFFloat SoX3DAudioClip::pitch
   Specifies the pitch. The default value is 1.0.
 
   Alters the sampling rate at which the sound is played. A pitch of
   2.0 means that the sound should be played twice as fast and one
   octave higher than normal.
+*/
+
+/*!
+  \var SoSFTime SoX3DAnchor::resumeTime
+  Specifies the resume time. The default value is 0.
 */
 
 /*!
@@ -156,8 +182,18 @@
 */
 
 /*!
+  \var SoX3DAudioClip::elapsedTime
+  An eventOut sent when after a specifed period has elasped.
+*/
+
+/*!
   \var SoX3DAudioClip::isActive
   This eventOut is sent when the sound starts/stops playing.
+*/
+
+/*!
+  \var SoX3DAudioClip::isPaused
+  This eventOut is sent when the sound is paused.
 */
 
 #include <Inventor/X3Dnodes/SoX3DAudioClip.h>
@@ -350,13 +386,18 @@ SoX3DAudioClip::SoX3DAudioClip(void)
 
   SO_X3DNODE_ADD_EXPOSED_FIELD(description, (""));
   SO_X3DNODE_ADD_EXPOSED_FIELD(loop, (FALSE));
+  SO_X3DNODE_ADD_EXPOSED_FIELD(metadata, (NULL));
+  SO_X3DNODE_ADD_EXPOSED_FIELD(pauseTime, (0.0f));
   SO_X3DNODE_ADD_EXPOSED_FIELD(pitch, (1.0f));
+  SO_X3DNODE_ADD_EXPOSED_FIELD(resumeTime, (0.0f));
   SO_X3DNODE_ADD_EXPOSED_FIELD(startTime, (0.0f));
   SO_X3DNODE_ADD_EXPOSED_FIELD(stopTime, (0.0f));
   SO_X3DNODE_ADD_EMPTY_EXPOSED_MFIELD(url);
 
   SO_X3DNODE_ADD_EVENT_OUT(duration_changed);
+  SO_X3DNODE_ADD_EVENT_OUT(elapsedTime);
   SO_X3DNODE_ADD_EVENT_OUT(isActive);
+  SO_X3DNODE_ADD_EVENT_OUT(isPaused);
 
   this->isActive.setValue(FALSE);
 

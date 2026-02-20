@@ -46,10 +46,12 @@
 
   \verbatim
   Fog {
-    exposedField SFColor  color            1 1 1      # [0,1]
-    exposedField SFString fogType          "LINEAR"
-    exposedField SFFloat  visibilityRange  0          # [0,inf)
     eventIn      SFBool   set_bind
+    exposedField SFColor  color            1 1 1      # [0,1]
+    exposedField SFString fogType          "LINEAR"   # ["LINEAR"|"EXPONENTIAL"]
+    exposedField SFNode   metadata         NULL
+    exposedField SFFloat  visibilityRange  0          # [0,inf)
+    eventOut     SFTime   bindTime
     eventOut     SFBool   isBound
   }
   \endverbatim
@@ -68,29 +70,29 @@
   is affected by the scaling transformations of the Fog node's
   parents; translations and rotations have no affect on
   visibilityRange. Values of the visibilityRange field shall be in the
-  range [0, ).  
+  range [0, inf).  
 
-  Since Fog nodes are bindable children nodes (see 4.6.10, Bindable
-  children nodes
-  http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-X3D/part1/concepts.html#4.6.10),
+  Since Fog nodes are bindable children nodes (see 7.2.2, Bindable
+  children nodes 
+  https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/components/core.html#Bindablechildrennodes),
   a Fog node stack exists, in which the top- most Fog node on the
   stack is currently active. To push a Fog node onto the top of the
   stack, a TRUE value is sent to the set_bind eventIn. Once active,
   the Fog node is bound to the browser view. A FALSE value sent to
   set_bind, pops the Fog node from the stack and unbinds it from the
   browser viewer.  More details on the Fog node stack can be found in
-  4.6.10, Bindable children nodes
-  (<http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-X3D/part1/concepts.html#4.6.10>).
+  7.2.2, Bindable children nodes
+  (<https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/components/core.html#Bindablechildrennodes>).
 
   The fogType field controls how much of the fog colour is blended
   with the object as a function of distance. If fogType is "LINEAR",
   the amount of blending is a linear function of the distance,
   resulting in a depth cueing effect. If fogType is "EXPONENTIAL," an
   exponential increase in blending is used, resulting in a more
-  natural fog appearance.  The effect of fog on lighting calculations
-  is described in 4.14, Lighting model
-  (<http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-X3D/part1/concepts.html#4.6.14>).
-  
+  natural fog appearance.
+
+  The effect of fog on lighting calculations is described in 17, Lighting component
+  (<https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/components/lighting.html>).
 
 */
 
@@ -110,14 +112,24 @@
 */
 
 /*!
+  \var SoSFNode SoX3DFog::metadata
+
+  Can contain an SoX3DMetadataObject. Is NULL by default.
+*/
+
+/*!
   \var SoSFBool SoX3DFog::set_bind
   An eventIn that is used to bind this node (make the node active).
 */
 
-
 /*!
   \var SoSFBool SoX3DFog::isBound
   An eventOut that is sent when the node is bound/unbound.
+*/
+
+/*!
+  \var SoSFTime SoX3DFog::bindTime
+  An eventOut that flags the timestamp when the node is bound.
 */
 
 #include <Inventor/X3Dnodes/SoX3DFog.h>
@@ -184,9 +196,11 @@ SoX3DFog::SoX3DFog(void)
   SO_X3DNODE_ADD_EXPOSED_FIELD(fogType, ("LINEAR"));
   SO_X3DNODE_ADD_EXPOSED_FIELD(visibilityRange, (0.0f));
   SO_X3DNODE_ADD_EXPOSED_FIELD(color, (1.0f, 1.0f, 1.0f));
+  SO_X3DNODE_ADD_EXPOSED_FIELD(metadata, (NULL));
   
   SO_X3DNODE_ADD_EVENT_IN(set_bind);
   SO_X3DNODE_ADD_EVENT_OUT(isBound);
+  SO_X3DNODE_ADD_EVENT_OUT(bindTime);
 
   PRIVATE(this) = new SoX3DFogP(this);
 
@@ -230,7 +244,7 @@ SoX3DFog::~SoX3DFog()
   delete PRIVATE(this);
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DFog::GLRender(SoGLRenderAction * action)
 {
@@ -275,7 +289,6 @@ fog_fieldsensorCB(void * data, SoSensor * sensor)
   }
 
 }
-
 
 void
 fog_bindingchangeCB(void * data, SoSensor * sensor)

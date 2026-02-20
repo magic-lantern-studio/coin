@@ -36,6 +36,7 @@
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/X3Dnodes/SoX3DLight.h>
 #include <Inventor/fields/SoSFVec3f.h>
+#include <Inventor/fields/SoSFNode.h>
 
 class COIN_DLL_API SoX3DDirectionalLight : public SoX3DLight
 {
@@ -47,6 +48,8 @@ public:
   SoX3DDirectionalLight(void);
 
   SoSFVec3f direction;
+
+  SoSFNode  metadata;
 
   virtual void GLRender( SoGLRenderAction * action );
 

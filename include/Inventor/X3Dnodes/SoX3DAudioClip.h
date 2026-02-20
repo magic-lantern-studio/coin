@@ -40,6 +40,7 @@
 #include <Inventor/fields/SoSFBool.h>
 #include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/fields/SoSFTime.h>
+#include <Inventor/fields/SoSFNode.h>
 #include <Inventor/lists/SbStringList.h>
 #include <Inventor/SbTime.h>
 
@@ -67,11 +68,15 @@ public:
   SoX3DAudioClip(void);
 
   SoSFString description;
-  SoSFBool loop;
-  SoSFFloat pitch;
-  SoSFTime startTime;
-  SoSFTime stopTime;
+  SoSFBool   loop;
+  SoSFFloat  pitch;
+  SoSFTime   startTime;
+  SoSFTime   stopTime;
+  SoSFTime   pauseTime;
+  SoSFTime   resumeTime;
   SoMFString url;
+
+  SoSFNode metadata;
 
   static void  setSubdirectories(const SbList<SbString> &subdirectories);
   static const SbStringList & getSubdirectories();
@@ -97,12 +102,16 @@ public:
 
 protected:
   virtual ~SoX3DAudioClip();
+  
   SoSFTime duration_changed; // eventOut
+  SoSFTime elapsedTime;      // eventOut
   SoSFBool isActive;         // eventOut
+  SoSFBool isPaused;         // eventOut
 
 private:
   SoX3DAudioClipP *pimpl;
   friend class SoX3DAudioClipP;
+
 };
 
 #endif // ! COIN_SOX3DAUDIOCLIP_H

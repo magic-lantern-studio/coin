@@ -337,7 +337,7 @@ SoX3DScript::SoX3DScript(void)
 #endif // !COIN_HAVE_JAVASCRIPT
 
   PRIVATE(this) = new SoX3DScriptP(this);
-  this->setNodeType(SoNode::X3D2);
+  this->setNodeType(SoNode::X3D);
 
   this->isBuiltIn = TRUE;
   assert(SoX3DScript::classTypeId != SoType::badType());
