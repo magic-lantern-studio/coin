@@ -195,7 +195,8 @@ SoDBP::isXMLFile(SoInput * in)
   if (in->getNumBytesRead() > 0) { return FALSE; }
   if (in->getHeader().getLength() > 0) { return FALSE; }
 
-  // ToDo: read just the first part of the X3D file to determine format.
+  // FIXME: Read just the first part of the X3D file to determine format.
+  // 2026-03-04 msm (WizzerWorks)
   return FALSE;
 }
 #endif // HAVE_X3D
@@ -307,9 +308,10 @@ SoDBP::readXMLFile(SoInput * in)
   assert(SoDBP::isXMLFile(in));
 
   SoSeparator * b;
-  // ToDo: Read in the file. If the routine returns TRUE, then return
+  // FIXME: Read in the file. If the routine returns TRUE, then return
   // the root of the scene graph that was constructed by the read file
   // routine. Otherwise return NULL.
+  // 2026-03-04 msm (WizzerWorks)
   
   SoDebugError::postWarning("SoDB::read",
                             "It seems like the input file is in X3D "

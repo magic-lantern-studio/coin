@@ -565,3 +565,18 @@
 */
 
 // *************************************************************************
+
+/*!
+  \defgroup coin_X3Dnodes X3D Classes
+
+  \brief
+  Nodes implementing the X3D standard.
+
+  \details
+
+  You can find out more about X3D in \ref x3drefbook.
+
+  The X3D V3.0 specification is online at
+  https://www.web3d.org/standards/version/V3.0
+
+*/

@@ -340,6 +340,7 @@ INCLUDE_FILE_PATTERNS  = .h \
 PREDEFINED             = DOXYGEN_SKIP_THIS=1 \
                          HAVE_CONFIG_H= \
                          HAVE_VRML97= \
+                         HAVE_X3D \
                          HAVE_NODEKITS= \
                          HAVE_DRAGGERS= \
                          HAVE_MANIPULATORS= \
