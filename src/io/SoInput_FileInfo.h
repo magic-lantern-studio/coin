@@ -111,40 +111,55 @@ public:
   void setDeleteBuffer(char * buffer) {
     this->deletebuffer = buffer;
   }
+
   SbBool isBinary(void) {
     return this->isbinary;
   }
+
   float ivVersion(void) {
     return this->ivversion;
   }
+
   SbBool isFileVRML1(void) {
     return this->vrml1file;
   }
+
   SbBool isFileVRML2(void) {
     return this->vrml2file;
   }
+
+  SbBool isFileX3D(void) {
+    return this->x3dfile;
+  }
+
   void setIvVersion(const float v) {
       this->ivversion = v;
   }
+
   const SbString & ivHeader(void) {
     return this->header;
   }
+
   unsigned int lineNr(void) {
     return this->linenr;
   }
+
   FILE * ivFilePointer(void) {
     // if reader == NULL, it means that we're reading from stdin
     if (this->reader == NULL) return coin_get_stdin();
     return this->getReader()->getFilePointer();
   }
+
   const SbString & ivFilename(void) {
     // if reader == NULL, it means that we're reading from stdin
     if (this->reader == NULL) return this->stdinname;
     return this->getReader()->getFilename();
   }
+
   SbBool isEndOfFile(void) const {
     return this->eof;
   }
+
   void applyPostCallback(SoInput * soinput) {
     if (this->postfunc) this->postfunc(this->userdata, soinput);
   }
@@ -166,9 +181,11 @@ public:
   void pushProto(SoProto * proto) {
     this->protostack.push(proto);
   }
+
   void popProto(void) {
     (void) this->protostack.pop();
   }
+
   SoProto * getCurrentProto(void) {
     const int n = this->protostack.getLength();
     if (n) return this->protostack[n-1];
@@ -238,6 +255,7 @@ private:
   SbBool headerisread, eof;
   SbBool vrml1file;
   SbBool vrml2file;
+  SbBool x3dfile;
 
   SbList <SbName> routelist;
   SbList <SoProto*> protolist;

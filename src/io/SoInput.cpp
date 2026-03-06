@@ -2428,6 +2428,22 @@ SoInput::isFileVRML2(void)
   return FALSE;
 }
 
+//#ifdef HAVE_X3D
+/*!
+  Returns \c TRUE if current file is a X3D file.
+
+  \COIN_FUNCTION_EXTENSION
+*/
+SbBool
+SoInput::isFileX3D(void)
+{
+  (void) this->checkHeader();
+  SoInput_FileInfo * fi = this->getTopOfStack();
+  if (fi) return fi->isFileX3D();
+  return FALSE;
+}
+//#endif // HAVE_X3D
+
 /*!
   This function has been obsoleted in Coin.
 */

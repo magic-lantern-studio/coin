@@ -42,6 +42,14 @@
 void
 so_x3d_init(void)
 {
+  SoX3DNode::initClass();
+
+  SoX3DMetadataDouble::initClass();
+  SoX3DMetadataFloat::initClass();
+  SoX3DMetadataInteger::initClass();
+  SoX3DMetadataSet::initClass();
+  SoX3DMetadataString::initClass();
+  
   SoX3DGeometry::initClass();
   SoX3DVertexPoint::initClass();
   SoX3DVertexShape::initClass();
@@ -49,6 +57,11 @@ so_x3d_init(void)
 
   SoX3DParent::initClass();
   SoX3DGroup::initClass();
+
+  SoX3DChildNode::initClass();
+  SoX3DGroupingNode::initClass();
+  SoX3DBindableNode::initClass();
+  SoX3DGeometryNode::initClass();
 
   SoX3DTexture::initClass();
 
@@ -60,8 +73,10 @@ so_x3d_init(void)
   SoX3DDragSensor::initClass();
 
   SoX3DAnchor::initClass();
+  SoX3DAppearanceNode::initClass();
   SoX3DAppearance::initClass();
   SoX3DAudioClip::initClass();
+  SoX3DBackgroundNode::initClass();
   SoX3DBackground::initClass();
   SoX3DBillboard::initClass();
   SoX3DBox::initClass();

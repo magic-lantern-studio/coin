@@ -88,6 +88,7 @@ SoInput_FileInfo::SoInput_FileInfo(SoInput_Reader * readerptr,
   this->isbinary = FALSE;
   this->vrml1file = FALSE;
   this->vrml2file = FALSE;
+  this->x3dfile = FALSE;
   this->prefunc = NULL;
   this->postfunc = NULL;
   this->stdinname = "<stdin>";
@@ -385,6 +386,7 @@ SoInput_FileInfo::readHeaderInternal(SoInput * soinput)
   this->ivversion = 0.0f;
   this->vrml1file = FALSE;
   this->vrml2file = FALSE;
+  this->x3dfile = FALSE;
 
   char c;
   if (!this->get(c)) return FALSE;
@@ -410,6 +412,7 @@ SoInput_FileInfo::readHeaderInternal(SoInput * soinput)
   else {
     SbString vrml1string("#VRML V1.0 ascii");
     SbString vrml2string("#VRML V2.0 utf8");
+    SbString x3dstring("#X3D V3.0 utf8");
 
     if (strncmp(vrml1string.getString(), this->header.getString(),
                 vrml1string.getLength()) == 0) {
@@ -418,6 +421,10 @@ SoInput_FileInfo::readHeaderInternal(SoInput * soinput)
     else if (strncmp(vrml2string.getString(), this->header.getString(),
                      vrml2string.getLength()) == 0) {
       this->vrml2file = TRUE;
+    }
+    else if (strncmp(x3dstring.getString(), this->header.getString(),
+                     x3dstring.getLength()) == 0) {
+      this->x3dfile = TRUE;
     }
     if (this->prefunc) this->prefunc(this->userdata, soinput);
   }

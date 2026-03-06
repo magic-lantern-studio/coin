@@ -21,7 +21,9 @@ PublicHeaders = \
 	SoToVRMLAction.h \
 	SoToVRML2Action.h \
 	SoWriteAction.h \
-	SoAudioRenderAction.h
+	SoAudioRenderAction.h \
+	SoX3DCallbackAction.h \
+	SoX3DGLRenderAction.h
 PrivateHeaders =
 ObsoleteHeaders =
 

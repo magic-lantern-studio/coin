@@ -42,28 +42,28 @@
 
   \ingroup coin_X3Dnodes
 
-  \WEB3DCOPYRIGHT
+  \WEBX3DCOPYRIGHT
 
   \verbatim
-  Background {
-    eventIn      SFBool   set_bind
-    exposedField MFFloat  groundAngle  []         # [0,pi/2]
-    exposedField MFColor  groundColor  []         # [0,1]
-    exposedField MFString backUrl      []
-    exposedField MFString bottomUrl    []
-    exposedField MFString frontUrl     []
-    exposedField MFString leftUrl      []
-    exposedField SFNode   metadata
-    exposedField MFString rightUrl     []
-    exposedField MFString topUrl       []
-    exposedField MFFloat  skyAngle     []         # [0,pi]
-    exposedField MFColor  skyColor     0 0 0      # [0,1]
-    eventOut     SFTime   bindTime
-    eventOut     SFBool   isBound
+  Background : X3DBackgroundNode {
+    SFBool   [in]     set_bind
+    MFFloat  [in,out] groundAngle []    [0,π/2]
+    MFColor  [in,out] groundColor []    [0,1]
+    MFString [in,out] backUrl     []    [urn]
+    MFString [in,out] bottomUrl   []    [urn]
+    MFString [in,out] frontUrl    []    [urn]
+    MFString [in,out] leftUrl     []    [urn]
+    SFNode   [in,out] metadata    NULL  [X3DMetadataObject]
+    MFString [in,out] rightUrl    []    [urn]
+    MFString [in,out] topUrl      []    [urn]
+    MFFloat  [in,out] skyAngle    []    [0,π]
+    MFColor  [in,out] skyColor    0 0 0 [0,1]
+    SFTime   [out]    bindTime
+    SFBool   [out]    isBound
   }
   \endverbatim
 
-  A background node that uses six static images to compose the backdrop. The common fields of the Background node are described in 24.2 Concepts. For the backUrl, bottomUrl, frontUrl, leftUrl, rightUrl, topUrl fields, browsers shall support the JPEG (see 2.[JPEG]) and PNG (see 2.[I15948]) image file formats, and in addition, may support any other image format (EXAMPLE  CGM) that can be rendered into a 2D image. Support for the GIF (see [GIF]) format is recommended (including transparency) . More detail on the url fields can be found in 9.2.1 URLs.
+  A background node that uses six static images to compose the backdrop. The common fields of the Background node are described in "24.2 Concepts" (https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/components/enveffects.html#Concepts). For the backUrl, bottomUrl, frontUrl, leftUrl, rightUrl, topUrl fields, browsers shall support the JPEG (see "2.[JPEG]" (https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/references.html#[JPEG])) and PNG (see "2.[I15948]" (https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/references.html#[I15948])) image file formats, and in addition, may support any other image format (EXAMPLE  CGM) that can be rendered into a 2D image. Support for the GIF (see "[GIF]" (https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/bibliography.html#[GIF])) format is recommended (including transparency) . More detail on the url fields can be found in "9.2.1 URLs" (https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/components/networking.html#URLs).
 */
 
 // *************************************************************************
@@ -114,30 +114,6 @@
 // *************************************************************************
 
 /*!
-  \var SoMFFloat SoX3DBackground::groundAngle
-
-  The ground angles where different colors should be used.
-*/
-
-/*!
-  \var SoMFColor SoX3DBackground::groundColor
-
-  The color for each groundAngle.
-*/
-
-/*!
-  \var SoMFFloat SoX3DBackground::skyAngle
-
-  The sky angles where different colors should be used.
-*/
-
-/*!
-  \var SoMFColor SoX3DBackground::skyColor
-
-  The color for each skyAngle.
-*/
-
-/*!
   \var SoMFString SoX3DBackground::backUrl
 
   URL for the background image.
@@ -173,27 +149,6 @@
   URL for the top image.
 */
 
-/*!
-  \var SoSFNode SoX3DBackground::metadata
-
-  Can contain an SoX3DMetadataObject. Is NULL by default.
-*/
-
-/*!
-  SoSFBool SoX3DBackground::set_bind
-  An eventIn which is triggered when the node is bound.
-*/
-
-/*!
-  SoSFTime SoX3DBackground::bindTime
-  An eventOut that is sent when the node has been bound.
-*/
-
-/*!
-  SoSFBool SoX3DBackground::isBound
-  An eventOut that is sent after the node has been bound/unbound.
-*/
-
 // *************************************************************************
 
 SO_NODE_SOURCE(SoX3DBackground);
@@ -211,11 +166,11 @@ static char background_scenery_data[] = {
 // *************************************************************************
 
 static void background_geometrychangeCB(void * data, SoSensor * sensor);
-static void background_vrmltexturechangeCB(void * data, SoSensor * sensor);
+static void background_x3dtexturechangeCB(void * data, SoSensor * sensor);
 static void background_bindingchangeCB(void * data, SoSensor * sensor);
 
-static float vrmlbackground_viewup[] = {0.0f, 1.0f, 0.0f};
-static SbBool vrmlbackground_viewup_set = FALSE;
+static float x3dbackground_viewup[] = {0.0f, 1.0f, 0.0f};
+static SbBool x3dbackground_viewup_set = FALSE;
 
 // *************************************************************************
 
@@ -304,10 +259,10 @@ SoX3DBackground::initClass(void) // static
     if (n == 3) {
       SbVec3f v(data[0], data[1], data[2]);
       v.normalize();
-      vrmlbackground_viewup[0] = v[0];
-      vrmlbackground_viewup[1] = v[1];
-      vrmlbackground_viewup[2] = v[2];
-      vrmlbackground_viewup_set = TRUE;
+      x3dbackground_viewup[0] = v[0];
+      x3dbackground_viewup[1] = v[1];
+      x3dbackground_viewup[2] = v[2];
+      x3dbackground_viewup_set = TRUE;
     }
   }
 }
@@ -319,22 +274,12 @@ SoX3DBackground::SoX3DBackground(void)
 {
   SO_X3DNODE_INTERNAL_CONSTRUCTOR(SoX3DBackground);
 
-  SO_X3DNODE_ADD_EVENT_IN(set_bind);
-
-  SO_X3DNODE_ADD_EMPTY_EXPOSED_MFIELD(groundAngle);
-  SO_X3DNODE_ADD_EMPTY_EXPOSED_MFIELD(groundColor);
   SO_X3DNODE_ADD_EMPTY_EXPOSED_MFIELD(backUrl);
   SO_X3DNODE_ADD_EMPTY_EXPOSED_MFIELD(bottomUrl);
   SO_X3DNODE_ADD_EMPTY_EXPOSED_MFIELD(frontUrl);
   SO_X3DNODE_ADD_EMPTY_EXPOSED_MFIELD(leftUrl);
-  SO_X3DNODE_ADD_EXPOSED_FIELD(metadata, (NULL));
   SO_X3DNODE_ADD_EMPTY_EXPOSED_MFIELD(rightUrl);
   SO_X3DNODE_ADD_EMPTY_EXPOSED_MFIELD(topUrl);
-  SO_X3DNODE_ADD_EMPTY_EXPOSED_MFIELD(skyAngle);
-  SO_X3DNODE_ADD_EMPTY_EXPOSED_MFIELD(skyColor);
-
-  SO_X3DNODE_ADD_EVENT_OUT(bindTime);
-  SO_X3DNODE_ADD_EVENT_OUT(isBound);
 
   PRIVATE(this) = new SoX3DBackgroundP(this);
   PRIVATE(this)->children = new SoChildList(this);
@@ -366,12 +311,12 @@ SoX3DBackground::SoX3DBackground(void)
   PRIVATE(this)->skycolorsensor->setPriority(5);
 
   // URL/skybox sensors  
-  PRIVATE(this)->backurlsensor = new SoFieldSensor(background_vrmltexturechangeCB, PRIVATE(this));
-  PRIVATE(this)->fronturlsensor = new SoFieldSensor(background_vrmltexturechangeCB, PRIVATE(this));
-  PRIVATE(this)->lefturlsensor = new SoFieldSensor(background_vrmltexturechangeCB, PRIVATE(this));
-  PRIVATE(this)->righturlsensor = new SoFieldSensor(background_vrmltexturechangeCB, PRIVATE(this));
-  PRIVATE(this)->bottomurlsensor = new SoFieldSensor(background_vrmltexturechangeCB, PRIVATE(this));
-  PRIVATE(this)->topurlsensor = new SoFieldSensor(background_vrmltexturechangeCB, PRIVATE(this));
+  PRIVATE(this)->backurlsensor = new SoFieldSensor(background_x3dtexturechangeCB, PRIVATE(this));
+  PRIVATE(this)->fronturlsensor = new SoFieldSensor(background_x3dtexturechangeCB, PRIVATE(this));
+  PRIVATE(this)->lefturlsensor = new SoFieldSensor(background_x3dtexturechangeCB, PRIVATE(this));
+  PRIVATE(this)->righturlsensor = new SoFieldSensor(background_x3dtexturechangeCB, PRIVATE(this));
+  PRIVATE(this)->bottomurlsensor = new SoFieldSensor(background_x3dtexturechangeCB, PRIVATE(this));
+  PRIVATE(this)->topurlsensor = new SoFieldSensor(background_x3dtexturechangeCB, PRIVATE(this));
 
   PRIVATE(this)->backurlsensor->attach(&this->backUrl);
   PRIVATE(this)->fronturlsensor->attach(&this->frontUrl);
@@ -431,7 +376,7 @@ SoX3DBackground::~SoX3DBackground()
   delete PRIVATE(this);
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DBackground::GLRender(SoGLRenderAction * action)
 {
@@ -445,12 +390,12 @@ SoX3DBackground::GLRender(SoGLRenderAction * action)
   const SbMatrix & tmp = SoViewingMatrixElement::get(state);
   SbRotation rot(tmp);
 
-  if (vrmlbackground_viewup_set) {
+  if (x3dbackground_viewup_set) {
     // create a rotation from the positive Y-axis to the new view up
     SbRotation r2(SbVec3f(0.0f, 1.0f, 0.0f), 
-                  SbVec3f(vrmlbackground_viewup[0],
-                          vrmlbackground_viewup[1],
-                          vrmlbackground_viewup[2]));
+                  SbVec3f(x3dbackground_viewup[0],
+                          x3dbackground_viewup[1],
+                          x3dbackground_viewup[2]));
     r2 *= rot;
     PRIVATE(this)->camera->orientation = r2.inverse();
   }
@@ -922,7 +867,7 @@ SoX3DBackgroundP::modifyCubeFace(SoMFString & urls, SoSeparator * sep, const int
 
 
 void
-background_vrmltexturechangeCB(void * data, SoSensor * sensor)
+background_x3dtexturechangeCB(void * data, SoSensor * sensor)
 {
 
   SoX3DBackgroundP * pimpl = (SoX3DBackgroundP *) data;

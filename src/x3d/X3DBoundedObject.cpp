@@ -61,9 +61,7 @@
 
 #include <cstddef>
 
-#include <Inventor/X3Dnodes/SoX3DMacros.h>
-
-#include "nodes/SoSubNodeP.h"
+//#include <Inventor/X3Dnodes/SoX3DMacros.h>
 
 // *************************************************************************
 
@@ -72,33 +70,30 @@ class SoX3DBoundedObjectP {
 
 // *************************************************************************
 
-SO_NODE_ABSTRACT_SOURCE(SoX3DBoundedObject);
-
-// *************************************************************************
-
-/*!
-  \copydetails So::initClass(void)
-*/
-void
-SoX3DBoundedObject::initClass(void) // static
-{
-  SO_NODE_INTERNAL_INIT_ABSTRACT_CLASS(SoX3DBoundedObject, SO_X3D_NODE_TYPE);
-}
-
 #define PRIVATE(thisp) ((thisp)->pimpl)
+
+//SoFieldData * SoX3DBoundedObject::fieldData = NULL; 
 
 SoX3DBoundedObject::SoX3DBoundedObject(void)
 {
   PRIVATE(this) = new SoX3DBoundedObjectP;
 
-  SO_X3DNODE_INTERNAL_CONSTRUCTOR(SoX3DBoundedObject);
+  /*
+  if (!SoX3DBoundedObject::fieldData) {
+    SoX3DBoundedObject::fieldData =
+      new SoFieldData(nullptr);
+  }
 
   SO_X3DNODE_ADD_FIELD(bboxCenter, (0, 0, 0));
   SO_X3DNODE_ADD_FIELD(bboxCenter, (-1, -1, -1));
+  */
 }
 
 SoX3DBoundedObject::~SoX3DBoundedObject()
 {
+  //  delete SoX3DBoundedObject::fieldData;
+  //SoX3DBoundedObject::fieldData = NULL;
+  
   delete PRIVATE(this);
 }
 

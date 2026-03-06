@@ -42,17 +42,17 @@
 
   \ingroup coin_X3Dnodes
 
-  \WEB3DCOPYRIGHT
+  \WEBX3DCOPYRIGHT
 
   \verbatim
-  Billboard {
-    eventIn      MFNode   addChildren
-    eventIn      MFNode   removeChildren
-    exposedField SFVec3f  axisOfRotation 0 1 0     # (-inf, inf)
-    exposedField MFNode   children       []
-    exposedField SFNode   metadata
-    field        SFVec3f  bboxCenter     0 0 0     # (-inf, inf)
-    field        SFVec3f  bboxSize       -1 -1 -1  # (0, inf) or -1,-1,-1
+  Billboard : X3DGroupingNode {
+    MFNode  [in]     addChildren             [X3DChildNode]
+    MFNode  [in]     removeChildren          [X3DChildNode]
+    SFVec3f [in,out] axisOfRotation 0 1 0    (-∞,∞)
+    MFNode  [in,out] children       []       [X3DChildNode]
+    SFNode  [in,out] metadata       NULL     [X3DMetadataObject]
+    SFVec3f []       bboxCenter     0 0 0    (-∞,∞)
+    SFVec3f []       bboxSize       -1 -1 -1 [0,∞) or −1 −1 −1
   }
   \endverbatim
 
@@ -106,8 +106,8 @@
   as expected: each instance rotates in its unique coordinate system
   to face the viewer.
 
-  Subclause 10.2.1, Grouping and children node types
-  (<https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/components/group.html#Groupingandchildrennodes>),
+  Subclause "10.2.1, Grouping and children node types"
+  (https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/components/group.html#Groupingandchildrennodes),
   provides a description of the children, addChildren, and
   removeChildren fields and eventIns.
 
@@ -119,8 +119,8 @@
   default bboxSize value, (-1, -1, -1), implies that the bounding box
   is not specified and if needed shall be calculated by the browser. A
   description of the bboxCenter and bboxSize fields is contained in
-  10.2.2, Bounding boxes
-  (<https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/components/group.html#Boundingboxes>),
+  "10.2.2, Bounding boxes"
+  (https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/components/group.html#Boundingboxes),
 
   \ENDWEB3D
 */
@@ -141,12 +141,6 @@
 /*!
   \var SoSFVec3f SoX3DBillboard::bboxSize
   The bounding box size hint. Default value is (-1, -1, -1).
-*/
-
-/*!
-  \var SoSFNode SoX3DBillboard::metadata
-
-  Can contain an SoX3DMetadataObject. Is NULL by default.
 */
 
 
@@ -202,7 +196,6 @@ SoX3DBillboard::SoX3DBillboard(void)
   SO_X3DNODE_INTERNAL_CONSTRUCTOR(SoX3DBillboard);
 
   SO_X3DNODE_ADD_EXPOSED_FIELD(axisOfRotation, (0.0f, 0.0f, 0.0f));
-  SO_X3DNODE_ADD_FIELD(metadata, (NULL));
   SO_X3DNODE_ADD_FIELD(bboxCenter, (0.0f, 0.0f, 0.0f));
   SO_X3DNODE_ADD_FIELD(bboxSize, (-1.0f, -1.0f, -1.0f));
 }
@@ -231,7 +224,7 @@ SoX3DBillboard::doAction(SoAction * action)
   SoState * state = action->getState();
   state->push();
   this->performRotation(state);
-  SoGroup::doAction(action);
+  SoX3DGroupingNode::doAction(action);
   state->pop();
 }
 
@@ -267,7 +260,7 @@ SoX3DBillboard::getBoundingBox(SoGetBoundingBoxAction * action)
   SoState * state = action->getState();
   state->push();
   this->performRotation(state);
-  SoGroup::getBoundingBox(action);
+  SoX3DGroupingNode::getBoundingBox(action);
   state->pop();
 }
 
@@ -288,7 +281,7 @@ SoX3DBillboard::getMatrix(SoGetMatrixAction * action)
   invRotM.setRotate(rot.inverse());
   action->getInverse().multRight(invRotM);
 
-  SoGroup::getMatrix(action);
+  SoX3DGroupingNode::getMatrix(action);
   state->pop();
 }
 
@@ -305,7 +298,7 @@ SoX3DBillboard::search(SoSearchAction * action)
 {
   SoNode::search(action);
   if (action->isFound()) return;
-  SoGroup::doAction(action);
+  SoX3DGroupingNode::doAction(action);
 }
 
 // doc in parent

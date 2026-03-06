@@ -68,11 +68,32 @@ set(COIN_X3D_FILES
 	VisibilitySensor.cpp
 	WorldInfo.cpp
 	JS_X3DClasses.cpp
-	X3DNode.cpp
-	X3DBoundedObject.cpp
 	X3DAppearanceNode.cpp
 	X3DAppearanceChildNode.cpp
+	X3DBackgroundNode.cpp
+	X3DBindableNode.cpp
+	X3DBoundedObject.cpp
+	X3DChildNode.cpp
+	X3DGeometryNode.cpp
+	X3DGroupingNode.cpp
+	X3DMaterialNode.cpp
+	X3DMetadataObject.cpp
+	X3DNetworkSensorNode.cpp
+	X3DNode.cpp
+	X3DPrototypeInstance.cpp
+	X3DShapeNode.cpp
+	X3DSensorNode.cpp
+	X3DUrlObject.cpp
+	MetadataDouble.cpp
+	MetadataFloat.cpp
+	MetadataInteger.cpp
+	MetadataSet.cpp
+	MetadataString.cpp
 	SoX3DNodeEngine.cpp
+	sox3dshape_bigtexture.cpp
+	sox3dshape_bumprender.cpp
+	sox3dshape_primdata.cpp
+	sox3dshape_trianglesort.cpp
 )
 
 # Files excluded from public API documentation, included in complete documentation.
@@ -81,6 +102,10 @@ set(COIN_X3D_INTERNAL_FILES
 	JS_X3DClasses.cpp
 	SoX3DSubInterpolatorP.h
 	SoX3DNodeEngine.h
+	sox3dshape_bigtexture.h
+	sox3dshape_bumprender.h
+	sox3dshape_primdata.h
+	sox3dshape_trianglesort.h
 )
 
 # build library

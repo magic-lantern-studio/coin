@@ -33,30 +33,22 @@
 #ifndef COIN_SOX3DBACKGROUND_H
 #define COIN_SOX3DBACKGROUND_H
 
+#include <Inventor/X3Dnodes/SoX3DBackgroundNode.h>
+
 #include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/nodes/SoNode.h>
-#include <Inventor/fields/SoMFColor.h>
-#include <Inventor/fields/SoMFFloat.h>
 #include <Inventor/fields/SoMFString.h>
-#include <Inventor/fields/SoSFBool.h>
-#include <Inventor/fields/SoSFTime.h>
-#include <Inventor/fields/SoSFNode.h>
 
 class SoX3DBackgroundP;
 
-class COIN_DLL_API SoX3DBackground : public SoNode
+class COIN_DLL_API SoX3DBackground : public SoX3DBackgroundNode
 {
-  typedef SoNode inherited;
+  typedef SoX3DBackgroundNode inherited;
   SO_NODE_HEADER(SoX3DBackground);
 
 public:
   static void initClass(void);
   SoX3DBackground(void);
 
-  SoMFColor  groundColor;
-  SoMFFloat  groundAngle;
-  SoMFColor  skyColor;
-  SoMFFloat  skyAngle;
   SoMFString backUrl;
   SoMFString bottomUrl;
   SoMFString frontUrl;
@@ -64,21 +56,14 @@ public:
   SoMFString rightUrl;
   SoMFString topUrl;
 
-  SoSFNode   metadata;
-
   virtual void GLRender( SoGLRenderAction * action );
 
 protected:
   virtual SbBool readInstance(SoInput * in, unsigned short flags);
   virtual ~SoX3DBackground();
 
-  SoSFBool set_bind; // eventIn
-  SoSFTime bindTime; // eventOut
-  SoSFBool isBound;  // eventOut
-
 private:
   SoX3DBackgroundP * pimpl;
-
 };
 
 #endif // ! COIN_SOX3DBACKGROUND_H

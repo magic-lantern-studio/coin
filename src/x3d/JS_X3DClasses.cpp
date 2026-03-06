@@ -1498,7 +1498,7 @@ static JSBool SFNodeConstructor(JSContext * cx, JSObject * obj,
 
     SoGroup * group;
 
-    if (input.isFileX3D2())
+    if (input.isFileX3D())
       group = SoDB::readAllX3D(&input);
     else
       group = SoDB::readAll(&input);

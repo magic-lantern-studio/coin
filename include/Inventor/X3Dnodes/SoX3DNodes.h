@@ -100,5 +100,10 @@
 #include <Inventor/X3Dnodes/SoX3DViewpoint.h>
 #include <Inventor/X3Dnodes/SoX3DVisibilitySensor.h>
 #include <Inventor/X3Dnodes/SoX3DWorldInfo.h>
+#include <Inventor/X3Dnodes/SoX3DMetadataDouble.h>
+#include <Inventor/X3Dnodes/SoX3DMetadataFloat.h>
+#include <Inventor/X3Dnodes/SoX3DMetadataInteger.h>
+#include <Inventor/X3Dnodes/SoX3DMetadataSet.h>
+#include <Inventor/X3Dnodes/SoX3DMetadataString.h>
 
 #endif // COIN_SOX3DNODES

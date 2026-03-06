@@ -38,7 +38,7 @@
 #endif /* !COIN_INTERNAL */
 
 //
-// reusable code for generatePrimitives (OpenInventor, VRML and VRML2)
+// reusable code for generatePrimitives (OpenInventor, VRML, VRML2 and X3D)
 //
 
 #include <Inventor/SbBasic.h>
@@ -81,5 +81,37 @@ void sogen_generate_cube(const float width,
                          const unsigned int flags,
                          SoShape * const shape,
                          SoAction * const action);
+
+//#ifdef HAVE_X3D
+class SoX3DGeometryNode;
+
+void sox3dgen_generate_cone(const float bottomRadius,
+                            const float height,
+                            const int numslices,
+                            const unsigned int flags,
+                            SoX3DGeometryNode * const shape,
+                            SoAction * const action);
+
+
+void sox3dgen_generate_cylinder(const float radius,
+                             const float height,
+                             const int numslices,
+                             const unsigned int flags,
+                             SoX3DGeometryNode * const shape,
+                             SoAction * const action);
+
+void sox3dgen_generate_sphere(const float radius,
+                           const int numstacks,
+                           const int numslices,
+                           SoX3DGeometryNode * const shape,
+                           SoAction * const action);
+
+void sox3dgen_generate_cube(const float width,
+                            const float height,
+                            const float depth,
+                            const unsigned int flags,
+                            SoX3DGeometryNode * const shape,
+                            SoAction * const action);
+//#endif // HAVE_X3D
 
 #endif // !COIN_SOGENERATE_H

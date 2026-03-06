@@ -42,20 +42,19 @@
 
   \ingroup coin_X3Dnodes
 
-  \WEB3DCOPYRIGHT
+  \WEBX3DCOPYRIGHT
 
   \verbatim
-
-  Anchor {
-    eventIn      MFNode   addChildren
-    eventIn      MFNode   removeChildren
-    exposedField MFNode   children        []
-    exposedField SFString description     ""
-    exposedField SFNode   metadata        NULL
-    exposedField MFString parameter       []
-    exposedField MFString url             []
-    field        SFVec3f  bboxCenter      0 0 0     # (-inf, inf)
-    field        SFVec3f  bboxSize        -1 -1 -1  # (0, inf) or -1,-1,-1
+  Anchor : X3DGroupingNode { 
+    MFNode   [in]     addChildren
+    MFNode   [in]     removeChildren
+    MFNode   [in,out] children       []       [X3DChildNode]
+    SFString [in,out] description    ""
+    SFNode   [in,out] metadata       NULL     [X3DMetadataObject]
+    MFString [in,out] parameter      []
+    MFString [in,out] url            []       [url or urn]
+    SFVec3f  []       bboxCenter     0 0 0    (-∞,∞)
+    SFVec3f  []       bboxSize       -1 -1 -1 [0,∞) or −1 −1 −1 
   }
   \endverbatim
 
@@ -75,11 +74,11 @@
   scene. An Anchor node with an empty url does nothing when its
   children are chosen. A description of how multiple Anchors and
   pointing-device sensors are resolved on activation is contained in
-  20.2, Concepts (<https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/components/pointingsensor.html#Concepts>).
+  "20.2, Concepts" (https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/components/pointingsensor.html#Concepts).
 
   More details on the children, addChildren, and removeChildren fields
-  can be found in 10.2, Concepts
-  (<https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/components/group.html#Concepts>).
+  can be found in "10.2, Concepts"
+  (https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/components/group.html#Concepts).
 
   The description field in the Anchor node specifies a textual
   description of the Anchor node. This may be used by browser-specific
@@ -95,7 +94,7 @@
 
   \verbatim
   Anchor {
-    parameter [ "target=name_of_frame" ]
+    parameter [ "target=name_of_frame" ];
     ...
   }
   \endverbatim
@@ -107,8 +106,8 @@
 
   \verbatim
   Anchor {
-    url "http://www.school.edu/X3D/someScene.wrl#OverView"
-    children  Shape { geometry Box {} }
+    url "http://www.school.edu/X3D/someScene.wrl#OverView";
+    children  Shape { geometry Box {} };
   }
   \endverbatim
 
@@ -126,17 +125,17 @@
   are multiple Viewpoints with the same name in the Anchor's runtime
   name scope(s). The results are undefined if the Anchor node is not
   part of any runtime name scope or is part of more than one runtime
-  name scope. See 4.4.7, Run-time name scope, for a description of
+  name scope. See "4.4.7, Run-time name scope" (https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/concepts.html#Runtimenamescope), for a description of
   runtime name scopes. See X3DViewpoint, for the Viewpoint
   transition rules that specify how browsers shall interpret the
   transition from the old Viewpoint node to the new one. For example:
 
   \verbatim
   Anchor {
-    url "#Doorway"
+    url "#Doorway";
     children Shape {
       geometry Sphere {}
-    }
+    };
   }
   \endverbatim
 
@@ -144,8 +143,7 @@
   in the current world when the sphere is activated. In this case, if
   the Viewpoint is not found, no action occurs on activation.
 
-  More details on the url field are contained in 9.2.1, X3D and the World
-  Wide Web
+  More details on the url field are contained in "9.2.1 URLs"
   (<https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/concepts.html#URLs>).
   
   The bboxCenter and bboxSize fields specify a bounding box
@@ -155,7 +153,7 @@
   the children at any time.  The default bboxSize value, (-1, -1, -1),
   implies that the bounding box is not specified and if needed shall
   be calculated by the browser. More details on the bboxCenter and
-  bboxSize fields can be found in 10.2.2, Bounding boxes
+  bboxSize fields can be found in "10.2.2, Bounding boxes"
   (<https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/components/group.html#Boundingboxes>).
 
 */
@@ -235,11 +233,7 @@ SoX3DAnchor::SoX3DAnchor(void)
 
   SO_X3DNODE_ADD_EMPTY_EXPOSED_MFIELD(url);
   SO_X3DNODE_ADD_EXPOSED_FIELD(description, (""));
-  SO_X3DNODE_ADD_EXPOSED_FIELD(metadata, (NULL));
   SO_X3DNODE_ADD_EMPTY_EXPOSED_MFIELD(parameter);
-
-  SO_X3DNODE_ADD_FIELD(bboxCenter, (0.0f, 0.0f, 0.0f));
-  SO_X3DNODE_ADD_FIELD(bboxSize, (-1.0f, -1.0f, -1.0f));
 }
 
 /*!

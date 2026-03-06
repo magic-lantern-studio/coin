@@ -33,19 +33,18 @@
 #ifndef COIN_SOX3DBILLBOARD_H
 #define COIN_SOX3DBILLBOARD_H
 
-#include <Inventor/X3Dnodes/SoX3DParent.h>
+#include <Inventor/X3Dnodes/SoX3DGroupingNode.h>
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoSFVec3f.h>
-#include <Inventor/fields/SoSFNode.h>
 
 class SbRotation;
 class SoState;
 class SbViewVolume;
 class SbMatrix;
 
-class COIN_DLL_API SoX3DBillboard : public SoX3DParent
+class COIN_DLL_API SoX3DBillboard : public SoX3DGroupingNode
 {
-  typedef SoX3DParent inherited;
+  typedef SoX3DGroupingNode inherited;
   SO_NODE_HEADER(SoX3DBillboard);
 
 public:
@@ -56,8 +55,6 @@ public:
   SoSFVec3f axisOfRotation;
   SoSFVec3f bboxCenter;
   SoSFVec3f bboxSize;
-
-  SoSFNode  metadata;
 
   virtual void doAction(SoAction * action);
   virtual void callback(SoCallbackAction * action);
@@ -80,6 +77,7 @@ private:
   SbRotation computeRotation(SbMatrix const & invMM, SbViewVolume const & vv) const;
   void performRotation(SoState * state) const;
   class SoX3DBillboardP * pimpl;
+
 };
 
 #endif // ! COIN_SOX3DBILLBOARD_H

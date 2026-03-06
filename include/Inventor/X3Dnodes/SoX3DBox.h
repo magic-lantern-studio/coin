@@ -34,14 +34,15 @@
 #define COIN_SOX3DBOX_H
 
 #include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/X3Dnodes/SoX3DGeometry.h>
+#include <Inventor/X3Dnodes/SoX3DGeometryNode.h>
 #include <Inventor/fields/SoSFVec3f.h>
 #include <Inventor/fields/SoSFBool.h>
 #include <Inventor/fields/SoSFNode.h>
+#include <Inventor/SbBox3f.h>
 
-class COIN_DLL_API SoX3DBox : public SoX3DGeometry
+class COIN_DLL_API SoX3DBox : public SoX3DGeometryNode
 {
-  typedef SoX3DGeometry inherited;
+  typedef SoX3DGeometryNode inherited;
   SO_NODE_HEADER(SoX3DBox);
 
 public:
@@ -51,16 +52,14 @@ public:
   SoSFVec3f size;
   SoSFBool  solid;
 
-  SoSFNode  metadata;
-
-  virtual void GLRender(SoGLRenderAction * action);
+  virtual void GLRender(SoX3DGLRenderAction * action);
   virtual void rayPick(SoRayPickAction * action);
   virtual void getPrimitiveCount( SoGetPrimitiveCountAction * action );
 
 protected:
   virtual ~SoX3DBox();
 
-  virtual void generatePrimitives( SoAction * action );
+  virtual void generatePrimitives(SoAction * action);
   virtual void computeBBox( SoAction * action, SbBox3f & box,
                             SbVec3f & center );
 }; // class SoX3DBox

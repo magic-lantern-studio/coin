@@ -46,7 +46,7 @@
 
   \verbatim
 
-  Appearance {
+  Appearance : X3DAppearanceNode {
     SFNode [in,out] fillProperties    NULL  [FillProperties]
     SFNode [in,out] lineProperties    NULL  [LinePropertes]
     SFNode [in,out] material          NULL  [X3DMaterialNode]
@@ -65,16 +65,16 @@
   node. If the material field is NULL or unspecified, lighting is off
   (all lights are ignored during rendering of the object that
   references this Appearance) and the unlit object color is (1, 1,
-  1). Details of the X3D lighting model are in 17, Lighting component
-  (<https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/components/lighting.html#[PART8]>).
+  1). Details of the X3D lighting model are in "17, Lighting component"
+  (https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/components/lighting.html#[PART8]).
 
-  The texture field, if specified, shall contain one of the various types of texture nodes (see 18 Texturing component). If the texture node is NULL or the texture field is unspecified, the object that references this Appearance is not textured.
+  The texture field, if specified, shall contain one of the various types of texture nodes (see "18 Texturing component" (https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/components/texturing.html)). If the texture node is NULL or the texture field is unspecified, the object that references this Appearance is not textured.
 
-  The textureTransform field, if specified, shall contain a TextureTransform node as defined in 18.4.8 TextureTransform. If the textureTransform is NULL or unspecified, the textureTransform field has no effect.
+  The textureTransform field, if specified, shall contain a TextureTransform node as defined in "18.4.8 TextureTransform" (https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/components/texturing.html#TextureTransform). If the textureTransform is NULL or unspecified, the textureTransform field has no effect.
 
-  The lineProperties field, if specified, shall contain a LineProperties node as specified in 12.4.3 LineProperties. If lineProperties is NULL or unspecified, the lineProperties field has no effect.
+  The lineProperties field, if specified, shall contain a LineProperties node as specified in "12.4.3 LineProperties" (https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/components/shape.html#LineProperties). If lineProperties is NULL or unspecified, the lineProperties field has no effect.
 
-  The fillProperties field, if specified, shall contain a FillProperties node as specified in 12.4.2 FillProperties. If fillProperties is NULL or unspecified, the fillProperties field has no effect.
+  The fillProperties field, if specified, shall contain a FillProperties node as specified in "12.4.2 FillProperties" (https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/components/shape.html#FillProperties). If fillProperties is NULL or unspecified, the fillProperties field has no effect.
 */
 
 /*!
@@ -156,7 +156,7 @@ SO_NODE_SOURCE(SoX3DAppearance);
 // *************************************************************************
 
 /*!
-  \copydetails SoX3DAppearanceNode::initClass(void)
+  \copydetails SoNode::initClass(void)
 */
 void
 SoX3DAppearance::initClass(void)

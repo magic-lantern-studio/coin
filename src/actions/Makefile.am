@@ -28,7 +28,9 @@ RegularSources = \
 	SoToVRMLAction.cpp \
 	SoToVRML2Action.cpp \
 	SoWriteAction.cpp \
-	SoAudioRenderAction.cpp
+	SoAudioRenderAction.cpp \
+	SoX3DCallbackAction.cpp \
+	SoX3DGLRenderAction.cpp
 
 
 ##$ BEGIN TEMPLATE Make-Common(actions, actions)

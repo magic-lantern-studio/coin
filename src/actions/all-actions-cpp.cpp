@@ -56,4 +56,6 @@
 #include "SoWriteAction.cpp"
 #include "SoAudioRenderAction.cpp"
 #include "SoToVRML2Action.cpp"
+#include "SoX3DCallbackAction.cpp"
+#include "SoX3DGLRenderAction.cpp"
 // #include "SoIntersectionDetectionAction.cpp"

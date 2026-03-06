@@ -45,6 +45,7 @@
 #include <Inventor/SbPlane.h>
 #include <Inventor/SbCylinder.h>
 #include <Inventor/SbSphere.h>
+#include <Inventor/X3Dnodes/SoX3DGeometryNode.h>
 
 //
 // this was actually much easier than I first though since the Cone
@@ -168,6 +169,78 @@ sopick_pick_cone(const float bottomRadius,
     }
   }
 }
+
+//#ifdef HAVE_X3D
+void
+sox3dpick_pick_cone(const float bottomRadius,
+                    const float h,
+                    const unsigned int flags,
+                    SoX3DGeometryNode * const shape,
+                    SoRayPickAction * const action)
+{
+  action->setObjectSpace();
+  const SbLine & line = action->getLine();
+
+  int numisect = 0;
+  SbVec3f isect[2];
+
+  if (flags & SOPICK_SIDES) {
+    numisect = intersect_cone_line(bottomRadius,
+                                   h,
+                                   line,
+                                   isect[0],
+                                   isect[1]);
+
+    for (int i = 0; i < numisect; i++) {
+      if (action->isBetweenPlanes(isect[i])) {
+        SoPickedPoint * pp = action->addIntersection(isect[i]);
+        if (pp) {
+          // normalize the cone so that the apex is at (0,0,0)
+          SbVec3f npoint(isect[i][0], isect[i][1] - h*0.5f, isect[i][2]);
+          SbVec3f ptonaxis(0.0f, npoint[1], 0.0f);
+
+          // calculate some vectors to help find the normal
+          SbVec3f v0 = npoint-ptonaxis;
+          SbVec3f v1 = v0.cross(SbVec3f(0.0f, -1.0f, 0.0f));
+          (void) v1.normalize();
+          SbVec3f n = npoint.cross(v1);
+          (void) n.normalize();
+          pp->setObjectNormal(n);
+          pp->setObjectTextureCoords(SbVec4f((float) (atan2(npoint[0], npoint[2]) *
+                                                      (1.0 / (2.0 * M_PI)) + 0.5),
+                                             -npoint[1] / h, 0.0f, 1.0f));
+          SoConeDetail * detail = new SoConeDetail;
+          detail->setPart((int)SoCone::SIDES);
+          pp->setDetail(detail, shape);
+        }
+      }
+    }
+  }
+
+  if ((numisect < 2) && (flags & SOPICK_BOTTOM)) {
+    SbPlane bottom(SbVec3f(0, 1, 0), -h * 0.5f);
+    SbVec3f bpt;
+    float r = bottomRadius;
+    float r2 = r * r;
+    if (bottom.intersect(line, bpt)) {
+      if (((bpt[0] * bpt[0] + bpt[2] * bpt[2]) <= r2) &&
+          (action->isBetweenPlanes(bpt))) {
+        SoPickedPoint * pp = action->addIntersection(bpt);
+        if (pp) {
+          pp->setObjectNormal(SbVec3f(0.0f, -1.0f, 0.0f));
+          pp->setObjectTextureCoords(SbVec4f(0.5f + bpt[0] / (2.0f * r),
+                                             0.5f + bpt[2] / (2.0f * r),
+                                             0.0f, 1.0f));
+
+          SoConeDetail * detail = new SoConeDetail();
+          detail->setPart((int)SoCone::BOTTOM);
+          pp->setDetail(detail, shape);
+        }
+      }
+    }
+  }
+}
+//#endif // HAVE_X3D
 
 //
 // internal method used to set picked point attributes
@@ -304,6 +377,118 @@ sopick_pick_cylinder(const float r,
   }
 }
 
+#ifdef HAVE_X3D
+void
+sox3dpick_pick_cylinder(const float r,
+                        const float height,
+                        const unsigned int flags,
+                        SoX3DGeometryNode * const shape,
+                        SoRayPickAction * const action)
+{
+  action->setObjectSpace();
+  const SbLine & line = action->getLine();
+  float halfh = height * 0.5f;
+
+  // FIXME: should be possible to simplify cylinder test, since this
+  // cylinder is aligned with the y-axis. 19991110 pederb.
+
+  int numPicked = 0; // will never be > 2
+  SbVec3f enter, exit;
+
+  if (flags & SOPICK_SIDES) {
+#if 0
+    // The following line of code doesn't compile with GCC 2.95, as
+    // reported by Petter Reinholdtsen (pere@hungry.com) on
+    // coin-discuss.
+    //
+    // Update: it doesn't work with GCC 2.95.2 either, which is now
+    // the current official release of GCC. And I can't find any
+    // mention of a bug like this being fixed from the CVS ChangeLog,
+    // neither in the gcc/egcs head branch nor the release-2.95
+    // branch.  20000103 mortene.
+    //
+    // FIXME: should a) make sure this is known to the GCC
+    // maintainers, b) have an autoconf check to test for this exact
+    // bug. 19991230 mortene.
+    SbCylinder cyl(SbLine(SbVec3f(0.0f, 0.0f, 0.0f), SbVec3f(0.0f, 1.0f, 0.0f)), r);
+#else // GCC 2.95 work-around.
+    SbVec3f v0(0.0f, 0.0f, 0.0f);
+    SbVec3f v1(0.0f, 1.0f, 0.0f);
+    SbLine l(v0, v1);
+    SbCylinder cyl(l, r);
+#endif // GCC 2.95 work-around.
+
+    if (cyl.intersect(line, enter, exit)) {
+      if ((fabs(enter[1]) <= halfh) && action->isBetweenPlanes(enter)) {
+        SoPickedPoint * pp = action->addIntersection(enter);
+        if (pp) {
+          set_side_pp_data(pp, enter, halfh);
+          SoCylinderDetail * detail = new SoCylinderDetail();
+          detail->setPart((int)SoCylinder::SIDES);
+          pp->setDetail(detail, shape);
+          numPicked++;
+        }
+      }
+      if ((fabs(exit[1]) <= halfh) && (enter != exit) && action->isBetweenPlanes(exit)) {
+        SoPickedPoint * pp = action->addIntersection(exit);
+        if (pp) {
+          set_side_pp_data(pp, exit, halfh);
+          SoCylinderDetail * detail = new SoCylinderDetail();
+          detail->setPart((int)SoCylinder::SIDES);
+          pp->setDetail(detail, shape);
+          numPicked++;
+        }
+      }
+    }
+  }
+
+  float r2 = r * r;
+
+  SbBool matperpart = flags & SOPICK_MATERIAL_PER_PART;
+
+  if ((numPicked < 2) && (flags & SOPICK_TOP)) {
+    SbPlane top(SbVec3f(0.0f, 1.0f, 0.0f), halfh);
+    if (top.intersect(line, enter)) {
+      if (((enter[0] * enter[0] + enter[2] * enter[2]) <= r2) &&
+          (action->isBetweenPlanes(enter))) {
+        SoPickedPoint * pp = action->addIntersection(enter);
+        if (pp) {
+          if (matperpart) pp->setMaterialIndex(1);
+          pp->setObjectNormal(SbVec3f(0.0f, 1.0f, 0.0f));
+          pp->setObjectTextureCoords(SbVec4f(0.5f + enter[0] / (2.0f * r),
+                                             0.5f - enter[2] / (2.0f * r),
+                                             0.0f, 1.0f));
+          SoCylinderDetail * detail = new SoCylinderDetail();
+          detail->setPart((int)SoCylinder::TOP);
+          pp->setDetail(detail, shape);
+          numPicked++;
+        }
+      }
+    }
+  }
+
+  if ((numPicked < 2) && (flags & SOPICK_BOTTOM)) {
+    SbPlane bottom(SbVec3f(0, 1, 0), -halfh);
+    if (bottom.intersect(line, enter)) {
+      if (((enter[0] * enter[0] + enter[2] * enter[2]) <= r2) &&
+          (action->isBetweenPlanes(enter))) {
+        SoPickedPoint * pp = action->addIntersection(enter);
+        if (pp) {
+          if (matperpart) pp->setMaterialIndex(2);
+          pp->setObjectNormal(SbVec3f(0.0f, -1.0f, 0.0f));
+          pp->setObjectTextureCoords(SbVec4f(0.5f + enter[0] / (2.0f * r),
+                                             0.5f + enter[2] / (2.0f * r),
+                                             0.0f, 1.0f));
+          SoCylinderDetail * detail = new SoCylinderDetail();
+          detail->setPart((int)SoCylinder::BOTTOM);
+          pp->setDetail(detail, shape);
+        }
+      }
+    }
+  }
+}
+#endif // HAVE_X3D
+
 // internal method used to add a sphere intersection to the ray pick
 // action, and set the correct pp normal and texture coordinates
 static void
@@ -404,3 +589,73 @@ sopick_pick_cube(const float width,
     }
   }
 }
+
+//#ifdef HAVE_X3D
+void
+sox3dpick_pick_cube(const float width,
+                 const float height,
+                 const float depth,
+                 const unsigned int flags,
+                 SoX3DGeometryNode * const shape,
+                 SoRayPickAction * const action)
+{
+  static int translation[6] = {2, 3, 5, 4, 1, 0}; // translate into detail part-num
+  static int textranslation[3][2] = {{2,1},{0,2},{0,1}}; // to get correct texcoords
+  action->setObjectSpace();
+  const SbLine & line = action->getLine();
+  float size[3];
+  size[0] = width * 0.5f;
+  size[1] = height * 0.5f;
+  size[2] = depth * 0.5f;
+
+  int cnt = 0;
+  // test intersection with all six planes
+  for (int i = 0; i < 3; i++) {
+    for (int j = -1; j <= 1; j += 2) {
+      SbVec3f norm(0, 0, 0);
+      norm[i] = (float)j;
+      SbVec3f isect;
+
+      SbPlane plane(norm, size[i]);
+      if (plane.intersect(line, isect)) {
+        int i1 = (i+1) % 3;
+        int i2 = (i+2) % 3;
+
+        if (isect[i1] >= -size[i1] && isect[i1] <= size[i1] &&
+            isect[i2] >= -size[i2] && isect[i2] <= size[i2] &&
+            action->isBetweenPlanes(isect)) {
+          SoPickedPoint * pp = action->addIntersection(isect);
+          if (pp) {
+            SoCubeDetail * detail = new SoCubeDetail();
+            detail->setPart(translation[cnt]);
+            pp->setDetail(detail, shape);
+            if (flags & SOPICK_MATERIAL_PER_PART)
+              pp->setMaterialIndex(translation[cnt]);
+            pp->setObjectNormal(norm);
+            i1 = textranslation[i][0];
+            i2 = textranslation[i][1];
+            float s = isect[i1] + size[i1];
+            float t = isect[i2] + size[i2];
+            if (size[i1]) s /= (size[i1]*2.0f);
+            if (size[i2]) t /= (size[i2]*2.0f);
+            switch (i) {
+            default: // just to avoid warnings
+            case 0:
+              if (j > 0) s = 1.0f - s;
+              break;
+            case 1:
+              if (j > 0) t = 1.0f - t;
+              break;
+            case 2:
+              if (j < 0) s = 1.0f - s;
+              break;
+            }
+            pp->setObjectTextureCoords(SbVec4f(s, t, 0.0f, 1.0f));
+          }
+        }
+      }
+      cnt++;
+    }
+  }
+}
+//#endif // HAVE_X3D

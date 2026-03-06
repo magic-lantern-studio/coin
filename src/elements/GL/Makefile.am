@@ -30,7 +30,8 @@ RegularSources = \
 	SoGLViewportRegionElement.cpp \
 	SoGLDisplayList.cpp \
 	SoGLVertexAttributeElement.cpp \
-	SoResetMatrixElement.cpp
+	SoResetMatrixElement.cpp \
+	SoX3DGLVertexAttributeElement.cpp
 
 LinkHackSources = \
 	all-glelements-cpp.cpp

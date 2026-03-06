@@ -46,6 +46,7 @@
 #endif // !COIN_INTERNAL
 
 #include <Inventor/engines/SoSubNodeEngine.h>
+#include <Inventor/X3Dnodes/SoX3DMacros.h>
 
 #include "tidbitsp.h"
 

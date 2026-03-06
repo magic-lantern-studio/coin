@@ -29,6 +29,7 @@ set(COIN_GLELEMENTS_FILES
 	SoGLDisplayList.cpp
 	SoGLVertexAttributeElement.cpp
 	SoResetMatrixElement.cpp
+	SoX3DGLVertexAttributeElement.cpp
 )
 
 # build library

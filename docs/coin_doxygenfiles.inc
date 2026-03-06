@@ -22,6 +22,8 @@ DOXYGEN_INPUT="
                          ${path_tag}${coin_src_dir}/include/Inventor/actions/SoToVRML2Action.h
                          ${path_tag}${coin_src_dir}/include/Inventor/actions/SoToVRMLAction.h
                          ${path_tag}${coin_src_dir}/include/Inventor/actions/SoWriteAction.h
+                         ${path_tag}${coin_src_dir}/include/Inventor/actions/SoX3DCallbackAction.h
+                         ${path_tag}${coin_src_dir}/include/Inventor/actions/SoX3DGLRenderAction.h
                          ${path_tag}${coin_src_dir}/include/Inventor/annex/ForeignFiles/SoForeignFileKit.h
                          ${path_tag}${coin_src_dir}/include/Inventor/annex/ForeignFiles/SoSTLFileKit.h
                          ${path_tag}${coin_src_dir}/include/Inventor/annex/FXViz/elements/SoGLShadowCullingElement.h
@@ -721,9 +723,6 @@ DOXYGEN_INPUT="
                          ${path_tag}${coin_src_dir}/include/Inventor/SoSceneManager.h
                          ${path_tag}${coin_src_dir}/include/Inventor/SoType.h
                          ${path_tag}${coin_src_dir}/include/Inventor/system/gl.h
-
-
-
                          ${path_tag}${coin_src_dir}/include/Inventor/VRMLnodes/SoVRMLAnchor.h
                          ${path_tag}${coin_src_dir}/include/Inventor/VRMLnodes/SoVRMLAppearance.h
                          ${path_tag}${coin_src_dir}/include/Inventor/VRMLnodes/SoVRMLAudioClip.h

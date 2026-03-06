@@ -136,4 +136,7 @@
 #include <Inventor/elements/SoTransparencyElement.h>
 #include <Inventor/elements/SoLightModelElement.h>
 
+// X3D elements
+#include <Inventor/elements/SoX3DGLVertexAttributeElement.h>
+
 #endif // !COIN_SOELEMENTS_H

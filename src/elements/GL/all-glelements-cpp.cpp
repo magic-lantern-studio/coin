@@ -59,3 +59,4 @@
 #include "SoGLViewportRegionElement.cpp"
 #include "SoGLVBOElement.cpp"
 #include "SoResetMatrixElement.cpp"
+#include "SoX3dGLVertexAttributeElement.cpp"

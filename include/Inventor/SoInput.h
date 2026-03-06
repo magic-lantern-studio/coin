@@ -120,6 +120,7 @@ public:
 
   SbBool isFileVRML1(void);
   SbBool isFileVRML2(void);
+  SbBool isFileX3D(void);
   virtual void resetFilePointer(FILE * fptr);
 
   virtual void getLocationString(SbString & string) const;

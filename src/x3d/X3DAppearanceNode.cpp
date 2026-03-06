@@ -42,7 +42,7 @@
 
   \ingroup coin_X3Dnodes
 
-  \WEB3DCOPYRIGHT
+  \WEBX3DCOPYRIGHT
 
   \verbatim
   X3DAppearanceNode : X3DNode {
@@ -55,9 +55,6 @@
 */
 
 #include <Inventor/X3Dnodes/SoX3DAppearanceNode.h>
-
-#include <cstddef>
-
 #include <Inventor/X3Dnodes/SoX3DMacros.h>
 
 #include "nodes/SoSubNodeP.h"
@@ -74,7 +71,7 @@ SO_NODE_SOURCE(SoX3DAppearanceNode);
 // *************************************************************************
 
 /*!
-  \copydetails SoX3DNode::initClass(void)
+  \copydetails SoNode::initClass(void)
 */
 void
 SoX3DAppearanceNode::initClass(void) // static

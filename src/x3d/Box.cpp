@@ -42,13 +42,13 @@
 
   \ingroup coin_X3Dnodes
 
-  \WEB3DCOPYRIGHT
+  \WEBX3DCOPYRIGHT
 
   \verbatim
-  Box {
-    exposedField SFNode  metadata NULL
-    field        SFVec3f size     2 2 2        # (0, inf)
-    field        SFBool  solid    TRUE
+  Box : X3DGeometryNode { 
+    SFNode  [in,out] metadata NULL  [X3DMetadataObject]
+    SFVec3f []       size     2 2 2 (0,∞)
+    SFBool  []       solid    TRUE
   }
   \endverbatim
 
@@ -57,7 +57,7 @@
   By default, the box measures 2 units in each dimension, from -1 to +1. The
   size field specifies the extents of the box along the X-, Y-, and
   Z-axes respectively and each component value shall be greater than zero.
-  Figure 6.2 illustrates the Box node.
+  "Figure 13.1" (https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/components/geometry3D.html#f-Boxnode) illustrates the Box node.
 
   <center>
   <img src="https://www.web3d.org/documents/specifications/19775-1/V3.0/Images/box.gif">
@@ -77,16 +77,11 @@
   the view up direction, the texture is mapped onto the face with the
   same orientation as if the image were displayed normally in
   2D. SoX3DTextureTransform affects the texture coordinates of the
-  Box (see 18.4.8 TextureTransform).
+  Box (see "18.4.8 TextureTransform" (https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/components/texturing.html#TextureTransform)).
 
-  The solid field determines whether the box is visible when viewed from the inside. 11.2.3 Common geometry fields provides a complete description of the solid field.  
+  The solid field determines whether the box is visible when viewed from the inside. "11.2.3 Common geometry fields" (https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/components/rendering.html#CommonGeometryFields) provides a complete description of the solid field.  
 */
 
-/*!
-  \var SoSFNode SoX3DBox::metadata
-
-  Can contain an SoX3DMetadataObject. Is NULL by default.
-*/
 
 /*!
   \var SoX3DBox::size
@@ -107,9 +102,9 @@
 #include <Inventor/X3Dnodes/SoX3DMacros.h>
 #include <Inventor/elements/SoGLMultiTextureEnabledElement.h>
 #include <Inventor/elements/SoMultiTextureCoordinateElement.h>
-#include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/actions/SoRayPickAction.h>
+#include <Inventor/actions/SoX3DGLRenderAction.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/misc/SoState.h>
 
@@ -133,10 +128,10 @@ SoX3DBox::initClass(void) // static
   Constructor.
 */
 SoX3DBox::SoX3DBox(void)
+  : SoX3DGeometryNode()
 {
   SO_X3DNODE_INTERNAL_CONSTRUCTOR(SoX3DBox);
 
-  SO_X3DNODE_ADD_EXPOSED_FIELD(metadata, (NULL));
   SO_X3DNODE_ADD_FIELD(size, (2.0f, 2.0f, 2.0f));
   SO_X3DNODE_ADD_FIELD(solid, (TRUE));
 }
@@ -148,9 +143,9 @@ SoX3DBox::~SoX3DBox()
 {
 }
 
-// Doc in parent
+// doc in parent
 void
-SoX3DBox::GLRender(SoGLRenderAction * action)
+SoX3DBox::GLRender(SoX3DGLRenderAction * action)
 {
  if (!this->shouldGLRender(action)) return;
   SoState * state = action->getState();
@@ -176,21 +171,21 @@ SoX3DBox::GLRender(SoGLRenderAction * action)
                    flags, state);
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DBox::rayPick(SoRayPickAction * action)
 {
   if (!shouldRayPick(action)) return;
 
   SbVec3f s = this->size.getValue();
-  sopick_pick_cube(s[0],
-                   s[1],
-                   s[2],
-                   0,
-                   this, action);
+  sox3dpick_pick_cube(s[0],
+                      s[1],
+                      s[2],
+                      0,
+                      this, action);
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DBox::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
@@ -198,20 +193,20 @@ SoX3DBox::getPrimitiveCount(SoGetPrimitiveCountAction * action)
   action->addNumTriangles(12);
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DBox::generatePrimitives(SoAction * action)
 {
   SbVec3f s = this->size.getValue();
-  sogen_generate_cube(s[0],
-                      s[1],
-                      s[2],
-                      0,
-                      this,
-                      action);
+  sox3dgen_generate_cube(s[0],
+                         s[1],
+                         s[2],
+                         0,
+                         this,
+                         action);
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DBox::computeBBox(SoAction * action,
                        SbBox3f & COIN_UNUSED_ARG(box),

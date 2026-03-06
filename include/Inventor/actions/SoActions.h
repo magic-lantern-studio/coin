@@ -52,5 +52,7 @@
 #include <Inventor/actions/SoReorganizeAction.h>
 #include <Inventor/actions/SoToVRMLAction.h>
 #include <Inventor/actions/SoToVRML2Action.h>
+#include <Inventor/actions/SoX3DCallbackAction.h>
+#include <Inventor/actions/SoX3DGLRenderAction.h>
 
 #endif // !COIN_SOACTIONS_H

@@ -38,7 +38,9 @@
 
 /*!
   \class SoX3DParent SoX3DParent.h Inventor/X3Dnodes/SoX3DParent.h
-  \brief The SoX3DParent node is a superclass for all X3D grouping nodes.
+  \brief The SoX3DParent node does not exist in the X3D specification.
+
+  Use SoX3DGroupingNode instead of this deprecated class.
 */
 
 #include <Inventor/X3Dnodes/SoX3DParent.h>
@@ -147,7 +149,7 @@ SoX3DParent::SoX3DParent(void)
 }
 
 /*!
-  Destructor. \a numchildren is the expected number of children.
+  Constructor. \a numchildren is the expected number of children.
 */
 SoX3DParent::SoX3DParent(int numchildren)
   : SoGroup(numchildren)

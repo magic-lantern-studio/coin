@@ -33,7 +33,7 @@
 #ifndef COIN_SOX3DANCHOR_H
 #define COIN_SOX3DANCHOR_H
 
-#include <Inventor/X3Dnodes/SoX3DParent.h>
+#include <Inventor/X3Dnodes/SoX3DGroupingNode.h>
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoMFString.h>
 #include <Inventor/fields/SoSFString.h>
@@ -45,9 +45,9 @@ class SoX3DAnchorP;
 
 typedef void SoX3DAnchorCB( const SbString &, void *,  SoX3DAnchor *);
 
-class COIN_DLL_API SoX3DAnchor : public SoX3DParent
+class COIN_DLL_API SoX3DAnchor : public SoX3DGroupingNode
 {
-  typedef SoX3DParent inherited;
+  typedef SoX3DGroupingNode inherited;
   SO_NODE_HEADER(SoX3DAnchor);
 
 public:
@@ -57,11 +57,6 @@ public:
   SoMFString url;
   SoSFString description;
   SoMFString parameter;
-
-  SoSFVec3f bboxCenter;
-  SoSFVec3f bboxSize;
-
-  SoSFNode metadata;
 
   static void setFetchURLCallBack(SoX3DAnchorCB *, void * closure);
 

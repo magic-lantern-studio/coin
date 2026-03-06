@@ -75,12 +75,26 @@ PublicHeaders = \
 	SoX3DVisibilitySensor.h \
 	SoX3DWorldInfo.h \
 	\
-	SoX3DBoundedObject.h \
-	SoX3DNode.h \
 	SoX3DAppearanceNode.h \
 	SoX3DAppearanchChildNode.h \
+	SoX3DBackgroundNode.h \
+	SoX3DBindableNode.h \
+	SoX3DBoundedObject.h \
+	SoX3DChildNode.h \
+	SoX3DMaterialNode.h \
+	SoX3DGroupingNode.h \
+	SoX3DMetadataDouble.h \
+	SoX3DMetadataFloat.h \
+	SoX3DMetadataInteger.h \
+	SoX3DMetadataSet.h \
+	SoX3DMetadataString.h \
+	SoX3DMetadataObject.h \
+	SoX3DNetworkSensorNode.h \
+	SoX3DNode.h \
 	SoX3DNodeEngine.h \
-	SoX3DChildNode.h
+	SoX3DPrototypeInstance.h \
+	SoX3DSensorNode.h \
+	SoX3DUrlObject.h
 
 PrivateHeaders =
 ObsoleteHeaders =

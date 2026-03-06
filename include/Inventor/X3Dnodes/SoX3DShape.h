@@ -33,13 +33,15 @@
 #ifndef COIN_SOX3DSHAPE_H
 #define COIN_SOX3DSHAPE_H
 
+#include <Inventor/X3Dnodes/SoX3DShapeNode.h>
+
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoSFNode.h>
 #include <Inventor/fields/SoSFEnum.h>
 
 class SoX3DShapeP;
 
-class COIN_DLL_API SoX3DShape : public SoNode
+class COIN_DLL_API SoX3DShape : public SoX3DShapeNode
 {
   typedef SoNode inherited;
   SO_NODE_HEADER(SoX3DShape);
@@ -54,8 +56,6 @@ public:
     AUTO
   };
 
-  SoSFNode appearance;
-  SoSFNode geometry;
   SoSFEnum renderCaching;
   SoSFEnum boundingBoxCaching;
 

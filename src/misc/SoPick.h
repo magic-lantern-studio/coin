@@ -77,4 +77,31 @@ void sopick_pick_cube(const float width,
                       SoShape * const shape,
                       SoRayPickAction * const action);
 
+//#ifdef HAVE_X3D
+class SoX3DGeometryNode;
+
+void sox3dpick_pick_cone(const float bottomRadius,
+                         const float height,
+                         const unsigned int flags,
+                         SoX3DGeometryNode * const shape,
+                         SoRayPickAction * const action);
+
+
+void sox3dpick_pick_cylinder(const float radius,
+                             const float height,
+                             const unsigned int flags,
+                             SoX3DGeometryNode * const shape,
+                             SoRayPickAction * const action);
+
+void sox3dpick_pick_sphere(const float radius,
+                        SoRayPickAction * const action);
+
+void sox3dpick_pick_cube(const float width,
+                         const float height,
+                         const float depth,
+                         const unsigned int flags,
+                         SoX3DGeometryNode * const shape,
+                         SoRayPickAction * const action);
+//#endif // HAVE_X3D
+
 #endif // !COIN_SOPICK_H

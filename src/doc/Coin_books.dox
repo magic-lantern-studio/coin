@@ -85,7 +85,7 @@
 
   X3D: 3D Graphics for Web Authors, by Don Brutzman and Leonard Daly, published by Morgan Kaufmann Publishers, Copyright 2007 Elsevier, Inc.
 
-  This book is extremely useful for learning the Extended 3D (X3D)
+  This book is extremely useful for learning the Extensible 3D (X3D)
   technology, which Coin has implemented with its Inventor/X3Dnodes/ classes.
   X3D replaces the VRML97 specification.
 

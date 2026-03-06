@@ -495,6 +495,8 @@ SoElement::initElements(void)
   SoVertexAttributeElement::initClass();
   SoGLVertexAttributeElement::initClass();
   SoVertexAttributeBindingElement::initClass();
+
+  SoX3DGLVertexAttributeElement::initClass();
 }
 
 // Note: the following documentation for initClass() will also be

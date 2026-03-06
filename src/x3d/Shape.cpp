@@ -42,12 +42,15 @@
 
   \ingroup coin_X3Dnodes
 
-  \WEB3DCOPYRIGHT
+  \WEBX3DCOPYRIGHT
 
   \verbatim
-  Shape {
-    exposedField SFNode appearance NULL
-    exposedField SFNode geometry   NULL
+  Shape : X3DShapeNode {
+    SFNode  [in,out] appearance NULL     [X3DAppearanceNode]
+    SFNode  [in,out] geometry   NULL     [X3DGeometryNode]
+    SFNode  [in,out] metadata   NULL     [X3DMetadataObject]
+    SFVec3f []       bboxCenter 0 0 0    (-∞,∞)
+    SFVec3f []       bboxSize   -1 -1 -1 [0,∞) or −1 −1 −1
   }
   \endverbatim
 
@@ -57,16 +60,18 @@
   attributes (e.g., material and texture) to be applied to the
   geometry. The geometry field contains a geometry node. The specified
   geometry node is rendered with the specified appearance nodes
-  applied. See 4.6.3, Shapes and geometry
-  (<http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-X3D/part1/concepts.html#4.6.3>),
+  applied. See "12.2 Concepts"
+  (https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/components/shape.html#Concepts),
   and SoX3DAppearance, for more information.
 
-  4.14, Lighting model
-  (<http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-X3D/part1/concepts.html#4.14>),
+  "17 Lighting component"
+  (https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/components/lighting.html),
   contains details of the X3D lighting model and the interaction
-  between Appearance nodes and geometry nodes.  If the geometry field
-  is NULL, the object is not drawn.
+  between Appearance nodes and geometry nodes.
 
+  If the geometry field is NULL, the object is not drawn.
+
+  The bboxCenter and bboxSize fields specify a bounding box that encloses the Shape node's geometry. This is a hint that may be used for optimization purposes. The results are undefined if the specified bounding box is smaller than the actual bounding box of the geometry at any time. A default bboxSize value, (-1, -1, -1), implies that the bounding box is not specified and, if needed, is calculated by the browser. A description of the bboxCenter and bboxSize fields is contained in "10.2.2 Bounding boxes" (https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/components/group.html#Boundingboxes).
 */
 
 /*!
@@ -191,13 +196,11 @@ SoX3DShape::initClass(void) // static
 #define PRIVATE(thisp) ((thisp)->pimpl)
 
 SoX3DShape::SoX3DShape(void)
+  : SoX3DShapeNode()
 {
   PRIVATE(this) = new SoX3DShapeP;
 
   SO_X3DNODE_INTERNAL_CONSTRUCTOR(SoX3DShape);
-
-  SO_X3DNODE_ADD_EXPOSED_FIELD(appearance, (NULL));
-  SO_X3DNODE_ADD_EXPOSED_FIELD(geometry, (NULL));
 
   SO_NODE_ADD_FIELD(renderCaching, (AUTO));
   SO_NODE_ADD_FIELD(boundingBoxCaching, (AUTO));
@@ -350,7 +353,7 @@ SoX3DShape::rayPick(SoRayPickAction * action)
   SoX3DShape::doAction(action);
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DShape::write(SoWriteAction * action)
 {
