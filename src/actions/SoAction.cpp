@@ -429,6 +429,10 @@ SoAction::initClasses(void)
 #ifdef HAVE_VRML97
   SoToVRML2Action::initClass();
 #endif // HAVE_VRML97
+#ifdef HAVE_X3D
+  SoX3DCallbackAction::initClass();
+  SoX3DGLRenderAction::initClass();
+#endif 
 }
 
 /*!
