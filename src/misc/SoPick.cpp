@@ -377,7 +377,7 @@ sopick_pick_cylinder(const float r,
   }
 }
 
-#ifdef HAVE_X3D
+//#ifdef HAVE_X3D
 void
 sox3dpick_pick_cylinder(const float r,
                         const float height,
@@ -487,7 +487,7 @@ sox3dpick_pick_cylinder(const float r,
     }
   }
 }
-#endif // HAVE_X3D
+//#endif // HAVE_X3D
 
 // internal method used to add a sphere intersection to the ray pick
 // action, and set the correct pp normal and texture coordinates

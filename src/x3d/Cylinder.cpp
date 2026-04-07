@@ -42,17 +42,17 @@
 
   \ingroup coin_X3Dnodes
 
-  \WEB3DCOPYRIGHT
+  \WEBX3DCOPYRIGHT
 
   \verbatim
-  Cylinder {
-    exposedField SFNode    metadata        NULL
-    field        SFBool    bottom          TRUE
-    field        SFFloat   height          2         # (0, inf)
-    field        SFFloat   radius          1         # (0, inf)
-    field        SFBool    side            TRUE
-    field        SFBool    solid           TRUE
-    field        SFBool    top             TRUE
+  Cylinder : X3DGeometryNode { 
+    SFNode  [in,out] metadata NULL [X3DMetadataObject]
+    SFBool  []       bottom   TRUE
+    SFFloat []       height   2    (0,∞)
+    SFFloat []       radius   1    (0,∞)
+    SFBool  []       side     TRUE
+    SFBool  []       solid    TRUE
+    SFBool  []       top      TRUE
   }
   \endverbatim
 
@@ -62,7 +62,7 @@
   in all three dimensions. The radius field specifies the radius of
   the cylinder and the height field specifies the height of the
   cylinder along the central axis. Both radius and height shall be
-  greater than zero. Figure 13.3 illustrates the Cylinder node.
+  greater than zero. "Figure 13.3" (https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/components/geometry3D.html#f-Cylindernode) illustrates the Cylinder node.
 
   The cylinder has three parts: the side, the top (Y = +height/2) and
   the bottom (Y = -height/2).  Each part has an associated SFBool
@@ -76,25 +76,9 @@
   Figure 13.3 - Cylinder node
   </center>
 
-  When a texture is applied to a cylinder, it is applied differently
-  to the sides, top, and bottom. On the sides, the texture wraps
-  counterclockwise (from above) starting at the back of the
-  cylinder. The texture has a vertical seam at the back, intersecting
-  the X=0 plane. For the top and bottom caps, a circle is cut out of
-  the unit texture squares centred at (0, +/- height/2, 0) with
-  dimensions 2 � radius by 2 � radius.  The top texture appears right
-  side up when the top of the cylinder is tilted toward the +Z-axis,
-  and the bottom texture appears right side up when the top of the
-  cylinder is tilted toward the -Z-axis. SoX3DTextureTransform
-  affects the texture coordinates of the Cylinder node.  The Cylinder
-  node's geometry requires outside faces only.
+  When a texture is applied to a cylinder, it is applied differently to the sides, top, and bottom. On the sides, the texture wraps counterclockwise (from above) starting at the back of the cylinder. The texture has a vertical seam at the back, intersecting the X=0 plane. For the top and bottom caps, a circle is cut out of the unit texture squares centred at (0, ±height/2, 0) with dimensions 2 × radius by 2 × radius. The top texture appears right side up when the top of the cylinder is tilted toward the +Z-axis, and the bottom texture appears right side up when the top of the cylinder is tilted toward the −Z-axis. TextureTransform affects the texture coordinates of the Cylinder node (see "18.4.8 TextureTransform" (https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/components/texturing.html#TextureTransform)).
 
-  The solid field determines whether the cylinder is visible when viewed from the inside. 11.2.3 Common geometry fields provides a complete description of the solid field.
-*/
-
-/*!
-  \var SoSFNode SoX3DCone::metadata
-  Can contain an SoX3DMetadataObject. Is NULL by default.
+  The solid field determines whether the cylinder is visible when viewed from the inside. "11.2.3 Common geometry fields" (https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/components/rendering.html#CommonGeometryFields) provides a complete description of the solid field.
 */
 
 /*!
@@ -127,14 +111,13 @@
   Determines whether the cylinder is visible from the inside. Default value is TRUE.
 */
 
-
 #include <Inventor/X3Dnodes/SoX3DCylinder.h>
 #include "coindefs.h"
 
 #include <cmath>
 
 #include <Inventor/X3Dnodes/SoX3DMacros.h>
-#include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/actions/SoX3DGLRenderAction.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
@@ -166,17 +149,16 @@ SoX3DCylinder::initClass(void)
   Constructor.
 */
 SoX3DCylinder::SoX3DCylinder(void)
+  : SoX3DGeometryNode()
 {
   SO_X3DNODE_INTERNAL_CONSTRUCTOR(SoX3DCylinder);
 
-  SO_X3DNODE_ADD_EXPOSED_FIELD(metadata, (NULL));
   SO_X3DNODE_ADD_FIELD(bottom, (TRUE));
   SO_X3DNODE_ADD_FIELD(height, (2.0f));
   SO_X3DNODE_ADD_FIELD(radius, (1.0f));
   SO_X3DNODE_ADD_FIELD(side, (TRUE));
   SO_X3DNODE_ADD_FIELD(solid, (TRUE));
   SO_X3DNODE_ADD_FIELD(top, (TRUE));
-
 }
 
 /*!
@@ -188,7 +170,7 @@ SoX3DCylinder::~SoX3DCylinder()
 
 // doc in parent
 void
-SoX3DCylinder::GLRender(SoGLRenderAction * action)
+SoX3DCylinder::GLRender(SoX3DGLRenderAction * action)
 {
   if (!shouldGLRender(action)) return;
 
@@ -234,10 +216,10 @@ SoX3DCylinder::rayPick(SoRayPickAction * action)
   if (this->top.getValue()) flags |= SOPICK_TOP;
   if (this->bottom.getValue()) flags |= SOPICK_BOTTOM;
 
-  sopick_pick_cylinder(this->radius.getValue(),
-                       this->height.getValue(),
-                       flags,
-                       this, action);
+  sox3dpick_pick_cylinder(this->radius.getValue(),
+                          this->height.getValue(),
+                          flags,
+                          this, action);
 }
 
 // doc in parent
@@ -271,7 +253,7 @@ SoX3DCylinder::generatePrimitives(SoAction * action)
 
   float complexity = this->getComplexityValue(action);
 
-  sogen_generate_cylinder(this->radius.getValue(),
+  sox3dgen_generate_cylinder(this->radius.getValue(),
                           this->height.getValue(),
                           (int)(CYL_SIDE_NUMTRIS * complexity),
                           flags,
