@@ -34,14 +34,14 @@
 #define COIN_SOX3DCONE_H
 
 #include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/X3Dnodes/SoX3DGeometry.h>
+#include <Inventor/X3Dnodes/SoX3DGeometryNode.h>
 #include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/fields/SoSFBool.h>
 #include <Inventor/fields/SoSFNode.h>
 
-class COIN_DLL_API SoX3DCone : public SoX3DGeometry
+class COIN_DLL_API SoX3DCone : public SoX3DGeometryNode
 {
-  typedef SoX3DGeometry inherited;
+  typedef SoX3DGeometryNode inherited;
   SO_NODE_HEADER(SoX3DCone);
 
 public:
@@ -56,7 +56,7 @@ public:
 
   SoSFNode  metadata;
 
-  virtual void GLRender(SoGLRenderAction * action);
+  virtual void GLRender(SoX3DGLRenderAction * action);
   virtual void rayPick(SoRayPickAction * action);
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
 

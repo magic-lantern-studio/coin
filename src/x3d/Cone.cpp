@@ -42,16 +42,16 @@
 
   \ingroup coin_X3Dnodes
 
-  \WEB3DCOPYRIGHT
+  \WEBX3DCOPYRIGHT
 
   \verbatim
-  Cone {
-    exposedField  SFNode    metadata     NULL
-    field         SFBool    bottom       TRUE
-    field         SFFloat   bottomRadius 1        # (0, inf)
-    field         SFFloat   height       2        # (0, inf)
-    field         SFBool    side         TRUE
-    field         SFBool    solid        TRUE
+  Cone : X3DGeometryNode { 
+    SFNode  [in,out] metadata     NULL [X3DMetadataObject]
+    SFBool  []       bottom       TRUE
+    SFFloat []       bottomRadius 1    (0,∞)
+    SFFloat []       height       2    (0,∞)
+    SFBool  []       side         TRUE
+    SFBool  []       solid        TRUE
   }
   \endverbatim
 
@@ -62,7 +62,7 @@
   centre of the base to the apex.  By default, the cone has a radius
   of 1.0 at the bottom and a height of 2.0, with its apex at y =
   height/2 and its bottom at y = -height/2.  Both bottomRadius and
-  height shall be greater than zero. Figure 6.3 illustrates the Cone
+  height shall be greater than zero. "Figure 3.2" (https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/components/geometry3D.html#f-Conenode)  illustrates the Cone
   node.
 
   <center>
@@ -82,19 +82,14 @@
   the cone. The texture has a vertical seam at the back in the X=0
   plane, from the apex (0, height/2, 0) to the point (0, -height/2, -
   bottomRadius). For the bottom cap, a circle is cut out of the
-  texture square centred at (0, -height/2, 0) with dimensions (2 �
-  bottomRadius) by (2 � bottomRadius).  The bottom cap texture appears
+  texture square centred at (0, -height/2, 0) with dimensions (2 ×
+  bottomRadius) by (2 × bottomRadius).  The bottom cap texture appears
   right side up when the top of the cone is rotated towards the
   -Z-axis. SoX3DTextureTransform affects the texture coordinates of
-  the Cone.
+  the Cone (see "18.4.8 TextureTransform" (https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/components/texturing.html#TextureTransform).
 
-  The solid field determines whether the cone is visible when viewed from the inside. 11.2.3 Common geometry fields provides a complete description of the solid field.
+  The solid field determines whether the cone is visible when viewed from the inside. "11.2.3 Common geometry fields" (https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/components/rendering.html#CommonGeometryFields)  provides a complete description of the solid field.
 
-*/
-
-/*!
-  \var SoSFNode SoX3DCone::metadata
-  Can contain an SoX3DMetadataObject. Is NULL by default.
 */
 
 /*!
@@ -126,7 +121,7 @@
 #include "coindefs.h"
 
 #include <Inventor/X3Dnodes/SoX3DMacros.h>
-#include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/actions/SoX3DGLRenderAction.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
@@ -161,7 +156,6 @@ SoX3DCone::SoX3DCone(void)
 {
   SO_X3DNODE_INTERNAL_CONSTRUCTOR(SoX3DCone);
 
-  SO_X3DNODE_ADD_EXPOSED_FIELD(metadata, (NULL));
   SO_X3DNODE_ADD_FIELD(bottom, (TRUE));
   SO_X3DNODE_ADD_FIELD(bottomRadius, (1.0f));
   SO_X3DNODE_ADD_FIELD(height, (2.0f));
@@ -178,7 +172,7 @@ SoX3DCone::~SoX3DCone()
 
 // doc in parent
 void
-SoX3DCone::GLRender(SoGLRenderAction * action)
+SoX3DCone::GLRender(SoX3DGLRenderAction * action)
 {
   if (!shouldGLRender(action)) return;
 
@@ -221,9 +215,9 @@ SoX3DCone::rayPick(SoRayPickAction * action)
   if (this->side.getValue()) flags |= SOPICK_SIDES;
   if (this->bottom.getValue()) flags |= SOPICK_BOTTOM;
 
-  sopick_pick_cone(this->bottomRadius.getValue(),
-                   this->height.getValue(),
-                   flags, this, action);
+  sox3dpick_pick_cone(this->bottomRadius.getValue(),
+                      this->height.getValue(),
+                      flags, this, action);
 }
 
 // doc in parent
@@ -253,7 +247,7 @@ SoX3DCone::generatePrimitives(SoAction * action)
 
   float complexity = this->getComplexityValue(action);
 
-  sogen_generate_cone(this->bottomRadius.getValue(),
+  sox3dgen_generate_cone(this->bottomRadius.getValue(),
                       this->height.getValue(),
                       (int)(CONE_SIDE_NUMTRIS * complexity),
                       flags,
