@@ -34,7 +34,7 @@
 #define COIN_SOX3DEXTRUSION_H
 
 #include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/X3Dnodes/SoX3DGeometry.h>
+#include <Inventor/X3Dnodes/SoX3DGeometryNode.h>
 #include <Inventor/fields/SoSFBool.h>
 #include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/fields/SoMFVec2f.h>
@@ -42,15 +42,19 @@
 #include <Inventor/fields/SoMFRotation.h>
 #include <Inventor/fields/SoSFNode.h>
 
-class COIN_DLL_API SoX3DExtrusion : public SoX3DGeometry
+class COIN_DLL_API SoX3DExtrusion : public SoX3DGeometryNode
 {
-  typedef SoX3DGeometry inherited;
+  typedef SoX3DGeometryNode inherited;
   SO_NODE_HEADER(SoX3DExtrusion);
 
 public:
   static void initClass(void);
   SoX3DExtrusion(void);
 
+  SoMFVec2f set_crossSection;
+  SoMFRotation set_orientation;
+  SoMFVec2f set_scale;
+  SoMFVec3f set_spine;
   SoSFBool beginCap;
   SoSFBool ccw;
   SoSFBool convex;
@@ -64,7 +68,7 @@ public:
 
   SoSFNode metadata;
 
-  virtual void GLRender(SoGLRenderAction * action);
+  virtual void GLRender(SoX3DGLRenderAction * action);
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
   virtual void computeBBox(SoAction * action,
                            SbBox3f & bbox, SbVec3f & center);

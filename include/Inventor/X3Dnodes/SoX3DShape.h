@@ -66,7 +66,7 @@ public:
 
   virtual void doAction(SoAction * action);
   virtual void callback(SoCallbackAction * action);
-  virtual void GLRender(SoGLRenderAction * action);
+  virtual void GLRender(SoX3DGLRenderAction * action);
   virtual void getBoundingBox(SoGetBoundingBoxAction * action);
   virtual void rayPick(SoRayPickAction * action);
   virtual void search(SoSearchAction * action);

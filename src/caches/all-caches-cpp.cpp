@@ -41,3 +41,8 @@
 #include "SoGlyphCache.cpp"
 #include "SoShaderProgramCache.cpp"
 #include "SoVBOCache.cpp"
+
+#ifdef HAVE_X3D
+#include "SoX3DGLCacheList.cpp"
+#include "SoX3DGLRenderCache.cpp"
+#endif // HAVE_X3D

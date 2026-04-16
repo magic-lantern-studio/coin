@@ -34,24 +34,38 @@
 #define COIN_SOX3DPOINTSET_H
 
 #include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/X3Dnodes/SoX3DVertexPoint.h>
+#include <Inventor/X3Dnodes/SoX3DGeometryNode.h>
+#include <Inventor/fields/SoSFNode.h>
+#include <Inventor/fields/SoSFBool.h>
+#include <Inventor/elements/SoMaterialBindingElement.h>
 
-
-class COIN_DLL_API SoX3DPointSet : public SoX3DVertexPoint
+class COIN_DLL_API SoX3DPointSet : public SoX3DGeometryNode
 {
-  typedef SoX3DVertexPoint inherited;
+  typedef SoX3DGeometryNode inherited;
   SO_NODE_HEADER(SoX3DPointSet);
 
 public:
   static void initClass(void);
   SoX3DPointSet(void);
+  virtual ~SoX3DPointSet();
 
-  virtual void GLRender(SoGLRenderAction * action);
+  SoSFNode coord;
+  SoSFNode color;
+
+  virtual void doAction(SoAction * action);
+  virtual void GLRender(SoX3DGLRenderAction * action);
   virtual void getBoundingBox(SoGetBoundingBoxAction * action);
+  virtual void callback(SoX3DCallbackAction * action);
+  virtual void pick(SoPickAction * action);
+  virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
+
+  virtual void notify(SoNotList * list);
 
 protected:
-  virtual ~SoX3DPointSet();
-  virtual void generatePrimitives(SoAction * action);
+  virtual SbBool shouldGLRender(SoX3DGLRenderAction * action);
+  virtual void computeBBox(SoAction * action, SbBox3f & box,
+                           SbVec3f & center);
+
 }; // class SoX3DPointSet
 
 #endif // ! COIN_SOX3DPOINTSET_H

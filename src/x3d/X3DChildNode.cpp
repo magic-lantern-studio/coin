@@ -52,7 +52,7 @@
 
   This abstract node type indicates that the concrete nodes which are instantiated based on it may be used in children, addChildren, and removeChildren fields.
 
-  More details on the children, addChildren, and removeChildren fields can be found in "10.2.1 Grouping and children node types" (see https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/components/group.html#Groupingandchildrennodes)
+  More details on the children, addChildren, and removeChildren fields can be found in [10.2.1 Grouping and children node types](https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/components/group.html#Groupingandchildrennodes)
 
 */
 
@@ -64,12 +64,12 @@
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoGetMatrixAction.h>
-#include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/actions/SoX3DGLRenderAction.h>
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/actions/SoWriteAction.h>
 #include <Inventor/actions/SoAudioRenderAction.h>
 #include <Inventor/errors/SoReadError.h>
-#include <Inventor/actions/SoCallbackAction.h>
+#include <Inventor/actions/SoX3DCallbackAction.h>
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/system/gl.h>
@@ -86,10 +86,10 @@
 
 class SoX3DChildNodeP {
 public:
-  typedef void GLRenderFunc(SoX3DChildNode *, SoNode *, SoGLRenderAction *);
+  typedef void GLRenderFunc(SoX3DChildNode *, SoNode *, SoX3DGLRenderAction *);
   static GLRenderFunc * glrenderfunc;
-  static void childGLRender(SoX3DChildNode * thisp, SoNode * child, SoGLRenderAction * action);
-  static void childGLRenderProfiler(SoX3DChildNode * thisp, SoNode * child, SoGLRenderAction * action);
+  static void childGLRender(SoX3DChildNode * thisp, SoNode * child, SoX3DGLRenderAction * action);
+  static void childGLRenderProfiler(SoX3DChildNode * thisp, SoNode * child, SoX3DGLRenderAction * action);
 };
 
 SoX3DChildNodeP::GLRenderFunc * SoX3DChildNodeP::glrenderfunc = NULL;
@@ -456,7 +456,7 @@ SoX3DChildNode::getBoundingBox(SoGetBoundingBoxAction * action)
 // *************************************************************************
 
 void
-SoX3DChildNodeP::childGLRender(SoX3DChildNode * COIN_UNUSED_ARG(thisp), SoNode * child, SoGLRenderAction * action)
+SoX3DChildNodeP::childGLRender(SoX3DChildNode * COIN_UNUSED_ARG(thisp), SoNode * child, SoX3DGLRenderAction * action)
 {
   child->GLRender(action);
 }
@@ -464,7 +464,7 @@ SoX3DChildNodeP::childGLRender(SoX3DChildNode * COIN_UNUSED_ARG(thisp), SoNode *
 // This function is called for each child to traverse, and
 // action->getCurPath() is already updated at this point.
 void
-SoX3DChildNodeP::childGLRenderProfiler(SoX3DChildNode * COIN_UNUSED_ARG(thisp), SoNode * child, SoGLRenderAction * action)
+SoX3DChildNodeP::childGLRenderProfiler(SoX3DChildNode * COIN_UNUSED_ARG(thisp), SoNode * child, SoX3DGLRenderAction * action)
 {
   SoNodeProfiling profiling;
   profiling.preTraversal(action);
@@ -474,7 +474,7 @@ SoX3DChildNodeP::childGLRenderProfiler(SoX3DChildNode * COIN_UNUSED_ARG(thisp), 
 
 // doc from superclass.
 void
-SoX3DChildNode::GLRender(SoGLRenderAction * action)
+SoX3DChildNode::GLRender(SoX3DGLRenderAction * action)
 {
   int numindices;
   const int * indices;
@@ -549,7 +549,7 @@ SoX3DChildNode::GLRender(SoGLRenderAction * action)
 
 // doc from superclass.
 void
-SoX3DChildNode::callback(SoCallbackAction * action)
+SoX3DChildNode::callback(SoX3DCallbackAction * action)
 {
   SoX3DChildNode::doAction((SoAction *)action);
 }

@@ -1,3 +1,6 @@
+#ifndef COIN_SOX3DGLRENDERCACHE_H
+#define COIN_SOX3DGLRENDERCACHE_H
+
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
  * All rights reserved.
@@ -30,47 +33,37 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifndef COIN_SOX3DAPPEARANCE_H
-#define COIN_SOX3DAPPEARANCE_H
+#include <Inventor/caches/SoCache.h>
+#include <Inventor/elements/SoGLLazyElement.h>
 
-#include <Inventor/X3Dnodes/SoX3DAppearanceNode.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/fields/SoSFNode.h>
+class SoGLDisplayList;
+class SoX3DGLRenderCacheP;
 
-class SoX3DAppearanceP;
 
-class COIN_DLL_API SoX3DAppearance : public SoX3DAppearanceNode
-{
-  typedef SoX3DAppearanceNode inherited;
-  SO_NODE_HEADER(SoX3DAppearance);
+class COIN_DLL_API SoX3DGLRenderCache : public SoCache {
+  typedef SoCache inherited;
 
 public:
-  static void initClass(void);
+  SoX3DGLRenderCache(SoState * state);
+  virtual ~SoX3DGLRenderCache();
 
-  SoX3DAppearance(void);
+  void open(SoState * state);
+  void close(void);
+  void call(SoState * state);
 
-  SoSFNode material;
-  SoSFNode texture;
-  SoSFNode textureTransform;
+  int getCacheContext(void) const;
 
-  SoSFNode fillProperties;
-  SoSFNode lineProperties;
+  virtual SbBool isValid(const SoState * state) const;
+  virtual void addNestedCache(SoGLDisplayList * child);
 
-  virtual void doAction(SoAction * action);
-  virtual void callback(SoCallbackAction * action);
-  virtual void GLRender(SoX3DGLRenderAction * action);
-  virtual void search(SoSearchAction * action);
-
-  virtual SoChildList * getChildren(void) const;
-  virtual void notify(SoNotList * list);
-  virtual void copyContents(const SoFieldContainer * from, SbBool copyConn);
+  SoGLLazyElement::GLState * getPreLazyState(void);
+  SoGLLazyElement::GLState * getPostLazyState(void);
 
 protected:
-  virtual ~SoX3DAppearance();
+  virtual void destroy(SoState *state);
 
 private:
-  SoX3DAppearanceP * pimpl;
+  SoX3DGLRenderCacheP * pimpl;
+};
 
-}; // class SoX3DAppearance
-
-#endif // ! COIN_SOX3DAPPEARANCE_H
+#endif // !COIN_SOX3DGLRENDERCACHE

@@ -42,88 +42,64 @@
 
   \ingroup coin_X3Dnodes
 
-  \WEB3DCOPYRIGHT
+  \WEBX3DCOPYRIGHT
 
   \verbatim
-  PointSet {
-    exposedField  SFNode  color      NULL
-    exposedField  SFNode  coord      NULL
+  PointSet : X3DGeometryNode { 
+    SFNode [in,out] color    NULL [X3DColorNode]
+    SFNode [in,out] coord    NULL [X3DCoordinateNode]
+    SFNode [in,out] metadata NULL [X3DMetadataObject]
   }
   \endverbatim
   
   The PointSet node specifies a set of 3D points, in the local
-  coordinate system, with associated colours at each point. The coord
+  coordinate system, with associated colours at each point. The \e coord
   field specifies a SoX3DCoordinate node (or instance of a Coordinate
-  node). The results are undefined if the coord field specifies any
+  node). The results are undefined if the \e coord field specifies any
   other type of node. PointSet uses the coordinates in order. If the
-  coord field is NULL, the point set is considered empty.  PointSet
-  nodes are not lit, not texture-mapped, nor do they participate in
+  \e coord field is NULL, the point set is considered empty.
+
+  PointSet nodes are not lit, not texture-mapped, nor do they participate in
   collision detection. The size of each point is implementation-
-  dependent.  If the color field is not NULL, it shall specify a
+  dependent.
+
+  If the \e color field is not NULL, it shall specify a
   SoX3DColor node that contains at least the number of points
-  contained in the coord node. The results are undefined if the color
+  contained in the \e coord node. The results are undefined if the \e color
   field specifies any other type of node. Colours shall be applied to
   each point in order. The results are undefined if the number of
   values in the Color node is less than the number of values specified
-  in the Coordinate node.  If the color field is NULL and there is a
-  SoX3DMaterial node defined for the SoX3DAppearance node affecting
-  this PointSet node, the emissiveColor of the Material node shall be
-  used to draw the points. More details on lighting equations can be
-  found in 4.14, Lighting model
-  (<http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-X3D/part1/concepts.html#4.14>).
+  in the Coordinate node.
 
+  If the \e color field is NULL and there is a
+  SoX3DMaterial node defined for the SoX3DAppearance node affecting
+  this PointSet node, the \e emissiveColor of the Material node shall be
+  used to draw the points. More details on lighting equations can be
+  found in [17 Lighting component](https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/components/lighting.html).
+*/
+
+/*!
+  \var SoSFNode SoX3DPointSet::coord
+  Should contain an SoX3DCoordinate node.
+*/
+
+/*!
+  \var SoSFNode SoX3DPointSet::color
+  Can contain an SoX3DColor node when color per point is needed.
 */
 
 #include <Inventor/X3Dnodes/SoX3DPointSet.h>
+#include "coindefs.h"
+
+#include <cstddef>
 
 #include <Inventor/X3Dnodes/SoX3DMacros.h>
 #include <Inventor/X3Dnodes/SoX3DCoordinate.h>
-#include <Inventor/misc/SoState.h>
-#include <Inventor/misc/SoGLDriverDatabase.h>
-#include <Inventor/bundles/SoTextureCoordinateBundle.h>
-#include <Inventor/SoPrimitiveVertex.h>
-
-#include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/system/gl.h>
-
-#include <Inventor/nodes/SoVertexProperty.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
-#include <Inventor/actions/SoGetBoundingBoxAction.h>
-#include <Inventor/elements/SoGLCoordinateElement.h>
-#include <Inventor/elements/SoMultiTextureEnabledElement.h>
-#include <Inventor/elements/SoNormalBindingElement.h>
-#include <Inventor/elements/SoMaterialBindingElement.h>
-#include <Inventor/elements/SoGLLazyElement.h>
-#include <Inventor/bundles/SoMaterialBundle.h>
-#include <Inventor/caches/SoNormalCache.h>
-#include <Inventor/details/SoPointDetail.h>
-#include <Inventor/caches/SoBoundingBoxCache.h>
-#include <Inventor/SbColor.h>
-#include <Inventor/SbColor4f.h>
-#include <Inventor/elements/SoOverrideElement.h>
-#include <Inventor/elements/SoMaterialBindingElement.h>
-#include <Inventor/elements/SoGLVBOElement.h>
-#include <Inventor/elements/SoGLLazyElement.h>
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
 #include "nodes/SoSubNodeP.h"
-#include "rendering/SoGL.h"
-#include "rendering/SoVBO.h"
 
-static SbBool
-is_material_per_vertex(SoX3DPointSet * ps, SoState * state)
-{
-  if (SoOverrideElement::getMaterialBindingOverride(state)) {
-    if (SoMaterialBindingElement::get(state) !=
-        SoMaterialBindingElement::OVERALL) return TRUE;
-    return FALSE;
-  }
-  return ps->color.getValue() != NULL;
-}
-
-SO_NODE_SOURCE(SoX3DPointSet);
+SO_NODE_ABSTRACT_SOURCE(SoX3DPointSet);
 
 /*!
   \copydetails SoNode::initClass(void)
@@ -140,6 +116,9 @@ SoX3DPointSet::initClass(void)
 SoX3DPointSet::SoX3DPointSet(void)
 {
   SO_X3DNODE_INTERNAL_CONSTRUCTOR(SoX3DPointSet);
+
+  SO_X3DNODE_ADD_EXPOSED_FIELD(coord, (NULL));
+  SO_X3DNODE_ADD_EXPOSED_FIELD(color, (NULL));
 }
 
 /*!
@@ -149,121 +128,96 @@ SoX3DPointSet::~SoX3DPointSet()
 {
 }
 
-// Doc in parent
+// doc in parent
 void
-SoX3DPointSet::GLRender(SoGLRenderAction * action)
+SoX3DPointSet::doAction(SoAction * action)
 {
-  SoState * state = action->getState();
+  SoNode * node;
 
-  SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
-  SoMultiTextureEnabledElement::disableAll(state);
+  node = this->coord.getValue();
+  if (node) node->doAction(action);
 
-  SoX3DVertexPoint::GLRender(action);
-
-  if (!this->shouldGLRender(action)) return;
-
-  const SoCoordinateElement * coords;
-  coords = SoCoordinateElement::getInstance(state);
-
-  SoMaterialBundle mb(action);
-
-  SbBool matpervertex = is_material_per_vertex(this, state);
-  if (!matpervertex) {
-    const SbColor & col = SoLazyElement::getEmissive(state);
-    SbColor4f c(col[0], col[1], col[2], 1.0f);
-    SoGLLazyElement::sendPackedDiffuse(state, c.getPackedValue());
-  }
-  else {
-    mb.sendFirst();
-  }
-
-  const cc_glglue * glue = sogl_glue_instance(state);
-
-  const int numpts = coords->getNum();
-  const uint32_t contextid = action->getCacheContext();
-
-  // no point setting up OpenGL for vertex arrays for fewer than 20 points
-  SbBool dova = 
-    SoVBO::shouldRenderAsVertexArrays(state, contextid, numpts) && 
-    SoGLDriverDatabase::isSupported(glue, SO_GL_VERTEX_ARRAY);
-  
-  if (dova && matpervertex) {
-    const SoGLVBOElement * vboelem = SoGLVBOElement::getInstance(state);
-    if (vboelem->getColorVBO() == NULL) {
-      dova = FALSE;
-      // we might be able to do VA-rendering, but need to check the
-      // diffuse color type first.
-      SoGLLazyElement * lelem = (SoGLLazyElement*) SoLazyElement::getInstance(state);
-      if (!lelem->isPacked() && lelem->getNumTransparencies() <= 1) {
-        dova = TRUE;
-      }
-    }
-  }
-  SbBool didrenderasvbo = FALSE;
-  if (dova) {
-    SbBool vbo = this->startVertexArray(action,
-                                        coords,
-                                        NULL,
-                                        FALSE,
-                                        matpervertex);
-    didrenderasvbo = vbo;
-    cc_glglue_glDrawArrays(glue, GL_POINTS, 0, numpts);
-    this->finishVertexArray(action, vbo,
-                            FALSE,
-                            FALSE,
-                            matpervertex);
-  }
-  else {
-    sogl_render_pointset((SoGLCoordinateElement*) coords,
-                         NULL,
-                         matpervertex ? &mb : NULL,
-                         NULL,
-                         numpts, 0);
-  }
-
-  // send approx number of points for autocache handling
-  sogl_autocache_update(state, numpts, didrenderasvbo); 
+  node = this->color.getValue();
+  if (node) node->doAction(action);
 }
 
-// Doc in parent
+// doc in parent
+void
+SoX3DPointSet::GLRender(SoX3DGLRenderAction * action)
+{
+  SoNode * node;
+
+  node = this->coord.getValue();
+  if (node) node->GLRender(action);
+
+  node = this->color.getValue();
+  if (node) node->GLRender(action);
+}
+
+// doc in parent
 void
 SoX3DPointSet::getBoundingBox(SoGetBoundingBoxAction * action)
 {
   inherited::getBoundingBox(action);
-  // notify open (if any) bbox caches about points in this shape
-  SoBoundingBoxCache::setHasLinesOrPoints(action->getState());
 }
 
-// Doc in parent
+// doc in parent
 void
-SoX3DPointSet::generatePrimitives(SoAction * action)
+SoX3DPointSet::callback(SoX3DCallbackAction * action)
 {
-  SoX3DCoordinate * coordnode = (SoX3DCoordinate*) this->coord.getValue();
-  if (!coordnode || coordnode->point.getNum() == 0) return;
-  const SbVec3f * coords = coordnode->point.getValues(0);
+  inherited::callback(action);
+}
 
-  SoPrimitiveVertex vertex;
-  SoPointDetail pointDetail;
-  vertex.setDetail(&pointDetail);
+// doc in parent
+void
+SoX3DPointSet::pick(SoPickAction * action)
+{
+  inherited::pick(action);
+}
 
-  int32_t numpts = coordnode->point.getNum();
+// doc in parent
+void
+SoX3DPointSet::notify(SoNotList * list)
+{
+  inherited::notify(list);
+}
 
-  int matnr = 0;
-  int idx = 0;
+// doc in parent
+void
+SoX3DPointSet::computeBBox(SoAction * COIN_UNUSED_ARG(action), SbBox3f & box,
+                           SbVec3f & center)
+{
+  SoX3DCoordinate * node = (SoX3DCoordinate*) this->coord.getValue();
+  if (node == NULL) return;
 
-  SbBool matpervertex = is_material_per_vertex(this, action->getState());
+  int num = node->point.getNum();
+  const SbVec3f * coords = node->point.getValues(0);
 
-  this->beginShape(action, SoShape::POINTS);
-  for (int i = 0; i < numpts; i++) {
-    if (matpervertex) {
-      pointDetail.setMaterialIndex(matnr);
-      vertex.setMaterialIndex(matnr++);
-    }
-    pointDetail.setCoordinateIndex(idx);
-    vertex.setPoint(coords[idx++]);
-    this->shapeVertex(&vertex);
+  box.makeEmpty();
+  while (num--) {
+    box.extendBy(*coords++);
   }
-  this->endShape();
+  if (!box.isEmpty()) center = box.getCenter();
+}
+
+// doc in parent
+void
+SoX3DPointSet::getPrimitiveCount(SoGetPrimitiveCountAction * action)
+{
+  if (!this->shouldPrimitiveCount(action)) return;
+
+  SoX3DCoordinate * c = (SoX3DCoordinate*) this->coord.getValue();
+  if (c) {
+    action->addNumPoints(c->point.getNum());
+  }
+}
+
+// doc in parent
+SbBool
+SoX3DPointSet::shouldGLRender(SoX3DGLRenderAction * action)
+{
+  if (this->coord.getValue() == NULL) return FALSE;
+  return inherited::shouldGLRender(action);
 }
 
 #endif // HAVE_X3D

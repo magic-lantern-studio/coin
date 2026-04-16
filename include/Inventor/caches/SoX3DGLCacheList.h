@@ -1,3 +1,6 @@
+#ifndef COIN_SOX3DGLCACHELIST_H
+#define COIN_SOX3DGLCACHELIST_H
+
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
  * All rights reserved.
@@ -30,47 +33,28 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifndef COIN_SOX3DAPPEARANCE_H
-#define COIN_SOX3DAPPEARANCE_H
+#include <Inventor/SbBasic.h>
+#include <Inventor/lists/SbList.h>
 
-#include <Inventor/X3Dnodes/SoX3DAppearanceNode.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/fields/SoSFNode.h>
+class SoX3DGLRenderAction;
+class SoX3DGLRenderCache;
+class SoX3DGLCacheListP;
 
-class SoX3DAppearanceP;
 
-class COIN_DLL_API SoX3DAppearance : public SoX3DAppearanceNode
-{
-  typedef SoX3DAppearanceNode inherited;
-  SO_NODE_HEADER(SoX3DAppearance);
-
+class COIN_DLL_API SoX3DGLCacheList {
 public:
-  static void initClass(void);
+  SoX3DGLCacheList(int numcaches = 2);
+  ~SoX3DGLCacheList();
 
-  SoX3DAppearance(void);
+  SbBool call(SoX3DGLRenderAction * action);
 
-  SoSFNode material;
-  SoSFNode texture;
-  SoSFNode textureTransform;
+  void open(SoX3DGLRenderAction * action, SbBool autocache = TRUE);
+  void close(SoX3DGLRenderAction * action);
 
-  SoSFNode fillProperties;
-  SoSFNode lineProperties;
-
-  virtual void doAction(SoAction * action);
-  virtual void callback(SoCallbackAction * action);
-  virtual void GLRender(SoX3DGLRenderAction * action);
-  virtual void search(SoSearchAction * action);
-
-  virtual SoChildList * getChildren(void) const;
-  virtual void notify(SoNotList * list);
-  virtual void copyContents(const SoFieldContainer * from, SbBool copyConn);
-
-protected:
-  virtual ~SoX3DAppearance();
+  void invalidateAll(void);
 
 private:
-  SoX3DAppearanceP * pimpl;
+  SoX3DGLCacheListP * pimpl;
+};
 
-}; // class SoX3DAppearance
-
-#endif // ! COIN_SOX3DAPPEARANCE_H
+#endif // !COIN_SOX3DGLCACHELIST_H

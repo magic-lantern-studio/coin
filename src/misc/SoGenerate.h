@@ -82,7 +82,7 @@ void sogen_generate_cube(const float width,
                          SoShape * const shape,
                          SoAction * const action);
 
-//#ifdef HAVE_X3D
+#ifdef HAVE_X3D
 class SoX3DGeometryNode;
 
 void sox3dgen_generate_cone(const float bottomRadius,
@@ -112,6 +112,6 @@ void sox3dgen_generate_cube(const float width,
                             const unsigned int flags,
                             SoX3DGeometryNode * const shape,
                             SoAction * const action);
-//#endif // HAVE_X3D
+#endif // HAVE_X3D
 
 #endif // !COIN_SOGENERATE_H

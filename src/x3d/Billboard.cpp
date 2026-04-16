@@ -153,7 +153,7 @@
 
 #include <Inventor/X3Dnodes/SoX3DMacros.h>
 #include <Inventor/actions/SoSearchAction.h>
-#include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/actions/SoX3DGLRenderAction.h>
 #include <Inventor/actions/SoWriteAction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoGetMatrixAction.h>
@@ -237,7 +237,7 @@ SoX3DBillboard::callback(SoCallbackAction * action)
 
 // doc in parent
 void
-SoX3DBillboard::GLRender(SoGLRenderAction * action)
+SoX3DBillboard::GLRender(SoX3DGLRenderAction * action)
 {
   switch (action->getCurPathCode()) {
   case SoAction::NO_PATH:
@@ -303,7 +303,7 @@ SoX3DBillboard::search(SoSearchAction * action)
 
 // doc in parent
 void
-SoX3DBillboard::GLRenderBelowPath(SoGLRenderAction * action)
+SoX3DBillboard::GLRenderBelowPath(SoX3DGLRenderAction * action)
 {
   SoState * state = action->getState();
 
@@ -355,7 +355,7 @@ SoX3DBillboard::GLRenderBelowPath(SoGLRenderAction * action)
 
 // doc in parent
 void
-SoX3DBillboard::GLRenderInPath(SoGLRenderAction * action )
+SoX3DBillboard::GLRenderInPath(SoX3DGLRenderAction * action )
 {
   int numindices;
   const int * indices;
@@ -406,7 +406,7 @@ SoX3DBillboard::GLRenderInPath(SoGLRenderAction * action )
 
 // doc in parent
 void
-SoX3DBillboard::GLRenderOffPath(SoGLRenderAction * COIN_UNUSED_ARG(action))
+SoX3DBillboard::GLRenderOffPath(SoX3DGLRenderAction * COIN_UNUSED_ARG(action))
 {
   // do nothing
 }

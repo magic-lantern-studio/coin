@@ -125,7 +125,7 @@
 #include <Inventor/nodes/SoShape.h>
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/misc/SoState.h>
-#include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/actions/SoX3DGLRenderAction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/actions/SoRayPickAction.h>
@@ -134,9 +134,9 @@
 #include <Inventor/elements/SoCullElement.h>
 #include <Inventor/elements/SoComplexityTypeElement.h>
 #include <Inventor/caches/SoBoundingBoxCache.h>
-#include <Inventor/caches/SoGLCacheList.h>
+#include <Inventor/caches/SoX3DGLCacheList.h>
 #include <Inventor/elements/SoGLLazyElement.h>
-#include <Inventor/caches/SoGLCacheList.h>
+//#include <Inventor/caches/SoGLCacheList.h>
 #include <Inventor/elements/SoGLShapeHintsElement.h>
 #include <Inventor/system/gl.h>
 #ifdef HAVE_THREADS
@@ -152,7 +152,7 @@
 
 class SoX3DShapeP {
 public:
-  SoGLCacheList * cachelist;
+  SoX3DGLCacheList * cachelist;
   SoChildList * childlist;
   SbBool childlistvalid;
 
@@ -172,10 +172,10 @@ SO_NODE_SOURCE(SoX3DShape);
 
 // *************************************************************************
 
-static int sovrmlshape_numrendercaches = 0;
+static int sox3dshape_numrendercaches = 0;
 
-static void sovrmlshape_cleanup(void) {                                           
-  sovrmlshape_numrendercaches = 0;
+static void sox3dshape_cleanup(void) {                                           
+  sox3dshape_numrendercaches = 0;
 }
 
 // *************************************************************************
@@ -187,7 +187,7 @@ void
 SoX3DShape::initClass(void) // static
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoX3DShape, SO_X3D_NODE_TYPE);
-  coin_atexit((coin_atexit_f*)sovrmlshape_cleanup, CC_ATEXIT_NORMAL); 
+  coin_atexit((coin_atexit_f*)sox3dshape_cleanup, CC_ATEXIT_NORMAL); 
 
   SoType type = SoX3DShape::getClassTypeId();
   SoRayPickAction::addMethod(type, SoNode::rayPickS);
@@ -229,13 +229,13 @@ SoX3DShape::~SoX3DShape()
 void
 SoX3DShape::setNumRenderCaches(int num)
 {
-  sovrmlshape_numrendercaches = num;
+  sox3dshape_numrendercaches = num;
 }
 
 int
 SoX3DShape::getNumRenderCaches(void)
 {
-  return sovrmlshape_numrendercaches;
+  return sox3dshape_numrendercaches;
 }
 
 SbBool
@@ -275,7 +275,7 @@ SoX3DShape::callback(SoCallbackAction * action)
 }
 
 void
-SoX3DShape::GLRender(SoGLRenderAction * action)
+SoX3DShape::GLRender(SoX3DGLRenderAction * action)
 {
   SoState * state = action->getState();
   state->push();

@@ -77,8 +77,8 @@ public:
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
   virtual void audioRender(SoAudioRenderAction * action);
 
-  virtual void GLRenderBelowPath(SoGLRenderAction * action);
-  virtual void GLRenderInPath(SoGLRenderAction * action);
+  virtual void GLRenderBelowPath(SoX3DGLRenderAction * action);
+  virtual void GLRenderInPath(SoX3DGLRenderAction * action);
 
   virtual void notify(SoNotList * list);
 

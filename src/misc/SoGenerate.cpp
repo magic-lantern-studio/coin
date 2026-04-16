@@ -535,7 +535,7 @@ sogen_generate_cube(const float width,
                                           action);
 }
 
-//#ifdef HAVE_X3D
+#ifdef HAVE_X3D
 // FIXME: This is a brute force way to generate the primitives since it
 // is just a copy of the above utilities. Rewrite to share the code.
 // 20206-06-25, msm (WizzerWorks)
@@ -951,4 +951,4 @@ sox3dgen_generate_cube(const float width,
                                              shape,
                                              action);
 }
-//#endif // HAVE_X3D
+#endif // HAVE_X3D

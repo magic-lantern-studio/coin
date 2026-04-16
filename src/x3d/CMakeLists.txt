@@ -20,13 +20,11 @@ set(COIN_X3D_FILES
 	Extrusion.cpp
 	Fog.cpp
 	FontStyle.cpp
-	Geometry.cpp
 	Group.cpp
 	ImageTexture.cpp
 	IndexedFaceSet.cpp
 	IndexedLine.cpp
 	IndexedLineSet.cpp
-	IndexedShape.cpp
 	Init.cpp
 	Inline.cpp
 	Interpolator.cpp
@@ -62,8 +60,6 @@ set(COIN_X3D_FILES
 	TouchSensor.cpp
 	Transform.cpp
 	VertexLine.cpp
-	VertexPoint.cpp
-	VertexShape.cpp
 	Viewpoint.cpp
 	VisibilitySensor.cpp
 	WorldInfo.cpp

@@ -217,7 +217,7 @@ SoX3DAppearance::callback(SoCallbackAction * action)
 
 // doc in parent
 void
-SoX3DAppearance::GLRender(SoGLRenderAction * action)
+SoX3DAppearance::GLRender(SoX3DGLRenderAction * action)
 {
   SoState * state = action->getState();
   int numindices;

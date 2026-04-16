@@ -37,7 +37,7 @@
 #ifdef HAVE_X3D
 
 /*!
-  \class SoX3DVertexLine SoX3DVertexLine.h Inventor/X3Dnodes/SovRMLVertexLine.h
+  \class SoX3DVertexLine SoX3DVertexLine.h Inventor/X3Dnodes/SoX3DVertexLine.h
   \brief The SoX3DVertexLine class is a superclass for line based X3D geometry.
 */
 
@@ -64,7 +64,7 @@
 #include <cstddef>
 
 #include <Inventor/X3Dnodes/SoX3DMacros.h>
-#include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/actions/SoX3DGLRenderAction.h>
 
 #include "nodes/SoSubNodeP.h"
 
@@ -98,7 +98,7 @@ SoX3DVertexLine::~SoX3DVertexLine()
 {
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DVertexLine::doAction(SoAction * action)
 {
@@ -111,9 +111,9 @@ SoX3DVertexLine::doAction(SoAction * action)
   if (node) node->doAction(action);
 }
 
-// Doc in parent
+// doc in parent
 void
-SoX3DVertexLine::GLRender(SoGLRenderAction * action)
+SoX3DVertexLine::GLRender(SoX3DGLRenderAction * action)
 {
   SoNode * node;
   
@@ -124,37 +124,37 @@ SoX3DVertexLine::GLRender(SoGLRenderAction * action)
   if (node) node->GLRender(action);
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DVertexLine::getBoundingBox(SoGetBoundingBoxAction * action)
 {
   inherited::getBoundingBox(action);
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DVertexLine::callback(SoCallbackAction * action)
 {
   inherited::callback(action);
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DVertexLine::pick(SoPickAction * action)
 {
   inherited::pick(action);
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DVertexLine::notify(SoNotList * list)
 {
   inherited::notify(list);
 }
 
-// Doc in parent
+// doc in parent
 SbBool
-SoX3DVertexLine::shouldGLRender(SoGLRenderAction * action)
+SoX3DVertexLine::shouldGLRender(SoX3DGLRenderAction * action)
 {
   if (this->coord.getValue() == NULL) return FALSE;
   return inherited::shouldGLRender(action);

@@ -25,13 +25,11 @@ PublicHeaders = \
 	SoX3DExtrusion.h \
 	SoX3DFog.h \
 	SoX3DFontStyle.h \
-	SoX3DGeometry.h \
 	SoX3DGroup.h \
 	SoX3DImageTexture.h \
 	SoX3DIndexedFaceSet.h \
 	SoX3DIndexedLine.h \
 	SoX3DIndexedLineSet.h \
-	SoX3DIndexedShape.h \
 	SoX3DInline.h \
 	SoX3DInterpolator.h \
 	SoX3DLOD.h \
@@ -69,8 +67,6 @@ PublicHeaders = \
 	SoX3DTouchSensor.h \
 	SoX3DTransform.h \
 	SoX3DVertexLine.h \
-	SoX3DVertexPoint.h \
-	SoX3DVertexShape.h \
 	SoX3DViewpoint.h \
 	SoX3DVisibilitySensor.h \
 	SoX3DWorldInfo.h \
@@ -92,6 +88,7 @@ PublicHeaders = \
 	SoX3DNetworkSensorNode.h \
 	SoX3DNode.h \
 	SoX3DNodeEngine.h \
+	SoX3DPointSet.h \
 	SoX3DPrototypeInstance.h \
 	SoX3DSensorNode.h \
 	SoX3DUrlObject.h

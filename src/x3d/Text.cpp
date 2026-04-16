@@ -42,20 +42,20 @@
 
   \ingroup coin_X3Dnodes
 
-  \WEB3DCOPYRIGHT
+  \WEBX3DCOPYRIGHT
 
   Important note: currently, the implementation of this node is not
   complete, and some of the features mentioned in the documentation
   below may not be working yet.
-
-  \WEB3DCOPYRIGHT
   
   \verbatim
-  Text { 
-    exposedField  MFString string    []
-    exposedField  SFNode   fontStyle NULL
-    exposedField  MFFloat  length    []      # [0,)
-    exposedField  SFFloat  maxExtent 0.0     # [0,)
+  Text : X3DGeometryNode {
+    SFNode   [in,out] fontStyle NULL  [X3FontSyleNode]
+    MFFloat  [in,out] length    []    [0,∞)
+    SFFloat  [in,out] maxExtent 0.0   [0,∞)
+    SFNode   [in,out] metadata  NULL  [X3DMetadataObject]
+    MFString [in,out] string    []
+    SFBool   []       solid     FALSE
   }
   \endverbatim
 
@@ -64,23 +64,23 @@
   values defined in the fontStyle field (see SoX3DFontStyle).
   Text nodes may contain multiple text strings specified using the
   UTF-8 encoding as specified by ISO 10646-1:1993 (see
-  <http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-X3D/part1/references.html#[UTF8]>).
+  [2.[I10646-1]](https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/references.html#[I10646_1])).
   The text strings are stored in the order in which the text mode
   characters are to be produced as defined by the parameters in the
-  FontStyle node.
+  [FontStyle](https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/components/text.html#FontStyle) node.
 
-  The text strings are contained in the string field. The fontStyle
+  The text strings are contained in the \e string field. The \e fontStyle
   field contains one FontStyle node that specifies the font size, font
   family and style, direction of the text strings, and any specific
   language rendering techniques used for the text.
 
-  The maxExtent field limits and compresses all of the text strings if
+  The \e maxExtent field limits and compresses all of the text strings if
   the length of the maximum string is longer than the maximum extent,
   as measured in the local coordinate system. If the text string with
-  the maximum length is shorter than the maxExtent, then there is no
+  the maximum length is shorter than the \e maxExtent, then there is no
   compressing. The maximum extent is measured horizontally for
-  horizontal text (FontStyle node: horizontal=TRUE) and vertically for
-  vertical text (FontStyle node: horizontal=FALSE). The maxExtent
+  horizontal text (FontStyle node: \b horizontal=TRUE) and vertically for
+  vertical text (FontStyle node: \b horizontal=FALSE). \e The maxExtent
   field shall be greater than or equal to zero.
 
   The length field contains an MFFloat value that specifies the length
@@ -90,11 +90,13 @@
   compressed (either by scaling the text or by subtracting space
   between the characters). If a length value is missing (for example,
   if there are four strings but only three length values), the missing
-  values are considered to be 0. The length field shall be greater
+  values are considered to be 0. The \e length field shall be greater
   than or equal to zero.
 
-  Specifying a value of 0 for both the maxExtent and length fields
+  Specifying a value of 0 for both the \e maxExtent and \e length fields
   indicates that the string may be any length.
+
+  [11.2.3 Common geometry fields](https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/components/rendering.html#CommonGeometryFields) provides a complete description of the solid field.
 
   \sa SoX3DFontStyle
 */
@@ -119,6 +121,12 @@
   Maximum object space extent of longest string.
 */
 
+/*!
+  \var SoSFBool SoX3DText:solid
+  Sphere visibility flag when viewed from the inside.
+*/
+
+
 #include <Inventor/X3Dnodes/SoX3DText.h>
 #include "coindefs.h"
 
@@ -129,7 +137,7 @@
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/X3Dnodes/SoX3DFontStyle.h>
 #include <Inventor/X3Dnodes/SoX3DMacros.h>
-#include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/actions/SoX3DGLRenderAction.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/details/SoTextDetail.h>
@@ -234,6 +242,7 @@ SoX3DText::SoX3DText(void)
   SO_X3DNODE_ADD_EXPOSED_FIELD(fontStyle, (NULL));
   SO_X3DNODE_ADD_EXPOSED_FIELD(maxExtent, (0.0f));
   SO_X3DNODE_ADD_EMPTY_EXPOSED_MFIELD(length);
+  SO_X3DNODE_ADD_FIELD(solid, (FALSE));
 
   // Default text setup
   PRIVATE(this)->textsize = 1.0f;
@@ -274,9 +283,9 @@ SoX3DText::~SoX3DText()
   delete PRIVATE(this);
 }
 
-// Doc in parent
+// doc in parent
 void
-SoX3DText::GLRender(SoGLRenderAction * action)
+SoX3DText::GLRender(SoX3DGLRenderAction * action)
 {
   if (!this->shouldGLRender(action)) return;
 
@@ -521,7 +530,7 @@ SoX3DText::GLRender(SoGLRenderAction * action)
 }
 
 
-// Doc in parent
+// doc in parent
 void
 SoX3DText::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
@@ -568,7 +577,7 @@ SoX3DText::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 }
 
 
-// Doc in parent
+// doc in parent
 void
 SoX3DText::notify(SoNotList * list)
 {
@@ -581,7 +590,7 @@ SoX3DText::notify(SoNotList * list)
   inherited::notify(list);
 }
 
-// Doc in parent
+// doc in parent
 SoChildList *
 SoX3DText::getChildren(void) const
 {
@@ -589,7 +598,7 @@ SoX3DText::getChildren(void) const
 }
 
 
-// Doc in parent
+// doc in parent
 void
 SoX3DText::computeBBox(SoAction * action,
                         SbBox3f & box,
@@ -754,7 +763,7 @@ SoX3DText::computeBBox(SoAction * action,
   PRIVATE(this)->unlock();
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DText::generatePrimitives(SoAction * action)
 {
@@ -788,7 +797,7 @@ SoX3DText::generatePrimitives(SoAction * action)
   vertex.setDetail(&detail);
   vertex.setMaterialIndex(0);
 
-  this->beginShape(action, SoShape::TRIANGLES, NULL);
+  this->beginShape(action, SoX3DGeometryNode::TRIANGLES, NULL);
   vertex.setNormal(SbVec3f(0.0f, 0.0f, 1.0f));
 
   float ypos = 0.0f;

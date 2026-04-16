@@ -11,6 +11,8 @@ set(COIN_CACHES_FILES
 	SoGlyphCache.cpp
 	SoShaderProgramCache.cpp
 	SoVBOCache.cpp
+	SoX3DGLCacheList.cpp
+	SoX3DGLRenderCache.cpp
 )
 
 # Files excluded from public API documentation, included in complete documentation.

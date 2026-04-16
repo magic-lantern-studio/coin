@@ -51,8 +51,6 @@ so_x3d_init(void)
   SoX3DMetadataString::initClass();
   
   SoX3DGeometry::initClass();
-  SoX3DVertexPoint::initClass();
-  SoX3DVertexShape::initClass();
   SoX3DIndexedShape::initClass();
 
   SoX3DParent::initClass();
@@ -130,6 +128,9 @@ so_x3d_init(void)
   SoX3DViewpoint::initClass();
   SoX3DVisibilitySensor::initClass();
   SoX3DWorldInfo::initClass();
+
+  SoX3DGLCacheList::initClass();
+  SoX3DGLRenderCache::initClass();
 }
 
 #endif // HAVE_X3D

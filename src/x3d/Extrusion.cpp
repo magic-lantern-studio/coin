@@ -42,29 +42,29 @@
 
   \ingroup coin_X3Dnodes
 
-  \WEB3DCOPYRIGHT
+  \WEBX3DCOPYRIGHT
 
   \verbatim
-  Extrusion {
-    eventIn       MFVec2f    set_crossSection
-    eventIn       MFRotation set_orientation
-    eventIn       MFVec2f    set_scale
-    eventIn       MFVec3f    set_spine
-    exposedField  SFNode     metadata         NULL
-    field         SFBool     beginCap         TRUE
-    field         SFBool     ccw              TRUE
-    field         SFBool     convex           TRUE
-    field         SFFloat    creaseAngle      0                # [0,inf)
-    field         MFVec2f    crossSection     [ 1 1, 1 -1, -1 -1, -1 1, 1  1 ]    # (-inf,inf)
-    field         SFBool     endCap           TRUE
-    field         MFRotation orientation      0 0 1 0          # [-1,1],(-inf,inf)
-    field         MFVec2f    scale            1 1              # (0,inf)
-    field         SFBool     solid            TRUE
-    field         MFVec3f    spine            [ 0 0 0, 0 1 0 ] # (-inf,inf)
+  Extrusion : X3DGeometryNode {
+    MFVec2f    [in]     set_crossSection
+    MFRotation [in]     set_orientation
+    MFVec2f    [in]     set_scale
+    MFVec3f    [in]     set_spine
+    SFNode     [in,out] metadata         NULL                      [X3DMetadataObject]
+    SFBool     []       beginCap         TRUE
+    SFBool     []       ccw              TRUE
+    SFBool     []       convex           TRUE
+    SFFloat    []       creaseAngle      0                         [0,∞)
+    MFVec2f    []       crossSection     [1 1 1 -1 -1 -1 -1 1 1 1] (-∞,∞)
+    SFBool     []       endCap           TRUE
+    MFRotation []       orientation      0 0 1 0                   [-1,1] or (-∞,∞)
+    MFVec2f    []       scale            1 1                       (0,∞)
+    SFBool     []       solid            TRUE
+    MFVec3f    []       spine            [0 0 0 0 1 0]             (-∞,∞)
   }
   \endverbatim
 
-  \e Introduction
+  \e Overview
 
   The Extrusion node specifies geometric shapes based on a two
   dimensional cross-section extruded along a three dimensional spine
@@ -102,8 +102,8 @@
   orienting it relative to the spine segments on either side of point
   at which the cross-section is placed. This is known as the
   spine-aligned cross-section plane (SCP), and is designed to provide
-  a smooth transition from one spine segment to the next (see Figure
-  13.5). The SCP is then rotated by the corresponding orientation
+  a smooth transition from one spine segment to the next (see "Figure
+  13.5" (https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/components/geometry3D.html#f-Spine-alignedcross-section)). The SCP is then rotated by the corresponding orientation
   value. This rotation is performed relative to the SCP. For example,
   to impart twist in the cross- section, a rotation about the Y-axis
   (0 1 0) would be used. Other orientations are valid and rotate the
@@ -142,14 +142,14 @@
   cross-product:
 
   \verbatim
-  Z = (spine[i+1] - spine[i]) � (spine[i-1] - spine[i])
+  Z = (spine[i+1] - spine[i]) × (spine[i-1] - spine[i])
   \endverbatim
 
   \li If the spine curve is closed: The SCP for the first and last
   points is the same and is found by taking the following cross- product:
 
   \verbatim
-  Z = (spine[1] - spine[0]) � (spine[n-2] - spine[0])
+  Z = (spine[1] - spine[0]) × (spine[n-2] - spine[0])
   \endverbatim
 
   \li If the spine curve is not closed: The Z-axis used for the first
@@ -268,7 +268,7 @@
   \endverbatim
 
   in that order. By default, normals for the sides are generated as
-  described in 13.2.2, Shapes and geometry nodes
+  described in "13.2.2, Shapes and geometry nodes"
   (<https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/components/geometry3D.html#Shapeandgeometry>).
 
   For instance, a circular crossSection with counterclockwise
@@ -277,7 +277,7 @@
   FALSE makes it visible from the inside.
 
   The ccw, solid, convex, and
-  creaseAngle fields are described in 11.2.3, Common geometry nodes
+  creaseAngle fields are described in "11.2.3, Common geometry nodes"
   (<https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/components/rendering.html#CommonGeometryFields>).
 
 */
@@ -356,8 +356,9 @@
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/elements/SoShapeHintsElement.h>
 #include <Inventor/elements/SoCacheElement.h>
+#include <Inventor/elements/SoX3DGLVertexAttributeElement.h>
 #include <Inventor/SbTesselator.h>
-#include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/actions/SoX3DGLRenderAction.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/misc/SoGLDriverDatabase.h>
@@ -444,6 +445,7 @@ public:
   {
     this->tess.setCallback(tess_callback, this);
   }
+  
   ~SoX3DExtrusionP() {
     if (this->vbocache) this->vbocache->unref();
   }
@@ -510,7 +512,10 @@ SoX3DExtrusion::SoX3DExtrusion(void)
 
   SO_X3DNODE_INTERNAL_CONSTRUCTOR(SoX3DExtrusion);
 
-  SO_X3DNODE_ADD_EXPOSED_FIELD(metadata, (NULL));
+  SO_X3DNODE_ADD_EVENT_IN(set_crossSection);
+  SO_X3DNODE_ADD_EVENT_IN(set_orientation);
+  SO_X3DNODE_ADD_EVENT_IN(set_scale);
+  SO_X3DNODE_ADD_EVENT_IN(set_spine);
   SO_X3DNODE_ADD_FIELD(beginCap, (TRUE));
   SO_X3DNODE_ADD_FIELD(endCap, (TRUE));
   SO_X3DNODE_ADD_FIELD(solid, (TRUE));
@@ -547,9 +552,9 @@ SoX3DExtrusion::~SoX3DExtrusion()
 }
 
 
-// Doc in parent
+// doc in parent
 void
-SoX3DExtrusion::GLRender(SoGLRenderAction * action)
+SoX3DExtrusion::GLRender(SoX3DGLRenderAction * action)
 {
   if (!this->shouldGLRender(action)) return;
 
@@ -614,7 +619,7 @@ SoX3DExtrusion::GLRender(SoGLRenderAction * action)
     cc_glglue_glVertexPointer(glue, 3, GL_FLOAT, 0, NULL);
     cc_glglue_glEnableClientState(glue, GL_VERTEX_ARRAY);
 
-    SoGLVertexAttributeElement::getInstance(state)->enableVBO(action);
+    SoX3DGLVertexAttributeElement::getInstance(state)->enableVBO(action);
 
     PRIVATE(this)->vbocache->getVertexArrayIndexer()->render(state, TRUE, contextid);
 
@@ -622,7 +627,7 @@ SoX3DExtrusion::GLRender(SoGLRenderAction * action)
     cc_glglue_glDisableClientState(glue, GL_NORMAL_ARRAY);
     cc_glglue_glDisableClientState(glue, GL_VERTEX_ARRAY);
 
-    SoGLVertexAttributeElement::getInstance(state)->disableVBO(action);
+    SoX3DGLVertexAttributeElement::getInstance(state)->disableVBO(action);
 
     if (doTextures) {
       for (i = 1; i <= lastenabled; i++) {
@@ -695,7 +700,7 @@ SoX3DExtrusion::GLRender(SoGLRenderAction * action)
                         vbo);
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DExtrusion::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
@@ -705,7 +710,7 @@ SoX3DExtrusion::getPrimitiveCount(SoGetPrimitiveCountAction * action)
   PRIVATE(this)->readUnlock();
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DExtrusion::computeBBox(SoAction * COIN_UNUSED_ARG(action),
                              SbBox3f & box,
@@ -726,7 +731,7 @@ SoX3DExtrusion::computeBBox(SoAction * COIN_UNUSED_ARG(action),
   PRIVATE(this)->readUnlock();
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DExtrusion::generatePrimitives(SoAction * action)
 {
@@ -931,7 +936,7 @@ SoX3DExtrusionP::generateVBO(SoAction * action, SoTextureCoordinateBundle & tb)
 }
 
 
-// Doc in parent
+// doc in parent
 void
 SoX3DExtrusion::notify(SoNotList * list)
 {
@@ -941,13 +946,13 @@ SoX3DExtrusion::notify(SoNotList * list)
 }
 
 
-// Doc in parent
+// doc in parent
 SoDetail *
 SoX3DExtrusion::createTriangleDetail(SoRayPickAction * COIN_UNUSED_ARG(action),
-                                      const SoPrimitiveVertex * COIN_UNUSED_ARG(v1),
-                                      const SoPrimitiveVertex * COIN_UNUSED_ARG(v2),
-                                      const SoPrimitiveVertex * COIN_UNUSED_ARG(v3),
-                                      SoPickedPoint * COIN_UNUSED_ARG(pp))
+                                     const SoPrimitiveVertex * COIN_UNUSED_ARG(v1),
+                                     const SoPrimitiveVertex * COIN_UNUSED_ARG(v2),
+                                     const SoPrimitiveVertex * COIN_UNUSED_ARG(v3),
+                                     SoPickedPoint * COIN_UNUSED_ARG(pp))
 {
   // no triangle detail for Extrusion
   return NULL;

@@ -42,28 +42,22 @@
 
   \ingroup coin_X3Dnodes
 
-  \WEB3DCOPYRIGHT
+  \WEBX3DCOPYRIGHT
 
   \verbatim
-  LOD {
-    exposedField MFNode  level    []
-    field        SFVec3f center   0 0 0    # (-,)
-    field        MFFloat range    []       # (0,)
+  LOD : X3DGroupingNode {
+    MFNode  [in]     addChildren             [X3DChildNode]
+    MFNode  [in]     removeChildren          [X3DChildNode]
+    MFNode  [in,out] children       []       [X3DChildNode]
+    SFNode  [in,out] metadata       NULL     [X3DMetadataObject]
+    SFVec3f []       bboxCenter     0 0 0    (-∞,∞)
+    SFVec3f []       bboxSize       -1 -1 -1 [0,∞) or −1 −1 −1
+    SFVec3f []       center         0 0 0    (-∞,∞)
+    MFFloat []       range          []       [0,∞) or -1 
   }
   \endverbatim
 
-  The LOD node specifies various levels of detail or complexity for a
-  given object, and provides hints allowing browsers to automatically
-  choose the appropriate version of the object based on the distance
-  from the user. The level field contains a list of nodes that
-  represent the same object or objects at varying levels of detail,
-  ordered from highest level of detail to the lowest level of
-  detail. The range field specifies the ideal distances at which to
-  switch between the levels. Subclause 4.6.5, Grouping and children
-  nodes
-  (<http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-X3D/part1/concepts.html#4.6.5>),
-  contains details on the types of nodes that are legal values
-  for level.
+The LOD node specifies various levels of detail or complexity for a given object, and provides hints allowing browsers to automatically choose the appropriate version of the object based on the distance from the user. The children field contains a list of nodes that represent the same object or objects at varying levels of detail, ordered from highest level of detail to the lowest level of detail. The range field specifies the ideal distances at which to switch between the levels. However, browsers are allowed to disregard level distances in order to provide better performance. "10.2.1 Grouping and children node types" (https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/components/group.html#Groupingandchildrennodes) contains details on the types of nodes that are legal values for children.
 
   The center field is a translation offset in the local coordinate
   system that specifies the centre of the LOD node for distance
@@ -78,8 +72,9 @@
   node (including any scaling transformations), to the center point of
   the LOD node.  Then, the LOD node evaluates the step function L(d)
   to choose a level for a given value of d (where d is the distance
-  from the viewer position to the centre of the LOD node).  Let n
-  ranges, R0, R1, R2, ..., Rn-1, partition the domain (0, +infinity)
+  from the viewer position to the centre of the LOD node).
+
+  Let n ranges, R0, R1, R2, ..., Rn-1, partition the domain (0, +infinity)
   into n+1 subintervals given by (0, R0), [R0, R1)...  , [Rn-1,
   +infinity). Also, let n levels L0, L1, L2, ..., Ln-1 be the values
   of the step function function L(d). The level node, L(d), for a
@@ -90,6 +85,8 @@
          = Li+1, if Ri <= d < Ri+1, for -1 < i < n-1,
          = Ln-1, if d >= Rn-1.
   \endverbatim
+
+  The L(d)th node of the children field is that which is displayed
 
   Specifying too few levels will result in the last level being used
   repeatedly for the lowest levels of detail. If more levels than
@@ -106,6 +103,8 @@
   TimeSensor node is contained within an inactive level of an LOD
   node, the TimeSensor node sends events regardless of the LOD node's
   state.
+
+  The bboxCenter and bboxSize fields specify a bounding box that encloses the LOD node's children. This is a hint that may be used for optimization purposes. The results are undefined if the specified bounding box is smaller than the actual bounding box of the child with the largest bounding box at any time. A default bboxSize value, (−1, −1, −1), implies that the bounding box is not specified and, if needed, is calculated by the browser. A description of the bboxCenter and bboxSize fields is contained in "10.2.2 Bounding boxes" (https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/components/group.html#Boundingboxes).
 */
 
 /*!
@@ -127,7 +126,7 @@
 
 #include <Inventor/X3Dnodes/SoX3DMacros.h>
 #include <Inventor/X3Dnodes/SoX3DParent.h>
-#include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/actions/SoX3DGLRenderAction.h>
 #include <Inventor/actions/SoWriteAction.h>
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
@@ -340,16 +339,16 @@ SoX3DLOD::doAction(SoAction * action)
   }
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DLOD::callback(SoCallbackAction * action)
 {
   SoX3DLOD::doAction((SoAction*)action);
 }
 
-// Doc in parent
+// doc in parent
 void
-SoX3DLOD::GLRender(SoGLRenderAction * action)
+SoX3DLOD::GLRender(SoX3DGLRenderAction * action)
 {
   switch (action->getCurPathCode()) {
   case SoAction::NO_PATH:
@@ -368,14 +367,14 @@ SoX3DLOD::GLRender(SoGLRenderAction * action)
   }
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DLOD::rayPick(SoRayPickAction * action)
 {
   SoX3DLOD::doAction((SoAction*) action);
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DLOD::getBoundingBox(SoGetBoundingBoxAction * action)
 {
@@ -387,28 +386,28 @@ SoX3DLOD::getBoundingBox(SoGetBoundingBoxAction * action)
   inherited::getBoundingBox(action);
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DLOD::search(SoSearchAction * action)
 {
   inherited::search(action);
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DLOD::write(SoWriteAction * action)
 {
   SoNode::write(action);
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DLOD::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
   SoX3DLOD::doAction((SoAction*) action);
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DLOD::audioRender(SoAudioRenderAction * action)
 {
@@ -417,9 +416,9 @@ SoX3DLOD::audioRender(SoAudioRenderAction * action)
   PRIVATE(this)->postAudioRender(this, action);
 }
 
-// Doc in parent
+// doc in parent
 void
-SoX3DLOD::GLRenderBelowPath(SoGLRenderAction * action)
+SoX3DLOD::GLRenderBelowPath(SoX3DGLRenderAction * action)
 {
   int idx = this->whichToTraverse(action);
   if (idx >= 0) {
@@ -458,9 +457,9 @@ SoX3DLOD::GLRenderBelowPath(SoGLRenderAction * action)
                                            SoGLCacheContextElement::DONT_AUTO_CACHE);
 }
 
-// Doc in parent
+// doc in parent
 void
-SoX3DLOD::GLRenderInPath(SoGLRenderAction * action)
+SoX3DLOD::GLRenderInPath(SoX3DGLRenderAction * action)
 {
   int numindices;
   const int * indices;
@@ -486,9 +485,9 @@ SoX3DLOD::GLRenderInPath(SoGLRenderAction * action)
   }
 }
 
-// Doc in parent
+// doc in parent
 void
-SoX3DLOD::GLRenderOffPath(SoGLRenderAction * action)
+SoX3DLOD::GLRenderOffPath(SoX3DGLRenderAction * action)
 {
   int idx = this->whichToTraverse(action);;
   if (idx >= 0) {
@@ -506,7 +505,7 @@ SoX3DLOD::GLRenderOffPath(SoGLRenderAction * action)
   }
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DLOD::addChild(SoNode * child)
 {
@@ -514,7 +513,7 @@ SoX3DLOD::addChild(SoNode * child)
   PRIVATE(this)->childlistvalid = FALSE;
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DLOD::insertChild(SoNode * child, int idx)
 {
@@ -522,28 +521,28 @@ SoX3DLOD::insertChild(SoNode * child, int idx)
   PRIVATE(this)->childlistvalid = FALSE;
 }
 
-// Doc in parent
+// doc in parent
 SoNode *
 SoX3DLOD::getChild(int idx) const
 {
   return this->level.getNode(idx);
 }
 
-// Doc in parent
+// doc in parent
 int
 SoX3DLOD::findChild(const SoNode * child) const
 {
   return this->level.findNode(child);
 }
 
-// Doc in parent
+// doc in parent
 int
 SoX3DLOD::getNumChildren(void) const // virtual
 {
   return this->level.getNumNodes();
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DLOD::removeChild(int idx)
 {
@@ -551,7 +550,7 @@ SoX3DLOD::removeChild(int idx)
   PRIVATE(this)->childlistvalid = FALSE;
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DLOD::removeChild(SoNode * child)
 {
@@ -559,7 +558,7 @@ SoX3DLOD::removeChild(SoNode * child)
   PRIVATE(this)->childlistvalid = FALSE;
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DLOD::removeAllChildren(void)
 {
@@ -568,7 +567,7 @@ SoX3DLOD::removeAllChildren(void)
   PRIVATE(this)->childlistvalid = TRUE;
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DLOD::replaceChild(int idx, SoNode * child)
 {
@@ -576,7 +575,7 @@ SoX3DLOD::replaceChild(int idx, SoNode * child)
   PRIVATE(this)->childlistvalid = FALSE;
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DLOD::replaceChild(SoNode * old,
                            SoNode * child)
@@ -585,7 +584,7 @@ SoX3DLOD::replaceChild(SoNode * old,
   PRIVATE(this)->childlistvalid = FALSE;
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DLOD::notify(SoNotList * list)
 {
@@ -597,7 +596,7 @@ SoX3DLOD::notify(SoNotList * list)
   PRIVATE(this)->notifyCalled();
 }
 
-// Doc in parent
+// doc in parent
 SbBool
 SoX3DLOD::readInstance(SoInput * in,
                         unsigned short flags)
@@ -610,10 +609,10 @@ SoX3DLOD::readInstance(SoInput * in,
   return ret;
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DLOD::copyContents(const SoFieldContainer * from,
-                        SbBool copyConn)
+                       SbBool copyConn)
 {
   SoGroup::children->truncate(0);
   SoNode::copyContents(from, copyConn);
@@ -648,7 +647,7 @@ SoX3DLOD::whichToTraverse(SoAction * action)
   return i;
 }
 
-// Doc in parent
+// doc in parent
 SoChildList *
 SoX3DLOD::getChildren(void) const
 {

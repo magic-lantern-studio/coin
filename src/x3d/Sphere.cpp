@@ -42,22 +42,24 @@
 
   \ingroup coin_X3Dnodes
 
-  \WEB3DCOPYRIGHT
+  \WEBX3DCOPYRIGHT
 
   \verbatim
-  Sphere {
-    field SFFloat radius  1    # (0, inf)
+  Sphere : X3DGeometryNode { 
+    SFNode  [in,out] metadata NULL [X3DMetadataObject]
+    SFFloat []       radius   1    (0,∞)
+    SFBool  []       solid    TRUE
   }
   \endverbatim
 
   The Sphere node specifies a sphere centred at (0, 0, 0) in the local
   coordinate system. The radius field specifies the radius of the
-  sphere and shall be greater than zero. Figure 6.15 depicts the
+  sphere and shall be greater than zero. [Figure 13.8](https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/components/geometry3D.html#f-Spherenode) depicts the
   fields of the Sphere node.
 
   <center>
-  <img src="http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-X3D/Images/sphere.gif">
-  Figure 6.15 -- Sphere node
+  <img src="https://www.web3d.org/documents/specifications/19775-1/V3.0/Images/sphere.gif">
+  Figure 13.8 -- Sphere node
   </center>
 
   When a texture is applied to a sphere, the texture covers the entire
@@ -66,14 +68,19 @@
   the top of the sphere. The texture has a seam at the back where the
   X=0 plane intersects the sphere and Z values are
   negative. TextureTransform affects the texture coordinates of the
-  Sphere.  The Sphere node's geometry requires outside faces
-  only. When viewed from the inside the results are undefined.
+  Sphere ([See 18.4.8 Texture Transform](https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/components/texturing.html#TextureTransform)).
 
+  The solid field determines whether the sphere is visible when viewed from the inside. [11.2.3 Common geometry fields](https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/components/rendering.html#CommonGeometryFields) provides a complete description of the solid field.
 */
 
 /*!
   \var SoSFFloat SoX3DSphere::radius
   Sphere radius. Default value is 1.0.
+*/
+
+/*!
+  \var SoSFBool SoX3DSphere::solid
+  Sphere visibility flag when viewed from the inside.
 */
 
 #include <Inventor/X3Dnodes/SoX3DSphere.h>
@@ -84,7 +91,7 @@
 #include <Inventor/misc/SoState.h>
 #include <Inventor/elements/SoGLMultiTextureEnabledElement.h>
 #include <Inventor/elements/SoLazyElement.h>
-#include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/actions/SoX3DGLRenderAction.h>
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/SoPickedPoint.h>
@@ -118,6 +125,7 @@ SoX3DSphere::SoX3DSphere(void)
   SO_X3DNODE_INTERNAL_CONSTRUCTOR(SoX3DSphere);
 
   SO_X3DNODE_ADD_FIELD(radius, (1.0f));
+  SO_X3DNODE_ADD_FIELD(solid, (TRUE));
 }
 
 /*!
@@ -129,7 +137,7 @@ SoX3DSphere::~SoX3DSphere()
 
 // Doc in parent
 void
-SoX3DSphere::GLRender(SoGLRenderAction * action)
+SoX3DSphere::GLRender(SoX3DGLRenderAction * action)
 {
   if (!shouldGLRender(action)) return;
 
@@ -159,7 +167,7 @@ SoX3DSphere::GLRender(SoGLRenderAction * action)
                      flags, state);
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DSphere::rayPick(SoRayPickAction * action)
 {
@@ -169,7 +177,7 @@ SoX3DSphere::rayPick(SoRayPickAction * action)
                      action);
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DSphere::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
@@ -184,14 +192,14 @@ SoX3DSphere::generatePrimitives(SoAction * action)
 {
   float complexity = this->getComplexityValue(action);
 
-  sogen_generate_sphere(this->radius.getValue(),
-                        (int)(SPHERE_NUM_SLICES * complexity),
-                        (int)(SPHERE_NUM_STACKS * complexity),
-                        this,
-                        action);
+  sox3dgen_generate_sphere(this->radius.getValue(),
+                           (int)(SPHERE_NUM_SLICES * complexity),
+                           (int)(SPHERE_NUM_STACKS * complexity),
+                           this,
+                           action);
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DSphere::computeBBox(SoAction * COIN_UNUSED_ARG(action),
                           SbBox3f & box,

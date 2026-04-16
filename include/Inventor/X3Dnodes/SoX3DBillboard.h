@@ -58,15 +58,15 @@ public:
 
   virtual void doAction(SoAction * action);
   virtual void callback(SoCallbackAction * action);
-  virtual void GLRender(SoGLRenderAction * action);
+  virtual void GLRender(SoX3DGLRenderAction * action);
   virtual void getBoundingBox(SoGetBoundingBoxAction * action);
   virtual void getMatrix(SoGetMatrixAction * action);
   virtual void pick(SoPickAction * action);
   virtual void search(SoSearchAction * action);
 
-  virtual void GLRenderBelowPath(SoGLRenderAction * action);
-  virtual void GLRenderInPath(SoGLRenderAction * action);
-  virtual void GLRenderOffPath(SoGLRenderAction * action);
+  virtual void GLRenderBelowPath(SoX3DGLRenderAction * action);
+  virtual void GLRenderInPath(SoX3DGLRenderAction * action);
+  virtual void GLRenderOffPath(SoX3DGLRenderAction * action);
 
   virtual void notify(SoNotList * list);
 

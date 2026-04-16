@@ -54,7 +54,7 @@ protected:
   virtual ~SoX3DGeometry();
 
   void setupShapeHints(SoState * state, const SbBool ccw, const SbBool solid);
-  virtual SbBool shouldGLRender(SoGLRenderAction * action);
+  virtual SbBool shouldGLRender(SoX3DGLRenderAction * action);
   virtual SoChildList * getChildren(void) const;
   virtual void notify(SoNotList * list);
 

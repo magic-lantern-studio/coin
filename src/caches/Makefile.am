@@ -12,7 +12,9 @@ RegularSources = \
 	SoPrimitiveVertexCache.cpp \
 	SoGlyphCache.cpp \
 	SoShaderProgramCache.cpp \
-	SoVBOCache.cpp
+	SoVBOCache.cpp \
+	SoX3DGLCacheList.cpp \
+	SoX3DGLRenderCache.cpp
 
 LinkHackSources = \
 	all-caches-cpp.cpp

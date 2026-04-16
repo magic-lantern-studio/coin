@@ -42,35 +42,36 @@
 
   \ingroup coin_X3Dnodes
 
-  \WEB3DCOPYRIGHT
+  \WEBX3DCOPYRIGHT
 
   \verbatim
-  Transform {
-    eventIn      MFNode      addChildren
-    eventIn      MFNode      removeChildren
-    exposedField SFVec3f     center           0 0 0    # (-inf,inf)
-    exposedField MFNode      children         []
-    exposedField SFRotation  rotation         0 0 1 0  # [-1,1],(-inf,inf)
-    exposedField SFVec3f     scale            1 1 1    # (0,inf)
-    exposedField SFRotation  scaleOrientation 0 0 1 0  # [-1,1],(-inf,inf)
-    exposedField SFVec3f     translation      0 0 0    # (-inf,inf)
-    field        SFVec3f     bboxCenter       0 0 0    # (-inf,inf)
-    field        SFVec3f     bboxSize         -1 -1 -1 # (0,inf) or -1,-1,-1
+  Transform : X3DGroupingNode {
+    MFNode     [in]     addChildren               [X3DChildNode]
+    MFNode     [in]     removeChildren            [X3DChildNode]
+    SFVec3f    [in,out] center           0 0 0    (-∞,∞)
+    MFNode     [in,out] children         []       [X3DChildNode]
+    SFNode     [in,out] metadata         NULL     [X3DMetadataObject]
+    SFRotation [in,out] rotation         0 0 1 0  [-1,1] or (-∞,∞)
+    SFVec3f    [in,out] scale            1 1 1    (0,∞)
+    SFRotation [in,out] scaleOrientation 0 0 1 0  [-1,1] or (-∞,∞)
+    SFVec3f    [in,out] translation      0 0 0    (-∞,∞)
+    SFVec3f    []       bboxCenter       0 0 0    (-∞,∞)
+    SFVec3f    []       bboxSize         -1 -1 -1 [0,∞) or −1 −1 −1
   }
   \endverbatim
 
   The Transform node is a grouping node that defines a coordinate
   system for its children that is relative to the coordinate systems
-  of its ancestors.  See 4.4.4, Transformation hierarchy
-  (<http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-X3D/part1/concepts.html#4.4.4>),
-  and 4.4.5, Standard units and coordinate system
-  (<http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-X3D/part1/concepts.html#4.4.5>),
+  of its ancestors.  See "4.3.5, Transformation hierarchy"
+  (https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/concepts.html#Transformationhierarchy),
+  and "4.3.6, Standard units and coordinate system"
+  (https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/concepts.html#Standardunitscoordinates),
   for a description of coordinate systems and transformations.
 
-  4.6.5, Grouping and children nodes
-  (<http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-X3D/part1/concepts.html#4.6.5>),
+  "10.2.1, Grouping and children node types"
+  (https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/components/group.html#GroupingAndChildrenNodes),
   provides a description of the children, addChildren, and removeChildren
-  fields and eventIns.
+  fields.
 
   The bboxCenter and bboxSize fields specify a bounding box that
   encloses the children of the Transform node. This is a hint that may
@@ -85,8 +86,8 @@
   coordinate system of the children). The results are undefined if the
   specified bounding box is smaller than the true bounding box of the
   group. A description of the bboxCenter and bboxSize fields is
-  provided in 4.6.4, Bounding boxes
-  (<http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-X3D/part1/concepts.html#4.6.4>).
+  provided in "10.2.2, Bounding boxes"
+  (https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/components/group.html#BoundingBoxes).
 
   The translation, rotation, scale, scaleOrientation and center fields
   define a geometric 3D transformation consisting of (in order):
@@ -113,7 +114,7 @@
   S (scale) are the equivalent transformation matrices,
 
   \verbatim
-  P' = T � C � R � SR � S � -SR � -C � P
+  P' = T × C × R × SR × S × -SR × -C × P
   \endverbatim
 
   The following Transform node:
@@ -417,7 +418,7 @@ SoX3DTransform::recenter(const SbVec3f & newcenter)
   this->center = newcenter;
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DTransform::doAction(SoAction * action)
 {
@@ -428,7 +429,7 @@ SoX3DTransform::doAction(SoAction * action)
   state->pop();
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DTransform::callback(SoCallbackAction * action)
 {
@@ -439,7 +440,7 @@ SoX3DTransform::callback(SoCallbackAction * action)
   state->pop();
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DTransform::getBoundingBox(SoGetBoundingBoxAction * action)
 {
@@ -450,7 +451,7 @@ SoX3DTransform::getBoundingBox(SoGetBoundingBoxAction * action)
   state->pop();
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DTransform::getMatrix(SoGetMatrixAction * action)
 {
@@ -471,7 +472,7 @@ SoX3DTransform::getMatrix(SoGetMatrixAction * action)
   action->getState()->pop();
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DTransform::rayPick(SoRayPickAction * action)
 {
@@ -482,14 +483,14 @@ SoX3DTransform::rayPick(SoRayPickAction * action)
   state->pop();
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DTransform::audioRender(SoAudioRenderAction * action)
 {
   SoX3DTransform::doAction((SoAction*)action);
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DTransform::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
@@ -500,9 +501,9 @@ SoX3DTransform::getPrimitiveCount(SoGetPrimitiveCountAction * action)
   state->pop();
 }
 
-// Doc in parent
+// doc in parent
 void
-SoX3DTransform::GLRenderBelowPath(SoGLRenderAction * action)
+SoX3DTransform::GLRenderBelowPath(SoX3DGLRenderAction * action)
 {
   SoState * state = action->getState();
   state->push();
@@ -511,9 +512,9 @@ SoX3DTransform::GLRenderBelowPath(SoGLRenderAction * action)
   state->pop();
 }
 
-// Doc in parent
+// doc in parent
 void
-SoX3DTransform::GLRenderInPath(SoGLRenderAction * action)
+SoX3DTransform::GLRenderInPath(SoX3DGLRenderAction * action)
 {
   if (action->getCurPathCode() == SoAction::IN_PATH) {
     SoState * state = action->getState();
@@ -528,7 +529,7 @@ SoX3DTransform::GLRenderInPath(SoGLRenderAction * action)
   }
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DTransform::notify(SoNotList * list)
 {

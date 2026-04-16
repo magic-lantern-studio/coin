@@ -39,6 +39,7 @@ class SoAction;
 class SoCallbackAction;
 class SoChildList;
 class SoGLRenderAction;
+class SoX3DGLRenderAction;
 class SoGetBoundingBoxAction;
 class SoGetMatrixAction;
 class SoGetPrimitiveCountAction;
@@ -96,10 +97,19 @@ public:
   virtual SbBool affectsState(void) const;
 
   virtual void doAction(SoAction * action);
+  
+  #ifdef HAVE_X3D
+  virtual void GLRender(SoX3DGLRenderAction * action);
+  virtual void GLRenderBelowPath(SoX3DGLRenderAction * action);
+  virtual void GLRenderInPath(SoX3DGLRenderAction * action);
+  virtual void GLRenderOffPath(SoX3DGLRenderAction * action);
+  #else
   virtual void GLRender(SoGLRenderAction * action);
   virtual void GLRenderBelowPath(SoGLRenderAction * action);
   virtual void GLRenderInPath(SoGLRenderAction * action);
   virtual void GLRenderOffPath(SoGLRenderAction * action);
+  #endif // HAVE_X3D
+  
   virtual void callback(SoCallbackAction * action);
   virtual void getBoundingBox(SoGetBoundingBoxAction * action);
   virtual void getMatrix(SoGetMatrixAction * action);

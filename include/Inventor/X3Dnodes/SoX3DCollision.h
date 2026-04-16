@@ -63,7 +63,7 @@ public:
 
   SoSFNode metadata;
 
-  virtual void GLRender(SoGLRenderAction * action);
+  virtual void GLRender(SoX3DGLRenderAction * action);
 
   virtual void notify(SoNotList * list);
 

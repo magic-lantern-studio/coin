@@ -114,7 +114,7 @@ SoX3DGeometry::~SoX3DGeometry()
 
 // Doc in parent
 SbBool
-SoX3DGeometry::shouldGLRender(SoGLRenderAction * action)
+SoX3DGeometry::shouldGLRender(SoX3DGLRenderAction * action)
 {
   return inherited::shouldGLRender(action);
 }

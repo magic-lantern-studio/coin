@@ -53,12 +53,14 @@
 #include <Inventor/X3Dnodes/SoX3DFog.h>
 #include <Inventor/X3Dnodes/SoX3DFontStyle.h>
 #include <Inventor/X3Dnodes/SoX3DGeometry.h>
+#include <Inventor/X3Dnodes/SoX3DGeometryNode.h>
 #include <Inventor/X3Dnodes/SoX3DGroup.h>
+#include <Inventor/X3Dnodes/SoX3DGroupingNode.h>
 #include <Inventor/X3Dnodes/SoX3DImageTexture.h>
 #include <Inventor/X3Dnodes/SoX3DIndexedFaceSet.h>
 #include <Inventor/X3Dnodes/SoX3DIndexedLine.h>
 #include <Inventor/X3Dnodes/SoX3DIndexedLineSet.h>
-#include <Inventor/X3Dnodes/SoX3DIndexedShape.h>
+//#include <Inventor/X3Dnodes/SoX3DIndexedShape.h>
 #include <Inventor/X3Dnodes/SoX3DInline.h>
 //#include <Inventor/X3Dnodes/SoX3DInterpOutput.h>
 //#include <Inventor/X3Dnodes/SoX3DInterpOutputData.h>
@@ -95,8 +97,8 @@
 #include <Inventor/X3Dnodes/SoX3DTouchSensor.h>
 #include <Inventor/X3Dnodes/SoX3DTransform.h>
 #include <Inventor/X3Dnodes/SoX3DVertexLine.h>
-#include <Inventor/X3Dnodes/SoX3DVertexPoint.h>
-#include <Inventor/X3Dnodes/SoX3DVertexShape.h>
+//#include <Inventor/X3Dnodes/SoX3DVertexPoint.h>
+//#include <Inventor/X3Dnodes/SoX3DVertexShape.h>
 #include <Inventor/X3Dnodes/SoX3DViewpoint.h>
 #include <Inventor/X3Dnodes/SoX3DVisibilitySensor.h>
 #include <Inventor/X3Dnodes/SoX3DWorldInfo.h>

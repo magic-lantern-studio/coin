@@ -109,7 +109,7 @@
 #include <Inventor/X3Dnodes/SoX3DMacros.h>
 #include <Inventor/actions/SoActions.h>
 #include <Inventor/caches/SoBoundingBoxCache.h>
-#include <Inventor/caches/SoGLCacheList.h>
+#include <Inventor/caches/SoX3DGLCacheList.h>
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/elements/SoCullElement.h>
 #include <Inventor/elements/SoLocalBBoxMatrixElement.h>
@@ -138,7 +138,7 @@
 // when doing threadsafe rendering, each thread needs its own
 // glcachelist
 typedef struct {
-  SoGLCacheList * glcachelist;
+  SoX3DGLCacheList * glcachelist;
 } sovrmlgroup_storage;
 
 static void
@@ -188,7 +188,7 @@ public:
 public:
   enum { YES, NO, MAYBE } hassoundchild;
 
-  SoGLCacheList * getGLCacheList(const SbBool createifnull);
+  SoX3DGLCacheList * getGLCacheList(const SbBool createifnull);
 
   void invalidateGLCaches(void) {
     glcachestorage->applyToAll(invalidate_gl_cache, NULL);
@@ -204,13 +204,13 @@ public:
 #endif // !COIN_THREADSAFE
 };
 
-SoGLCacheList *
+SoX3DGLCacheList *
 SoX3DGroupP::getGLCacheList(const SbBool createifnull)
 {
   sovrmlgroup_storage * ptr = 
     (sovrmlgroup_storage*) this->glcachestorage->get();
   if (createifnull && ptr->glcachelist == NULL) {
-    ptr->glcachelist = new SoGLCacheList(SoX3DGroup::getNumRenderCaches());
+    ptr->glcachelist = new SoX3DGLCacheList(SoX3DGroup::getNumRenderCaches());
   }
   return ptr->glcachelist;
 }
@@ -352,7 +352,7 @@ SoX3DGroup::callback(SoCallbackAction * action)
 
 // Doc in parent
 void
-SoX3DGroup::GLRender(SoGLRenderAction * action )
+SoX3DGroup::GLRender(SoX3DGLRenderAction * action )
 {
   switch (action->getCurPathCode()) {
   case SoAction::NO_PATH:
@@ -561,12 +561,12 @@ SoX3DGroup::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 
 // Doc in parent
 void
-SoX3DGroup::GLRenderBelowPath(SoGLRenderAction * action)
+SoX3DGroup::GLRenderBelowPath(SoX3DGLRenderAction * action)
 {
   SoState * state = action->getState();
   state->push();
   SbBool didcull = FALSE;
-  SoGLCacheList * createcache = NULL;
+  SoX3DGLCacheList * createcache = NULL;
   if ((this->renderCaching.getValue() != OFF) && 
       (SoX3DGroup::getNumRenderCaches() > 0)) {
     if (!state->isCacheOpen()) {
@@ -579,7 +579,7 @@ SoX3DGroup::GLRenderBelowPath(SoGLRenderAction * action)
     }
     
     PRIVATE(this)->lock();
-    SoGLCacheList * glcachelist = PRIVATE(this)->getGLCacheList(TRUE);
+    SoX3DGLCacheList * glcachelist = PRIVATE(this)->getGLCacheList(TRUE);
     PRIVATE(this)->unlock();
     if (glcachelist->call(action)) {
 #if GLCACHE_DEBUG && 1 // debug
@@ -650,7 +650,7 @@ SoX3DGroup::GLRenderBelowPath(SoGLRenderAction * action)
 
 // Doc in parent
 void
-SoX3DGroup::GLRenderInPath(SoGLRenderAction * action)
+SoX3DGroup::GLRenderInPath(SoX3DGLRenderAction * action)
 {
   int numindices;
   const int * indices;
@@ -704,7 +704,7 @@ SoX3DGroup::GLRenderInPath(SoGLRenderAction * action)
 
 // Doc in parent
 void
-SoX3DGroup::GLRenderOffPath(SoGLRenderAction * COIN_UNUSED_ARG(action))
+SoX3DGroup::GLRenderOffPath(SoX3DGLRenderAction * COIN_UNUSED_ARG(action))
 {
   // do nothing
 }

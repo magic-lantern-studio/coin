@@ -51,7 +51,7 @@ public:
   SoSFBool colorPerVertex;
 
   virtual void doAction(SoAction * action);
-  virtual void GLRender(SoGLRenderAction * action);
+  virtual void GLRender(SoX3DGLRenderAction * action);
   virtual void getBoundingBox(SoGetBoundingBoxAction * action);
   virtual void callback(SoCallbackAction * action);
   virtual void pick(SoPickAction * action);
@@ -62,7 +62,7 @@ protected:
   SoX3DVertexLine(void);
   virtual ~SoX3DVertexLine();
 
-  virtual SbBool shouldGLRender(SoGLRenderAction * action);
+  virtual SbBool shouldGLRender(SoX3DGLRenderAction * action);
 
 }; // class SoX3DVertexLine
 

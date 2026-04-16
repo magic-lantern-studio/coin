@@ -70,7 +70,7 @@ public:
 
   virtual void doAction(SoAction * action);
   virtual void callback(SoCallbackAction * action);
-  virtual void GLRender(SoGLRenderAction * action);
+  virtual void GLRender(SoX3DGLRenderAction * action);
   virtual void rayPick(SoRayPickAction * action);
   virtual void getBoundingBox(SoGetBoundingBoxAction * action);
   virtual void search(SoSearchAction * action);
@@ -78,9 +78,9 @@ public:
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
   virtual void audioRender(SoAudioRenderAction * action);
 
-  virtual void GLRenderBelowPath(SoGLRenderAction * action);
-  virtual void GLRenderInPath(SoGLRenderAction * action);
-  virtual void GLRenderOffPath(SoGLRenderAction * action);
+  virtual void GLRenderBelowPath(SoX3DGLRenderAction * action);
+  virtual void GLRenderInPath(SoX3DGLRenderAction * action);
+  virtual void GLRenderOffPath(SoX3DGLRenderAction * action);
 
   void addChild(SoNode * child);
   void insertChild(SoNode * child, int idx);

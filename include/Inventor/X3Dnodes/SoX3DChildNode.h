@@ -42,6 +42,7 @@
 // 2026-03-13 msm (WizzerWorks)
 
 class SoX3DChildNodeP;
+class SoX3DCallbackAction;
 
 class COIN_DLL_API SoX3DChildNode : public SoX3DNode
 {
@@ -65,8 +66,8 @@ public:
   virtual void replaceChild(SoNode * oldchild, SoNode * newchild);
 
   virtual void doAction(SoAction * action);
-  virtual void GLRender(SoGLRenderAction * action);
-  virtual void callback(SoCallbackAction * action);
+  virtual void GLRender(SoX3DGLRenderAction * action);
+  virtual void callback(SoX3DCallbackAction * action);
   virtual void getBoundingBox(SoGetBoundingBoxAction * action);
   virtual void getMatrix(SoGetMatrixAction * action);
   virtual void handleEvent(SoHandleEventAction * action);

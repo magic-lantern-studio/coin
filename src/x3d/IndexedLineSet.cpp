@@ -42,17 +42,18 @@
 
   \ingroup coin_X3Dnodes
 
-  \WEB3DCOPYRIGHT
+  \WEBX3DCOPYRIGHT
 
   \verbatim
-  IndexedLineSet {
-    eventIn       MFInt32 set_colorIndex
-    eventIn       MFInt32 set_coordIndex
-    exposedField  SFNode  color             NULL
-    exposedField  SFNode  coord             NULL
-    field         MFInt32 colorIndex        []     # [-1, inf)
-    field         SFBool  colorPerVertex    TRUE
-    field         MFInt32 coordIndex        []     # [-1, inf)
+  IndexedLineSet : X3DGeometryNode {
+    MFInt32 [in]     set_colorIndex
+    MFInt32 [in]     set_coordIndex
+    SFNode  [in,out] color          NULL [X3DColorNode]
+    SFNode  [in,out] coord          NULL [X3DCoordinateNode]
+    SFNode  [in,out] metadata       NULL [X3DMetadataObject]
+    MFInt32 []       colorIndex     []   [0,∞) or -1
+    SFBool  []       colorPerVertex TRUE
+    MFInt32 []       coordIndex     []   [0,∞) or -1
   }
   \endverbatim
 
@@ -67,10 +68,14 @@
   of its ancestors.  
 
   The coord field specifies the 3D vertices of the line set and
-  contains a Coordinate node.  Lines are not lit, are not
+  contains a Coordinate node.
+
+  Lines are not lit, are not
   texture-mapped, and do not participate in collision detection. The
   width of lines is implementation dependent and each line segment is
-  solid (i.e., not dashed).  If the color field is not NULL, it shall
+  solid (i.e., not dashed).
+
+  If the color field is not NULL, it shall
   contain a Color node.  The colours are applied to the line(s) as
   follows: 
   
@@ -107,9 +112,9 @@
   If the color field is NULL and there is a Material defined for the
   Appearance affecting this IndexedLineSet, the emissiveColor of the
   Material shall be used to draw the lines. Details on lighting
-  equations as they affect IndexedLineSet nodes are described in 4.14,
-  Lighting model
-  (<http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-X3D/part1/concepts.html#4.14>).  
+  equations as they affect IndexedLineSet nodes are described in "17,
+  Lighting model"
+  (https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/components/lighting.html).  
 
 */
 
@@ -118,12 +123,14 @@
 #include <cassert>
 
 #include <Inventor/X3Dnodes/SoX3DMacros.h>
+#include <Inventor/X3Dnodes/SoX3DCoordinate.h>
+
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/caches/SoNormalCache.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/misc/SoGLDriverDatabase.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
-#include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/actions/SoX3DGLRenderAction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/system/gl.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
@@ -143,6 +150,7 @@
 #include <Inventor/bundles/SoTextureCoordinateBundle.h>
 #include <Inventor/details/SoLineDetail.h>
 #include <Inventor/caches/SoBoundingBoxCache.h>
+
 #include <Inventor/SbColor4f.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -195,6 +203,14 @@ SoX3DIndexedLineSet::SoX3DIndexedLineSet(void)
 {
   PRIVATE(this) = new SoX3DIndexedLineSetP;
   SO_X3DNODE_INTERNAL_CONSTRUCTOR(SoX3DIndexedLineSet);
+
+  SO_X3DNODE_ADD_EVENT_IN(set_colorIndex);
+  SO_X3DNODE_ADD_EVENT_IN(set_coordIndex);
+  SO_X3DNODE_ADD_EXPOSED_FIELD(color, (NULL));
+  SO_X3DNODE_ADD_EXPOSED_FIELD(coord, (NULL));
+  SO_X3DNODE_ADD_EMPTY_MFIELD(coordIndex);
+  SO_X3DNODE_ADD_FIELD(colorPerVertex, (TRUE));
+  SO_X3DNODE_ADD_EMPTY_MFIELD(colorIndex);
 }
 
 SoX3DIndexedLineSet::~SoX3DIndexedLineSet()
@@ -204,7 +220,7 @@ SoX3DIndexedLineSet::~SoX3DIndexedLineSet()
 
 SoX3DIndexedLineSetP::Binding
 SoX3DIndexedLineSetP::findMaterialBinding(SoX3DIndexedLineSet * node,
-                                           SoState * state)
+                                          SoState * state)
 {
   Binding binding = OVERALL;
   if (SoOverrideElement::getMaterialBindingOverride(state)) {
@@ -250,7 +266,7 @@ SoX3DIndexedLineSetP::findMaterialBinding(SoX3DIndexedLineSet * node,
 }
 
 void
-SoX3DIndexedLineSet::GLRender(SoGLRenderAction * action)
+SoX3DIndexedLineSet::GLRender(SoX3DGLRenderAction * action)
 {
   if (this->coordIndex.getNum() < 2) return;
   
@@ -260,7 +276,17 @@ SoX3DIndexedLineSet::GLRender(SoGLRenderAction * action)
   SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
   SoMultiTextureEnabledElement::disableAll(state);
   
-  SoX3DVertexLine::GLRender(action);
+  //SoX3DVertexLine::GLRender(action);
+  SoNode * node;
+  
+  node = this->coord.getValue();
+  if (node) node->GLRender(action);
+  
+  node = this->color.getValue();
+  if (node) node->GLRender(action);
+  // Above GLRender code implemented here since SoX3DVertexLine is not part
+  // of X3D object hierarchy.
+  // 2026-04-10, msm (WizzerWorks)
 
   if (!this->shouldGLRender(action)) {
     state->pop();
@@ -461,7 +487,17 @@ SoX3DIndexedLineSet::generatePrimitives(SoAction * action)
   SoState * state = action->getState();
   state->push();
 
-  SoX3DVertexLine::doAction(action);
+  //SoX3DVertexLine::doAction(action);
+  SoNode * node;
+
+  node = this->coord.getValue();
+  if (node) node->doAction(action);
+
+  node = this->color.getValue();
+  if (node) node->doAction(action);
+  // Above doAction code implemented here since SoX3DVertexLine is not part
+  // of X3D object hierarchy.
+  // 2026-04-10, msm (WizzerWorks)
 
   const SoCoordinateElement * coords;
   int32_t numindices;
@@ -541,6 +577,59 @@ SoX3DIndexedLineSet::generatePrimitives(SoAction * action)
   state->pop();
 }
 
+void
+SoX3DIndexedLineSet::computeBBox(SoAction * COIN_UNUSED_ARG(action),
+                                 SbBox3f & box,
+                                 SbVec3f & center)
+{
+  SoX3DCoordinate * node = (SoX3DCoordinate*) this->coord.getValue();
+  if (node == NULL) return;
+
+  int numCoords = node->point.getNum();
+  const SbVec3f * coords = node->point.getValues(0);
+
+  box.makeEmpty();
+  const int32_t * ptr = coordIndex.getValues(0);
+  const int32_t * endptr = ptr + coordIndex.getNum();
+  while (ptr < endptr) {
+    int idx = *ptr++;
+    assert(idx < numCoords);
+    if (idx >= 0) box.extendBy(coords[idx]);
+  }
+  if (!box.isEmpty()) center = box.getCenter();
+}
+
+int
+SoX3DIndexedLineSet::getNumVerts(int COIN_UNUSED_ARG(startcoord))
+{
+  // FIXME: why is there just a dummy implementation of this method?)
+  // Please document special cases like this.  20030603 mortene.
+  return 0;
+}
+
+void
+SoX3DIndexedLineSet::setupIndices(int COIN_UNUSED_ARG(numFaces))
+{
+  // FIXME: why is there just a dummy implementation of this method?
+  // Please document special cases like this.  20030603 mortene.
+}
+
+const int32_t *
+SoX3DIndexedLineSet::getColorIndices(void) // protected
+{
+  // FIXME: why is there just a dummy implementation of this method?
+  // Please document special cases like this.  20030603 mortene.
+  return NULL;
+}
+
+// doc in parent
+SbBool
+SoX3DIndexedLineSet::shouldGLRender(SoX3DGLRenderAction * action)
+{
+  if (this->coord.getValue() == NULL) return FALSE;
+  return inherited::shouldGLRender(action);
+}
+
 void 
 SoX3DIndexedLineSet::notify(SoNotList * list)
 {
@@ -552,6 +641,20 @@ SoX3DIndexedLineSet::notify(SoNotList * list)
     UNLOCK_VAINDEXER(this);
   }
   inherited::notify(list);
+}
+
+// doc in parent
+void
+SoX3DIndexedLineSet::callback(SoX3DCallbackAction * action)
+{
+  inherited::callback(action);
+}
+
+// doc in parent
+void
+SoX3DIndexedLineSet::pick(SoPickAction * action)
+{
+  inherited::pick(action);
 }
 
 #undef LOCK_VAINDEXER

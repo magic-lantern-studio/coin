@@ -168,7 +168,7 @@
 #include <Inventor/X3Dnodes/SoX3DCollision.h>
 
 #include <Inventor/X3Dnodes/SoX3DMacros.h>
-#include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/actions/SoX3DGLRenderAction.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/elements/SoCacheElement.h>
@@ -228,7 +228,7 @@ SoX3DCollision::~SoX3DCollision() // virtual, protected
 
 // doc in parent
 void
-SoX3DCollision::GLRender(SoGLRenderAction * action)
+SoX3DCollision::GLRender(SoX3DGLRenderAction * action)
 {
   SoState * state = action->getState();
   state->push();

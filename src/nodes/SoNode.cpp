@@ -193,11 +193,11 @@ SbUniqueId is not really a class, just a \c typedef.
 
 // *************************************************************************
 
-#include <Inventor/nodes/SoNode.h>
-
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif // HAVE_CONFIG_H
+
+#include <Inventor/nodes/SoNode.h>
 
 #include <cassert>
 #include <cstdlib>
@@ -956,12 +956,21 @@ SoNode::GLRenderS(SoAction * action, SoNode * node)
 {
   if ((action->getCurPathCode() != SoAction::OFF_PATH) ||
       node->affectsState()) {
+#ifdef HAVE_X3D
+    if (((SoX3DGLRenderAction*)action)->abortNow()) {
+      SoCacheElement::invalidate(action->getState());
+    }
+    else {
+      node->GLRender((SoX3DGLRenderAction*)action);
+    }
+#else
     if (((SoGLRenderAction*)action)->abortNow()) {
       SoCacheElement::invalidate(action->getState());
     }
     else {
       node->GLRender((SoGLRenderAction*)action);
     }
+#endif // HAVE_X3D
   }
 
   if (COIN_DEBUG) {
@@ -990,6 +999,57 @@ SoNode::GLRenderS(SoAction * action, SoNode * node)
   }
 }
 
+#ifdef HAVE_X3D
+// Note that this documentation will also be used for all subclasses
+// which reimplements the method, so keep the doc "generic enough".
+/*!
+  Action method for the SoX3DGLRenderAction.
+
+  This is called during rendering traversals. Nodes influencing the
+  rendering state in any way or want to throw geometry primitives
+  at OpenGL override this method.
+*/
+void
+SoNode::GLRender(SoX3DGLRenderAction * COIN_UNUSED_ARG(action))
+{
+}
+
+// Note that this documentation will also be used for all subclasses
+// which reimplements the method, so keep the doc "generic enough".
+/*!
+  Implements the SoAction::BELOW_PATH traversal method for the
+  rendering action.
+*/
+void
+SoNode::GLRenderBelowPath(SoX3DGLRenderAction * action)
+{
+  this->GLRender(action);
+}
+
+// Note that this documentation will also be used for all subclasses
+// which reimplements the method, so keep the doc "generic enough".
+/*!
+  Implements the SoAction::IN_PATH traversal method for the rendering
+  action.
+*/
+void
+SoNode::GLRenderInPath(SoX3DGLRenderAction * action)
+{
+  this->GLRender(action);
+}
+
+// Note that this documentation will also be used for all subclasses
+// which reimplements the method, so keep the doc "generic enough".
+/*!
+  Implements the SoAction::OFF_PATH traversal method for the rendering
+  action.
+*/
+void
+SoNode::GLRenderOffPath(SoX3DGLRenderAction * action)
+{
+  this->GLRender(action);
+}
+#else
 // Note that this documentation will also be used for all subclasses
 // which reimplements the method, so keep the doc "generic enough".
 /*!
@@ -1039,6 +1099,7 @@ SoNode::GLRenderOffPath(SoGLRenderAction * action)
 {
   this->GLRender(action);
 }
+#endif // HAVE_X3D
 
 // *************************************************************************
 
@@ -1614,7 +1675,11 @@ static void
 init_action_methods(void)
 {
   SoCallbackAction::addMethod(SoNode::getClassTypeId(), SoNode::callbackS);
+  #ifdef HAVE_X3D
+  SoX3DGLRenderAction::addMethod(SoNode::getClassTypeId(), SoNode::GLRenderS);
+  #else
   SoGLRenderAction::addMethod(SoNode::getClassTypeId(), SoNode::GLRenderS);
+  #endif // HAVE_X3D
   SoGetBoundingBoxAction::addMethod(SoNode::getClassTypeId(), SoNode::getBoundingBoxS);
   SoGetMatrixAction::addMethod(SoNode::getClassTypeId(), SoNode::getMatrixS);
   SoGetPrimitiveCountAction::addMethod(SoNode::getClassTypeId(), SoNode::getPrimitiveCountS);
