@@ -23,7 +23,6 @@ set(COIN_X3D_FILES
 	Group.cpp
 	ImageTexture.cpp
 	IndexedFaceSet.cpp
-	IndexedLine.cpp
 	IndexedLineSet.cpp
 	Init.cpp
 	Inline.cpp
@@ -70,6 +69,7 @@ set(COIN_X3D_FILES
 	X3DBindableNode.cpp
 	X3DBoundedObject.cpp
 	X3DChildNode.cpp
+	X3DComposedGeometryNode.cpp
 	X3DGeometryNode.cpp
 	X3DGroupingNode.cpp
 	X3DMaterialNode.cpp

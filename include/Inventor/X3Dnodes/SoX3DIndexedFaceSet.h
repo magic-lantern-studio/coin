@@ -34,9 +34,10 @@
 #define COIN_SOX3DINDEXEDFACESET_H
 
 #include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/X3Dnodes/SoX3DIndexedShape.h>
+#include <Inventor/X3Dnodes/SoX3DComposedGeometryNode.h>
 #include <Inventor/fields/SoSFBool.h>
 #include <Inventor/fields/SoSFFloat.h>
+#include <Inventor/fields/SoMFInt32.h>
 
 #ifndef SO_END_FACE_INDEX // also defined in SoIndexedFaceSet.h
 #define SO_END_FACE_INDEX (-1)
@@ -44,31 +45,50 @@
 
 class SoX3DIndexedFaceSetP;
 
-class COIN_DLL_API SoX3DIndexedFaceSet : public SoX3DIndexedShape
+class COIN_DLL_API SoX3DIndexedFaceSet : public SoX3DComposedGeometryNode
 {
-  typedef SoX3DIndexedShape inherited;
+  typedef SoX3DComposedGeometryNode inherited;
   SO_NODE_HEADER(SoX3DIndexedFaceSet);
 
 public:
   static void initClass(void);
   SoX3DIndexedFaceSet(void);
 
-  SoSFBool ccw;
-  SoSFBool solid;
-  SoSFBool convex;
+  SoMFInt32 set_colorIndex;
+  SoMFInt32 set_coordIndex;
+  SoMFInt32 set_normalIndex;
+  SoMFInt32 set_texCoordIndex;
+  SoMFInt32 colorIndex;
+  SoMFInt32 coordIndex;
+  SoMFInt32 normalIndex;
+  SoMFInt32 texCoordIndex;
+  SoSFBool  convex;
   SoSFFloat creaseAngle;
 
-  virtual void GLRender( SoGLRenderAction * action );
-  virtual void getPrimitiveCount( SoGetPrimitiveCountAction * action );
+  virtual void computeBBox(SoAction * action, SbBox3f & box,
+                           SbVec3f & center);
 
-  virtual SbBool generateDefaultNormals(SoState * s, SoNormalBundle * nb );
+  virtual void GLRender(SoX3DGLRenderAction * action);
+  virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
+
+  virtual SbBool generateDefaultNormals(SoState * s, SoNormalBundle * nb);
   virtual SbBool generateDefaultNormals(SoState * state, SoNormalCache * nc);
 
 protected:
   virtual ~SoX3DIndexedFaceSet();
 
-  virtual void generatePrimitives( SoAction * action );
+  virtual void generatePrimitives(SoAction * action);
 
+  SbBool getVertexData(SoState * state,
+                       const SoCoordinateElement *& coords,
+                       const SbVec3f *& normals,
+                       const int32_t *& cindices,
+                       const int32_t *& nindices,
+                       const int32_t *& tindices,
+                       const int32_t *& mindices,
+                       int & numcindices,
+                       const SbBool neednormals,
+                       SbBool & normalcacheused);
 
 private:
 

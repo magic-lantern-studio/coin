@@ -49,9 +49,6 @@ so_x3d_init(void)
   SoX3DMetadataInteger::initClass();
   SoX3DMetadataSet::initClass();
   SoX3DMetadataString::initClass();
-  
-  SoX3DGeometry::initClass();
-  SoX3DIndexedShape::initClass();
 
   SoX3DParent::initClass();
   SoX3DGroup::initClass();
@@ -60,6 +57,7 @@ so_x3d_init(void)
   SoX3DGroupingNode::initClass();
   SoX3DBindableNode::initClass();
   SoX3DGeometryNode::initClass();
+  SoX3DComposedGeometryNode::initClass();
 
   SoX3DTexture::initClass();
 
@@ -92,11 +90,12 @@ so_x3d_init(void)
   SoX3DFog::initClass();
   SoX3DFontStyle::initClass();
   SoX3DImageTexture::initClass();
-  SoX3DIndexedFaceSet::initClass();
 
   SoX3DVertexLine::initClass();
   SoX3DIndexedLine::initClass();
   SoX3DIndexedLineSet::initClass();
+  SoX3DIndexedFaceSet::initClass();
+
   SoX3DInline::initClass();
   SoX3DLOD::initClass();
   SoX3DShape::initClass();
@@ -128,9 +127,6 @@ so_x3d_init(void)
   SoX3DViewpoint::initClass();
   SoX3DVisibilitySensor::initClass();
   SoX3DWorldInfo::initClass();
-
-  SoX3DGLCacheList::initClass();
-  SoX3DGLRenderCache::initClass();
 }
 
 #endif // HAVE_X3D

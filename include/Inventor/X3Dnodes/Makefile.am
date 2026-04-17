@@ -28,7 +28,6 @@ PublicHeaders = \
 	SoX3DGroup.h \
 	SoX3DImageTexture.h \
 	SoX3DIndexedFaceSet.h \
-	SoX3DIndexedLine.h \
 	SoX3DIndexedLineSet.h \
 	SoX3DInline.h \
 	SoX3DInterpolator.h \
@@ -91,7 +90,8 @@ PublicHeaders = \
 	SoX3DPointSet.h \
 	SoX3DPrototypeInstance.h \
 	SoX3DSensorNode.h \
-	SoX3DUrlObject.h
+	SoX3DUrlObject.h \
+	SoX3DComposedGeometryNode
 
 PrivateHeaders =
 ObsoleteHeaders =

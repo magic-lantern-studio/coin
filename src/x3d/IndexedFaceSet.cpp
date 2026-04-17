@@ -42,36 +42,37 @@
 
   \ingroup coin_X3Dnodes
 
-  \WEB3DCOPYRIGHT
+  \WEBX3DCOPYRIGHT
 
   \verbatim
-  IndexedFaceSet {
-    eventIn       MFInt32 set_colorIndex
-    eventIn       MFInt32 set_coordIndex
-    eventIn       MFInt32 set_normalIndex
-    eventIn       MFInt32 set_texCoordIndex
-    exposedField  SFNode  color             NULL
-    exposedField  SFNode  coord             NULL
-    exposedField  SFNode  normal            NULL
-    exposedField  SFNode  texCoord          NULL
-    field         SFBool  ccw               TRUE
-    field         MFInt32 colorIndex        []        # [-1,)
-    field         SFBool  colorPerVertex    TRUE
-    field         SFBool  convex            TRUE
-    field         MFInt32 coordIndex        []        # [-1,)
-    field         SFFloat creaseAngle       0         # [0,)
-    field         MFInt32 normalIndex       []        # [-1,)
-    field         SFBool  normalPerVertex   TRUE
-    field         SFBool  solid             TRUE
-    field         MFInt32 texCoordIndex     []        # [-1,)
+  IndexedFaceSet : X3DComposedGeometryNode {
+    MFInt32 [in]     set_colorIndex
+    MFInt32 [in]     set_coordIndex
+    MFInt32 [in]     set_normalIndex
+    MFInt32 [in]     set_texCoordIndex
+    SFNode  [in,out] color             NULL [X3DColorNode]
+    SFNode  [in,out] coord             NULL [X3DCoordinateNode]
+    SFNode  [in,out] metadata          NULL [X3DMetadataObject]
+    SFNode  [in,out] normal            NULL [X3DNormalNode]
+    SFNode  [in,out] texCoord          NULL [X3DTextureCoordinateNode]
+    SFBool  []       ccw               TRUE
+    MFInt32 []       colorIndex        []   [0,∞) or -1
+    SFBool  []       colorPerVertex    TRUE
+    SFBool  []       convex            TRUE
+    MFInt32 []       coordIndex        []   [0,∞) or -1
+    SFFloat []       creaseAngle       0    [0,∞)
+    MFInt32 []       normalIndex       []   [0,∞) or -1
+    SFBool  []       normalPerVertex   TRUE
+    SFBool  []       solid             TRUE
+    MFInt32 []       texCoordIndex     []   [-1,∞)
   }
   \endverbatim
 
   The IndexedFaceSet node represents a 3D shape formed by constructing
-  faces (polygons) from vertices listed in the coord field. The coord
+  faces (polygons) from vertices listed in the coord field. The \e coord
   field contains a Coordinate node that defines the 3D vertices
-  referenced by the coordIndex field. IndexedFaceSet uses the indices
-  in its coordIndex field to specify the polygonal faces by indexing
+  referenced by the \e coordIndex field. IndexedFaceSet uses the indices
+  in its \e coordIndex field to specify the polygonal faces by indexing
   into the coordinates in the Coordinate node. An index of "-1"
   indicates that the current face has ended and the next one
   begins. The last face may be (but does not have to be) followed by a
@@ -88,82 +89,82 @@
   The IndexedFaceSet node is specified in the local coordinate system
   and is affected by the transformations of its ancestors.
 
-  Descriptions of the coord, normal, and texCoord fields are provided
+  Descriptions of the \e coord, \e normal, and \e texCoord fields are provided
   in the SoX3DCoordinate, SoX3DNormal, and SoX3DTextureCoordinate nodes,
   respectively.
 
   Details on lighting equations and the interaction
   between color field, normal field, textures, materials, and
-  geometries are provided in 4.14, Lighting model.
+  geometries are provided in [11 Rendering component](https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/components/rendering.html) and [12 Shape component](https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/components/shape.html).
 
-  If the color field is not NULL, it shall contain a Color node whose
+  If the \e color field is not NULL, it shall contain a Color node whose
   colours are applied to the vertices or faces of the IndexedFaceSet
   as follows:
 
-  - If colorPerVertex is FALSE, colours are applied to each face, as
+  - If \e colorPerVertex is FALSE, colours are applied to each face, as
     follows:
 
-    - If the colorIndex field is not empty, then one colour is used
+    - If the \e colorIndex field is not empty, then one colour is used
       for each face of the IndexedFaceSet. There shall be at least as many indices
-      in the colorIndex field as there are faces in the IndexedFaceSet.
+      in the \e colorIndex field as there are faces in the IndexedFaceSet.
       If the greatest index in the colorIndex field is N, then there shall
-      be N+1 colours in the Color node. The colorIndex field shall not
+      be N+1 colours in the Color node. The \e colorIndex field shall not
       contain any negative entries.
 
-    - If the colorIndex field is empty, then the colours in the Color
+    - If the \e colorIndex field is empty, then the colours in the Color
       node are applied to each face of the IndexedFaceSet in order. There shall
       be at least as many colours in the Color node as there are faces.
 
-  - If colorPerVertex is TRUE, colours are applied to each vertex,
+  - If \e colorPerVertex is TRUE, colours are applied to each vertex,
     as follows:
 
-    - If the colorIndex field is not empty, then colours are applied
+    - If the \e colorIndex field is not empty, then colours are applied
       to each vertex of the IndexedFaceSet in exactly the same manner
       that the coordIndex field is used to choose coordinates for each
-      vertex from the Coordinate node. The colorIndex field shall
-      contain at least as many indices as the coordIndex field, and
+      vertex from the Coordinate node. The \e colorIndex field shall
+      contain at least as many indices as the \e coordIndex field, and
       shall contain end-of-face markers (-1) in exactly the same places
-      as the coordIndex field.  If the greatest index in the colorIndex
+      as the \e coordIndex field.  If the greatest index in the colorIndex
       field is N, then there shall be N+1 colours in the Color node.
 
-    - If the colorIndex field is empty, then the coordIndex field is
+    - If the \e colorIndex field is empty, then the \e coordIndex field is
       used to choose colours from the Color node. If the greatest index
-      in the coordIndex field is N, then there shall be N+1 colours in
+      in the \e coordIndex field is N, then there shall be N+1 colours in
       the Color node.
 
-  If the color field is NULL, the geometry shall be rendered normally
+  If the \e color field is NULL, the geometry shall be rendered normally
   using the Material and texture defined in the Appearance node (see
-  4.14, Lighting model, for details
-  http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-X3D/part1/concepts.html#4.6.5).
+  [12 Shape component](https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/components/shape.html), for details).
 
-  If the normal field is not NULL, it shall contain a Normal node
+  If the \e normal field is not NULL, it shall contain a Normal node
   whose normals are applied to the vertices or faces of the
   IndexedFaceSet in a manner exactly equivalent to that described
-  above for applying colours to vertices/faces (where normalPerVertex
-  corresponds to colorPerVertex and normalIndex corresponds to
-  colorIndex). If the normal field is NULL, the browser shall
-  automatically generate normals, using creaseAngle to determine if
-  and how normals are smoothed across shared vertices (see 4.6.3.5,
-  Crease angle field).
+  above for applying colours to vertices/faces (where \e normalPerVertex
+  corresponds to \e colorPerVertex and \e normalIndex corresponds to
+  \e colorIndex). If the \e normal field is NULL, the browser shall
+  automatically generate normals, using \e creaseAngle to determine if
+  and how normals are smoothed across shared vertices (see [11.2.3 Common geometry fields](https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/components/rendering.html#CommonGeometryFields)).
 
-  If the texCoord field is not NULL, it shall contain a
+  If the \e texCoord field is not NULL, it shall contain a
   TextureCoordinate node. The texture coordinates in that node are
-  applied to the vertices of the IndexedFaceSet as follows: If the
-  texCoordIndex field is not empty, then it is used to choose texture
+  applied to the vertices of the IndexedFaceSet as follows:
+
+  - If the \e texCoordIndex field is not empty, then it is used to choose texture
   coordinates for each vertex of the IndexedFaceSet in exactly the
-  same manner that the coordIndex field is used to choose coordinates
-  for each vertex from the Coordinate node. The texCoordIndex field
-  shall contain at least as many indices as the coordIndex field, and
+  same manner that the \e coordIndex field is used to choose coordinates
+  for each vertex from the Coordinate node. The \e texCoordIndex field
+  shall contain at least as many indices as the \e coordIndex field, and
   shall contain end-of-face markers (-1) in exactly the same places as
-  the coordIndex field. If the greatest index in the texCoordIndex
+  the \e coordIndex field. If the greatest index in the \e texCoordIndex
   field is N, then there shall be N+1 texture coordinates in the
   TextureCoordinate node.
 
-  If the texCoordIndex field is empty, then the coordIndex array is
+  - If the \e texCoordIndex field is empty, then the \e coordIndex array is
   used to choose texture coordinates from the TextureCoordinate
-  node. If the greatest index in the coordIndex field is N, then there
-  shall be N+1 texture coordinates in the TextureCoordinate node.  If
-  the texCoord field is NULL, a default texture coordinate mapping is
+  node. If the greatest index in the \e coordIndex field is N, then there
+  shall be N+1 texture coordinates in the TextureCoordinate node. 
+
+  If the \e texCoord field is NULL, a default texture coordinate mapping is
   calculated using the local coordinate system bounding box of the
   shape.  The longest dimension of the bounding box defines the S
   coordinates, and the next longest defines the T coordinates. If two
@@ -172,25 +173,24 @@
   preference. The value of the S coordinate ranges from 0 to 1, from
   one end of the bounding box to the other. The T coordinate ranges
   between 0 and the ratio of the second greatest dimension of the
-  bounding box to the greatest dimension. Figure 6.10 illustrates the
+  bounding box to the greatest dimension. [Figure 13.6]() illustrates the
   default texture coordinates for a simple box shaped IndexedFaceSet
   with an X dimension twice as large as the Z dimension and four times
-  as large as the Y dimension. Figure 6.11 illustrates the original
-  texture image used on the IndexedFaceSet used in Figure 6.10.
+  as large as the Y dimension. [Figure 13.7]() illustrates the original
+  texture image used on the IndexedFaceSet used in [Figure 13.6]().
 
   <center>
-  <img src="http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-X3D/Images/IFStexture.gif">
-  Figure 6.10
+  <img src=https://www.web3d.org/documents/specifications/19775-1/V3.0/Images/IFStexture.gif">
+  Figure 13.6 - IndexedFaceSet texture default mapping
   </center>
 
   <center>
-  <img src="http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-X3D/Images/IFStexture2.gif">
-  Figure 6.11
+  <img src="https://www.web3d.org/documents/specifications/19775-1/V3.0/Images/IFStexture2.gif">
+  Figure 13.7 - ImageTexture for IndexedFaceSet in Figure 13.6
   </center>
 
-  Subclause 4.6.3, Shapes and geometry
-  (<http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-X3D/part1/concepts.html#4.6.5>),
-  provides a description of the ccw, solid, convex, and creaseAngle
+  [11.2.3 Common geometry fields](https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/components/rendering.html#CommonGeometryFields),
+  provides a description of the \e ccw, \e solid, \e convex, and \e creaseAngle
   fields.
 
 */
@@ -220,8 +220,8 @@
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/X3Dnodes/SoX3DCoordinate.h>
 #include <Inventor/X3Dnodes/SoX3DMacros.h>
-#include <Inventor/actions/SoCallbackAction.h>
-#include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/actions/SoX3DCallbackAction.h>
+#include <Inventor/actions/SoX3DGLRenderAction.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/bundles/SoTextureCoordinateBundle.h>
@@ -317,11 +317,16 @@ SoX3DIndexedFaceSet::SoX3DIndexedFaceSet(void)
 
   SO_X3DNODE_INTERNAL_CONSTRUCTOR(SoX3DIndexedFaceSet);
 
-  SO_X3DNODE_ADD_FIELD(ccw, (TRUE));
-  SO_X3DNODE_ADD_FIELD(solid, (TRUE));
+  SO_X3DNODE_ADD_EVENT_IN(set_colorIndex);
+  SO_X3DNODE_ADD_EVENT_IN(set_coordIndex);
+  SO_X3DNODE_ADD_EVENT_IN(set_normalIndex);
+  SO_X3DNODE_ADD_EVENT_IN(set_texCoordIndex);
+  SO_X3DNODE_ADD_EMPTY_MFIELD(colorIndex);
+  SO_X3DNODE_ADD_EMPTY_MFIELD(coordIndex);
+  SO_X3DNODE_ADD_EMPTY_MFIELD(normalIndex);
+  SO_X3DNODE_ADD_EMPTY_MFIELD(texCoordIndex);
   SO_X3DNODE_ADD_FIELD(convex, (TRUE));
   SO_X3DNODE_ADD_FIELD(creaseAngle, (0.0f));
-
 }
 
 /*!
@@ -438,16 +443,16 @@ SoX3DIndexedFaceSet::findNormalBinding(SoState * state) const
 }
 
 
-// Doc in parent
+// doc in parent
 void
-SoX3DIndexedFaceSet::GLRender(SoGLRenderAction * action)
+SoX3DIndexedFaceSet::GLRender(SoX3DGLRenderAction * action)
 {
   if (this->coordIndex.getNum() < 3 || this->coord.getValue() == NULL) return;
   SoState * state = action->getState();
 
   state->push();
   // update state with coordinates, normals and texture information
-  SoX3DVertexShape::GLRender(action);
+  SoX3DGeometryNode::GLRender(action);
 
   if (!this->shouldGLRender(action)) { 
     state->pop();
@@ -664,7 +669,7 @@ SoX3DIndexedFaceSet::GLRender(SoGLRenderAction * action)
   state->pop();
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DIndexedFaceSet::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
@@ -694,10 +699,10 @@ SoX3DIndexedFaceSet::getPrimitiveCount(SoGetPrimitiveCountAction * action)
   }
 }
 
-// Doc in parent
+// doc in parent
 SbBool
 SoX3DIndexedFaceSet::generateDefaultNormals(SoState * COIN_UNUSED_ARG(s),
-                                             SoNormalBundle * COIN_UNUSED_ARG(nb))
+                                            SoNormalBundle * COIN_UNUSED_ARG(nb))
 {
   return FALSE;
 }
@@ -734,7 +739,7 @@ SoX3DIndexedFaceSet::generateDefaultNormals(SoState * COIN_UNUSED_ARG(s),
   pointDetail.setCoordinateIndex(idx);      \
   this->shapeVertex(&vertex);
 
-// Doc in parent
+// doc in parent
 void
 SoX3DIndexedFaceSet::generatePrimitives(SoAction * action)
 {
@@ -743,7 +748,7 @@ SoX3DIndexedFaceSet::generatePrimitives(SoAction * action)
   SoState * state = action->getState();
 
   state->push();
-  SoX3DVertexShape::doAction(action);
+  SoX3DComposedGeometryNode::doAction(action);
 
   Binding mbind = this->findMaterialBinding(state);
   Binding nbind = this->findNormalBinding(state);
@@ -927,10 +932,10 @@ SoX3DIndexedFaceSet::generatePrimitives(SoAction * action)
 
 #undef DO_VERTEX
 
-// Doc in parent
+// doc in parent
 SbBool
 SoX3DIndexedFaceSet::generateDefaultNormals(SoState * state,
-                                             SoNormalCache * nc)
+                                            SoNormalCache * nc)
 {
   SoX3DCoordinate * node = (SoX3DCoordinate*) this->coord.getValue();
   if (node == NULL) return TRUE; // ok, empty ifs
@@ -965,7 +970,7 @@ SoX3DIndexedFaceSet::generateDefaultNormals(SoState * state,
   return TRUE;
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DIndexedFaceSet::notify(SoNotList * list)
 {
@@ -1040,7 +1045,7 @@ SoX3DIndexedFaceSet::useConvexCache(SoAction * action,
   PRIVATE(this)->convexCache->ref();
   SoCacheElement::set(state, PRIVATE(this)->convexCache);
 
-  SoX3DVertexShape::doAction(action);
+  SoX3DComposedGeometryNode::doAction(action);
 
   const SoCoordinateElement * coords;
   const int32_t * cindices;
@@ -1094,6 +1099,81 @@ SoX3DIndexedFaceSet::useConvexCache(SoAction * action,
 
   PRIVATE(this)->readLockConvexCache();
 
+  return TRUE;
+}
+
+void
+SoX3DIndexedFaceSet::computeBBox(SoAction * action, SbBox3f & box,
+				 SbVec3f & center)
+{
+#if 0
+  PRIVATE(this)->readLock();
+
+  this->updateCache();
+
+  int num = PRIVATE(this)->coord.getLength();
+  const SbVec3f * coords = PRIVATE(this)->coord.getArrayPtr();
+
+  box.makeEmpty();
+  while (num--) {
+    box.extendBy(*coords++);
+  }
+  if (!box.isEmpty()) center = box.getCenter();
+
+  PRIVATE(this)->readUnlock();
+#endif /* 0 */
+
+  // FIXME: Complete the bounding box algorithm for the Indexed Face Set.
+  // 2026-04-17, msm (Wizzerworks)
+}
+
+/*!
+  Convenience method that will fetch data needed for rendering or
+  generating primitives. Takes care of normal cache.
+*/
+SbBool
+SoX3DIndexedFaceSet::getVertexData(SoState * state,
+                                   const SoCoordinateElement *& coords,
+                                   const SbVec3f *& normals,
+                                   const int32_t *& cindices,
+                                   const int32_t *& nindices,
+                                   const int32_t *& tindices,
+                                   const int32_t *& mindices,
+                                   int & numcindices,
+                                   const SbBool neednormals,
+                                   SbBool & normalcacheused)
+{
+  SoX3DComposedGeometryNode::getVertexData(state, coords, normals, neednormals);
+
+  cindices = this->coordIndex.getValues(0);
+  numcindices = this->coordIndex.getNum();
+
+  mindices = this->colorIndex.getValues(0);
+  if (this->colorIndex.getNum() <= 0 || mindices[0] < 0) mindices = NULL;
+
+  tindices = this->texCoordIndex.getValues(0);
+  if (this->texCoordIndex.getNum() <= 0 || tindices[0] < 0) tindices = NULL;
+
+  normalcacheused = FALSE;
+  nindices = NULL;
+
+  if (neednormals) {
+    nindices = this->normalIndex.getValues(0);
+    if (this->normalIndex.getNum() <= 0 || nindices[0] < 0) nindices = NULL;
+    
+    if (normals == NULL) {
+      SoNormalCache * nc = this->generateAndReadLockNormalCache(state);
+      normals = nc->getNormals();
+      nindices = nc->getIndices();
+      normalcacheused = TRUE;
+      // if no normals were generated, unlock normal cache before
+      // returning
+      if (normals == NULL) {
+        this->readUnlockNormalCache();
+        normalcacheused = FALSE;
+      }
+    }
+  }
   return TRUE;
 }
 
