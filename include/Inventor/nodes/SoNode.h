@@ -33,6 +33,10 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
 #include <Inventor/fields/SoFieldContainer.h>
 
 class SoAction;
@@ -98,17 +102,17 @@ public:
 
   virtual void doAction(SoAction * action);
   
-  #ifdef HAVE_X3D
+#ifdef HAVE_X3D
   virtual void GLRender(SoX3DGLRenderAction * action);
   virtual void GLRenderBelowPath(SoX3DGLRenderAction * action);
   virtual void GLRenderInPath(SoX3DGLRenderAction * action);
   virtual void GLRenderOffPath(SoX3DGLRenderAction * action);
-  #else
+#endif // HAVE_X3D
+
   virtual void GLRender(SoGLRenderAction * action);
   virtual void GLRenderBelowPath(SoGLRenderAction * action);
   virtual void GLRenderInPath(SoGLRenderAction * action);
   virtual void GLRenderOffPath(SoGLRenderAction * action);
-  #endif // HAVE_X3D
   
   virtual void callback(SoCallbackAction * action);
   virtual void getBoundingBox(SoGetBoundingBoxAction * action);
@@ -148,6 +152,9 @@ public:
   static int getActionMethodIndex(const SoType type);
 
   static void getBoundingBoxS(SoAction * action, SoNode * node);
+#ifdef HAVE_X3D
+  static void GLRenderSX3D(SoAction * action, SoNode * node);
+#endif // HAVE_X3D
   static void GLRenderS(SoAction * action, SoNode * node);
   static void callbackS(SoAction * action, SoNode * node);
   static void getMatrixS(SoAction * action, SoNode * node);

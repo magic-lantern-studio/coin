@@ -34,20 +34,21 @@
 #define COIN_SOX3DGROUP_H
 
 #include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/X3Dnodes/SoX3DParent.h>
+#include <Inventor/X3Dnodes/SoX3DGroupingNode.h>
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/fields/SoSFVec3f.h>
 
 class SoState;
 class SoX3DGroupP;
 
-class COIN_DLL_API SoX3DGroup : public SoX3DParent
+class COIN_DLL_API SoX3DGroup : public SoX3DGroupingNode
 {
-  typedef SoX3DParent inherited;
+  typedef SoX3DGroupingNode inherited;
   SO_NODE_HEADER(SoX3DGroup);
 
 public:
   static void initClass(void);
+
   SoX3DGroup(void);
   SoX3DGroup(int numChildren);
 
@@ -61,14 +62,12 @@ public:
   SoSFEnum boundingBoxCaching;
   SoSFEnum renderCulling;
   SoSFEnum pickCulling;
-  SoSFVec3f bboxCenter;
-  SoSFVec3f bboxSize;
 
   static void setNumRenderCaches(int num);
   static int getNumRenderCaches(void);
 
   virtual void doAction(SoAction * action);
-  virtual void callback(SoCallbackAction * action);
+  virtual void callback(SoX3DCallbackAction * action);
   virtual void GLRender(SoX3DGLRenderAction * action);
   virtual void getBoundingBox(SoGetBoundingBoxAction * action);
   virtual void getMatrix(SoGetMatrixAction * action);

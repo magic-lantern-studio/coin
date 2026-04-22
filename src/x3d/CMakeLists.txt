@@ -35,7 +35,6 @@ set(COIN_X3D_FILES
 	Normal.cpp
 	NormalInterpolator.cpp
 	OrientationInterpolator.cpp
-	Parent.cpp
 	PixelTexture.cpp
 	PlaneSensor.cpp
 	PointLight.cpp

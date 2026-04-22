@@ -62,18 +62,15 @@
 
   The Transform node is a grouping node that defines a coordinate
   system for its children that is relative to the coordinate systems
-  of its ancestors.  See "4.3.5, Transformation hierarchy"
-  (https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/concepts.html#Transformationhierarchy),
-  and "4.3.6, Standard units and coordinate system"
-  (https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/concepts.html#Standardunitscoordinates),
+  of its ancestors.  See [4.3.5, Transformation hierarchy](https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/concepts.html#Transformationhierarchy),
+  and [4.3.6, Standard units and coordinate system](https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/concepts.html#Standardunitscoordinates),
   for a description of coordinate systems and transformations.
 
-  "10.2.1, Grouping and children node types"
-  (https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/components/group.html#GroupingAndChildrenNodes),
+  [10.2.1, Grouping and children node types](https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/components/group.html#GroupingAndChildrenNodes),
   provides a description of the children, addChildren, and removeChildren
   fields.
 
-  The bboxCenter and bboxSize fields specify a bounding box that
+  The \e bboxCenter and \e bboxSize fields specify a bounding box that
   encloses the children of the Transform node. This is a hint that may
   be used for optimization purposes. The results are undefined if the
   specified bounding box is smaller than the actual bounding box of
@@ -86,10 +83,9 @@
   coordinate system of the children). The results are undefined if the
   specified bounding box is smaller than the true bounding box of the
   group. A description of the bboxCenter and bboxSize fields is
-  provided in "10.2.2, Bounding boxes"
-  (https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/components/group.html#BoundingBoxes).
+  provided in [10.2.2, Bounding boxes](https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/components/group.html#BoundingBoxes).
 
-  The translation, rotation, scale, scaleOrientation and center fields
+  The \e translation, \e rotation, \e scale, \e scaleOrientation and \e center fields
   define a geometric 3D transformation consisting of (in order):
 
   - a (possibly) non-uniform scale about an arbitrary point;
@@ -110,8 +106,8 @@
   P and Transform node, P is transformed into point P' in its
   parent's coordinate system by a series of intermediate
   transformations. In matrix transformation notation, where C
-  (center), SR (scaleOrientation), T (translation), R (rotation), and
-  S (scale) are the equivalent transformation matrices,
+  (\e center), SR (\e scaleOrientation), T (\e translation), R (\e rotation), and
+  S (\e scale) are the equivalent transformation matrices,
 
   \verbatim
   P' = T × C × R × SR × S × -SR × -C × P
@@ -250,7 +246,7 @@ SoX3DTransform::~SoX3DTransform()
 */
 void
 SoX3DTransform::pointAt(const SbVec3f & from,
-                         const SbVec3f & to)
+                        const SbVec3f & to)
 {
   this->scale = SbVec3f(1.0f, 1.0f, 1.0f);
   this->center = SbVec3f(0.0f, 0.0f, 0.0f);
@@ -269,7 +265,7 @@ SoX3DTransform::pointAt(const SbVec3f & from,
 */
 void
 SoX3DTransform::getScaleSpaceMatrix(SbMatrix & matrix,
-                                     SbMatrix & inverse) const
+                                    SbMatrix & inverse) const
 {
   SbMatrix tmp;
   matrix.setTranslate(-center.getValue());
@@ -285,7 +281,7 @@ SoX3DTransform::getScaleSpaceMatrix(SbMatrix & matrix,
 */
 void
 SoX3DTransform::getRotationSpaceMatrix(SbMatrix & matrix,
-                                        SbMatrix & inverse) const
+                                       SbMatrix & inverse) const
 {
   SbMatrix tmp;
   matrix.setTranslate(-this->center.getValue());
@@ -305,7 +301,7 @@ SoX3DTransform::getRotationSpaceMatrix(SbMatrix & matrix,
 */
 void
 SoX3DTransform::getTranslationSpaceMatrix(SbMatrix & matrix,
-                                           SbMatrix & inverse) const
+                                          SbMatrix & inverse) const
 {
   SbMatrix tmp;
   matrix.setTranslate(-this->center.getValue());
@@ -425,13 +421,13 @@ SoX3DTransform::doAction(SoAction * action)
   SoState * state = action->getState();
   state->push();
   this->applyMatrix(state);
-  SoGroup::doAction(action);
+  SoX3DGroupingNode::doAction(action);
   state->pop();
 }
 
 // doc in parent
 void
-SoX3DTransform::callback(SoCallbackAction * action)
+SoX3DTransform::callback(SoX3DCallbackAction * action)
 {
   SoState * state = action->getState();
   state->push();
@@ -468,7 +464,7 @@ SoX3DTransform::getMatrix(SoGetMatrixAction * action)
   SbMatrix mi = m.inverse();
   action->getInverse().multRight(mi);
 
-  SoGroup::getMatrix(action);
+  SoX3DGroupingNode::getMatrix(action);
   action->getState()->pop();
 }
 
@@ -497,7 +493,7 @@ SoX3DTransform::getPrimitiveCount(SoGetPrimitiveCountAction * action)
   SoState * state = action->getState();
   state->push();
   this->applyMatrix(state);
-  SoGroup::getPrimitiveCount(action);
+  SoX3DGroupingNode::getPrimitiveCount(action);
   state->pop();
 }
 

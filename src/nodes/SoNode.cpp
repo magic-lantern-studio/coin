@@ -956,21 +956,12 @@ SoNode::GLRenderS(SoAction * action, SoNode * node)
 {
   if ((action->getCurPathCode() != SoAction::OFF_PATH) ||
       node->affectsState()) {
-#ifdef HAVE_X3D
-    if (((SoX3DGLRenderAction*)action)->abortNow()) {
-      SoCacheElement::invalidate(action->getState());
-    }
-    else {
-      node->GLRender((SoX3DGLRenderAction*)action);
-    }
-#else
     if (((SoGLRenderAction*)action)->abortNow()) {
       SoCacheElement::invalidate(action->getState());
     }
     else {
       node->GLRender((SoGLRenderAction*)action);
     }
-#endif // HAVE_X3D
   }
 
   if (COIN_DEBUG) {
@@ -1000,6 +991,50 @@ SoNode::GLRenderS(SoAction * action, SoNode * node)
 }
 
 #ifdef HAVE_X3D
+/*!
+  This is a static "helper" method registered with the action, and
+  used for calling the SoNode::GLRender() virtual method which does
+  the \e real work.
+*/
+void
+SoNode::GLRenderSX3D(SoAction * action, SoNode * node)
+{
+  if ((action->getCurPathCode() != SoAction::OFF_PATH) ||
+      node->affectsState()) {
+    if (((SoX3DGLRenderAction*)action)->abortNow()) {
+      SoCacheElement::invalidate(action->getState());
+    }
+    else {
+      node->GLRender((SoX3DGLRenderAction*)action);
+    }
+  }
+
+  if (COIN_DEBUG) {
+    // Note: debugging code like this is also present in
+    // SoSeparator::GLRenderBelowPath() and SoState::lazyEvaluate(),
+    // but they are default disabled -- even when COIN_DEBUG=1 (due to
+    // performance reasons).
+    //
+    // If you're seeing notifications about GL-errors from this place,
+    // the first thing to do is to enable those debugging checks too
+    // by setting COIN_GLERROR_DEBUGGING to "1".
+    cc_string str;
+    cc_string_construct(&str);
+    const unsigned int errs = coin_catch_gl_errors(&str);
+    if (errs > 0) {
+      const SbBool extradebug = sogl_glerror_debugging();
+      SoDebugError::post("SoNode::GLRenderSX3D",
+                         "GL error: '%s', nodetype: %s %s",
+                         cc_string_get_text(&str),
+                         node->getTypeId().getName().getString(),
+                         extradebug ? "" :
+                         "(set envvar COIN_GLERROR_DEBUGGING=1 "
+                         "and re-run to get more information)");
+    }
+    cc_string_clean(&str);
+  }
+}
+
 // Note that this documentation will also be used for all subclasses
 // which reimplements the method, so keep the doc "generic enough".
 /*!
@@ -1049,7 +1084,8 @@ SoNode::GLRenderOffPath(SoX3DGLRenderAction * action)
 {
   this->GLRender(action);
 }
-#else
+#endif // HAVE_X3D
+
 // Note that this documentation will also be used for all subclasses
 // which reimplements the method, so keep the doc "generic enough".
 /*!
@@ -1099,7 +1135,6 @@ SoNode::GLRenderOffPath(SoGLRenderAction * action)
 {
   this->GLRender(action);
 }
-#endif // HAVE_X3D
 
 // *************************************************************************
 
@@ -1675,11 +1710,10 @@ static void
 init_action_methods(void)
 {
   SoCallbackAction::addMethod(SoNode::getClassTypeId(), SoNode::callbackS);
-  #ifdef HAVE_X3D
-  SoX3DGLRenderAction::addMethod(SoNode::getClassTypeId(), SoNode::GLRenderS);
-  #else
+#ifdef HAVE_X3D
+  SoX3DGLRenderAction::addMethod(SoNode::getClassTypeId(), SoNode::GLRenderSX3D);
+#endif // HAVE_X3D
   SoGLRenderAction::addMethod(SoNode::getClassTypeId(), SoNode::GLRenderS);
-  #endif // HAVE_X3D
   SoGetBoundingBoxAction::addMethod(SoNode::getClassTypeId(), SoNode::getBoundingBoxS);
   SoGetMatrixAction::addMethod(SoNode::getClassTypeId(), SoNode::getMatrixS);
   SoGetPrimitiveCountAction::addMethod(SoNode::getClassTypeId(), SoNode::getPrimitiveCountS);

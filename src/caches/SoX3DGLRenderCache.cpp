@@ -37,11 +37,20 @@
   \ingroup coin_caches
 */
 
+// FIXME: Should probably integrate this file with original SoGLRenderCache.h
+// 2026-04-20, msm (WizzerWorks)
+
 // *************************************************************************
+
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
 
 #include <cassert>
 
+#ifdef HAVE_X3D
 #include <Inventor/caches/SoX3DGLRenderCache.h>
+#endif // HAVE_X3D
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/elements/SoGLDisplayList.h>
 #include <Inventor/elements/SoCacheElement.h>

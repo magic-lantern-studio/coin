@@ -37,7 +37,7 @@
 #include <Inventor/X3Dnodes/SoX3DGeometryNode.h>
 #include <Inventor/fields/SoSFNode.h>
 #include <Inventor/fields/SoSFBool.h>
-#include <Inventor/elements/SoMaterialBindingElement.h>
+//#include <Inventor/elements/SoMaterialBindingElement.h>
 
 class COIN_DLL_API SoX3DPointSet : public SoX3DGeometryNode
 {
@@ -46,6 +46,7 @@ class COIN_DLL_API SoX3DPointSet : public SoX3DGeometryNode
 
 public:
   static void initClass(void);
+
   SoX3DPointSet(void);
   virtual ~SoX3DPointSet();
 
@@ -65,6 +66,7 @@ protected:
   virtual SbBool shouldGLRender(SoX3DGLRenderAction * action);
   virtual void computeBBox(SoAction * action, SbBox3f & box,
                            SbVec3f & center);
+  virtual void generatePrimitives(SoAction * action);
 
 }; // class SoX3DPointSet
 

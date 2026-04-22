@@ -99,7 +99,7 @@
 
 #include "nodes/SoSubNodeP.h"
 
-SO_NODE_ABSTRACT_SOURCE(SoX3DPointSet);
+SO_NODE_SOURCE(SoX3DPointSet);
 
 /*!
   \copydetails SoNode::initClass(void)
@@ -218,6 +218,13 @@ SoX3DPointSet::shouldGLRender(SoX3DGLRenderAction * action)
 {
   if (this->coord.getValue() == NULL) return FALSE;
   return inherited::shouldGLRender(action);
+}
+
+void
+SoX3DPointSet::generatePrimitives(SoAction * action)
+{
+  // FIXME: Is there anything to implement for this X3DGeometryNode?
+  // 2026-04020, msm (WizzerWorks)
 }
 
 #endif // HAVE_X3D

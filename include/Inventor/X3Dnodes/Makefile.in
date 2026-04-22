@@ -320,7 +320,6 @@ PublicHeaders = \
 	SoX3DExtrusion.h \
 	SoX3DFog.h \
 	SoX3DFontStyle.h \
-	SoX3DGeometry.h \
 	SoX3DGroup.h \
 	SoX3DImageTexture.h \
 	SoX3DIndexedFaceSet.h \

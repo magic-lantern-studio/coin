@@ -34,13 +34,14 @@
 #define COIN_SOX3DTRANSFORM_H
 
 #include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/X3Dnodes/SoX3DGroup.h>
+#include <Inventor/X3Dnodes/SoX3DGroupingNode.h>
 #include <Inventor/fields/SoSFVec3f.h>
 #include <Inventor/fields/SoSFRotation.h>
+#include <Inventor/misc/SoState.h>
 
-class COIN_DLL_API SoX3DTransform : public SoX3DGroup
+class COIN_DLL_API SoX3DTransform : public SoX3DGroupingNode
 {
-  typedef SoX3DGroup inherited;
+  typedef SoX3DGroupingNode inherited;
   SO_NODE_HEADER(SoX3DTransform);
 
 public:
@@ -70,7 +71,7 @@ public:
   void recenter(const SbVec3f & newcenter);
 
   virtual void doAction(SoAction * action);
-  virtual void callback(SoCallbackAction * action);
+  virtual void callback(SoX3DCallbackAction * action);
   virtual void getBoundingBox(SoGetBoundingBoxAction * action);
   virtual void getMatrix(SoGetMatrixAction * action);
   virtual void rayPick(SoRayPickAction * action);
@@ -88,6 +89,7 @@ protected:
 private:
   void commonConstructor(void);
   void applyMatrix(SoState * state);
+
 }; // class SoX3DTransform
 
 #endif // ! COIN_SOX3DTRANSFORM_H

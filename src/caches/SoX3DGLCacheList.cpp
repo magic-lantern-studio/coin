@@ -37,6 +37,9 @@
   \ingroup coin_caches
 */
 
+// FIXME: Should probably integrate this file with original SoGLCacheList.h
+// 2026-04-20, msm (WizzerWorks)
+
 #include <Inventor/caches/SoX3DGLCacheList.h>
 
 #ifdef HAVE_CONFIG_H
@@ -44,8 +47,10 @@
 #endif // HAVE_CONFIG_H
 
 #include <Inventor/C/tidbits.h>
+#ifdef HAVE_X3D
 #include <Inventor/actions/SoX3DGLRenderAction.h>
 #include <Inventor/caches/SoX3DGLRenderCache.h>
+#endif // HAVE_X3D
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/elements/SoGLLazyElement.h>

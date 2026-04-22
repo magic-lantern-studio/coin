@@ -50,7 +50,6 @@ so_x3d_init(void)
   SoX3DMetadataSet::initClass();
   SoX3DMetadataString::initClass();
 
-  SoX3DParent::initClass();
   SoX3DGroup::initClass();
 
   SoX3DChildNode::initClass();
@@ -91,8 +90,6 @@ so_x3d_init(void)
   SoX3DFontStyle::initClass();
   SoX3DImageTexture::initClass();
 
-  SoX3DVertexLine::initClass();
-  SoX3DIndexedLine::initClass();
   SoX3DIndexedLineSet::initClass();
   SoX3DIndexedFaceSet::initClass();
 

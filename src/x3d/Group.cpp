@@ -42,34 +42,35 @@
 
   \ingroup coin_X3Dnodes
 
-  \WEB3DCOPYRIGHT
+  \WEBX3DCOPYRIGHT
 
   \verbatim
-  Group {
-    eventIn      MFNode  addChildren
-    eventIn      MFNode  removeChildren
-    exposedField MFNode  children      []
-    field        SFVec3f bboxCenter    0 0 0     # (-inf,inf)
-    field        SFVec3f bboxSize      -1 -1 -1  # (0,inf) or -1,-1,-1
+  Group : X3DGroupingNode {
+    MFNode  [in]     addChildren             [X3DChildNode]
+    MFNode  [in]     removeChildren          [X3DChildNode]
+    MFNode  [in,out] children       []       [X3DChildNode]
+    SFNode  [in,out] metadata       NULL     [X3DMetadataObject]
+    SFVec3f []       bboxCenter     0 0 0    (-∞,∞)
+    SFVec3f []       bboxSize       -1 -1 -1 [0,∞) or −1 −1 −1
   }
   \endverbatim
 
   A Group node contains children nodes without introducing a new
   transformation.  It is equivalent to a Transform node containing an
-  identity transform.  More details on the children, addChildren, and
-  removeChildren fields and eventIns can be found in 4.6.5, Grouping
-  and children nodes
-  (<http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-X3D/part1/concepts.html#4.6.5>).
+  identity transform.
 
-  The bboxCenter and bboxSize fields specify a bounding box that
+  More details on the \e children, \e addChildren, and
+  \e removeChildren fields can be found in [10.2.1 Grouping
+  and children node types](https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/components/group.html#GroupingAndChildrenNodes).
+
+  The \e bboxCenter and \e bboxSize fields specify a bounding box that
   encloses the Group node's children. This is a hint that may be used
   for optimization purposes. The results are undefined if the
   specified bounding box is smaller than the actual bounding box of
-  the children at any time.  A default bboxSize value, (-1, -1, -1),
+  the children at any time.  A default \e bboxSize value, (-1, -1, -1),
   implies that the bounding box is not specified and, if needed, is
   calculated by the browser. A description of the bboxCenter and
-  bboxSize fields is contained in 4.6.4, Bounding boxes
-  (<http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-X3D/part1/concepts.html#4.6.4>).
+  bboxSize fields is contained in [10.2.2 Bounding boxes](https://www.web3d.org/documents/specifications/19775-1/V3.0/Part01/components/group.html#BoundingBoxes).
 
 
 */
@@ -139,19 +140,19 @@
 // glcachelist
 typedef struct {
   SoX3DGLCacheList * glcachelist;
-} sovrmlgroup_storage;
+} sox3dgroup_storage;
 
 static void
-sovrmlgroup_storage_construct(void * data)
+sox3dgroup_storage_construct(void * data)
 {
-  sovrmlgroup_storage * ptr = (sovrmlgroup_storage*) data;
+  sox3dgroup_storage * ptr = (sox3dgroup_storage*) data;
   ptr->glcachelist = NULL;
 }
 
 static void 
-sovrmlgroup_storage_destruct(void * data)
+sox3dgroup_storage_destruct(void * data)
 {
-  sovrmlgroup_storage * ptr = (sovrmlgroup_storage*) data;
+  sox3dgroup_storage * ptr = (sox3dgroup_storage*) data;
   delete ptr->glcachelist;
 }
 
@@ -164,9 +165,9 @@ public:
   // lots of ifdefs here but it can't be helped...
   SoX3DGroupP(void) {
     this->glcachestorage = 
-      new SbStorage(sizeof(sovrmlgroup_storage),
-                    sovrmlgroup_storage_construct,
-                    sovrmlgroup_storage_destruct);
+      new SbStorage(sizeof(sox3dgroup_storage),
+                    sox3dgroup_storage_construct,
+                    sox3dgroup_storage_destruct);
   }
 
   ~SoX3DGroupP() {
@@ -179,7 +180,7 @@ public:
 
   SbStorage * glcachestorage;
   static void invalidate_gl_cache(void * tls, void *) {
-    sovrmlgroup_storage * ptr = (sovrmlgroup_storage*) tls;
+    sox3dgroup_storage * ptr = (sox3dgroup_storage*) tls;
     if (ptr->glcachelist) {
       ptr->glcachelist->invalidateAll();
     }
@@ -207,8 +208,8 @@ public:
 SoX3DGLCacheList *
 SoX3DGroupP::getGLCacheList(const SbBool createifnull)
 {
-  sovrmlgroup_storage * ptr = 
-    (sovrmlgroup_storage*) this->glcachestorage->get();
+  sox3dgroup_storage * ptr = 
+    (sox3dgroup_storage*) this->glcachestorage->get();
   if (createifnull && ptr->glcachelist == NULL) {
     ptr->glcachelist = new SoX3DGLCacheList(SoX3DGroup::getNumRenderCaches());
   }
@@ -248,7 +249,7 @@ SoX3DGroup::SoX3DGroup(void)
   Constructor. \a numchildren is the expected number of children.
 */
 SoX3DGroup::SoX3DGroup(int numchildren)
-  : SoX3DParent(numchildren)
+  : SoX3DGroupingNode(numchildren)
 {
   this->commonConstructor();
 }
@@ -327,7 +328,7 @@ SoX3DGroup::getNumRenderCaches(void)
   return SoX3DGroup::numRenderCaches;
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DGroup::doAction(SoAction * action)
 {
@@ -337,9 +338,9 @@ SoX3DGroup::doAction(SoAction * action)
   state->pop();
 }
 
-// Doc in parent
+// doc in parent
 void
-SoX3DGroup::callback(SoCallbackAction * action)
+SoX3DGroup::callback(SoX3DCallbackAction * action)
 {
   SoState * state = action->getState();
   state->push();
@@ -350,7 +351,7 @@ SoX3DGroup::callback(SoCallbackAction * action)
   state->pop();
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DGroup::GLRender(SoX3DGLRenderAction * action )
 {
@@ -368,7 +369,7 @@ SoX3DGroup::GLRender(SoX3DGLRenderAction * action )
   }
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DGroup::getBoundingBox(SoGetBoundingBoxAction * action)
 {
@@ -475,7 +476,7 @@ SoX3DGroup::getBoundingBox(SoGetBoundingBoxAction * action)
   }
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DGroup::getMatrix(SoGetMatrixAction * action)
 {
@@ -495,7 +496,7 @@ ray_intersect(SoRayPickAction * action, const SbBox3f & box)
   return action->intersect(box, TRUE);
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DGroup::rayPick(SoRayPickAction * action)
 {
@@ -507,7 +508,7 @@ SoX3DGroup::rayPick(SoRayPickAction * action)
   }
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DGroup::search(SoSearchAction * action)
 {
@@ -517,7 +518,7 @@ SoX3DGroup::search(SoSearchAction * action)
   SoX3DGroup::doAction(action);
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DGroup::write(SoWriteAction * action)
 {
@@ -526,7 +527,7 @@ SoX3DGroup::write(SoWriteAction * action)
   inherited::write(action);
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DGroup::audioRender(SoAudioRenderAction * action)
 {
@@ -549,7 +550,7 @@ SoX3DGroup::audioRender(SoAudioRenderAction * action)
   }
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DGroup::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
@@ -559,7 +560,7 @@ SoX3DGroup::getPrimitiveCount(SoGetPrimitiveCountAction * action)
   state->pop();
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DGroup::GLRenderBelowPath(SoX3DGLRenderAction * action)
 {
@@ -648,7 +649,7 @@ SoX3DGroup::GLRenderBelowPath(SoX3DGLRenderAction * action)
   }
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DGroup::GLRenderInPath(SoX3DGLRenderAction * action)
 {
@@ -702,14 +703,14 @@ SoX3DGroup::GLRenderInPath(SoX3DGLRenderAction * action)
   }
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DGroup::GLRenderOffPath(SoX3DGLRenderAction * COIN_UNUSED_ARG(action))
 {
   // do nothing
 }
 
-// Doc in parent
+// doc in parent
 void
 SoX3DGroup::notify(SoNotList * list)
 {
