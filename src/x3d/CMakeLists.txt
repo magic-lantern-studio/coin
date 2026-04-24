@@ -57,7 +57,6 @@ set(COIN_X3D_FILES
 	TimeSensor.cpp
 	TouchSensor.cpp
 	Transform.cpp
-	VertexLine.cpp
 	Viewpoint.cpp
 	VisibilitySensor.cpp
 	WorldInfo.cpp

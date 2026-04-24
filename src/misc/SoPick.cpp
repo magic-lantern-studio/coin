@@ -170,7 +170,7 @@ sopick_pick_cone(const float bottomRadius,
   }
 }
 
-//#ifdef HAVE_X3D
+#ifdef HAVE_X3D
 void
 sox3dpick_pick_cone(const float bottomRadius,
                     const float h,
@@ -240,7 +240,7 @@ sox3dpick_pick_cone(const float bottomRadius,
     }
   }
 }
-//#endif // HAVE_X3D
+#endif // HAVE_X3D
 
 //
 // internal method used to set picked point attributes
@@ -377,7 +377,7 @@ sopick_pick_cylinder(const float r,
   }
 }
 
-//#ifdef HAVE_X3D
+#ifdef HAVE_X3D
 void
 sox3dpick_pick_cylinder(const float r,
                         const float height,
@@ -487,7 +487,7 @@ sox3dpick_pick_cylinder(const float r,
     }
   }
 }
-//#endif // HAVE_X3D
+#endif // HAVE_X3D
 
 // internal method used to add a sphere intersection to the ray pick
 // action, and set the correct pp normal and texture coordinates
@@ -590,7 +590,7 @@ sopick_pick_cube(const float width,
   }
 }
 
-//#ifdef HAVE_X3D
+#ifdef HAVE_X3D
 void
 sox3dpick_pick_cube(const float width,
                  const float height,
@@ -658,4 +658,4 @@ sox3dpick_pick_cube(const float width,
     }
   }
 }
-//#endif // HAVE_X3D
+#endif // HAVE_X3D

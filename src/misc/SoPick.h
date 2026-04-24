@@ -37,6 +37,10 @@
 #error this is a private header file
 #endif /* !COIN_INTERNAL */
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
 //
 // reusable code for picking
 //
@@ -77,7 +81,7 @@ void sopick_pick_cube(const float width,
                       SoShape * const shape,
                       SoRayPickAction * const action);
 
-//#ifdef HAVE_X3D
+#ifdef HAVE_X3D
 class SoX3DGeometryNode;
 
 void sox3dpick_pick_cone(const float bottomRadius,
@@ -102,6 +106,6 @@ void sox3dpick_pick_cube(const float width,
                          const unsigned int flags,
                          SoX3DGeometryNode * const shape,
                          SoRayPickAction * const action);
-//#endif // HAVE_X3D
+#endif // HAVE_X3D
 
 #endif // !COIN_SOPICK_H

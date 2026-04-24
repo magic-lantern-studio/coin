@@ -809,13 +809,11 @@ DOXYGEN_INPUT="
                          ${path_tag}${coin_src_dir}/include/Inventor/X3Dnodes/SoX3DExtrusion.h
                          ${path_tag}${coin_src_dir}/include/Inventor/X3Dnodes/SoX3DFog.h
                          ${path_tag}${coin_src_dir}/include/Inventor/X3Dnodes/SoX3DFontStyle.h
-                         ${path_tag}${coin_src_dir}/include/Inventor/X3Dnodes/SoX3DGeometry.h
                          ${path_tag}${coin_src_dir}/include/Inventor/X3Dnodes/SoX3DGroup.h
+                         ${path_tag}${coin_src_dir}/include/Inventor/X3Dnodes/SoX3DGroupingNode.h
                          ${path_tag}${coin_src_dir}/include/Inventor/X3Dnodes/SoX3DImageTexture.h
                          ${path_tag}${coin_src_dir}/include/Inventor/X3Dnodes/SoX3DIndexedFaceSet.h
-                         ${path_tag}${coin_src_dir}/include/Inventor/X3Dnodes/SoX3DIndexedLine.h
                          ${path_tag}${coin_src_dir}/include/Inventor/X3Dnodes/SoX3DIndexedLineSet.h
-                         ${path_tag}${coin_src_dir}/include/Inventor/X3Dnodes/SoX3DIndexedShape.h
                          ${path_tag}${coin_src_dir}/include/Inventor/X3Dnodes/SoX3DInline.h
                          ${path_tag}${coin_src_dir}/include/Inventor/X3Dnodes/SoX3DInterpolator.h
                          ${path_tag}${coin_src_dir}/include/Inventor/X3Dnodes/SoX3DLight.h
@@ -826,7 +824,6 @@ DOXYGEN_INPUT="
                          ${path_tag}${coin_src_dir}/include/Inventor/X3Dnodes/SoX3DNormal.h
                          ${path_tag}${coin_src_dir}/include/Inventor/X3Dnodes/SoX3DNormalInterpolator.h
                          ${path_tag}${coin_src_dir}/include/Inventor/X3Dnodes/SoX3DOrientationInterpolator.h
-                         ${path_tag}${coin_src_dir}/include/Inventor/X3Dnodes/SoX3DParent.h
                          ${path_tag}${coin_src_dir}/include/Inventor/X3Dnodes/SoX3DPixelTexture.h
                          ${path_tag}${coin_src_dir}/include/Inventor/X3Dnodes/SoX3DPlaneSensor.h
                          ${path_tag}${coin_src_dir}/include/Inventor/X3Dnodes/SoX3DPointLight.h
@@ -837,6 +834,7 @@ DOXYGEN_INPUT="
                          ${path_tag}${coin_src_dir}/include/Inventor/X3Dnodes/SoX3DScript.h
                          ${path_tag}${coin_src_dir}/include/Inventor/X3Dnodes/SoX3DSensor.h
                          ${path_tag}${coin_src_dir}/include/Inventor/X3Dnodes/SoX3DShape.h
+                         ${path_tag}${coin_src_dir}/include/Inventor/X3Dnodes/SoX3DShapeNode.h
                          ${path_tag}${coin_src_dir}/include/Inventor/X3Dnodes/SoX3DSound.h
                          ${path_tag}${coin_src_dir}/include/Inventor/X3Dnodes/SoX3DSphere.h
                          ${path_tag}${coin_src_dir}/include/Inventor/X3Dnodes/SoX3DSphereSensor.h
@@ -849,9 +847,6 @@ DOXYGEN_INPUT="
                          ${path_tag}${coin_src_dir}/include/Inventor/X3Dnodes/SoX3DTimeSensor.h
                          ${path_tag}${coin_src_dir}/include/Inventor/X3Dnodes/SoX3DTouchSensor.h
                          ${path_tag}${coin_src_dir}/include/Inventor/X3Dnodes/SoX3DTransform.h
-                         ${path_tag}${coin_src_dir}/include/Inventor/X3Dnodes/SoX3DVertexLine.h
-                         ${path_tag}${coin_src_dir}/include/Inventor/X3Dnodes/SoX3DVertexPoint.h
-                         ${path_tag}${coin_src_dir}/include/Inventor/X3Dnodes/SoX3DVertexShape.h
                          ${path_tag}${coin_src_dir}/include/Inventor/X3Dnodes/SoX3DViewpoint.h
                          ${path_tag}${coin_src_dir}/include/Inventor/X3Dnodes/SoX3DVisibilitySensor.h
                          ${path_tag}${coin_src_dir}/include/Inventor/X3Dnodes/SoX3DWorldInfo.h
@@ -1715,7 +1710,6 @@ DOXYGEN_INPUT="
                          ${path_tag}${coin_src_dir}/src/x3d/Group.cpp
                          ${path_tag}${coin_src_dir}/src/x3d/ImageTexture.cpp
                          ${path_tag}${coin_src_dir}/src/x3d/IndexedFaceSet.cpp
-                         ${path_tag}${coin_src_dir}/src/x3d/IndexedLine.cpp
                          ${path_tag}${coin_src_dir}/src/x3d/IndexedLineSet.cpp
                          ${path_tag}${coin_src_dir}/src/x3d/IndexedShape.cpp
                          ${path_tag}${coin_src_dir}/src/x3d/Inline.cpp
@@ -1728,7 +1722,6 @@ DOXYGEN_INPUT="
                          ${path_tag}${coin_src_dir}/src/x3d/Normal.cpp
                          ${path_tag}${coin_src_dir}/src/x3d/NormalInterpolator.cpp
                          ${path_tag}${coin_src_dir}/src/x3d/OrientationInterpolator.cpp
-                         ${path_tag}${coin_src_dir}/src/x3d/Parent.cpp
                          ${path_tag}${coin_src_dir}/src/x3d/PixelTexture.cpp
                          ${path_tag}${coin_src_dir}/src/x3d/PlaneSensor.cpp
                          ${path_tag}${coin_src_dir}/src/x3d/PointLight.cpp
@@ -1751,12 +1744,26 @@ DOXYGEN_INPUT="
                          ${path_tag}${coin_src_dir}/src/x3d/TimeSensor.cpp
                          ${path_tag}${coin_src_dir}/src/x3d/TouchSensor.cpp
                          ${path_tag}${coin_src_dir}/src/x3d/Transform.cpp
-                         ${path_tag}${coin_src_dir}/src/x3d/VertexLine.cpp
-                         ${path_tag}${coin_src_dir}/src/x3d/VertexPoint.cpp
-                         ${path_tag}${coin_src_dir}/src/x3d/VertexShape.cpp
                          ${path_tag}${coin_src_dir}/src/x3d/Viewpoint.cpp
                          ${path_tag}${coin_src_dir}/src/x3d/VisibilitySensor.cpp
                          ${path_tag}${coin_src_dir}/src/x3d/WorldInfo.cpp
+                         ${path_tag}${coin_src_dir}/src/x3d/X3DAppearanceChildNode.cpp
+                         ${path_tag}${coin_src_dir}/src/x3d/X3DAppearanceNode.cpp
+                         ${path_tag}${coin_src_dir}/src/x3d/X3DBackgroundNode.cpp
+                         ${path_tag}${coin_src_dir}/src/x3d/X3DBindableNode.cpp
+                         ${path_tag}${coin_src_dir}/src/x3d/X3DBoundedObject.cpp
+                         ${path_tag}${coin_src_dir}/src/x3d/X3DChildNode.cpp
+                         ${path_tag}${coin_src_dir}/src/x3d/X3DComposedGeometryNode.cpp
+                         ${path_tag}${coin_src_dir}/src/x3d/X3DGeometryNode.cpp
+                         ${path_tag}${coin_src_dir}/src/x3d/X3DGroupingNode.cpp
+                         ${path_tag}${coin_src_dir}/src/x3d/X3DMaterialNode.cpp
+                         ${path_tag}${coin_src_dir}/src/x3d/X3DMetadataObject.cpp
+                         ${path_tag}${coin_src_dir}/src/x3d/X3DNetworkSensorNode.cpp
+                         ${path_tag}${coin_src_dir}/src/x3d/X3DNode.cpp
+                         ${path_tag}${coin_src_dir}/src/x3d/X3DPrototypeInstance.cpp
+                         ${path_tag}${coin_src_dir}/src/x3d/X3DSensorNode.cpp
+                         ${path_tag}${coin_src_dir}/src/x3d/X3DShapeNode.cpp
+                         ${path_tag}${coin_src_dir}/src/x3d/X3DUrlObject.cpp
                          ${path_tag}${coin_src_dir}/src/xml/attribute.cpp
                          ${path_tag}${coin_src_dir}/src/xml/document.cpp
                          ${path_tag}${coin_src_dir}/src/xml/element.cpp
