@@ -62,7 +62,7 @@
   <td id="projectlogo"><img alt="Logo" src="Coin_logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Coin
-   &#160;<span id="projectnumber">4.0.7</span>
+   &#160;<span id="projectnumber">4.0.10</span>
    </div>
    <div id="projectbrief">Coin3D core library</div>
   </td>
@@ -257,8 +257,8 @@ $(function(){initNavTree('SoExtSelection_8h_source.html',''); initResizable(); }
 <div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>  <span class="keywordtype">void</span> animateOverlayLasso(<span class="keyword">const</span> SbBool <a class="code hl_class" href="classSbList.html">animate</a> = TRUE);</div>
 <div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>  SbBool isOverlayLassoAnimated(<span class="keywordtype">void</span>);</div>
 <div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span> </div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> handleEvent(<a class="code hl_class" href="classSoHandleEventAction.html">SoHandleEventAction</a> * action);</div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> GLRenderBelowPath(<a class="code hl_class" href="classSoGLRenderAction.html">SoGLRenderAction</a> * action);</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>  <span class="keywordtype">void</span> handleEvent(<a class="code hl_class" href="classSoHandleEventAction.html">SoHandleEventAction</a> * action) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>  <span class="keywordtype">void</span> GLRenderBelowPath(<a class="code hl_class" href="classSoGLRenderAction.html">SoGLRenderAction</a> * action) <span class="keyword">override</span>;</div>
 <div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span> </div>
 <div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>  <span class="keywordtype">void</span> select(<a class="code hl_class" href="classSoNode.html">SoNode</a> * root, <span class="keywordtype">int</span> numcoords, <a class="code hl_class" href="classSbVec2f.html">SbVec2f</a> * <a class="code hl_class" href="classSbList.html">lasso</a>, </div>
 <div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>              <span class="keyword">const</span> <a class="code hl_class" href="classSbViewportRegion.html">SbViewportRegion</a> &amp; <a class="code hl_class" href="classSbList.html">vp</a>, SbBool <a class="code hl_class" href="classSbList.html">shiftpolicy</a>);</div>
@@ -292,7 +292,7 @@ $(function(){initNavTree('SoExtSelection_8h_source.html',''); initResizable(); }
 <div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span> </div>
 <div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span><span class="preprocessor">#endif </span><span class="comment">// !COIN_SOEXTSELECTION_H</span></div>
 <div class="ttc" id="aclassSbColor_html"><div class="ttname"><a href="classSbColor.html">SbColor</a></div><div class="ttdoc">The SbColor class contains the red, green and blue components which make up a color value.</div><div class="ttdef"><b>Definition</b> SbColor.h:39</div></div>
-<div class="ttc" id="aclassSbList_html"><div class="ttname"><a href="classSbList.html">SbList</a></div><div class="ttdoc">The SbList class is a template container class for lists.</div><div class="ttdef"><b>Definition</b> SbList.h:70</div></div>
+<div class="ttc" id="aclassSbList_html"><div class="ttname"><a href="classSbList.html">SbList</a></div><div class="ttdoc">The SbList class is a template container class for lists.</div><div class="ttdef"><b>Definition</b> SbList.h:72</div></div>
 <div class="ttc" id="aclassSbVec2f_html"><div class="ttname"><a href="classSbVec2f.html">SbVec2f</a></div><div class="ttdoc">The SbVec2f class is a 2 dimensional vector with floating point coordinates.</div><div class="ttdef"><b>Definition</b> SbVec2f.h:49</div></div>
 <div class="ttc" id="aclassSbVec2s_html"><div class="ttname"><a href="classSbVec2s.html">SbVec2s</a></div><div class="ttdoc">The SbVec2s class is a 2 dimensional vector with short integer coordinates.</div><div class="ttdef"><b>Definition</b> SbVec2s.h:51</div></div>
 <div class="ttc" id="aclassSbVec3f_html"><div class="ttname"><a href="classSbVec3f.html">SbVec3f</a></div><div class="ttdoc">The SbVec3f class is a 3 dimensional vector with floating point coordinates.</div><div class="ttdef"><b>Definition</b> SbVec3f.h:51</div></div>
@@ -312,7 +312,7 @@ $(function(){initNavTree('SoExtSelection_8h_source.html',''); initResizable(); }
 <div class="ttc" id="aclassSoHandleEventAction_html"><div class="ttname"><a href="classSoHandleEventAction.html">SoHandleEventAction</a></div><div class="ttdoc">The SoHandleEventAction class distributes user events to the scene.</div><div class="ttdef"><b>Definition</b> SoHandleEventAction.h:46</div></div>
 <div class="ttc" id="aclassSoNode_html"><div class="ttname"><a href="classSoNode.html">SoNode</a></div><div class="ttdoc">The SoNode class is the base class for nodes used in scene graphs.</div><div class="ttdef"><b>Definition</b> SoNode.h:56</div></div>
 <div class="ttc" id="aclassSoPathList_html"><div class="ttname"><a href="classSoPathList.html">SoPathList</a></div><div class="ttdoc">The SoPathList class is a container for pointers to SoPath objects.</div><div class="ttdef"><b>Definition</b> SoPathList.h:40</div></div>
-<div class="ttc" id="aclassSoPath_html"><div class="ttname"><a href="classSoPath.html">SoPath</a></div><div class="ttdoc">The SoPath class is a container class for traversal path descriptions.</div><div class="ttdef"><b>Definition</b> SoPath.h:52</div></div>
+<div class="ttc" id="aclassSoPath_html"><div class="ttname"><a href="classSoPath.html">SoPath</a></div><div class="ttdoc">The SoPath class is a container class for traversal path descriptions.</div><div class="ttdef"><b>Definition</b> SoPath.h:83</div></div>
 <div class="ttc" id="aclassSoPrimitiveVertex_html"><div class="ttname"><a href="classSoPrimitiveVertex.html">SoPrimitiveVertex</a></div><div class="ttdoc">The SoPrimitiveVertex class represents a single vertex of a generated primitive.</div><div class="ttdef"><b>Definition</b> SoPrimitiveVertex.h:43</div></div>
 <div class="ttc" id="aclassSoSFEnum_html"><div class="ttname"><a href="classSoSFEnum.html">SoSFEnum</a></div><div class="ttdoc">The SoSFEnum class is a container for an enum value.</div><div class="ttdef"><b>Definition</b> SoSFEnum.h:40</div></div>
 <div class="ttc" id="aclassSoSelection_html"><div class="ttname"><a href="classSoSelection.html">SoSelection</a></div><div class="ttdoc">The SoSelection class manages a list of selected nodes.</div><div class="ttdef"><b>Definition</b> SoSelection.h:50</div></div>
@@ -323,7 +323,7 @@ $(function(){initNavTree('SoExtSelection_8h_source.html',''); initResizable(); }
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_469ed70aca823fd8322768ad54869f94.html">Inventor</a></li><li class="navelem"><a class="el" href="dir_a1c1d9fc954b6310fc06e1f59b6e0117.html">nodes</a></li><li class="navelem"><b>SoExtSelection.h</b></li>
-    <li class="footer">Generated on Mon Feb 9 2026 18:26:05 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Mon Oct 12 2026 03:28:33 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>

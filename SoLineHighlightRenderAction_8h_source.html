@@ -62,7 +62,7 @@
   <td id="projectlogo"><img alt="Logo" src="Coin_logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Coin
-   &#160;<span id="projectnumber">4.0.7</span>
+   &#160;<span id="projectnumber">4.0.10</span>
    </div>
    <div id="projectbrief">Coin3D core library</div>
   </td>
@@ -188,9 +188,9 @@ $(function(){initNavTree('SoLineHighlightRenderAction_8h_source.html',''); initR
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  <a class="code hl_class" href="classSoLineHighlightRenderAction.html">SoLineHighlightRenderAction</a>(<span class="keyword">const</span> <a class="code hl_class" href="classSbViewportRegion.html">SbViewportRegion</a> &amp; viewportregion);</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  <span class="keyword">virtual</span> <a class="code hl_class" href="classSoLineHighlightRenderAction.html">~SoLineHighlightRenderAction</a>(<span class="keywordtype">void</span>);</div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classSoAction.html#ad2d6ddb297b3a1f5b80026db5fd5e616">apply</a>(<a class="code hl_class" href="classSoNode.html">SoNode</a> * node);</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classSoAction.html#ad2d6ddb297b3a1f5b80026db5fd5e616">apply</a>(<a class="code hl_class" href="classSoPath.html">SoPath</a> * path);</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classSoAction.html#ad2d6ddb297b3a1f5b80026db5fd5e616">apply</a>(<span class="keyword">const</span> <a class="code hl_class" href="classSoPathList.html">SoPathList</a> &amp; pathlist, SbBool obeysrules = FALSE);</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classSoAction.html#ad2d6ddb297b3a1f5b80026db5fd5e616">apply</a>(<a class="code hl_class" href="classSoNode.html">SoNode</a> * node) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classSoAction.html#ad2d6ddb297b3a1f5b80026db5fd5e616">apply</a>(<a class="code hl_class" href="classSoPath.html">SoPath</a> * path) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classSoAction.html#ad2d6ddb297b3a1f5b80026db5fd5e616">apply</a>(<span class="keyword">const</span> <a class="code hl_class" href="classSoPathList.html">SoPathList</a> &amp; pathlist, SbBool obeysrules = FALSE) <span class="keyword">override</span>;</div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  <span class="keywordtype">void</span> setVisible(<span class="keyword">const</span> SbBool visible);</div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  SbBool isVisible(<span class="keywordtype">void</span>) <span class="keyword">const</span>;</div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  <span class="keywordtype">void</span> setColor(<span class="keyword">const</span> <a class="code hl_class" href="classSbColor.html">SbColor</a> &amp; color);</div>
@@ -225,19 +225,19 @@ $(function(){initNavTree('SoLineHighlightRenderAction_8h_source.html',''); initR
 <div class="ttc" id="aclassSbViewportRegion_html"><div class="ttname"><a href="classSbViewportRegion.html">SbViewportRegion</a></div><div class="ttdoc">The SbViewportRegion class is a viewport within a full window.</div><div class="ttdef"><b>Definition</b> SbViewportRegion.h:40</div></div>
 <div class="ttc" id="aclassSoAction_html_ad2d6ddb297b3a1f5b80026db5fd5e616"><div class="ttname"><a href="classSoAction.html#ad2d6ddb297b3a1f5b80026db5fd5e616">SoAction::apply</a></div><div class="ttdeci">virtual void apply(SoNode *root)</div><div class="ttdef"><b>Definition</b> SoAction.cpp:463</div></div>
 <div class="ttc" id="aclassSoGLRenderAction_html"><div class="ttname"><a href="classSoGLRenderAction.html">SoGLRenderAction</a></div><div class="ttdoc">The SoGLRenderAction class renders the scene graph with OpenGL calls.</div><div class="ttdef"><b>Definition</b> SoGLRenderAction.h:50</div></div>
-<div class="ttc" id="aclassSoGLRenderAction_html_a6edc84c92e9bbd3311776c108f173c30"><div class="ttname"><a href="classSoGLRenderAction.html#a6edc84c92e9bbd3311776c108f173c30">SoGLRenderAction::initClass</a></div><div class="ttdeci">static void initClass(void)</div><div class="ttdef"><b>Definition</b> SoGLRenderAction.cpp:641</div></div>
+<div class="ttc" id="aclassSoGLRenderAction_html_a6edc84c92e9bbd3311776c108f173c30"><div class="ttname"><a href="classSoGLRenderAction.html#a6edc84c92e9bbd3311776c108f173c30">SoGLRenderAction::initClass</a></div><div class="ttdeci">static void initClass(void)</div><div class="ttdef"><b>Definition</b> SoGLRenderAction.cpp:796</div></div>
 <div class="ttc" id="aclassSoLineHighlightRenderAction_html"><div class="ttname"><a href="classSoLineHighlightRenderAction.html">SoLineHighlightRenderAction</a></div><div class="ttdoc">The SoLineHighlightRenderAction class renders selections with line highlighting.</div><div class="ttdef"><b>Definition</b> SoLineHighlightRenderAction.h:41</div></div>
 <div class="ttc" id="aclassSoLineHighlightRenderAction_html_a8a54d4a40f5f2b8c5f9fdf30900d0610"><div class="ttname"><a href="classSoLineHighlightRenderAction.html#a8a54d4a40f5f2b8c5f9fdf30900d0610">SoLineHighlightRenderAction::hlVisible</a></div><div class="ttdeci">SbBool hlVisible</div><div class="ttdef"><b>Definition</b> SoLineHighlightRenderAction.h:66</div></div>
 <div class="ttc" id="aclassSoNode_html"><div class="ttname"><a href="classSoNode.html">SoNode</a></div><div class="ttdoc">The SoNode class is the base class for nodes used in scene graphs.</div><div class="ttdef"><b>Definition</b> SoNode.h:56</div></div>
 <div class="ttc" id="aclassSoPathList_html"><div class="ttname"><a href="classSoPathList.html">SoPathList</a></div><div class="ttdoc">The SoPathList class is a container for pointers to SoPath objects.</div><div class="ttdef"><b>Definition</b> SoPathList.h:40</div></div>
-<div class="ttc" id="aclassSoPath_html"><div class="ttname"><a href="classSoPath.html">SoPath</a></div><div class="ttdoc">The SoPath class is a container class for traversal path descriptions.</div><div class="ttdef"><b>Definition</b> SoPath.h:52</div></div>
+<div class="ttc" id="aclassSoPath_html"><div class="ttname"><a href="classSoPath.html">SoPath</a></div><div class="ttdoc">The SoPath class is a container class for traversal path descriptions.</div><div class="ttdef"><b>Definition</b> SoPath.h:83</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_469ed70aca823fd8322768ad54869f94.html">Inventor</a></li><li class="navelem"><a class="el" href="dir_4be02981134b54e3e345677ce1882bfe.html">actions</a></li><li class="navelem"><b>SoLineHighlightRenderAction.h</b></li>
-    <li class="footer">Generated on Mon Feb 9 2026 18:26:04 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Mon Oct 12 2026 03:28:33 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>

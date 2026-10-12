@@ -104,7 +104,7 @@ var group__coin__general =
     [ "SoFieldContainer", "classSoFieldContainer.html", [
       [ "SoFieldContainer", "classSoFieldContainer.html#a3950d8784a244da6e5d81361760f2845", null ],
       [ "~SoFieldContainer", "classSoFieldContainer.html#a4aa2232495749eb6ac1af54d200f2180", null ],
-      [ "addWriteReference", "classSoFieldContainer.html#a8fe87d323c349aa7123ecbd2096a90dd", null ],
+      [ "addWriteReference", "classSoFieldContainer.html#a46c9b044a5ef278677337dd058281ecb", null ],
       [ "copyContents", "classSoFieldContainer.html#af74b2eb05fc0ee8493c46437717e8261", null ],
       [ "copyFieldValues", "classSoFieldContainer.html#abc620aa3c3c1d797772ecd8b6ba82075", null ],
       [ "copyThroughConnection", "classSoFieldContainer.html#ade4c5e16510e62583073d865e947e5f0", null ],
@@ -124,8 +124,8 @@ var group__coin__general =
       [ "getUserData", "classSoFieldContainer.html#a8afa8e6a2f947b2e874b4d63728f6c7f", null ],
       [ "hasDefaultValues", "classSoFieldContainer.html#ad135f9119f178c0891f3284e8aebfb54", null ],
       [ "isNotifyEnabled", "classSoFieldContainer.html#a3886ea42fb933a12b0a456232565a302", null ],
-      [ "notify", "classSoFieldContainer.html#a8d8637bfa120513d81521c9cd8bc1309", null ],
-      [ "readInstance", "classSoFieldContainer.html#aebf8cab6ca3299aa1c05cc9b2dde1e35", null ],
+      [ "notify", "classSoFieldContainer.html#aea51ac9e71579a958a2767c8ca189f62", null ],
+      [ "readInstance", "classSoFieldContainer.html#a454583963fd99409d6f89537173079ad", null ],
       [ "set", "classSoFieldContainer.html#a42458263ddb5dbbdf9473c3dae07a483", null ],
       [ "set", "classSoFieldContainer.html#aecae5577413772a3df69f8a67c9f8861", null ],
       [ "setToDefaults", "classSoFieldContainer.html#a96ce6bfbc94538e8d037030f9990ee61", null ],
@@ -140,6 +140,12 @@ var group__coin__general =
       [ "getNodeFromTail", "classSoFullPath.html#ac6f2a1d6b9ac930051a66ae78d7af5d1", null ],
       [ "getTail", "classSoFullPath.html#a6f10361f7f8af28a937a2ad52efeb7b9", null ],
       [ "pop", "classSoFullPath.html#ac910125223965d59eb473cadc636f8c6", null ]
+    ] ],
+    [ "SoFullPathView", "classSoFullPathView.html", [
+      [ "getIndexFromTail", "classSoFullPathView.html#a7fbec968328ae22adcb8293a31c7e1a5", null ],
+      [ "getLength", "classSoFullPathView.html#a4c0fe03781d2f35a888fc0a1baf5cbff", null ],
+      [ "getNodeFromTail", "classSoFullPathView.html#a5a040f299601881f9e4086b5b0b14607", null ],
+      [ "getTail", "classSoFullPathView.html#ae5ec5be8248034f5ec9553ebb3b9abfd", null ]
     ] ],
     [ "SoInput", "classSoInput.html", [
       [ "SoInput", "classSoInput.html#aad6a27869faabd1cfc94d537881af73e", null ],
@@ -426,6 +432,7 @@ var group__coin__general =
       [ "copy", "classSoPath.html#a8f53657fec841ac70742df42a93e45a6", null ],
       [ "findFork", "classSoPath.html#af3afd770f54150a657bc74cce2b726f3", null ],
       [ "findNode", "classSoPath.html#ae0f4de2f26dffbecda41eb4ef4faa6c8", null ],
+      [ "fullPath", "classSoPath.html#a4ecf9b16bb5ee9f843e6b961e2352208", null ],
       [ "getHead", "classSoPath.html#a3632fb20e653dbdd3dae5ae4dc3e1057", null ],
       [ "getIndex", "classSoPath.html#a2e36dd7f35753cd532453f8c873b5220", null ],
       [ "getIndexFromTail", "classSoPath.html#a96de7bd8fc32c2be05faa3ad0041de4e", null ],
@@ -433,9 +440,10 @@ var group__coin__general =
       [ "getNode", "classSoPath.html#a00bb607dc1a29977cc9875af299e162e", null ],
       [ "getNodeFromTail", "classSoPath.html#a7c9d3b31973df085f32f886790796b24", null ],
       [ "getTail", "classSoPath.html#a60c8ed4e98df2bea9efddc8057376055", null ],
-      [ "getTypeId", "classSoPath.html#a9a318bcef02b670ba82cb7d4f64f4ff8", null ],
+      [ "getTypeId", "classSoPath.html#a5648817ef3a6fc7a6c88e7961dc18099", null ],
       [ "insertIndex", "classSoPath.html#ac2c8ab31aaece572afc70082e52f81cd", null ],
       [ "isRelevantNotification", "classSoPath.html#aa9b6748214f721d3962575406885ecfb", null ],
+      [ "nodeKitPath", "classSoPath.html#ab2bcfe7f9958ce1e1dd77ce136841cd7", null ],
       [ "operator=", "classSoPath.html#a0098c2fc11f7d2e50e22937d414cb3d1", null ],
       [ "pop", "classSoPath.html#aa82bbd8566a5cddf2139d85402858b77", null ],
       [ "push", "classSoPath.html#a4df0becc437e8052b47b526b0c1b802c", null ],
